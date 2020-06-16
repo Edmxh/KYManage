@@ -21,6 +21,7 @@ import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataInfo;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
+import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReq;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReqBean;
 import com.example.kymanage.R;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<StatusRespBean> {
+public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<MaterialFactoryDumpRep> {
     //震动
     private Vibrator vibrator;
     private ImageView scan;
@@ -142,7 +143,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     }
 
     @Override
-    public void onDataSuccess1(StatusRespBean data) {
+    public void onDataSuccess1(MaterialFactoryDumpRep data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
     }
 

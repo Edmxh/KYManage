@@ -29,6 +29,7 @@ import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssu
 import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReps;
 import com.example.kymanage.Beans.LabelBean;
 import com.example.kymanage.Beans.LoginBean;
+import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
 import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
@@ -212,7 +213,7 @@ public interface APIService {
 
     //#301转储接口
     @POST(API.MaterialFactoryDump)
-    Observable<StatusRespBean> MaterialFactoryDump(@Body RequestBody issuevouchernumber);
+    Observable<MaterialFactoryDumpRep> MaterialFactoryDump(@Body RequestBody issuevouchernumber);
 
     //#301转储单查询接口
     @POST(API.GetMainDumpRecord)

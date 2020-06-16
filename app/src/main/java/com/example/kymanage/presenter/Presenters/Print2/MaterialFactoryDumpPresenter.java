@@ -4,6 +4,7 @@ package com.example.kymanage.presenter.Presenters.Print2;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
+import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReq;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReqBean;
 import com.example.kymanage.model.AppModel;
@@ -14,7 +15,7 @@ import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 
 import java.util.List;
 
-public class MaterialFactoryDumpPresenter extends BasePresenter<BaseView1<StatusRespBean>> {
+public class MaterialFactoryDumpPresenter extends BasePresenter<BaseView1<MaterialFactoryDumpRep>> {
 
 
     private final AppModel appModel;
@@ -24,11 +25,11 @@ public class MaterialFactoryDumpPresenter extends BasePresenter<BaseView1<Status
     }
 
     public void MaterialFactoryDump(MaterialFactoryDumpReq data){
-        appModel.MaterialFactoryDump(data,new HttpDataListener<StatusRespBean>() {
+        appModel.MaterialFactoryDump(data,new HttpDataListener<MaterialFactoryDumpRep>() {
 
 
             @Override
-            public void onDataSuccess(StatusRespBean data) {
+            public void onDataSuccess(MaterialFactoryDumpRep data) {
                 getView().onDataSuccess1(data);
             }
 

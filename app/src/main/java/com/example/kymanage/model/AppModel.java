@@ -42,6 +42,7 @@ import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRec
 import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReq;
 import com.example.kymanage.Beans.LabelBean;
 import com.example.kymanage.Beans.LoginBean;
+import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReq;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReqBean;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
@@ -1827,14 +1828,14 @@ public class AppModel extends BaseModel{
                 MaterialFactoryDump(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<StatusRespBean>() {
+                .subscribe(new Observer<MaterialFactoryDumpRep>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(StatusRespBean value) {
+                    public void onNext(MaterialFactoryDumpRep value) {
                         httpDataListener.onDataSuccess(value);
                     }
 
