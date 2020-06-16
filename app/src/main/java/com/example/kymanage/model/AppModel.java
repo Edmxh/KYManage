@@ -87,7 +87,12 @@ import okhttp3.RequestBody;
 
 
 public class AppModel extends BaseModel{
-
+    /**
+     * 修改
+     * @param name
+     * @param password
+     * @param httpDataListener
+     */
 
 
     public void comingSoondata(String name,String password, final HttpDataListener httpDataListener) {
