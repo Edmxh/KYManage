@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.kymanage">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activity.DivertRecord2Activity"></activity>
+        <activity android:name=".Activity.DivertRecord1Activity" />
+        <activity android:name=".Activity.PrintXSFHDActivity" />
+        <activity android:name=".Activity.PrintKGCPSDActivity" />
+        <activity android:name=".Activity.PrintCNPSDActivity" />
+        <activity android:name=".Activity.WXCPSHRecordActivity" />
+        <activity android:name=".Activity.WXCPSHDialog2Activity" />
+        <activity android:name=".Activity.WXBCPSHRecordActivity" />
+        <activity android:name=".Activity.WXBCPJGRKDialog2Activity" />
+        <activity android:name=".Activity.KFCGRKRecordActivity" />
+        <activity android:name=".Activity.DJDYPrintPerviewActivity" />
+        <activity android:name=".Activity.KFFLRecordActivity" />
+        <activity
+            android:name=".Activity.WXDJDYJLActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.KFFLDialogActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXDJDYActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXBCPJGRKDialog1Activity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXCPSHDialog1Activity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXCPSHActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXBCPSHDialogActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.CGRecordActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXSHJLActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXBCPSHActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.KFFLActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXBCPJGRKActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.CGDDDialogActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WLQueryActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.KFPSDSHAtivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.UpdatefinishedStorageActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.PrintPerviewActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.KFCGSHRKActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.MainMenuActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.CGDDListActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tabletextsize">23dp</dimen>
+    <dimen name="paper_size_small">400px</dimen>
+    <dimen name="paper_size">464px</dimen>
+    <dimen name="paper_content_size">384px</dimen>
+    <dimen name="paper_space">8px</dimen>
+    <dimen name="card_redius">6dip</dimen>
+    <dimen name="card_elevation">8dip</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="tabelhead">15dp</dimen>
+    <dimen name="detail_textsize">25dp</dimen>
+    <dimen name="marginleft">10dp</dimen>
+    <dimen name="datetextsize">20dp</dimen><!--日期选择器-->
+    <dimen name="timetextsize">20dp</dimen><!--时间选择器-->
+    <dimen name="inputtextsize">25dp</dimen>
+    <!--采购收货详情-->
+    <dimen name="detailtextsize">20dp</dimen>
+    <!--预入库-->
+    <dimen name="yrktabelcontent">10dp</dimen>
+    <dimen name="button2">25dp</dimen>
+    <!--库房扫描收货-->
+    <dimen name="button1">20dp</dimen>
+    <dimen name="buttonheight1">40dp</dimen>
+    <!--采购收货-->
+    <dimen name="tabelhead1">10dp</dimen>
+    <dimen name="tabelcontent1">10dp</dimen>
+    <!--主菜单-->
+    <dimen name="text1">30dp</dimen>
+    <dimen name="text2">12dp</dimen>
+    <dimen name="text22">14dp</dimen>
+    <dimen name="text3">25dp</dimen>
+    <!--物料查询-->
+    <dimen name="text4">20dp</dimen>
+    <dimen name="text5">20dp</dimen>
+    <!--库房发料-->
+    <dimen name="text6">12dp</dimen>
+    <dimen name="divider">5dp</dimen>
+
+</resources>

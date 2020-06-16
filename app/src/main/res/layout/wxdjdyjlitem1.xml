@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.kymanage.definedClass.CheckableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parent_layout"
+    android:descendantFocusability="blocksDescendants"
+    >
+    <TextView
+        android:id="@+id/xh"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="序号"
+        android:textSize="@dimen/text2"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"
+        android:duplicateParentState="true"/>
+    <TextView
+        android:id="@+id/psdh"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:text="配送单号"
+        android:textSize="@dimen/text2"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"
+        android:duplicateParentState="true"/>
+    <TextView
+        android:id="@+id/dysj"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:text="打印时间"
+        android:textSize="@dimen/text2"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"
+        android:duplicateParentState="true"/>
+</com.example.kymanage.definedClass.CheckableLayout>

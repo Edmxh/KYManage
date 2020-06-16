@@ -1,0 +1,62 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="InputBoxStyle">
+        <item name="android:layout_centerHorizontal">false</item>
+        <item name="android:background">@drawable/inputbox</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <!--登录界面输入框-->
+    <style name="LoginInputBoxStyle">
+        <item name="android:background">@drawable/logininputbox</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+    <!--采购管理界面输入框-->
+    <style name="InputBoxStyle2">
+        <item name="android:background">@drawable/inputbox2</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <!--用activity模拟dialog  <item name="android:windowBackground">@drawable/dialog_bg_update</item>  <item name="android:windowBackground">@android:color/transparent</item>-->
+    <style name="dialogActivity" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/colorWhite</item>
+    </style>
+    <style name="MyCheckBox2" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/fontcolor1</item>
+        <item name="colorControlActivated">@color/fontcolor1</item>
+    </style>
+
+
+</resources>

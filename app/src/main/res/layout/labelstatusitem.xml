@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/tablebody1"
+        android:textSize="@dimen/tabelhead"
+        android:gravity="center"
+        android:layout_weight="2"/>
+    <TextView
+        android:id="@+id/chargeman"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/tablebody1"
+        android:textSize="@dimen/tabelhead"
+        android:gravity="center"
+        android:layout_weight="2"/>
+    <TextView
+        android:id="@+id/scantime"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/tablebody1"
+        android:textSize="@dimen/tabelhead"
+        android:gravity="center"
+        android:layout_weight="2"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+</LinearLayout>
