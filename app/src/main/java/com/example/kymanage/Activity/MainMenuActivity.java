@@ -3,8 +3,10 @@ package com.example.kymanage.Activity;
 import android.content.Intent;
 import android.os.Vibrator;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -94,9 +96,9 @@ public class MainMenuActivity extends BaseActivity{
         iconmap.put("半成品收货", R.drawable.icon_bcpsh);
         iconmap.put("成品收货", R.drawable.icon_cpsh);
         iconmap.put("半成品加工入库", R.drawable.icon_bcprk);
-        iconmap.put("厂内配送单", R.drawable.icon_printcnpsd);
-        iconmap.put("跨工厂配送单", R.drawable.icon_printkgcpsd);
-        iconmap.put("销售发货单", R.drawable.icon_printxsfhd);
+        iconmap.put("厂内配送", R.drawable.icon_printcnpsd);
+        iconmap.put("跨工厂配送", R.drawable.icon_printkgcpsd);
+        iconmap.put("销售发货", R.drawable.icon_printxsfhd);
         iconmap.put("物料查询", R.drawable.wlcx);
 
         drawGridview(Authority1str,mGridView1);
@@ -138,8 +140,26 @@ public class MainMenuActivity extends BaseActivity{
 
         }
 
-
-
+        //高度控制
+        String authStr2=Authority2str.substring(1,Authority2str.length()-1);
+        String[] strarr2=authStr2.split(",");
+        for (String s : strarr2) {
+            //System.out.println("--"+s.replace(" ","")+"--");
+            s.replace(" ","");
+        }
+        int length2 = strarr2.length;
+        System.out.println("外协功能数量"+length2);
+        ViewGroup.LayoutParams lp;
+        lp= wxgl_layout.getLayoutParams();
+        if(length2>4){
+            System.out.println("功能数量超出");
+//            lp.width=400;
+            lp.height=350;
+            wxgl_layout.setLayoutParams(lp);
+        }else {
+            lp.height=200;
+            wxgl_layout.setLayoutParams(lp);
+        }
     }
 
     @Override
@@ -152,9 +172,9 @@ public class MainMenuActivity extends BaseActivity{
         FunctionActivity.put("半成品收货", WXBCPSHActivity.class);
         FunctionActivity.put("成品收货", WXCPSHActivity.class);
         FunctionActivity.put("半成品加工入库", WXBCPJGRKActivity.class);
-        FunctionActivity.put("厂内配送单", PrintCNPSDActivity.class);
-        FunctionActivity.put("跨工厂配送单", PrintKGCPSDActivity.class);
-        FunctionActivity.put("销售发货单", PrintXSFHDActivity.class);
+        FunctionActivity.put("厂内配送", PrintCNPSDActivity.class);
+        FunctionActivity.put("跨工厂配送", PrintKGCPSDActivity.class);
+        FunctionActivity.put("销售发货", PrintXSFHDActivity.class);
         FunctionActivity.put("物料查询", WLQueryActivity.class);
         //FunctionActivity.put("标签查询",QueryLabelActivity.class);
         //FunctionActivity.put("物料状态查询",LabelStatusActivity.class);

@@ -119,12 +119,47 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+//                scanString="{\"code\":\"LJ2015000594-TZ2010043020\",\"dp\":\"15923846892067\",\"po\":\"000010048078\",\"no\":\"0010000208\",\"line\":\"000026\"}";
+//                JSONObject lableObject= null;
+//                try {
+//                    lableObject = JSONObject.parseObject(scanString);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Toast.makeText(PrintCNPSDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+//                }
+//                if(lableObject!=null) {
+//                    String DispatchListNO=lableObject.getString("dp");
+//                    //判断是否重复扫码
+//                    boolean repeat=false;
+//                    for (String no : DispatchListNOList) {
+//                        if(DispatchListNO.equals(no)){
+//                            repeat=true;
+//                        }
+//                    }
+//                    if(repeat){
+//                        System.out.println("请勿重复扫码");
+//                        Toast.makeText(PrintCNPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
+//
+//                    }else {
+//                        if(DispatchListNO!=null){
+//                            DispatchListNOList.add(DispatchListNO);
+//                            presenter1.GetCMInFactoryDeliver(DispatchListNOList,username,getCurrentdate());
+//                        }
+//                    }
+////                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
+//                    scanString="";
+//                }else {
+//                    Log.i("token","扫描结果为空");
+//                    Toast.makeText(PrintCNPSDActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(30);
                 Bitmap bm=cb.createImage8(printData,tf);
                 int picHeight = 300+105*(printData.getData().size());
                 printHelper.PrintBitmapAtCenter(bm,384,picHeight);

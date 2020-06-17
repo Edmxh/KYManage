@@ -207,7 +207,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                 }
 
 //                scanString="{\"no\":\"0010000208\",\"line\":\"000026\",\"code\":\"TEo3MDE1MDAxMTk0\"}";//无生产订单
-////                scanString="{\"no\":\"0010000208\",\"line\":\"000026\",\"code\":\"TEoyMDE1MDAwNTk0LUEwMQ==\"}";//有生产订单
+//                scanString="{\"no\":\"0010000208\",\"line\":\"000026\",\"code\":\"TEoyMDE1MDAwNTk0LUEwMQ==\"}";//有生产订单
 //                JSONObject lableObject= null;
 //                try {
 //                    lableObject = JSONObject.parseObject(scanString);

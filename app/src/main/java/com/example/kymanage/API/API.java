@@ -133,8 +133,20 @@ public interface API {
     //#301转储详细记录查询
     String GetDumpRecord="ThingX/Things/AppProgramThing/Services/GetDumpRecord";
 
+    //获取301转储配送单
+    String GetDumpRecordNode="ThingX/Things/AppProgramThing/Services/GetDumpRecordNode";
+
+    //#301转储冲销
+    String WriteOffMaterialFactoryDump="ThingX/Things/AppProgramThing/Services/WriteOffMaterialFactoryDump";
+
     //##获取厂内配送单
     String GetCMInFactoryDeliver="ThingX/Things/AppProgramThing/Services/GetCMInFactoryDeliver";
+
+    //###获取交货单信息
+    String GetDeliveryListInfoJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListInfoJS";
+
+    //获取销售发货物料信息及库存地点
+    String GetLableStorageInfoJS="ThingX/Things/AppProgramThing/Services/GetLableStorageInfoJS";
 
 
 

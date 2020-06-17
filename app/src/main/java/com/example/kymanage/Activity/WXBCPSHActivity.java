@@ -163,47 +163,47 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                 //pliu
 //                scanString="{\"no\":\"0010000209\",\"line\":\"10\",\"code\":\"TEo2MDI1MDA5Mzc4\"}";
                 //kh
-//                scanString="{\"no\":\"10000208\",\"line\":\"26\",\"code\":\"TEoyMDE1MDAwNTk0LUEwMQ==\"}";
-//                JSONObject lableObject= null;
-//                try {
-//                    lableObject = JSONObject.parseObject(scanString);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(WXBCPSHActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
-//                }
-//                if(lableObject!=null) {
-////                    System.out.println(lableObject.getString("bm"));
-//                    String marketorderno=lableObject.getString("no");
-//                    String marketorderrow=lableObject.getString("line");
-//                    String bm=lableObject.getString("code");
-////                        sl=lableObject.getFloat("sl");
-////                        bm = lableObject.getString("bm");
-////                        area = lableObject.getString("cd");
-////                        factory=lableObject.getString("gc");
-////                        labelSquNum=lableObject.getString("num");
-////                        cs=lableObject.getInteger("cs");
+                scanString="{\"no\":\"10000208\",\"line\":\"26\",\"code\":\"TEoyMDE1MDAwNTk0LUEwMQ==\"}";
+                JSONObject lableObject= null;
+                try {
+                    lableObject = JSONObject.parseObject(scanString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(WXBCPSHActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+                }
+                if(lableObject!=null) {
+//                    System.out.println(lableObject.getString("bm"));
+                    String marketorderno=lableObject.getString("no");
+                    String marketorderrow=lableObject.getString("line");
+                    String bm=lableObject.getString("code");
+//                        sl=lableObject.getFloat("sl");
+//                        bm = lableObject.getString("bm");
+//                        area = lableObject.getString("cd");
+//                        factory=lableObject.getString("gc");
+//                        labelSquNum=lableObject.getString("num");
+//                        cs=lableObject.getInteger("cs");
+
+                    //判断是否重复扫码
+//                        boolean repeat=false;
+//                        for (GetPurWayMaterialDataRep data : datas) {
+//                            if(labelSquNum.equals(data.getData().getLabelSeqNum())){
+//                                repeat=true;
+//                            }
+//                        }
+//                        if(repeat){
+//                            System.out.println("请勿重复扫码");
+//                            Toast.makeText(WXBCPSHActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
 //
-//                    //判断是否重复扫码
-////                        boolean repeat=false;
-////                        for (GetPurWayMaterialDataRep data : datas) {
-////                            if(labelSquNum.equals(data.getData().getLabelSeqNum())){
-////                                repeat=true;
-////                            }
-////                        }
-////                        if(repeat){
-////                            System.out.println("请勿重复扫码");
-////                            Toast.makeText(WXBCPSHActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
-////
-////                        }else {
-////
-//                    if(marketorderno!=null&&marketorderrow!=null&&bm!=null){
-//                        String decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
-//                        presenter1.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr);
-//                    }
-//                }else {
-//                    Log.i("token","扫描结果为空");
-//                    Toast.makeText(WXBCPSHActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
-//                }
+//                        }else {
+//
+                    if(marketorderno!=null&&marketorderrow!=null&&bm!=null){
+                        String decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
+                        presenter1.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr);
+                    }
+                }else {
+                    Log.i("token","扫描结果为空");
+                    Toast.makeText(WXBCPSHActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         print.setOnClickListener(new View.OnClickListener() {

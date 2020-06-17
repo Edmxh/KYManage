@@ -12,6 +12,7 @@ public class GetMainDumpRecordRepBean {
     private String DumpNum;
     private String CreateTime;
     private String Handler;
+    private String Status;
     private long ID;
 
     public String getDumpNum() {
@@ -36,6 +37,14 @@ public class GetMainDumpRecordRepBean {
 
     public void setHandler(String handler) {
         Handler = handler;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
     }
 
     public long getID() {

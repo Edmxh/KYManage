@@ -110,22 +110,26 @@ public class WLQueryActivity extends BaseActivity implements ScanBaseView<GetSto
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-//                scanString="";
-//                JSONObject lableObject= null;
-//                try {
-//                    lableObject = JSONObject.parseObject(scanString);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(WLQueryActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
-//                }
-//                if(lableObject!=null) {
-//                    String materialCode = lableObject.getString("bm");
-//                    String factory=lableObject.getString("gc");
-//                    presenter1.GetStockInformationDataJS(materialCode,factory);
-//                    scanString="";
-//                }else {
-//                    Toast.makeText(WLQueryActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
-//                }
+//                 scanString="{\"bm\":\"DQ2002020001\",\"sl\":2.0,\"num\":\"15905735622182\",\"po\":\"000010031196\",\"pono\":\"4100011740\",\"porow\":\"00020\",\"gc\":\"2010\",\"cd\":\"A12\",\"cs\":6}";
+//               JSONObject lableObject= null;
+//                    try {
+//                        lableObject = JSONObject.parseObject(scanString);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(WLQueryActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+//                    }
+//                    if(lableObject!=null) {
+//                        String materialCode = lableObject.getString("bm");
+//                        String factory=lableObject.getString("gc");
+//                        presenter1.GetStockInformationDataJS(materialCode,factory);
+//
+////                        GetMaterialStorageReq req2=new GetMaterialStorageReq(factory, materialCode);
+//                        GetMaterialStorageReq req2=new GetMaterialStorageReq("2010", "DQ4402000001");
+//                        presenter2.GetMaterialStorage(req2);
+//                        scanString="";
+//                    }else {
+//                        Toast.makeText(WLQueryActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+//                    }
             }
         });
     }
@@ -199,8 +203,8 @@ public class WLQueryActivity extends BaseActivity implements ScanBaseView<GetSto
                         String factory=lableObject.getString("gc");
                         presenter1.GetStockInformationDataJS(materialCode,factory);
 
-//                        GetMaterialStorageReq req2=new GetMaterialStorageReq(factory, materialCode);
-                        GetMaterialStorageReq req2=new GetMaterialStorageReq("2010", "DQ4402000001");
+                        GetMaterialStorageReq req2=new GetMaterialStorageReq(factory, materialCode);
+//                        GetMaterialStorageReq req2=new GetMaterialStorageReq("2010", "DQ4402000001");
                         presenter2.GetMaterialStorage(req2);
                         scanString="";
                     }else {

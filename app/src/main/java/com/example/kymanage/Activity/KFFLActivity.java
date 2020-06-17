@@ -50,8 +50,8 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     private static final int REQUEST_CODE = 1;
 
     private ImageView scan;
-    private Button print1;
-    private Button print2;
+    private ImageView print1;
+    private ImageView print2;
     private ImageView record;
     private ListView listview1;
     //cs

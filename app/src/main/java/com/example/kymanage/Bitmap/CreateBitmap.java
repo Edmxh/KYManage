@@ -1,5 +1,6 @@
 package com.example.kymanage.Bitmap;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,8 +13,12 @@ import android.text.TextPaint;
 
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRepBean;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean1;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean2;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean1;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean2;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRepBean1;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRepBean2;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRepBean;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean1;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean2;
@@ -836,7 +841,7 @@ public class CreateBitmap{
 
     //画图7,外协成品收货标签
     public Bitmap createImage7(GetOutsourceFinProLableJSRepBean rep, Typeface tf) {
-        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getQty()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"no\":\""+rep.getMarketOrderNO()+"\",\"line\":\""+rep.getMarketOrderRow()+"\",\"fid\":"+rep.getAllocatedID()+",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getArea()+"\"}";
+        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getQty()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"no\":\""+rep.getMarketOrderNO()+"\",\"line\":\""+rep.getMarketOrderRow()+"\",\"type\":\""+rep.getType()+"\",\"fid\":"+rep.getId()+",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getArea()+"\"}";
         System.out.println(content);
         int picWidth = 480;//生成图片的宽度
         int picHeight = 380;//生成图片的高度
@@ -1133,5 +1138,359 @@ public class CreateBitmap{
         top+=textsize+5;
         str=bean.getMarketOrderNO()+"/"+bean.getMarketOrderRow()+"    "+bean.getClient();
         canvas.drawText(str,10,top,paint);
+    }
+
+
+    //画图9,销售发货单
+    public Bitmap createImage9(GetDeliveryListInfoJSRepBean2 rep, Typeface tf) {
+        int picWidth = 380;//生成图片的宽度
+        int picHeight = 200+200*(rep.getData().size());//生成图片的高度
+        int QRx = 95;//二维码x坐标
+        int QRWidth = 190;//二维码宽
+        int lineCodeWidth = 300;//一维码宽
+        int titleTextSize=27;//标题字号
+        int text1 = 36;
+        int text2 = 32;
+        int text3 = 28;
+        int text4 = 24;
+        int text5 = 20;
+        int text6 = 18;//
+        int text7 = 27;//
+        int lineSpacing = 5;//行间距
+        int textColor = Color.BLACK;
+
+        int leftpadding = 10;//左边距
+        int valueLeftpadding = 130;//左边距
+
+        //生成的图片
+        Bitmap result = Bitmap.createBitmap(picWidth,picHeight,Bitmap.Config.ARGB_8888);
+
+
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTypeface(tf);
+        //paint.setColor(Color.GREEN);
+        Canvas canvas = new Canvas(result);
+        //先画一整块白色矩形块
+        canvas.drawRect(0,0,picWidth,picHeight,paint);
+
+
+        String str1="TKAS-CM送货单";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(titleTextSize);
+        int top=25;
+        canvas.drawText(str1,QRx,top,paint);
+
+
+        //String str9="--------------------------------------------------------------------------------------------------------------------------";
+        top+=5;
+        drawGrayLine(canvas,paint,top);
+
+        String str2="编号：";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+5;
+        canvas.drawText(str2,leftpadding,top,paint);
+        str2=rep.getVBELN_VL();
+        canvas.drawText(str2,valueLeftpadding,top,paint);
+
+
+        top+=5;
+        drawGrayLine(canvas,paint,top);
+
+        String str3="送货时间：";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+5;
+        canvas.drawText(str3,leftpadding,top,paint);
+        str3=getCurrentdate1();
+        canvas.drawText(str3,valueLeftpadding,top,paint);
+
+        top+=5;
+        drawGrayLine(canvas,paint,top);
+
+        String str4="送货单位：";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+5;
+        canvas.drawText(str4,leftpadding,top,paint);
+        str4=rep.getNAME_ORG1();
+        canvas.drawText(str4,valueLeftpadding,top,paint);
+
+        top+=5;
+        drawGrayLine(canvas,paint,top);
+
+        String str5="确认：";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+5;
+        canvas.drawText(str5,leftpadding,top,paint);
+        str5="          年    月    日";
+        canvas.drawText(str5,valueLeftpadding,top,paint);
+
+        top+=5;
+        drawGrayLine(canvas,paint,top);
+
+        String str6="配货：";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+5;
+        canvas.drawText(str6,leftpadding,top,paint);
+        str6="          年    月    日";
+        canvas.drawText(str6,valueLeftpadding,top,paint);
+
+        //内容行
+
+        for (int i = 0; i < (rep.getData().size()); i++) {
+            GetDeliveryListInfoJSRepBean1 repBean1 = rep.getData().get(i);
+            if (i==0){
+                top+=5;
+                if(repBean1.getSTATUS().equals("S")){
+                    drawXSFHDContentLine1(canvas,paint,top,text6,repBean1,i);
+                }
+            }else {
+                top+=(text6+5)*8*i;
+                top+=15;
+                if(repBean1.getSTATUS().equals("S")){
+                    drawXSFHDContentLine1(canvas,paint,top,text6,repBean1,i);
+                }
+
+            }
+        }
+
+        canvas.save();
+        canvas.restore();
+
+        return result;
+    }
+
+    //画图1,销售发货单内容行
+    public static void drawXSFHDContentLine1(Canvas canvas, Paint paint, int top, int textsize, GetDeliveryListInfoJSRepBean1 bean,int i){
+        int contentLeftPadding=130;
+        int leftpadding=10;
+        drawBlackLine(canvas,paint,top);
+        top+=5;
+        paint.setTextSize(textsize);
+        paint.setColor(Color.BLACK);
+
+        String str1="序号：";
+        top+=textsize+5;
+        canvas.drawText(str1,leftpadding,top,paint);
+        str1=(i+1)+"";
+        canvas.drawText(str1,contentLeftPadding,top,paint);
+        top+=5;
+
+        String str2="工作号：";
+        top+=textsize+5;
+        canvas.drawText(str2,leftpadding,top,paint);
+        str2=bean.getZZGZBH();
+        canvas.drawText(str2,contentLeftPadding,top,paint);
+        top+=5;
+
+        String str3="物料编码：";
+        top+=textsize+5;
+        canvas.drawText(str3,leftpadding,top,paint);
+        str3=bean.getMATNR();
+        canvas.drawText(str3,contentLeftPadding,top,paint);
+        top+=5;
+
+        String str4="物料名称：";
+        top+=textsize+5;
+        canvas.drawText(str4,leftpadding,top,paint);
+        str4=bean.getARKTX();
+        canvas.drawText(str4,contentLeftPadding,top,paint);
+        top+=5;
+
+        String str5="发货数量：";
+        top+=textsize+5;
+        canvas.drawText(str5,leftpadding,top,paint);
+        str5=bean.getKWMENG()+"";
+        canvas.drawText(str5,contentLeftPadding,top,paint);
+        top+=5;
+
+        String str6="客户订单号：";
+        top+=textsize+5;
+        canvas.drawText(str6,leftpadding,top,paint);
+        str6=bean.getBSTKD();
+        canvas.drawText(str6,contentLeftPadding,top,paint);
+        top+=5;
+
+        String str7="SAP订单：";
+        top+=textsize+5;
+        canvas.drawText(str7,leftpadding,top,paint);
+        String newStr1 = bean.getVBELN().replaceAll("^(0+)", "");
+        String newStr2 = bean.getPOSNR().replaceAll("^(0+)", "");
+        str7=newStr1+"/"+newStr2;
+        canvas.drawText(str7,contentLeftPadding,top,paint);
+        top+=5;
+    }
+
+
+
+    //画图10,跨工厂配送单
+    public Bitmap createImage10(GetDumpRecordNodeRepBean2 rep, Typeface tf) {
+        int picWidth = 380;//生成图片的宽度
+        int picHeight = 450+55*(rep.getData().size());//生成图片的高度
+        int QRx = 95;//二维码x坐标
+        int QRWidth = 190;//二维码宽
+        int lineCodeWidth = 300;//一维码宽
+        int titleTextSize=27;//标题字号
+        int text1 = 36;
+        int text2 = 32;
+        int text3 = 28;
+        int text4 = 24;
+        int text5 = 20;
+        int text6 = 18;//
+        int text7 = 27;//
+        int lineSpacing = 5;//行间距
+        int textColor = Color.BLACK;
+
+        int leftpadding = 10;//左边距
+        int contentLeftpadding = 150;//左边距
+
+        //生成的图片
+        Bitmap result = Bitmap.createBitmap(picWidth,picHeight,Bitmap.Config.ARGB_8888);
+
+
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTypeface(tf);
+        //paint.setColor(Color.GREEN);
+        Canvas canvas = new Canvas(result);
+        //先画一整块白色矩形块
+        canvas.drawRect(0,0,picWidth,picHeight,paint);
+
+
+        String str1="机加厂外配送单";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(titleTextSize);
+        int top=25;
+        canvas.drawText(str1,QRx,top,paint);
+
+
+        //String str9="--------------------------------------------------------------------------------------------------------------------------";
+        top+=5;
+        drawGrayLine(canvas,paint,top);
+
+
+        //画二维码
+
+        String content="{\"code\":\""+rep.getDumpNum()+"\"}";
+        Bitmap bm=null;
+        try {
+            bm = BarcodeUtil.encodeAsBitmap(content,
+                    BarcodeFormat.QR_CODE,QRWidth, QRWidth);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        top+=5;
+        paint.setColor(Color.BLACK);
+        canvas.drawBitmap(bm,QRx,top,paint);
+//
+        top+=QRWidth+5;
+        drawGrayLine(canvas,paint,top);
+
+        String str2="接收事业部:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str2,leftpadding,top,paint);
+        str2=rep.getFactory();
+        canvas.drawText(str2,contentLeftpadding,top,paint);
+
+        top+=5;
+        drawGrayLine(canvas,paint,top);
+
+        String str3="配送单号:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str3,leftpadding,top,paint);
+        str3=rep.getDumpNum();
+        canvas.drawText(str3,contentLeftpadding,top,paint);
+
+        String str4="总计数量:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str4,leftpadding,top,paint);
+        str4=rep.getSumCount()+"";
+        canvas.drawText(str4,contentLeftpadding,top,paint);
+
+        String str5="配送人员:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str5,leftpadding,top,paint);
+        str5=rep.getHandler();
+        canvas.drawText(str5,contentLeftpadding,top,paint);
+
+        String str6="配送场地:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str6,leftpadding,top,paint);
+        str6=rep.getArea();
+        canvas.drawText(str6,contentLeftpadding,top,paint);
+
+        String str7="打印时间:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str7,leftpadding,top,paint);
+        str7=getCurrentdate2();
+        canvas.drawText(str7,contentLeftpadding,top,paint);
+
+        String str8="上游部件:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str8,leftpadding,top,paint);
+        str8=rep.getMaterialCode();
+        canvas.drawText(str8,contentLeftpadding,top,paint);
+
+        String str9="生产订单号:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str9,leftpadding,top,paint);
+        String newStr1 = rep.getProductOrderNO().replaceAll("^(0+)", "");
+        str9=newStr1;
+        canvas.drawText(str9,contentLeftpadding,top,paint);
+
+        String str10="销售订单号/行:";
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(text6);
+        top+=text6+lineSpacing;
+        canvas.drawText(str10,leftpadding,top,paint);
+        String newStr2 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+        String newStr3 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+        str10=newStr2+"/"+newStr3;
+        canvas.drawText(str10,contentLeftpadding,top,paint);
+
+
+        //内容行
+        for (int i = 0; i < (rep.getData().size()); i++) {
+            GetDumpRecordNodeRepBean1 bean = rep.getData().get(i);
+            top+=(text6+5)*2*i;
+            top+=5;
+            drawKGCPSDContentLine1(canvas,paint,top,text6,bean,i);
+
+        }
+
+        canvas.save();
+        canvas.restore();
+
+        return result;
+    }
+
+    //厂内配送单内容行
+    private void drawKGCPSDContentLine1(Canvas canvas, Paint paint, int top, int textsize, GetDumpRecordNodeRepBean1 bean,int i){
+        drawBlackLine(canvas,paint,top);
+        top+=textsize+5;
+        paint.setTextSize(textsize);
+        canvas.drawText((i+1)+"             "+bean.getMaterialCode(),10,top,paint);
+        top+=textsize+5;
+        canvas.drawText(bean.getMaterialDesc()+"             "+bean.getQty()+"/"+bean.getTQty(),10,top,paint);
     }
 }

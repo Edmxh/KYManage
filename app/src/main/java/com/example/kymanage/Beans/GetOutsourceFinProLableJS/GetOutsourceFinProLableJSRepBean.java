@@ -52,6 +52,9 @@ public class GetOutsourceFinProLableJSRepBean {
     private String ClientNO ;
     private String ClientShortName ;
 
+    private String type;
+    private long id;
+
     public static GetOutsourceFinProLableJSRepBean objectFromData(String str) {
 
         return new Gson().fromJson(str, GetOutsourceFinProLableJSRepBean.class);
@@ -254,5 +257,21 @@ public class GetOutsourceFinProLableJSRepBean {
 
     public void setClientShortName(String clientShortName) {
         ClientShortName = clientShortName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

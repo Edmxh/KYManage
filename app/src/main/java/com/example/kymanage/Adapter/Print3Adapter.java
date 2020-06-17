@@ -7,46 +7,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRepBean;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSReqBean1;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSRep;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.iddesBean;
 import com.example.kymanage.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>implements View.OnClickListener {
+public class Print3Adapter extends ArrayAdapter<GetDeliveryListInfoJSReqBean1>implements View.OnClickListener {
     private int resourceId;
+//    private ArrayAdapter<String> adapter2;
+//    private List<iddesBean> areadess=new ArrayList<iddesBean>();
+//    private List<String> dess=new ArrayList<String>();
     private InnerItemOnclickListener mListener;
-    HashMap<Integer, Boolean> select=new HashMap<>();
-    private List<GetMainDumpRecordRepBean> mList;
     //private DataBean1 DataBean1;
 
     // 适配器的构造函数，把要适配的数据传入这里
-    public Print2Record1Adapter(Context context, int textViewResourceId, List<GetMainDumpRecordRepBean> objects){
+    public Print3Adapter(Context context, int textViewResourceId, List<GetDeliveryListInfoJSReqBean1> objects){
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
-        mList=objects==null?new ArrayList<GetMainDumpRecordRepBean>():objects;
-        initData();
-    }
-
-    private void initData() {
-        for(int i=0;i<mList.size();i++){
-            select.put(i, false);
-        }
     }
 
     // convertView 参数用于将之前加载好的布局进行缓存
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent){
-        final GetMainDumpRecordRepBean rep=getItem(position); //获取当前项的DataBean1实例
+    public View getView(int position, View convertView, ViewGroup parent){
+        final GetDeliveryListInfoJSReqBean1 rep=getItem(position); //获取当前项的DataBean1实例
         // 加个判断，以免ListView每次滚动时都要重新加载布局，以提高运行效率
         View view;
         final ViewHolder viewHolder;
@@ -56,34 +46,23 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
 
             // 避免每次调用getView()时都要重新获取控件实例
             viewHolder=new ViewHolder();
-
+            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
+            viewHolder.jhck=view.findViewById(R.id.jhck);
+            viewHolder.jhsl=view.findViewById(R.id.jhsl);
+//            viewHolder.dhsl=view.findViewById(R.id.dhsl);
+//            viewHolder.spinner1=view.findViewById(R.id.spinner1);
+//            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+//            viewHolder.receive=view.findViewById(R.id.receive);
+//            viewHolder.receive.setOnClickListener(this);
+//            viewHolder.receive.setTag(position);
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         } else{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
         }
-
-        // 获取控件实例
-        viewHolder.xh=view.findViewById(R.id.xh);
-        viewHolder.zcdh=view.findViewById(R.id.zcdh);
-        viewHolder.cjsj=view.findViewById(R.id.cjsj);
-        viewHolder.zcr=view.findViewById(R.id.zcr);
-        viewHolder.zt=view.findViewById(R.id.zt);
-        viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
-        viewHolder.detail=view.findViewById(R.id.detail);
-        viewHolder.detail.setOnClickListener(this);
-        viewHolder.detail.setTag(position);
-        viewHolder.checked=view.findViewById(R.id.checked);
-        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                select.put(position, isChecked);
-            }
-
-        });
 
         // 获取控件实例，并调用set...方法使其显示出来
 //        viewHolder.check.setOnClickListener(new View.OnClickListener() {
@@ -98,21 +77,16 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
 //        });
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
-        viewHolder.zcdh.setText(rep.getDumpNum());
-        viewHolder.cjsj.setText(rep.getCreateTime());
-        viewHolder.zcr.setText(rep.getHandler());
-        viewHolder.zt.setText(rep.getStatus());
-        if(select.get(position)){
-            viewHolder.checked.setChecked(true);
-        }else{
-            viewHolder.checked.setChecked(false);
-        }
-//        String num1str=""+rep.getMENGE();
-//        viewHolder.xqsl.setText(num1str);
-//        String num2str=""+rep.getInStorage();
-//        viewHolder.rksl.setText(num2str);
-//        String num3str=""+rep.getWESBS();
-//        viewHolder.dhsl.setText(num3str);
+        viewHolder.wlbm.setText(rep.getMATNR());
+
+        String newStr1 = rep.getVBELN().replaceAll("^(0+)", "");
+        String newStr2 = rep.getPOSNR().replaceAll("^(0+)", "");
+        viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
+
+        viewHolder.jhck.setText(rep.getLGORT());
+        viewHolder.jhsl.setText(rep.getKWMENG()+"");
+
+
 //        areadess=rep.getStorage();
 //        for (iddesBean iddesBean : areadess) {
 //            dess.add(iddesBean.getDesc());
@@ -184,13 +158,14 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
     // 定义一个内部类，用于对控件的实例进行缓存
     class ViewHolder{
         TextView xh;
-        TextView zcdh;
-        TextView cjsj;
-        TextView zcr;
-        TextView zt;
-        Button detail;
-        CheckBox checked;
-        View parent_layout;
+        TextView wlbm;
+        TextView xsddh_hang;
+        TextView jhck;
+        TextView jhsl;
+
+//        Spinner spinner1;
+//        Button receive;
+//        View parent_layout;
     }
 
     public interface DetailViewHolderListener {

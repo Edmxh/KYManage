@@ -4,13 +4,16 @@ package com.example.kymanage.API;
 
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
 import com.example.kymanage.Beans.GetDumpRecord.GetDumpRecordRep;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReps;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordReps;
 import com.example.kymanage.Beans.GetLableInfo.LabelStatussBean;
+import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
 import com.example.kymanage.Beans.GetMaterialInfo.GetMaterialInfoBean;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
@@ -223,9 +226,25 @@ public interface APIService {
     @POST(API.GetDumpRecord)
     Observable<GetDumpRecordRep> GetDumpRecord(@Body RequestBody issuevouchernumber);
 
+    //获取301转储配送单
+    @POST(API.GetDumpRecordNode)
+    Observable<GetDumpRecordNodeRep> GetDumpRecordNode(@Body RequestBody issuevouchernumber);
+
+    //301转储冲销
+    @POST(API.WriteOffMaterialFactoryDump)
+    Observable<StatusRespBean> WriteOffMaterialFactoryDump(@Body RequestBody issuevouchernumber);
+
     //##获取厂内配送单
     @POST(API.GetCMInFactoryDeliver)
     Observable<GetCMInFactoryDeliverRep> GetCMInFactoryDeliver(@Body RequestBody issuevouchernumber);
+
+    //###获取交货单信息
+    @POST(API.GetDeliveryListInfoJS)
+    Observable<GetDeliveryListInfoJSRepBean3> GetDeliveryListInfoJS(@Body RequestBody issuevouchernumber);
+
+    //获取销售发货物料信息及库存地点
+    @POST(API.GetLableStorageInfoJS)
+    Observable<GetLableStorageInfoJSRep> GetLableStorageInfoJS(@Body RequestBody issuevouchernumber);
 
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------
     //物料查询

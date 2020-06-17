@@ -194,8 +194,8 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 
                 //Toast.makeText(AdvancedReceiveActivity.this, scanString, Toast.LENGTH_SHORT).show();
 //                scanString="{\"bm\":\"DQ5095000046\",\"sl\":2.0,\"num\":\"15914359052732\",\"po\":\"\",\"pono\":\"4100011740\",\"porow\":\"00010\",\"gc\":\"2010\",\"cd\":\"A38\",\"cs\":19}";
-////                scanString="{”id” : “123”, “name” : “hello”, “title” : “work”}";
-//
+//                scanString="{”id” : “123”, “name” : “hello”, “title” : “work”}";
+
 //                JSONObject lableObject= null;
 //                try {
 //                    lableObject = JSONObject.parseObject(scanString);

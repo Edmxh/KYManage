@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Base64;
@@ -19,14 +20,20 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.PrintKGCPSDAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeReqBean;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataInfo;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
+import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRepBean;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReq;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReqBean;
+import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
+import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
+import com.example.kymanage.presenter.Presenters.Print2.GetDumpRecordNodePresenter;
 import com.example.kymanage.presenter.Presenters.Print2.MaterialFactoryDumpPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3.GetMaterialMasterDataJSPresenter;
 
@@ -35,7 +42,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<MaterialFactoryDumpRep> {
+import Printer.PrintHelper;
+
+public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<MaterialFactoryDumpRep>, BaseView2<GetDumpRecordNodeRep> {
     //震动
     private Vibrator vibrator;
     private ImageView scan;
@@ -65,6 +74,17 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     //传递的username
     private String username;
 
+    //跨工厂配送单打印
+    private GetDumpRecordNodePresenter presenter3;
+    private List<GetDumpRecordNodeReqBean> printDatas;
+
+    //打印类
+    private PrintHelper printHelper=null;
+    //标签生成器
+    private CreateBitmap cb;
+    //自定义字体
+    private Typeface tf;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_print_kgcpsd;
@@ -84,10 +104,14 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
         presenter2=new MaterialFactoryDumpPresenter();
         presenter2.setView(this);
+
+        presenter3=new GetDumpRecordNodePresenter();
+        presenter3.setView(this);
     }
 
     @Override
     public void initData() {
+        printDatas=new ArrayList<GetDumpRecordNodeReqBean>();
         datas=new ArrayList<MaterialFactoryDumpReqBean>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
@@ -113,14 +137,71 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+//                scanString = "{\"bm\":\"LJ7015001194\",\"sl\":3.0,\"num\":\"202006171205211938\",\"po\":\"000010048077\",\"no\":\"0010000208\",\"line\":\"000026\",\"type\":\"t301\",\"fid\":468,\"gc\":\"2010\",\"cd\":\"A11\"}";
+//                JSONObject lableObject = null;
+//                try {
+//                    lableObject = JSONObject.parseObject(scanString);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Toast.makeText(PrintKGCPSDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+//                }
+//                if (lableObject != null) {
+////                    System.out.println(lableObject.getString("bm"));
+//                    String bm = null;
+//                    try {
+//                        po = lableObject.getString("po");
+//                        no = lableObject.getString("no");
+//                        line = lableObject.getString("line");
+//                        fid = lableObject.getLong("fid");
+//                        qty = lableObject.getFloat("sl");
+//                        bm = lableObject.getString("bm");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+////                        sl=lableObject.getFloat("sl");
+////                        bm = lableObject.getString("bm");
+////                        area = lableObject.getString("cd");
+////                        factory=lableObject.getString("gc");
+////                        labelSquNum=lableObject.getString("num");
+////                        cs=lableObject.getInteger("cs");
+//
+//                    //判断是否重复扫码
+//                    boolean repeat = false;
+//                    for (MaterialFactoryDumpReqBean data : datas) {
+//                        if (data.getMatnr().equals(bm)) {
+//                            repeat = true;
+//                            break;
+//                        }
+//                    }
+//                    if (repeat) {
+//                        System.out.println("请勿重复扫码");
+//                        Toast.makeText(PrintKGCPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
+//
+//                    } else {
+//                        if (bm != null) {
+////                                String decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
+//                            presenter1.GetMaterialMasterDataJS(bm, "2090");
+//                        }
+//
+//                    }
+////                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
+//                    scanString = "";
+//                } else {
+//                    Log.i("token", "扫描结果为空");
+//                    Toast.makeText(PrintKGCPSDActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         divert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                MaterialFactoryDumpReq req=new MaterialFactoryDumpReq(username,datas);
-                presenter2.MaterialFactoryDump(req);
+                if(datas.size()>0){
+                    MaterialFactoryDumpReq req=new MaterialFactoryDumpReq(username,datas);
+                    presenter2.MaterialFactoryDump(req);
+                }
+
             }
         });
         record.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +211,13 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                 Intent intent=new Intent(PrintKGCPSDActivity.this,DivertRecord1Activity.class);
                 intent.putExtra("username",username);
                 startActivity(intent);
+            }
+        });
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                presenter3.GetDumpRecordNode(printDatas);
             }
         });
     }
@@ -145,6 +233,18 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     @Override
     public void onDataSuccess1(MaterialFactoryDumpRep data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        for (int i = 0; i < data.getData().size(); i++) {
+            MaterialFactoryDumpRepBean bean = data.getData().get(i);
+            System.out.println(bean.getPID());
+            GetDumpRecordNodeReqBean printData=new GetDumpRecordNodeReqBean(bean.getPID());
+            printDatas.add(printData);
+        }
+    }
+
+    @Override
+    public void onDataSuccess2(GetDumpRecordNodeRep data) {
+        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        System.out.println(data.getData().get(0).getDumpNum());
     }
 
     @Override
@@ -172,12 +272,17 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                     }
                     if (lableObject != null) {
 //                    System.out.println(lableObject.getString("bm"));
-                        po = lableObject.getString("po");
-                        no = lableObject.getString("no");
-                        line = lableObject.getString("line");
-                        fid = lableObject.getLong("fid");
-                        qty = lableObject.getFloat("sl");
-                        String bm = lableObject.getString("bm");
+                        String bm = null;
+                        try {
+                            po = lableObject.getString("po");
+                            no = lableObject.getString("no");
+                            line = lableObject.getString("line");
+                            fid = lableObject.getLong("fid");
+                            qty = lableObject.getFloat("sl");
+                            bm = lableObject.getString("bm");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 //                        sl=lableObject.getFloat("sl");
 //                        bm = lableObject.getString("bm");
 //                        area = lableObject.getString("cd");

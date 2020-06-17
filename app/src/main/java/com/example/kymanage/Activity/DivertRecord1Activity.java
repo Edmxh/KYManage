@@ -4,23 +4,38 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kymanage.Adapter.Print2Record1Adapter;
+import com.example.kymanage.Beans.General.StatusRespBean;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRepBean2;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeReqBean;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRepBean;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordReq;
+import com.example.kymanage.Beans.WriteOffMaterialFactoryDump.WriteOffMaterialFactoryDumpReqBean;
+import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
+import com.example.kymanage.presenter.InterfaceView.BaseView2;
+import com.example.kymanage.presenter.InterfaceView.BaseView3;
+import com.example.kymanage.presenter.Presenters.Print2.GetDumpRecordNodePresenter;
 import com.example.kymanage.presenter.Presenters.Print2Record1.GetMainDumpRecordPresenter;
+import com.example.kymanage.presenter.Presenters.Print2Record1.WriteOffMaterialFactoryDumpPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +43,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DivertRecord1Activity extends BaseActivity implements BaseView1<GetMainDumpRecordRep>, Print2Record1Adapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
+import Printer.PrintHelper;
+
+public class DivertRecord1Activity extends BaseActivity implements BaseView1<GetMainDumpRecordRep>, BaseView2<GetDumpRecordNodeRep>, BaseView3<StatusRespBean>, Print2Record1Adapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
     //选择日期
     private TextView date;
     private ListView listView1;
@@ -36,6 +53,23 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
     private List<GetMainDumpRecordRepBean> datas;
 
     private GetMainDumpRecordPresenter presenter1;
+
+    //跨工厂配送单打印
+    private ImageView print;
+    private GetDumpRecordNodePresenter presenter2;
+    private List<GetDumpRecordNodeReqBean> printDatas;
+
+    //301转储冲销
+    private ImageView receive;
+    private WriteOffMaterialFactoryDumpPresenter presenter3;
+    private List<WriteOffMaterialFactoryDumpReqBean> cxDatas;
+
+    //打印类
+    private PrintHelper printHelper=null;
+    //标签生成器
+    private CreateBitmap cb;
+    //自定义字体
+    private Typeface tf;
 
     //username
     private String username;
@@ -51,19 +85,37 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         date = findViewById(R.id.date);
+        print = findViewById(R.id.print);
+        receive = findViewById(R.id.receive);
         listView1 = findViewById(R.id.listview1);
 
 
         presenter1=new GetMainDumpRecordPresenter();
         presenter1.setView(this);
 
+        presenter2=new GetDumpRecordNodePresenter();
+        presenter2.setView(this);
+
+        presenter3=new WriteOffMaterialFactoryDumpPresenter();
+        presenter3.setView(this);
+
     }
 
     @Override
     public void initData() {
+        cxDatas=new ArrayList<WriteOffMaterialFactoryDumpReqBean>();
+        printDatas=new ArrayList<GetDumpRecordNodeReqBean>();
         datas=new ArrayList<GetMainDumpRecordRepBean>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
+
+        cb=new CreateBitmap();
+        //初始化打印类
+        initPrinter();
+        //从asset 读取字体
+        AssetManager mgr = getAssets();
+        //根据路径得到Typeface
+        tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
     }
 
     @Override
@@ -73,6 +125,59 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 showDateAndTable();
+            }
+        });
+
+        receive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                cxDatas.clear();
+                if(datas!=null){
+                    for (int i = 0; i < datas.size(); i++) {
+//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
+                        View itmeview=listView1.getAdapter().getView(i,null,null);
+                        CheckBox cb= itmeview.findViewById(R.id.checked);
+                        if(cb.isChecked()){
+                            WriteOffMaterialFactoryDumpReqBean cxData=new WriteOffMaterialFactoryDumpReqBean(datas.get(i).getID());
+                            cxDatas.add(cxData);
+                        }
+                    }
+                    if(cxDatas.size()==0){
+                        Toast.makeText(DivertRecord1Activity.this, "未选中要冲销的记录", Toast.LENGTH_SHORT).show();
+                    }else {
+                        presenter3.WriteOffMaterialFactoryDump(cxDatas);
+                    }
+                }
+            }
+        });
+
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                printDatas.clear();
+                if(datas!=null){
+                    for (int i = 0; i < datas.size(); i++) {
+//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
+                        View itmeview=listView1.getAdapter().getView(i,null,null);
+                        CheckBox cb= itmeview.findViewById(R.id.checked);
+                        if(cb.isChecked()){
+                            GetDumpRecordNodeReqBean printData=new GetDumpRecordNodeReqBean(datas.get(i).getID());
+                            printDatas.add(printData);
+                        }
+                    }
+                }
+                System.out.println("打印选中数:"+printDatas.size());
+                //当前时间
+                Date dateNow = new Date();
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String currentdate = sf.format(dateNow);
+                if(printDatas.size()==0){
+                    Toast.makeText(DivertRecord1Activity.this, "未选中要打印的标签行", Toast.LENGTH_SHORT).show();
+                }else {
+                    presenter2.GetDumpRecordNode(printDatas);
+                }
             }
         });
     }
@@ -97,6 +202,32 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDataSuccess2(GetDumpRecordNodeRep data) {
+        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        List<GetDumpRecordNodeRepBean2> data1 = data.getData();
+        //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            printHelper.printBlankLine(10);
+            for (GetDumpRecordNodeRepBean2 data2 : data1) {
+                Bitmap bm=cb.createImage10(data2,tf);
+                printHelper.PrintBitmapAtCenter(bm,384,450+55*(data2.getData().size()));
+                printHelper.printBlankLine(40);
+            }
+            printHelper.printBlankLine(40);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onDataSuccess3(StatusRespBean data) {
+        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username);
+        presenter1.GetMainDumpRecord(req);
     }
 
     @Override
@@ -147,5 +278,12 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
             default:
                 break;
         }
+    }
+
+    //初始化
+    public void   initPrinter(){
+        printHelper=new PrintHelper();
+        printHelper.Open(DivertRecord1Activity.this);
+//        Toast.makeText(DivertRecord1Activity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 }

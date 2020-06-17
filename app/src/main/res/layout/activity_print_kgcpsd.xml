@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="match_parent"
-            android:text="跨工厂配送单"
+            android:text="跨工厂配送"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:textSize="@dimen/text22"/>

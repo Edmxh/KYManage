@@ -63,14 +63,15 @@
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="采购管理"
             android:textColor="@color/fontcolor1"
             android:textSize="@dimen/text2"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/MyGridView1"
@@ -93,7 +94,7 @@
     <LinearLayout
         android:id="@+id/wxgl_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="@color/colorWhite"
         android:layout_marginTop="10dp"
@@ -101,14 +102,15 @@
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="外协管理"
             android:textColor="@color/fontcolor1"
             android:textSize="@dimen/text2"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/MyGridView2"
@@ -139,14 +141,15 @@
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="库房管理"
             android:textColor="@color/fontcolor1"
             android:textSize="@dimen/text2"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/MyGridView3"
@@ -177,14 +180,15 @@
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="物料查询"
             android:textColor="@color/fontcolor1"
             android:textSize="@dimen/text2"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/MyGridView4"

@@ -6,9 +6,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.example.kymanage.API.APIService;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSReqBean1;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
 import com.example.kymanage.Beans.GetDumpRecord.GetDumpRecordRep;
 import com.example.kymanage.Beans.GetDumpRecord.GetDumpRecordReq;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeReqBean;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReps;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReq;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
@@ -17,6 +21,7 @@ import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailReq;
 import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordReps;
 import com.example.kymanage.Beans.GetLableInfo.LabelStatussBean;
+import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordReq;
 import com.example.kymanage.Beans.GetMaterialInfo.GetMaterialInfoBean;
@@ -66,6 +71,7 @@ import com.example.kymanage.Beans.UpdatefinishedStorage.UpdatefinishedStorageDat
 import com.example.kymanage.Beans.Warehouse105Writeoff.Warehouse105WriteoffReq;
 import com.example.kymanage.Beans.WarehouseReceipt.WarehouseReceiptReq;
 import com.example.kymanage.Beans.WarehouseReceiptRecord.WarehouseReceiptRecordReps;
+import com.example.kymanage.Beans.WriteOffMaterialFactoryDump.WriteOffMaterialFactoryDumpReqBean;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReq;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReqBean;
 import com.example.kymanage.Beans.warehousereceipts.warehousereceiptsReq;
@@ -1936,6 +1942,86 @@ public class AppModel extends BaseModel{
                 });
     }
 
+    //获取301转储配送单
+    public void GetDumpRecordNode(List<GetDumpRecordNodeReqBean> data, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(data);
+        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
+        System.out.println("301转储打印:"+jsonArray.toString());
+        try {
+            jsonObject.put("data",jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetDumpRecordNode(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDumpRecordNodeRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDumpRecordNodeRep value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //301转储冲销
+    public void WriteOffMaterialFactoryDump(List<WriteOffMaterialFactoryDumpReqBean> data, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(data);
+        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
+        System.out.println("301转储冲销:"+jsonArray.toString());
+        try {
+            jsonObject.put("data",jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                WriteOffMaterialFactoryDump(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<StatusRespBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(StatusRespBean value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //##获取厂内配送单
     public void GetCMInFactoryDeliver(List<String> DispatchListNO,String user,String requestTime, final HttpDataListener httpDataListener) {
 
@@ -1963,6 +2049,92 @@ public class AppModel extends BaseModel{
 
                     @Override
                     public void onNext(GetCMInFactoryDeliverRep value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //##获取交货单信息
+    public void GetDeliveryListInfoJS(List<GetDeliveryListInfoJSReqBean1> materialArr,int flag, String user, String requestTime, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(detail);
+        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(materialArr));
+        System.out.println("打印交货单数据："+jsonArray.toString());
+        try {
+            jsonObject.put("materialArr",jsonArray);
+            jsonObject.put("flag",flag);
+            jsonObject.put("user",user);
+            jsonObject.put("requestTime",requestTime);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetDeliveryListInfoJS(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDeliveryListInfoJSRepBean3>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDeliveryListInfoJSRepBean3 value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //获取销售发货物料信息及库存地点
+    public void GetLableStorageInfoJS(String materialCode,long id, String type, String factory, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(detail);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(materialArr));
+//        System.out.println("打印交货单数据："+jsonArray.toString());
+        try {
+            jsonObject.put("materialCode",materialCode);
+            jsonObject.put("id",id);
+            jsonObject.put("type",type);
+            jsonObject.put("factory",factory);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetLableStorageInfoJS(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetLableStorageInfoJSRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetLableStorageInfoJSRep value) {
                         httpDataListener.onDataSuccess(value);
                     }
 
