@@ -69,7 +69,7 @@ public class CreateBitmap{
 
     //画图1,采购标签
     public Bitmap createImage1(GetParchaseCenterLableRep rep, Typeface tf) {
-        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getNum()+",\"num\":\""+rep.getLabelSeqNum()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+rep.getPo()+"\",\"porow\":\""+rep.getPoRow()+"\",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getAreaNO()+"\",\"cs\":"+rep.getBatchNumber()+"}";
+        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getNum()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+rep.getPo()+"\",\"porow\":\""+rep.getPoRow()+"\",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getAreaNO()+"\",\"cs\":"+rep.getBatchNumber()+"}";
         System.out.println("content:"+content);
         int picWidth = 480;//生成图片的宽度
         int picHeight = 380;//生成图片的高度
@@ -91,7 +91,8 @@ public class CreateBitmap{
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setSubpixelText(true);
-        paint.setDither(true);
+//        paint.setDither(true);
+//        paint.setAntiAlias(true);
         //从asset 读取字体
 //        AssetManager mgr= getAssets();
         //根据路径得到Typeface
@@ -126,7 +127,7 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
 
         String str4="单位:"+rep.getUnit()+" "+"数量:"+(int)(rep.getNum());
-        paint.setTextSize(text1);
+        paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
 
@@ -194,7 +195,8 @@ public class CreateBitmap{
 
         int y1=picWidth-QRx+10;
 
-        String str11=rep.getLabelSeqNum();
+//        String str11=rep.getLabelSeqNum();
+        String str11=getSeriesNumber();
         paint.setTextSize(text5);
         canvas.drawText(str11,QRx,y1,paint);
         String str12="备注:";
@@ -273,7 +275,7 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
 
         String str4="单位:"+"EA"+" "+"数量:"+(int)(rep.getData().getIssueQty());
-        paint.setTextSize(text1);
+        paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
 
@@ -613,7 +615,11 @@ public class CreateBitmap{
         top+=5;
         drawGrayLine(canvas,paint,top);
 
-        String str4=rep.getKDAUF()+"/"+rep.getKDPOS()+"        "+rep.getDWERK();
+        String newStr1 = rep.getKDAUF().replaceAll("^(0+)", "");
+        String newStr2 = rep.getKDPOS().replaceAll("^(0+)", "");
+        String newStr3 = rep.getDWERK().replaceAll("^(0+)", "");
+
+        String str4=newStr1+"/"+newStr2+"        "+newStr3;
         paint.setColor(Color.BLACK);
         paint.setTextSize(text6);
         top+=text6+5;
@@ -622,7 +628,9 @@ public class CreateBitmap{
         top+=5;
         drawGrayLine(canvas,paint,top);
 
-        String str5=rep.getAUFNR()+"        "+getCurrentdate1();
+        String newStr4 = rep.getAUFNR().replaceAll("^(0+)", "");
+
+        String str5=newStr4+"        "+getCurrentdate1();
         paint.setColor(Color.BLACK);
         paint.setTextSize(text6);
         top+=text6+5;
@@ -665,7 +673,8 @@ public class CreateBitmap{
         drawBlackLine(canvas,paint,top);
         top+=textsize+5;
         paint.setTextSize(textsize);
-        canvas.drawText(bean.getVORNR()+"                  "+bean.getLTXA1(),10,top,paint);
+        String newStr = bean.getVORNR().replaceAll("^(0+)", "");
+        canvas.drawText(newStr+"                  "+bean.getLTXA1(),10,top,paint);
         top+=textsize+5;
         canvas.drawText(bean.getGXCWB(),10,top,paint);
     }
@@ -741,7 +750,7 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
 
         String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(int)(rep.getAllocatedQty());
-        paint.setTextSize(text1);
+        paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
 
@@ -897,7 +906,7 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
 
         String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(int)(rep.getQty());
-        paint.setTextSize(text1);
+        paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
 

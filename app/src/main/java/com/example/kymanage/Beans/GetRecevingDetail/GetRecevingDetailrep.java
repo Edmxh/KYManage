@@ -1,52 +1,96 @@
 package com.example.kymanage.Beans.GetRecevingDetail;
 
-import androidx.annotation.NonNull;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- *{
- * 		"orderNum": "001",
- * 		"row": "2",
- * 		"factory": "2000",
- * 		"code": "zj001",
- * 		"demand": 10,
- * 		"description": "机器人",
- *      "unit":"E",
- *      "remark":"采购备注",
- *      "materialType"："独立",
- *      "orderType":'半成品'
- *        }
- */
 public class GetRecevingDetailrep implements Serializable {
-    private String orderNum;
-    private String row;
+
+    /**
+     * factory : 2010
+     * LGPRO : 2100
+     * code : BZ1020100008
+     * materialType : 非专有
+     * orderNum : 4100011740
+     * description : 内六角圆柱头螺钉/GB/T70.1-M3×25
+     * remark :
+     * LGFSB : 2100
+     * currentQty : 0
+     * demand : 500
+     * unit : EA
+     * SBDKZ : 2
+     * row : 00030
+     * KINDS : de
+     * inStorageQty : 500.0
+     * LABOR : 002
+     */
+
     private String factory;
+    private String LGPRO;
     private String code;
-    private float demand;
-    private String description;
-    private String unit;
-    private String remark;
     private String materialType;
-    private String orderType;
-    private float inStorageQty;
+    private String orderNum;
+    private String description;
+    private String remark;
+    private String LGFSB;
     private float currentQty;
+    private float demand;
+    private String unit;
+    private String SBDKZ;
+    private String row;
+    private String KINDS;
+    private float inStorageQty;
+    private String LABOR;
 
+    public static GetRecevingDetailrep objectFromData(String str) {
 
-    public String getOrderNum() {
-        return orderNum;
+        return new Gson().fromJson(str, GetRecevingDetailrep.class);
     }
 
-    public void setOrderNum(String orderNum) {
-        this.orderNum = orderNum;
+    public static GetRecevingDetailrep objectFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+
+            return new Gson().fromJson(jsonObject.getString(str), GetRecevingDetailrep.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public String getRow() {
-        return row;
+    public static List<GetRecevingDetailrep> arrayGetRecevingDetailrepFromData(String str) {
+
+        Type listType = new TypeToken<ArrayList<GetRecevingDetailrep>>() {
+        }.getType();
+
+        return new Gson().fromJson(str, listType);
     }
 
-    public void setRow(String row) {
-        this.row = row;
+    public static List<GetRecevingDetailrep> arrayGetRecevingDetailrepFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+            Type listType = new TypeToken<ArrayList<GetRecevingDetailrep>>() {
+            }.getType();
+
+            return new Gson().fromJson(jsonObject.getString(str), listType);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList();
+
+
     }
 
     public String getFactory() {
@@ -57,44 +101,20 @@ public class GetRecevingDetailrep implements Serializable {
         this.factory = factory;
     }
 
+    public String getLGPRO() {
+        return LGPRO;
+    }
+
+    public void setLGPRO(String LGPRO) {
+        this.LGPRO = LGPRO;
+    }
+
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public float getDemand() {
-        return demand;
-    }
-
-    public void setDemand(float demand) {
-        this.demand = demand;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public String getMaterialType() {
@@ -105,12 +125,84 @@ public class GetRecevingDetailrep implements Serializable {
         this.materialType = materialType;
     }
 
-    public String getOrderType() {
-        return orderType;
+    public String getOrderNum() {
+        return orderNum;
     }
 
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getLGFSB() {
+        return LGFSB;
+    }
+
+    public void setLGFSB(String LGFSB) {
+        this.LGFSB = LGFSB;
+    }
+
+    public float getCurrentQty() {
+        return currentQty;
+    }
+
+    public void setCurrentQty(float currentQty) {
+        this.currentQty = currentQty;
+    }
+
+    public float getDemand() {
+        return demand;
+    }
+
+    public void setDemand(float demand) {
+        this.demand = demand;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getSBDKZ() {
+        return SBDKZ;
+    }
+
+    public void setSBDKZ(String SBDKZ) {
+        this.SBDKZ = SBDKZ;
+    }
+
+    public String getRow() {
+        return row;
+    }
+
+    public void setRow(String row) {
+        this.row = row;
+    }
+
+    public String getKINDS() {
+        return KINDS;
+    }
+
+    public void setKINDS(String KINDS) {
+        this.KINDS = KINDS;
     }
 
     public float getInStorageQty() {
@@ -121,11 +213,11 @@ public class GetRecevingDetailrep implements Serializable {
         this.inStorageQty = inStorageQty;
     }
 
-    public float getCurrentQty() {
-        return currentQty;
+    public String getLABOR() {
+        return LABOR;
     }
 
-    public void setCurrentQty(float currentQty) {
-        this.currentQty = currentQty;
+    public void setLABOR(String LABOR) {
+        this.LABOR = LABOR;
     }
 }

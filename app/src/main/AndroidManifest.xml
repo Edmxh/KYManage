@@ -70,7 +70,7 @@
             android:name=".Activity.WLQueryActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Activity.KFPSDSHAtivity"
+            android:name=".Activity.KFZCSHAtivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.UpdatefinishedStorageActivity"
@@ -83,7 +83,13 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.MainMenuActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            />
+        <receiver android:name=".receiver.DownLoadCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".Activity.CGDDListActivity"
             android:windowSoftInputMode="adjustPan" />

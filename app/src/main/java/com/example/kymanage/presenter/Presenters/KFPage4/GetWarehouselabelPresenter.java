@@ -1,12 +1,10 @@
 package com.example.kymanage.presenter.Presenters.KFPage4;
 
 
-import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordReps;
 import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReps;
 import com.example.kymanage.model.AppModel;
 import com.example.kymanage.net.HttpDataListener;
 import com.example.kymanage.presenter.BasePresenter;
-import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 
 import java.util.List;

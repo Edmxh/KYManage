@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -300,7 +301,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
             System.out.println(num);
             productOrder.clear();
             List<MaterialFlow103Req> detail=new ArrayList<MaterialFlow103Req>();
-            MaterialFlow103Req req=new MaterialFlow103Req(num,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
+            MaterialFlow103Req req=new MaterialFlow103Req(num,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getLGFSB(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
             detail.add(req);
             presenter2.CG103SHReceive(getCurrentdate(),getCurrentdate(),username,detail);
 //            presenter2.CG103SHReceive("2020-01-01",getCurrentdate(),username,num,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
@@ -374,17 +375,12 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
             if (labels.size()==0){
                 printHelper.Step((byte) 0x5f);
             }else {
-                printHelper.printBlankLine(10);
-                String Linestr="--------------------------------------------------------------";
-                printHelper.PrintLineInit(24);
-                printHelper.PrintLineStringByType(Linestr, 24, PrintHelper.PrintType.Centering, false);
-                printHelper.PrintLineEnd();
                 for (GetParchaseCenterLableRep label : labels) {
                     Bitmap bm=cb.createImage1(label,tf);
                     printHelper.PrintBitmapAtCenter(bm,384,480);
-                    printHelper.printBlankLine(35);
+                    printHelper.printBlankLine(80);
                 }
-                printHelper.printBlankLine(100);
+//                printHelper.printBlankLine(40);
                 System.out.println("打印标签的数量为"+data.getData().size());
                 Toast.makeText(CGDDListActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
             }
@@ -396,14 +392,21 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 
     @Override
     public void onFailed(String msg) {
-        System.out.println("打印失败?");
+//        System.out.println("打印失败?");
         System.out.println(msg);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Log.e("整体item----->", i + "");
+//        View itmeview=cglistview.getAdapter().getView(i,null,null);
+//        CheckBox cb= itmeview.findViewById(R.id.checked);
+//        cb.toggle();
+//        adapter.getSelect().put(i,cb.isChecked());
+//        Log.e("",cb.isChecked()+"");
+//        cb.setChecked(true);
     }
+
 
     @Override
     public void itemClick(View v) {
@@ -503,5 +506,25 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
         }
     }
 
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        // 获取手机当前音量值
+//        int i = getCurrentRingValue ();
+        switch (keyCode) {
+            // 音量减小
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
+                // 音量减小时应该执行的功能代码
+                return true;
+            // 音量增大
+            case KeyEvent.KEYCODE_VOLUME_UP:
+//                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
+                // 音量增大时应该执行的功能代码
+                printHelper.Step((byte) 0x5f);
+                return true;
+        }
+        return super.onKeyDown (keyCode, event);
+    }
 
 }

@@ -1,103 +1,97 @@
 package com.example.kymanage.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.kymanage.Adapter.PrintCNPSDAdapter;
-import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
-import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRepBean;
-import com.example.kymanage.Bitmap.CreateBitmap;
+import com.example.kymanage.Adapter.KFPSDAdapter;
+import com.example.kymanage.Beans.DemoBeans.DemoBean1;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRep;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRepBean;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordReqBean;
+import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordRep;
+import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordReq;
+import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordReqBean;
 import com.example.kymanage.R;
+import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
-import com.example.kymanage.presenter.Presenters.Print1.GetCMInFactoryDeliverPresenter;
+import com.example.kymanage.presenter.Presenters.KFPage2.GetTransferRecordPresenter;
+import com.example.kymanage.presenter.Presenters.KFPage2.InsertDumpTransferRecordPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Printer.PrintHelper;
-
-public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<GetCMInFactoryDeliverRep> {
-
-    //username
-    private String username;
+public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTransferRecordRep>, BaseView1<InsertDumpTransferRecordRep> {
     //扫描
     private ImageView scan;
+    private ListView listview1;
     private String m_Broadcastname="com.barcode.sendBroadcast";
     private MyCodeReceiver receiver = new MyCodeReceiver();
     private String scanString;
-    private GetCMInFactoryDeliverPresenter presenter1;
-    private List<String> DispatchListNOList;
+    //扫描获取的数据
+    private String dumpNum ;
+    private List<String> dumpNums;
+    private GetTransferRecordPresenter presenter1;
+    private List<GetTransferRecordRepBean> datas;
 
-    //表
-    private ListView listView1;
-    private PrintCNPSDAdapter adapter;
 
-    //print
-    private ImageView print;
-    //打印类
-    private PrintHelper printHelper=null;
-    //标签生成器
-    private CreateBitmap cb;
-    //自定义字体
-    private Typeface tf;
-    //打印内容
-    private GetCMInFactoryDeliverRep printData;
+    //转储发料确认
+    private ImageView receive;
+    private InsertDumpTransferRecordPresenter presenter2;
+    private InsertDumpTransferRecordReq recordReq;
+    private List<InsertDumpTransferRecordReqBean> reqList;
+    //cs
+    private KFPSDAdapter adapter;
+
+    //username
+    private String username;
 
     //震动
     private Vibrator vibrator;
 
     @Override
     public int initLayoutId() {
-        return R.layout.activity_print_cnpsd;
+        return R.layout.activity_kfpsdsh_ativity;
     }
 
     @Override
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
-        //按钮
         scan=findViewById(R.id.scan);
-        print=findViewById(R.id.print);
-//        record=findViewById(R.id.record);
-        //表格
-        listView1=findViewById(R.id.listview1);
+        receive=findViewById(R.id.receive);
+        listview1=findViewById(R.id.listview1);
 
-        presenter1=new GetCMInFactoryDeliverPresenter();
+        presenter1=new GetTransferRecordPresenter();
         presenter1.setView(this);
+
+        presenter2=new InsertDumpTransferRecordPresenter();
+        presenter2.setView(this);
+
+
     }
 
     @Override
     public void initData() {
-        printData=new GetCMInFactoryDeliverRep();
+        reqList=new ArrayList<InsertDumpTransferRecordReqBean>();
+        dumpNums=new ArrayList<String>();
+        datas=new ArrayList<GetTransferRecordRepBean>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
-        DispatchListNOList=new ArrayList<String>();
 
-        cb=new CreateBitmap();
-        //初始化打印类
-        initPrinter();
-
-        //从asset 读取字体
-        AssetManager mgr = getAssets();
-        //根据路径得到Typeface
-        tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+        recordReq=new InsertDumpTransferRecordReq(null,username);
     }
 
     @Override
@@ -121,61 +115,73 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
                     e.printStackTrace();
                 }
 
-//                scanString="{\"code\":\"LJ2015000594-TZ2010043020\",\"dp\":\"15923846892067\",\"po\":\"000010048078\",\"no\":\"0010000208\",\"line\":\"000026\"}";
+                //模拟扫码
+//                scanString="{\"code\":\"202006220837072\"}";
 //                JSONObject lableObject= null;
 //                try {
 //                    lableObject = JSONObject.parseObject(scanString);
 //                } catch (Exception e) {
 //                    e.printStackTrace();
-//                    Toast.makeText(PrintCNPSDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(KFZCSHAtivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
 //                }
 //                if(lableObject!=null) {
-//                    String DispatchListNO=lableObject.getString("dp");
+//                    dumpNum=lableObject.getString("code");
 //                    //判断是否重复扫码
 //                    boolean repeat=false;
-//                    for (String no : DispatchListNOList) {
-//                        if(DispatchListNO.equals(no)){
+//                    for (int i = 0; i < dumpNums.size(); i++) {
+//                        if(dumpNum.equals(dumpNums.get(i))){
 //                            repeat=true;
 //                        }
 //                    }
 //                    if(repeat){
 //                        System.out.println("请勿重复扫码");
-//                        Toast.makeText(PrintCNPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
-//
+//                        Toast.makeText(KFZCSHAtivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
 //                    }else {
-//                        if(DispatchListNO!=null){
-//                            DispatchListNOList.add(DispatchListNO);
-//                            presenter1.GetCMInFactoryDeliver(DispatchListNOList,username,getCurrentdate());
-//                        }
+//                        GetTransferRecordReqBean bean=new GetTransferRecordReqBean(dumpNum);
+//                        presenter1.GetTransferRecord(bean);
 //                    }
-////                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
 //                    scanString="";
 //                }else {
 //                    Log.i("token","扫描结果为空");
-//                    Toast.makeText(PrintCNPSDActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(KFZCSHAtivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
 //                }
+
             }
         });
-
-        print.setOnClickListener(new View.OnClickListener() {
+        receive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                Bitmap bm=cb.createImage8(printData,tf);
-                int picHeight = 300+105*(printData.getData().size());
-                printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-                printHelper.printBlankLine(80);
+                if(reqList.size()>0){
+                    recordReq.setData(reqList);
+                    presenter2.InsertDumpTransferRecord(recordReq);
+                }
             }
         });
     }
 
     @Override
-    public void onDataSuccessScan(GetCMInFactoryDeliverRep data) {
-        System.out.println(data.getDeliverID());
-        printData=data;
-        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        adapter=new PrintCNPSDAdapter(this, R.layout.wxcnpsditem,data.getData());
-        listView1.setAdapter(adapter);
+    public void onDataSuccessScan(GetTransferRecordRep data) {
+        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            for (GetTransferRecordRepBean datum : data.getData()) {
+                datas.add(datum);
+
+                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode());
+                reqList.add(reqBean);
+            }
+            adapter=new KFPSDAdapter(KFZCSHAtivity.this, R.layout.kfpsditem,datas);
+            listview1.setAdapter(adapter);
+            dumpNums.add(dumpNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDataSuccess1(InsertDumpTransferRecordRep data) {
+        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -199,31 +205,28 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
                         lableObject = JSONObject.parseObject(scanString);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(PrintCNPSDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(KFZCSHAtivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                     }
                     if(lableObject!=null) {
-                       String DispatchListNO=lableObject.getString("dp");
+                        dumpNum=lableObject.getString("code");
                         //判断是否重复扫码
                         boolean repeat=false;
-                        for (String no : DispatchListNOList) {
-                            if(DispatchListNO.equals(no)){
+                        for (int i = 0; i < dumpNums.size(); i++) {
+                            if(dumpNum.equals(dumpNums.get(i))){
                                 repeat=true;
                             }
                         }
                         if(repeat){
-//                            System.out.println("请勿重复扫码");
-                            Toast.makeText(PrintCNPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
+                            System.out.println("请勿重复扫码");
+                            Toast.makeText(KFZCSHAtivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
                         }else {
-                            if(DispatchListNO!=null){
-                                DispatchListNOList.add(DispatchListNO);
-                                presenter1.GetCMInFactoryDeliver(DispatchListNOList,username,getCurrentdate());
-                            }
+                            GetTransferRecordReqBean bean=new GetTransferRecordReqBean(dumpNum);
+                            presenter1.GetTransferRecord(bean);
                         }
-//                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
                         scanString="";
                     }else {
                         Log.i("token","扫描结果为空");
-                        Toast.makeText(PrintCNPSDActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(KFZCSHAtivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -261,12 +264,5 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
-    }
-
-    //初始化
-    public void   initPrinter(){
-        printHelper=new PrintHelper();
-        printHelper.Open(PrintCNPSDActivity.this);
-//        Toast.makeText(WXBCPSHActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 }

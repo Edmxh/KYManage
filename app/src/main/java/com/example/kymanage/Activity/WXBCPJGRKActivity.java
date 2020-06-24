@@ -352,13 +352,11 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     public void onDataSuccess3(GetFinProStorageRecordNoteRep data) {
         List<GetFinProStorageRecordNoteRepBean> labels = data.getData();
         if (labels != null) {
-            printHelper.printBlankLine(10);
             for (GetFinProStorageRecordNoteRepBean label : labels) {
                 Bitmap bm = cb.createImage6(label, tf);
                 printHelper.PrintBitmapAtCenter(bm, 384, 480);
-                printHelper.printBlankLine(40);
+                printHelper.printBlankLine(80);
             }
-            printHelper.printBlankLine(80);
             System.out.println("打印标签的数量为" + data.getData().size());
             Toast.makeText(WXBCPJGRKActivity.this, "打印标签的数量为" + labels.size(), Toast.LENGTH_SHORT).show();
         } else {

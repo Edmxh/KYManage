@@ -91,6 +91,9 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     //震动
     private Vibrator vibrator;
 
+    //当前收货的序号
+    private int currentIndex=-1;
+
 
     @Override
     public int initLayoutId() {
@@ -295,11 +298,19 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     @Override
     public void onDataSuccess1(CodeMessageBean data) {
         Toast.makeText(KFCGSHRKActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            datas.remove(currentIndex);
+            receiptReqs.remove(currentIndex);
+            currentIndex=-1;
+            adapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onFailed(String msg) {
-
+        currentIndex=-1;
     }
 
     @Override
@@ -338,7 +349,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 //                System.out.println("ckid:"+ckid);
                     List<WarehouseReceiptReq> checkedListReq=new ArrayList<WarehouseReceiptReq>();
                     checkedListReq.add(checkedReq);
-
+                    currentIndex=position;
                     presenter3.WarehouseReceipt(getCurrentdate(),getCurrentdate(),username,checkedListReq);
                 }else {
                     Toast.makeText(KFCGSHRKActivity.this,"未选中收货行",Toast.LENGTH_SHORT).show();

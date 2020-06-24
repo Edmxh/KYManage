@@ -1,14 +1,20 @@
 package com.example.kymanage.Activity;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Vibrator;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kymanage.R;
 
@@ -16,7 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import Printer.PrintHelper;
+
 public class MainMenuActivity extends BaseActivity{
+
+    private ImageView home;
 
     private View cggl_layout;
     private View wxgl_layout;
@@ -51,6 +61,9 @@ public class MainMenuActivity extends BaseActivity{
     //震动
     private Vibrator vibrator;
 
+    //打印类
+    private PrintHelper printHelper=null;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_main_menu;
@@ -62,6 +75,7 @@ public class MainMenuActivity extends BaseActivity{
         //
         logout=findViewById(R.id.logout);
         user=findViewById(R.id.user);
+        home=findViewById(R.id.home);
         cggl_layout=findViewById(R.id.cggl_layout);
         wxgl_layout=findViewById(R.id.wxgl_layout);
         kfgl_layout=findViewById(R.id.kfgl_layout);
@@ -167,7 +181,7 @@ public class MainMenuActivity extends BaseActivity{
         FunctionActivity=new HashMap<String,Class<?>>();
         FunctionActivity.put("采购收货",CGDDListActivity.class);
         FunctionActivity.put("采购入库", KFCGSHRKActivity.class);
-        FunctionActivity.put("转储收货", KFPSDSHAtivity.class);
+        FunctionActivity.put("转储收货", KFZCSHAtivity.class);
         FunctionActivity.put("库房发料", KFFLActivity.class);
         FunctionActivity.put("半成品收货", WXBCPSHActivity.class);
         FunctionActivity.put("成品收货", WXCPSHActivity.class);
@@ -179,6 +193,8 @@ public class MainMenuActivity extends BaseActivity{
         //FunctionActivity.put("标签查询",QueryLabelActivity.class);
         //FunctionActivity.put("物料状态查询",LabelStatusActivity.class);
         //FunctionActivity.put("返回发料单",GetIssueNoteDetailActivity.class);
+
+        initPrinter();
     }
 
     @Override
@@ -190,6 +206,13 @@ public class MainMenuActivity extends BaseActivity{
                 MainMenuActivity.this.finish();
             }
         });
+//        home.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//                downLoadApk();
+//            }
+//        });
 
     }
 
@@ -236,6 +259,54 @@ public class MainMenuActivity extends BaseActivity{
                 R.id.icon, R.id.functionname });
         mGridView.setAdapter(mSimpleAdapter);
         mGridView.setOnItemClickListener(new GridViewItemOnClick());
+    }
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        // 获取手机当前音量值
+//        int i = getCurrentRingValue ();
+        switch (keyCode) {
+            // 音量减小
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
+                // 音量减小时应该执行的功能代码
+                return true;
+            // 音量增大
+            case KeyEvent.KEYCODE_VOLUME_UP:
+//                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
+                // 音量增大时应该执行的功能代码
+                printHelper.Step((byte) 0x5f);
+                return true;
+        }
+        return super.onKeyDown (keyCode, event);
+    }
+
+    //初始化
+    public void   initPrinter(){
+        printHelper=new PrintHelper();
+        printHelper.Open(MainMenuActivity.this);
+//        Toast.makeText(MainMenuActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+    }
+
+
+    //更新功能
+    private void downLoadApk() {
+        //创建request对象
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("http://10.254.100.81/ThingX/FileRepositories/SystemRepository/Area/7e92cd2b-498b-432d-b19c-5ed46cb5c609/app-debug.apk"));
+        //设置什么网络情况下可以下载
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        //设置通知栏的标题
+        request.setTitle("下载");
+        //设置通知栏的message
+        request.setDescription("测试下载.....");
+        //设置漫游状态下是否可以下载
+        request.setAllowedOverRoaming(false);
+        //设置文件存放目录
+        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS,"update.apk");
+        //获取系统服务
+        DownloadManager downloadManager= (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        //进行下载
+        long id = downloadManager.enqueue(request);
     }
 
 }

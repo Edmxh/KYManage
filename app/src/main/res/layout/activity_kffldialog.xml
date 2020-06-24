@@ -21,7 +21,7 @@
             android:text="生产订单分配"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text1"/>
+            android:textSize="@dimen/text22"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

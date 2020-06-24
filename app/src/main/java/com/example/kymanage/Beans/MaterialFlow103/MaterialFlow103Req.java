@@ -32,6 +32,7 @@ public class MaterialFlow103Req {
     private String materialCode;
     private String materialType;
     private String demandFactory;
+    private String demandStorage;
     private String description;
     private String unit;
     private String remark;
@@ -40,13 +41,14 @@ public class MaterialFlow103Req {
     public MaterialFlow103Req() {
     }
 
-    public MaterialFlow103Req(float receNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String description, String unit, String remark, List<ProductOrderBean> productOrder) {
+    public MaterialFlow103Req(float receNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String demandStorage, String description, String unit, String remark, List<ProductOrderBean> productOrder) {
         this.receNum = receNum;
         this.orderNum = orderNum;
         this.orderRow = orderRow;
         this.materialCode = materialCode;
         this.materialType = materialType;
         this.demandFactory = demandFactory;
+        this.demandStorage = demandStorage;
         this.description = description;
         this.unit = unit;
         this.remark = remark;
@@ -101,6 +103,14 @@ public class MaterialFlow103Req {
         this.demandFactory = demandFactory;
     }
 
+    public String getDemandStorage() {
+        return demandStorage;
+    }
+
+    public void setDemandStorage(String demandStorage) {
+        this.demandStorage = demandStorage;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -132,4 +142,6 @@ public class MaterialFlow103Req {
     public void setProductOrder(List<ProductOrderBean> productOrder) {
         this.productOrder = productOrder;
     }
+
+
 }

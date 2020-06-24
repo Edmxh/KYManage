@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -16,12 +19,17 @@ import android.widget.Toast;
 
 import com.example.kymanage.Adapter.WXBCPSHRecordAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
+import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean2;
+import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRepBean;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingwriteoffJS.Semi_FinishedProductReceivingwriteoffJSReqBean;
+import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
+import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
+import com.example.kymanage.presenter.Presenters.WXPage1.GetDispatchListJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1Record.Semi_FinishedProductReceivingRecordJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1Record.Semi_FinishedProductReceivingwriteoffJSPresenter;
 
@@ -31,7 +39,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Semi_FinishedProductReceivingRecordJSRep>, BaseView2<CodeMessageBean> {
+import Printer.PrintHelper;
+
+public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Semi_FinishedProductReceivingRecordJSRep>, BaseView2<CodeMessageBean>, PrintBaseView<GetDispatchListJSRep> {
     //选择日期
     private TextView date;
     private List<Semi_FinishedProductReceivingRecordJSRepBean> data1;
@@ -42,6 +52,13 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
     private Semi_FinishedProductReceivingwriteoffJSPresenter presenter2;
     //打印
     private ImageView print;
+    private GetDispatchListJSPresenter presenter3;
+    //打印类
+    private PrintHelper printHelper=null;
+    //标签生成器
+    private CreateBitmap cb;
+    //自定义字体
+    private Typeface tf;
     //listview
     private ListView listview1;
     //
@@ -69,6 +86,9 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
         presenter2=new Semi_FinishedProductReceivingwriteoffJSPresenter();
         presenter2.setView(this);
 
+        presenter3=new GetDispatchListJSPresenter();
+        presenter3.setView(this);
+
     }
 
     @Override
@@ -78,6 +98,15 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 //        System.out.println("username:"+username);
 
         data1=new ArrayList<Semi_FinishedProductReceivingRecordJSRepBean>();
+
+        cb=new CreateBitmap();
+        //初始化打印类
+        initPrinter();
+
+        //从asset 读取字体
+        AssetManager mgr = getAssets();
+        //根据路径得到Typeface
+        tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
     }
 
     @Override
@@ -116,6 +145,27 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
+                List<Long> AvanceStorageIds=new ArrayList<Long>();
+                if(data1!=null){
+                    for (int i = 0; i < data1.size(); i++) {
+//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
+                        View itmeview=listview1.getAdapter().getView(i,null,null);
+                        CheckBox cb= itmeview.findViewById(R.id.checked);
+                        if(cb.isChecked()){
+                            AvanceStorageIds.add(data1.get(i).getAdvanceStorageId());
+                        }
+                    }
+                }
+//                System.out.println("打印选中数:"+AvanceStorageIds.size());
+                //当前时间
+                Date dateNow = new Date();
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String currentdate = sf.format(dateNow);
+                if(AvanceStorageIds.size()==0){
+                    Toast.makeText(WXBCPSHRecordActivity.this, "未选中要打印的内容", Toast.LENGTH_SHORT).show();
+                }else {
+                    presenter3.GetDispatchListJS(AvanceStorageIds,username);
+                }
 
             }
         });
@@ -166,6 +216,19 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
     }
 
     @Override
+    public void onDataSuccessPrint(GetDispatchListJSRep data) {
+        System.out.println("print success");
+        for (GetDispatchListJSBean2 datum : data.getData()) {
+            Bitmap bm=cb.createImage5(datum,tf);
+            int picHeight = 410+55*(datum.getData().size());
+            printHelper.PrintBitmapAtCenter(bm,384,picHeight);
+            printHelper.printBlankLine(80);
+        }
+
+        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onFailed(String msg) {
 
     }
@@ -176,5 +239,12 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+    //初始化
+    public void   initPrinter(){
+        printHelper=new PrintHelper();
+        printHelper.Open(WXBCPSHRecordActivity.this);
+//        Toast.makeText(WXBCPSHActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 }

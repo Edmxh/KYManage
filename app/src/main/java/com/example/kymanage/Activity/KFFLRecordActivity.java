@@ -1,16 +1,12 @@
 package com.example.kymanage.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.util.SparseBooleanArray;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -18,29 +14,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.example.kymanage.Adapter.CGRecordAdapter;
 import com.example.kymanage.Adapter.KFFLRecordAdapter;
-import com.example.kymanage.Beans.DemoBeans.DemoBean1;
+import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean1;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean2;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.KFLabelBean;
-import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordRep;
-import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordReps;
-import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordRep;
-import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReps;
+import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordRep;
+import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
-import com.example.kymanage.definedClass.CheckableLayout;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
-import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetail2Presenter;
 import com.example.kymanage.presenter.Presenters.KFPage4.GetIssueRecordPresenter;
-import com.example.kymanage.presenter.Presenters.KFPage4.GetWarehouselabelPresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,7 +36,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIssueRecordReps>, BaseView3<GetIssueNoteDetailRep> {
+public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIssueDetailRecordReps>, BaseView3<GetIssueNoteDetailRep> {
     //选择日期
     private TextView date;
     //入库冲销
@@ -58,7 +46,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     //listview
     private ListView listview1;
     //
-    private List<GetIssueRecordRep> datas;
+    private List<GetIssueDetailRecordRep> datas;
     private KFFLRecordAdapter adapter;
     //获取记录
     private GetIssueRecordPresenter presenter1;
@@ -73,6 +61,9 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     private PrintHelper printHelper=null;
     private String username;
 
+    //震动
+    private Vibrator vibrator;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_kfflrecord;
@@ -80,6 +71,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     @Override
     public void initview() {
+        vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         date = findViewById(R.id.date);
         receive = findViewById(R.id.receive);
         print = findViewById(R.id.print);
@@ -98,7 +90,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         flDatas=new ArrayList<GetIssueNoteDetailReq>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
-        datas=new ArrayList<GetIssueRecordRep>();
+        datas=new ArrayList<GetIssueDetailRecordRep>();
         cb=new CreateBitmap();
         //初始化打印类
         initPrinter();
@@ -109,18 +101,21 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(30);
                 showDateAndTable();
             }
         });
         receive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(KFFLRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
+                vibrator.vibrate(30);
+//                Toast.makeText(KFFLRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
             }
         });
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibrator.vibrate(30);
                 for (int i = 0; i < datas.size(); i++) {
                     View itmeview=listview1.getAdapter().getView(i,null,null);
                     CheckBox cb= itmeview.findViewById(R.id.checked);
@@ -149,7 +144,8 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                 str2=(i1+1)<10?("-0"+(i1+1)):"-" + (i1+1);
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
-                presenter1.GetIssueRecord((str1+str2+str3),username);
+                GetIssueDetailRecordReq req=new GetIssueDetailRecordReq(username, (str1+str2+str3));
+                presenter1.GetIssueRecord(req);
 
             }
         }, mYear,mMonth, mDay);//将年月日放入DatePickerDialog中，并将值传给参数
@@ -158,7 +154,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     }
 
     @Override
-    public void onDataSuccess1(GetIssueRecordReps data) {
+    public void onDataSuccess1(GetIssueDetailRecordReps data) {
         datas=data.getData();
         //表格
         adapter=new KFFLRecordAdapter(KFFLRecordActivity.this, R.layout.kfflrecorditem,data.getData());
@@ -232,14 +228,14 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     }
 
-    public void setBackgroundChange(View view,int i){
-        view.findViewById(R.id.xh).setBackgroundResource(i);
-        view.findViewById(R.id.scddh).setBackgroundResource(i);
-        view.findViewById(R.id.wlbm).setBackgroundResource(i);
-        view.findViewById(R.id.wlms).setBackgroundResource(i);
-        view.findViewById(R.id.flsl).setBackgroundResource(i);
-        view.findViewById(R.id.flzt).setBackgroundResource(i);
-    }
+//    public void setBackgroundChange(View view,int i){
+//        view.findViewById(R.id.xh).setBackgroundResource(i);
+//        view.findViewById(R.id.scddh).setBackgroundResource(i);
+//        view.findViewById(R.id.wlbm).setBackgroundResource(i);
+//        view.findViewById(R.id.wlms).setBackgroundResource(i);
+//        view.findViewById(R.id.flsl).setBackgroundResource(i);
+//        view.findViewById(R.id.flzt).setBackgroundResource(i);
+//    }
     //初始化
     public void   initPrinter(){
         printHelper=new PrintHelper();

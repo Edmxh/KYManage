@@ -11,7 +11,7 @@ import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReps;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
-import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordReps;
+import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Beans.GetLableInfo.LabelStatussBean;
 import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
@@ -27,6 +27,8 @@ import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailreps;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.GetSapStorageInfoByFactoryJSBean;
 import com.example.kymanage.Beans.GetParchaseCenterLable.GetParchaseCenterLableReps;
 import com.example.kymanage.Beans.GetStockInformationDataJS.GetStockInformationDataJSRep;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRep;
+import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordRep;
 import com.example.kymanage.Beans.InsertFinProStorageRecord.InsertFinProStorageRecordRep;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
 import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReps;
@@ -41,7 +43,6 @@ import com.example.kymanage.Beans.FlagAndMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRep;
-import com.example.kymanage.Beans.StatusBean;
 import com.example.kymanage.Beans.WarehouseReceiptRecord.WarehouseReceiptRecordReps;
 
 import io.reactivex.Observable;
@@ -145,8 +146,8 @@ public interface APIService {
     @POST(API.GetIssueNoteDetail)
     Observable<GetIssueNoteDetailRep> getissuenotedetail(@Body RequestBody issuevouchernumber);
     //库房发料记录接口
-    @POST(API.GetIssueDetailRecordJS)
-    Observable<GetIssueRecordReps> GetIssueDetailRecordJS(@Body RequestBody issuevouchernumber);
+    @POST(API.GetIssueDetailRecord)
+    Observable<GetIssueDetailRecordReps> GetIssueDetailRecord(@Body RequestBody issuevouchernumber);
     //打印库房标签接口
     @POST(API.InsertStorageLableRecord)
     Observable<InsertStorageLableRecordReps> InsertStorageLableRecord(@Body RequestBody issuevouchernumber);
@@ -156,6 +157,14 @@ public interface APIService {
     //库房105入库冲销接口
     @POST(API.Warehouse105Writeoff)
     Observable<CodeMessageBean> Warehouse105Writeoff(@Body RequestBody issuevouchernumber);
+
+    //获取301转储收获确认记录
+    @POST(API.GetTransferRecord)
+    Observable<GetTransferRecordRep> GetTransferRecord(@Body RequestBody issuevouchernumber);
+
+    //301转储发料
+    @POST(API.InsertDumpTransferRecord)
+    Observable<InsertDumpTransferRecordRep> InsertDumpTransferRecord(@Body RequestBody issuevouchernumber);
 
     //外协-----------------------------------------------------------------------------------------
     //获取采购订单信息接口（机加）

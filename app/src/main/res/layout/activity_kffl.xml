@@ -17,14 +17,14 @@
         <ImageView
             android:id="@+id/scan"
             android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.6"
             android:layout_height="wrap_content"
             android:src="@drawable/scan"
             android:layout_marginLeft="10dp"/>
         <ImageView
             android:id="@+id/record"
             android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.6"
             android:layout_height="wrap_content"
             android:src="@drawable/record"
             android:layout_marginLeft="10dp"/>
@@ -33,10 +33,9 @@
             android:layout_weight="5"
             android:layout_height="match_parent"
             android:text="库房发料"
-            android:textStyle="bold"
             android:textColor="@color/colorWhite"
             android:gravity="center"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/text22"/>
         <ImageView
             android:id="@+id/print1"
             android:layout_width="0dp"

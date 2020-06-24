@@ -365,7 +365,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                                 KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
                                 Bitmap bm=cb.createImage2(labelBean,tf);
                                 printHelper.PrintBitmapAtCenter(bm,384,480);
-                                printHelper.printBlankLine(40);
+                                printHelper.printBlankLine(80);
                                 labelnum++;
                             }
 
@@ -374,7 +374,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                 }
             }
         }
-        printHelper.printBlankLine(100);
+//        printHelper.printBlankLine(100);
         System.out.println("打印标签的数量为"+labelnum);
         Toast.makeText(KFFLActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
         //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();

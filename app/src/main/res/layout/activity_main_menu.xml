@@ -16,6 +16,7 @@
             android:background="@color/colorBackground2"
             >
         <ImageView
+            android:id="@+id/home"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:src="@drawable/home"

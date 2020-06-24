@@ -73,13 +73,19 @@ public interface API {
     //打印发料单及发料接口
     String GetIssueNoteDetail="ThingX/Things/AppProgramThing/Services/GetIssueNoteDetail";
     //库房发料记录接口
-    String GetIssueDetailRecordJS="ThingX/Things/AppProgramThing/Services/GetIssueDetailRecordJS";
+    String GetIssueDetailRecord="ThingX/Things/AppProgramThing/Services/GetIssueDetailRecord";
     //打印库房标签接口
     String InsertStorageLableRecord="ThingX/Things/AppProgramThing/Services/InsertStorageLableRecord";
     //补打库房标签接口
     String GetWarehouselabel="ThingX/Things/AppProgramThing/Services/GetWarehouselabel";
     //库房105入库冲销接口
     String Warehouse105Writeoff="ThingX/Things/AppProgramThing/Services/Warehouse105Writeoff";
+
+    //#获取301转储收获确认记录
+    String GetTransferRecord="ThingX/Things/AppProgramThing/Services/GetTransferRecord";
+
+    //301转储发料
+    String InsertDumpTransferRecord="ThingX/Things/AppProgramThing/Services/InsertDumpTransferRecord";
 
     //外协------------------------------------------------------------------------------------------
     //获取采购订单信息接口（机加）

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.util.SparseBooleanArray;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -225,13 +226,11 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
         List<GetParchaseCenterLableRep> labels=data.getData();
         //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
         if(labels!=null){
-            printHelper.printBlankLine(10);
             for (GetParchaseCenterLableRep label : labels) {
                 Bitmap bm=cb.createImage1(label,tf);
                 printHelper.PrintBitmapAtCenter(bm,384,480);
-                printHelper.printBlankLine(40);
+                printHelper.printBlankLine(80);
             }
-            printHelper.printBlankLine(80);
             System.out.println("打印标签的数量为"+data.getData().size());
             Toast.makeText(CGRecordActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
         }else {
@@ -292,5 +291,26 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        // 获取手机当前音量值
+//        int i = getCurrentRingValue ();
+        switch (keyCode) {
+            // 音量减小
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
+                // 音量减小时应该执行的功能代码
+                return true;
+            // 音量增大
+            case KeyEvent.KEYCODE_VOLUME_UP:
+//                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
+                // 音量增大时应该执行的功能代码
+                printHelper.Step((byte) 0x5f);
+                return true;
+        }
+        return super.onKeyDown (keyCode, event);
     }
 }

@@ -2,35 +2,31 @@ package com.example.kymanage.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.kymanage.Beans.DemoBeans.DemoBean1;
-import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordRep;
-import com.example.kymanage.Beans.WarehouseReceiptRecord.WarehouseReceiptRecordRep;
+import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordRep;
 import com.example.kymanage.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class KFFLRecordAdapter extends ArrayAdapter<GetIssueRecordRep> {
+public class KFFLRecordAdapter extends ArrayAdapter<GetIssueDetailRecordRep> {
     private int resourceId;
     HashMap<Integer, Boolean> select=new HashMap<>();
-    private List<GetIssueRecordRep> mList;
+    private List<GetIssueDetailRecordRep> mList;
     //private DataBean1 DataBean1;
 
     // 适配器的构造函数，把要适配的数据传入这里
-    public KFFLRecordAdapter(Context context, int textViewResourceId, List<GetIssueRecordRep> objects){
+    public KFFLRecordAdapter(Context context, int textViewResourceId, List<GetIssueDetailRecordRep> objects){
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
-        mList=objects==null?new ArrayList<GetIssueRecordRep>():objects;
+        mList=objects==null?new ArrayList<GetIssueDetailRecordRep>():objects;
         initData();
     }
     private void initData() {
@@ -42,7 +38,7 @@ public class KFFLRecordAdapter extends ArrayAdapter<GetIssueRecordRep> {
     // convertView 参数用于将之前加载好的布局进行缓存
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
-        final GetIssueRecordRep rep=getItem(position); //获取当前项的DataBean1实例
+        final GetIssueDetailRecordRep rep=getItem(position); //获取当前项的DataBean1实例
         // 加个判断，以免ListView每次滚动时都要重新加载布局，以提高运行效率
         View view;
         ViewHolder viewHolder;
@@ -65,7 +61,8 @@ public class KFFLRecordAdapter extends ArrayAdapter<GetIssueRecordRep> {
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.flsl=view.findViewById(R.id.flsl);
-        viewHolder.flzt=view.findViewById(R.id.flzt);
+        viewHolder.xqsl=view.findViewById(R.id.xqsl);
+        viewHolder.yfsl=view.findViewById(R.id.yfsl);
         viewHolder.checked=view.findViewById(R.id.checked);
         viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
@@ -90,12 +87,15 @@ public class KFFLRecordAdapter extends ArrayAdapter<GetIssueRecordRep> {
 
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
-        viewHolder.scddh.setText(rep.getPorductOrderNO());
+        viewHolder.scddh.setText(rep.getProductOrderNO());
         viewHolder.wlbm.setText(rep.getMaterialCode());
-        viewHolder.wlms.setText(rep.getMaterialDescription());
-        String num1str=""+rep.getIssueNum();
-        viewHolder.flsl.setText(num1str);
-        viewHolder.flzt.setText(rep.getIssueStatus());
+        viewHolder.wlms.setText(rep.getMaterialDesc());
+        String num1str=""+rep.getDemandQty();
+        viewHolder.xqsl.setText(num1str);
+        String num2str=""+rep.getLastQty();
+        viewHolder.yfsl.setText(num2str);
+        String num3str=""+rep.getIssueQty();
+        viewHolder.flsl.setText(num3str);
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
@@ -131,23 +131,15 @@ public class KFFLRecordAdapter extends ArrayAdapter<GetIssueRecordRep> {
         return view;
     }
 
-    public void setRowBackgroundColor(ViewHolder vh,int i){
-        vh.xh.setBackgroundResource(i);
-        vh.scddh.setBackgroundResource(i);
-        vh.wlbm.setBackgroundResource(i);
-        vh.wlms.setBackgroundResource(i);
-        vh.flsl.setBackgroundResource(i);
-        vh.flzt.setBackgroundResource(i);
-    }
-
     // 定义一个内部类，用于对控件的实例进行缓存
     class ViewHolder{
         TextView xh;
         TextView scddh;
         TextView wlbm;
         TextView wlms;
+        TextView xqsl;
+        TextView yfsl;
         TextView flsl;
-        TextView flzt;
         CheckBox checked;
     }
 

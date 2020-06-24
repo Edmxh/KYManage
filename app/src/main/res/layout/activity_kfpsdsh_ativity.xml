@@ -4,171 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.KFPSDSHAtivity"
-    android:orientation="vertical">
+    tools:context=".Activity.KFZCSHAtivity"
+    android:orientation="vertical"
+    android:background="@color/colorBackground3">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
         android:orientation="horizontal"
         android:background="@color/colorBackground2"
         >
+        <ImageView
+            android:id="@+id/scan"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:src="@drawable/scan"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/nullicon"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:src="@null"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="10dp"/>-->
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:layout_height="match_parent"
-            android:text="配送单收货"
+            android:text="转储收货"
             android:textColor="@color/colorWhite"
             android:gravity="center"
-            android:textSize="@dimen/text1"/>
+            android:textSize="@dimen/text22"/>
+        <ImageView
+            android:id="@+id/receive"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:src="@drawable/zcsh_shqr"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/cx"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:src="@drawable/cx"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginRight="10dp"/>-->
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
         android:orientation="vertical"
-        >
-        <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp">
+        <ListView
+            android:id="@+id/listview1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_marginLeft="5dp"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="配送单号:"
-                android:textSize="@dimen/text2"
-                android:layout_marginRight="10dp"/>
-            <TextView
-                android:id="@+id/psdh"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/colorBlack"
-                style="@style/LoginInputBoxStyle"
-                android:singleLine="true"
-                android:gravity="center"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <HorizontalScrollView
-            android:layout_width="400dp"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:text="序号"
-                    android:textSize="@dimen/text2"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/tablehead"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="物料编码"
-                    android:textSize="@dimen/text2"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/tablehead"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="物料描述"
-                    android:textSize="@dimen/text2"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/tablehead"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="数量"
-                    android:textSize="@dimen/text2"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/tablehead"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="工厂"
-                    android:textSize="@dimen/text2"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/tablehead"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="场地"
-                    android:textSize="@dimen/text2"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/tablehead"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <ListView
-                android:id="@+id/listview1"
-                android:layout_width="600dp"
-                android:layout_height="0dp"
-                android:layout_weight="8"
-                android:clickable="true"
-                android:focusable="true"
-                android:choiceMode="multipleChoice"
-                android:divider="@null"
-                />
-        </LinearLayout>
-        </HorizontalScrollView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <Button
-            android:id="@+id/scan"
-            android:layout_width="0dp"
             android:layout_weight="8"
-            android:layout_height="40dp"
-            android:text="配送单扫码"
-            android:textSize="@dimen/text2"
-            android:textColor="@color/colorWhite"
-            android:background="@drawable/buttonstyle2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-        <Button
-            android:id="@+id/receive"
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="40dp"
-            android:text="收货确认"
-            android:textSize="@dimen/text2"
-            android:textColor="@color/colorWhite"
-            android:background="@drawable/buttonstyle2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:clickable="true"
+            android:focusable="true"
+            android:choiceMode="singleChoice"
+            android:dividerHeight="@dimen/divider"
+            android:divider="@color/colorBackground3"
+            />
     </LinearLayout>
-
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.kymanage.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +41,15 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
             select.put(i, false);
         }
     }
+
+    public HashMap<Integer, Boolean> getSelect() {
+        return select;
+    }
+
+    public void setSelect(HashMap<Integer, Boolean> select) {
+        this.select = select;
+    }
+
     // convertView 参数用于将之前加载好的布局进行缓存
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
@@ -74,7 +84,6 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
                                          boolean isChecked) {
                 select.put(position, isChecked);
             }
-
         });
         viewHolder.receive=view.findViewById(R.id.receive);
 //            viewHolder.blank=view.findViewById(R.id.blank);
@@ -108,6 +117,9 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
 //        rep.setReceivenum(rep.getDemand()-rep.getInStorageQty());
         String num3str=""+rep.getCurrentQty();
         viewHolder.dhsl.setText(num3str);
+        if(rep.getCurrentQty()==0){
+            viewHolder.dhsl.setBackgroundColor(Color.GRAY);
+        }
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{

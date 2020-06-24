@@ -16,10 +16,10 @@ import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeReqBean;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReps;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReq;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
-import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRepBean;
+import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailReq;
-import com.example.kymanage.Beans.GetIssueRecord.GetIssueRecordReps;
+import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Beans.GetLableInfo.LabelStatussBean;
 import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
@@ -37,8 +37,12 @@ import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSR
 import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailreps;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.GetSapStorageInfoByFactoryJSBean;
 import com.example.kymanage.Beans.GetStockInformationDataJS.GetStockInformationDataJSRep;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRep;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordReqBean;
 import com.example.kymanage.Beans.InsertCMStorageRecevingRecordDetail.InsertCMStorageRecevingRecordDetailReq;
 import com.example.kymanage.Beans.GetParchaseCenterLable.GetParchaseCenterLableReps;
+import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordRep;
+import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordReq;
 import com.example.kymanage.Beans.InsertFinProStorageRecord.InsertFinProStorageRecordRep;
 import com.example.kymanage.Beans.InsertFinProStorageRecord.InsertFinProStorageRecordReq;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
@@ -49,11 +53,9 @@ import com.example.kymanage.Beans.LabelBean;
 import com.example.kymanage.Beans.LoginBean;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReq;
-import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReqBean;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Req;
 import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSRep;
-import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReqBean2;
 import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReqBean3;
 import com.example.kymanage.Beans.OutsoureFinProductWriteOffJS.OutsoureFinProductWriteOffJSReqBean;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
@@ -62,7 +64,6 @@ import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedPro
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingReq;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingwriteoffJS.Semi_FinishedProductReceivingwriteoffJSReqBean;
-import com.example.kymanage.Beans.StatusBean;
 import com.example.kymanage.Beans.UpdateStorage.UpdateStorageReq;
 import com.example.kymanage.Beans.FlagAndMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
@@ -1069,30 +1070,31 @@ public class AppModel extends BaseModel{
                 });
     }
     //库房发料记录接口
-    public void GetIssueRecord(String issueDate,String user, final HttpDataListener httpDataListener) {
+    public void GetIssueDetailRecord(GetIssueDetailRecordReq data, final HttpDataListener httpDataListener) {
 
         JSONObject jsonObject = new JSONObject();
 //        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
 //        System.out.println(jsonArray.toString());
+        Object obj = JSON.toJSON(data);
+        System.out.println(obj.toString());
         try {
-            jsonObject.put("issueDate",issueDate);
-            jsonObject.put("user",user);
+            jsonObject.put("data",obj);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
         RetrofitManager.getmInstance().createService1(APIService.class).
-                GetIssueDetailRecordJS(body)
+                GetIssueDetailRecord(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<GetIssueRecordReps>() {
+                .subscribe(new Observer<GetIssueDetailRecordReps>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(GetIssueRecordReps value) {
+                    public void onNext(GetIssueDetailRecordReps value) {
                         httpDataListener.onDataSuccess(value);
                     }
 
@@ -1208,6 +1210,86 @@ public class AppModel extends BaseModel{
 
                     @Override
                     public void onNext(CodeMessageBean value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //获取301转储收获确认记录
+    public void GetTransferRecord(GetTransferRecordReqBean data, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
+        Object obj = JSON.toJSON(data);
+        System.out.println(obj.toString());
+        try {
+            jsonObject.put("data",obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetTransferRecord(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetTransferRecordRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetTransferRecordRep value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //301转储发料
+    public void InsertDumpTransferRecord(InsertDumpTransferRecordReq data, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
+        Object obj = JSON.toJSON(data);
+        System.out.println("301转储发料数据:"+obj.toString());
+        try {
+            jsonObject.put("data",obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                InsertDumpTransferRecord(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<InsertDumpTransferRecordRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(InsertDumpTransferRecordRep value) {
                         httpDataListener.onDataSuccess(value);
                     }
 

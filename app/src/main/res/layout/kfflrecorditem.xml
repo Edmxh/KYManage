@@ -132,6 +132,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:text="需求数量"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/xqsl"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="需求数量"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="已发数量"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/yfsl"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="已发数量"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="发料数量"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
@@ -148,33 +198,33 @@
                 android:gravity="center"
                 android:duplicateParentState="true"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="发料状态:"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/flzt"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="发料状态"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="3"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="发料状态:"-->
+<!--                android:textSize="@dimen/text2"-->
+<!--                android:textColor="@color/fontcolor1"-->
+<!--                android:textCursorDrawable="@null"-->
+<!--                android:gravity="center"-->
+<!--                android:duplicateParentState="true"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/flzt"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="发料状态"-->
+<!--                android:textSize="@dimen/text2"-->
+<!--                android:textColor="@color/fontcolor1"-->
+<!--                android:textCursorDrawable="@null"-->
+<!--                android:gravity="center"-->
+<!--                android:duplicateParentState="true"/>-->
+<!--        </LinearLayout>-->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"

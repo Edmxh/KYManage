@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -21,6 +23,7 @@ import com.example.kymanage.Adapter.PrintKGCPSDAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
+import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRepBean2;
 import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeReqBean;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataInfo;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
@@ -115,6 +118,15 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
         datas=new ArrayList<MaterialFactoryDumpReqBean>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
+
+
+        cb=new CreateBitmap();
+        //初始化打印类
+        initPrinter();
+        //从asset 读取字体
+        AssetManager mgr = getAssets();
+        //根据路径得到Typeface
+        tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
     }
 
     @Override
@@ -217,7 +229,12 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                presenter3.GetDumpRecordNode(printDatas);
+                if(printDatas.size()>0){
+                    presenter3.GetDumpRecordNode(printDatas);
+                }else {
+                    Toast.makeText(PrintKGCPSDActivity.this, "请先转储", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -244,7 +261,19 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     @Override
     public void onDataSuccess2(GetDumpRecordNodeRep data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        System.out.println(data.getData().get(0).getDumpNum());
+        List<GetDumpRecordNodeRepBean2> data1 = data.getData();
+        //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            printHelper.printBlankLine(10);
+            for (GetDumpRecordNodeRepBean2 data2 : data1) {
+                Bitmap bm=cb.createImage10(data2,tf);
+                printHelper.PrintBitmapAtCenter(bm,384,450+55*(data2.getData().size()));
+                printHelper.printBlankLine(40);
+            }
+            printHelper.printBlankLine(40);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -357,5 +386,12 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+    //初始化
+    public void   initPrinter(){
+        printHelper=new PrintHelper();
+        printHelper.Open(PrintKGCPSDActivity.this);
+//        Toast.makeText(DivertRecord1Activity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 }
