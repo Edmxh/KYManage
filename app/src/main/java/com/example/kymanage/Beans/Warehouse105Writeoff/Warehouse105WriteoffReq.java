@@ -7,23 +7,23 @@ package com.example.kymanage.Beans.Warehouse105Writeoff;
  *        }
  */
 public class Warehouse105WriteoffReq {
-    private long id;
+    private String materialType;
     private long storageId;
 
     public Warehouse105WriteoffReq() {
     }
 
-    public Warehouse105WriteoffReq(long id, long storageId) {
-        this.id = id;
+    public Warehouse105WriteoffReq(String materialType, long storageId) {
+        this.materialType = materialType;
         this.storageId = storageId;
     }
 
-    public long getId() {
-        return id;
+    public String getMaterialType() {
+        return materialType;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
     }
 
     public long getStorageId() {

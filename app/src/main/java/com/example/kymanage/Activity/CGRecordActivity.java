@@ -232,7 +232,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                 printHelper.printBlankLine(80);
             }
             System.out.println("打印标签的数量为"+data.getData().size());
-            Toast.makeText(CGRecordActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(CGRecordActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
         }else {
             System.out.println("未打印标签");
         }
@@ -282,7 +282,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(CGRecordActivity.this);
-        Toast.makeText(CGRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(CGRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     //获取当前日期
@@ -308,7 +308,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
             case KeyEvent.KEYCODE_VOLUME_UP:
 //                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
                 // 音量增大时应该执行的功能代码
-                printHelper.Step((byte) 0x5f);
+                printHelper.Step((byte) 0x1f);
                 return true;
         }
         return super.onKeyDown (keyCode, event);

@@ -73,6 +73,8 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
     private GetDeliveryListInfoJSPresenter presenter2;
     private List<GetDeliveryListInfoJSReqBean1> printReqs;
 
+    private ImageView record;
+
     //震动
     private Vibrator vibrator;
 
@@ -88,7 +90,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
         //按钮
         scan=findViewById(R.id.scan);
         print=findViewById(R.id.print);
-//        record=findViewById(R.id.record);
+        record=findViewById(R.id.record);
         //表格
         listView1=findViewById(R.id.listview1);
 
@@ -191,6 +193,17 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 presenter2.GetDeliveryListInfoJS(printReqs,6,username,getCurrentdate());
+            }
+        });
+
+        record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                Intent intent = new Intent(PrintXSFHDActivity.this, XSFHRecordActivity.class);
+                intent.putExtra("username",username);
+//                System.out.println("外协二级菜单发："+username);
+                startActivity(intent);
             }
         });
     }

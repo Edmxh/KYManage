@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.PrintXSFHDActivity"
+    tools:context=".Activity.XSFHRecordActivity"
     android:background="@color/colorBackground3"
     android:orientation="vertical">
     <LinearLayout
@@ -15,21 +15,17 @@
         android:background="@color/colorBackground2"
         >
         <ImageView
-            android:id="@+id/scan"
+            android:id="@+id/receive"
             android:layout_width="0dp"
             android:layout_weight="0.5"
+            android:src="@null"
             android:layout_height="wrap_content"
-            android:src="@drawable/scan"
             android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="5"
+            android:layout_weight="6"
             android:layout_height="match_parent"
-            android:text="销售发货"
+            android:text="销售发货记录"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:textSize="@dimen/text22"/>
@@ -37,18 +33,10 @@
             android:id="@+id/print"
             android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:layout_height="wrap_content"
             android:src="@drawable/print"
-            android:layout_marginRight="10dp"/>
-        <ImageView
-            android:id="@+id/record"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:src="@drawable/record"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -58,7 +46,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9"
+            android:layout_weight="0.7"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发货日期:"
+                android:textSize="@dimen/text2"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="请选择日期"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:background="@drawable/date"
+                android:singleLine="true"
+                android:gravity="center"
+                android:layout_height="30dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
             android:orientation="vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -67,11 +85,13 @@
                 android:id="@+id/listview1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="7"
+                android:layout_weight="8"
+                android:clickable="true"
+                android:focusable="true"
                 android:choiceMode="singleChoice"
                 android:dividerHeight="@dimen/divider"
-                android:divider="@color/colorBackground3"/>
+                android:divider="@color/colorBackground3"
+                />
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

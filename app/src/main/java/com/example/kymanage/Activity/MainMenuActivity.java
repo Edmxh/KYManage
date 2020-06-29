@@ -136,13 +136,13 @@ public class MainMenuActivity extends BaseActivity{
         for (int i = 0; i < length; i++) {
             String functionnamestr=strarr[i].trim();
             switch (functionnamestr){
-                case "采购管理":
+                case "PD采购管理":
                     cggl_layout.setVisibility(View.VISIBLE);
                     break;
-                case "外协管理":
+                case "CM外协管理":
                     wxgl_layout.setVisibility(View.VISIBLE);
                     break;
-                case "库房管理":
+                case "BD_CM库房管理":
                     kfgl_layout.setVisibility(View.VISIBLE);
                     break;
                 case "物料查询":
@@ -275,7 +275,8 @@ public class MainMenuActivity extends BaseActivity{
             case KeyEvent.KEYCODE_VOLUME_UP:
 //                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
                 // 音量增大时应该执行的功能代码
-                printHelper.Step((byte) 0x5f);
+//                printHelper.Unreeling((byte) 0x1f);
+                printHelper.Step((byte) 0x1f);
                 return true;
         }
         return super.onKeyDown (keyCode, event);

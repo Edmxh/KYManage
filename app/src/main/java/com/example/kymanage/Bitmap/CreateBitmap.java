@@ -91,7 +91,7 @@ public class CreateBitmap{
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setSubpixelText(true);
-//        paint.setDither(true);
+        paint.setDither(true);
 //        paint.setAntiAlias(true);
         //从asset 读取字体
 //        AssetManager mgr= getAssets();
@@ -113,7 +113,7 @@ public class CreateBitmap{
 //        canvas.drawText(str1,0,top,paint);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(titleTextSize);
+        textPaint.setTextSize(text2);
         textPaint.setTypeface(tf);
         StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
 
@@ -241,6 +241,7 @@ public class CreateBitmap{
         paint.setColor(Color.WHITE);
         paint.setSubpixelText(true);
         paint.setDither(true);
+//        paint.setAntiAlias(true);
         //从asset 读取字体
 //        AssetManager mgr= getAssets();
         //根据路径得到Typeface
@@ -261,7 +262,7 @@ public class CreateBitmap{
 //        canvas.drawText(str1,0,top,paint);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(titleTextSize);
+        textPaint.setTextSize(text2);
         textPaint.setTypeface(tf);
         StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
 
@@ -326,7 +327,7 @@ public class CreateBitmap{
         top+=lineSpacing;
         canvas.drawLine (0,top,picWidth,top,paint);
 
-        String str10="TKAS"+"            "+getCurrentdate()+" "+"CM";
+        String str10="TKAS"+"                    "+getCurrentdate()+" "+"CM";
         paint.setTextSize(text4);
         paint.setFakeBoldText(false);
         top+=text4;
@@ -344,7 +345,7 @@ public class CreateBitmap{
         int y1=picWidth-QRx+10;
 
         String str11=getSeriesNumber();
-        paint.setTextSize(text5);
+        paint.setTextSize(text6);
         canvas.drawText(str11,QRx,y1,paint);
 //        String str12="备注:"+rep.getRemark();
 //        paint.setTextSize(text4);

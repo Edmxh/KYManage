@@ -52,8 +52,8 @@ public class CGSHRKAdapter extends ArrayAdapter<GetPurWayMaterialDataRep>impleme
             viewHolder.xh=view.findViewById(R.id.xh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
-            viewHolder.yrksl=view.findViewById(R.id.yrksl);
-            viewHolder.yirksl=view.findViewById(R.id.yirksl);
+//            viewHolder.yrksl=view.findViewById(R.id.yrksl);
+//            viewHolder.yirksl=view.findViewById(R.id.yirksl);
             viewHolder.rksl=view.findViewById(R.id.rksl);
             viewHolder.spinner1=view.findViewById(R.id.spinner1);
             viewHolder.receive=view.findViewById(R.id.receive);
@@ -82,10 +82,10 @@ public class CGSHRKAdapter extends ArrayAdapter<GetPurWayMaterialDataRep>impleme
         viewHolder.xh.setText(no);
         viewHolder.wlbm.setText(repData.getMaterialCode());
         viewHolder.wlms.setText(repData.getMaterialDesc());
-        String num1str=""+repData.getPreQty();
-        viewHolder.yrksl.setText(num1str);
-        String num2str=""+repData.getInQty();
-        viewHolder.yirksl.setText(num2str);
+//        String num1str=""+repData.getPreQty();
+//        viewHolder.yrksl.setText(num1str);
+//        String num2str=""+repData.getInQty();
+//        viewHolder.yirksl.setText(num2str);
         String num3str=""+repData.getQty();
         viewHolder.rksl.setText(num3str);
         areadess=rep.getStorage();
@@ -145,8 +145,6 @@ public class CGSHRKAdapter extends ArrayAdapter<GetPurWayMaterialDataRep>impleme
         vh.xh.setBackgroundResource(i);
         vh.wlbm.setBackgroundResource(i);
         vh.wlms.setBackgroundResource(i);
-        vh.yrksl.setBackgroundResource(i);
-        vh.yirksl.setBackgroundResource(i);
         vh.rksl.setBackgroundResource(i);
     }
 
@@ -167,8 +165,6 @@ public class CGSHRKAdapter extends ArrayAdapter<GetPurWayMaterialDataRep>impleme
         TextView xh;
         TextView wlbm;
         TextView wlms;
-        TextView yrksl;
-        TextView yirksl;
         TextView rksl;
         Spinner spinner1;
         Button receive;

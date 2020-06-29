@@ -96,6 +96,9 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     //自定义字体
     private Typeface tf;
 
+    //成品收货的索引
+    private int receiveIndex=-1;
+
 
     /**
      * 自定义请求码常量
@@ -314,13 +317,19 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     @Override
     public void onDataSuccess2(OutsourceFinishedProductReceivingJSRep data) {
         Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
-
         try {
             GetOutsourceFinProLableJSReqBean printBean=new GetOutsourceFinProLableJSReqBean(data.getData().getStorageId(),data.getData().getOrderType(),data.getData().getAdvanceStorageId());
             printList.add(printBean);
+
+            if(receiveIndex!=-1){
+                data1.remove(receiveIndex);
+                adapter1.notifyDataSetChanged();
+                receiveIndex=-1;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 //        System.out.println("成品收货返回的data数据"+data.getData().getStorageId());
 
     }
@@ -422,6 +431,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                     float num3=Float.parseFloat(("0"+recenumstr3));
                     beans3.get(position).setRecNum(num3);
                     presenter2.OutsourceFinishedProductReceivingJS(getCurrentdate(),getCurrentdate(),username,beans3.get(position));
+
+                    receiveIndex=position;
                 }else {
                     Toast.makeText(this, "请先选择生产订单", Toast.LENGTH_SHORT).show();
                 }

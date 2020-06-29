@@ -36,12 +36,12 @@ public class GetDumpRecordRepBean {
     private String Mjahr;
     private String Status;
     private String SendFactory;
-    private long Postingdate;
+    private String Postingdate;
     private String MarketOrderNO;
     private String DemandFactory;
     private String CreateTime;
     private long PID;
-    private long Documentdate;
+    private String Documentdate;
     private String DemandStorage;
     private long SID;
     private String Mblnr;
@@ -120,11 +120,11 @@ public class GetDumpRecordRepBean {
         this.SendFactory = SendFactory;
     }
 
-    public long getPostingdate() {
+    public String getPostingdate() {
         return Postingdate;
     }
 
-    public void setPostingdate(long Postingdate) {
+    public void setPostingdate(String Postingdate) {
         this.Postingdate = Postingdate;
     }
 
@@ -160,11 +160,11 @@ public class GetDumpRecordRepBean {
         this.PID = PID;
     }
 
-    public long getDocumentdate() {
+    public String getDocumentdate() {
         return Documentdate;
     }
 
-    public void setDocumentdate(long Documentdate) {
+    public void setDocumentdate(String Documentdate) {
         this.Documentdate = Documentdate;
     }
 

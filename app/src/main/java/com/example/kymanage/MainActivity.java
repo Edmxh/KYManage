@@ -82,8 +82,8 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
 //        password.setText("");
         name.setText(sp.getString("USER_NAME", ""));
         //方便测试
-        name.setText("xmao");
-        password.setText("xmao");
+//        name.setText("xmao");
+//        password.setText("xmao");
 
 
         loginPresenter = new LoginPresenter();
@@ -249,6 +249,6 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
         super.onResume();
         //注销初始化用户名和密码
         //name.setText("");
-        //password.setText("");
+        password.setText("");
     }
 }

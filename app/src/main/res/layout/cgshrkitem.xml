@@ -124,109 +124,30 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal"
-        android:showDividers="middle"
-        android:divider="@drawable/linearlayout_divider">
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="预入库数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/yrksl"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="预入库数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="已入库数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/yirksl"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="已入库数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="入库数量"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="入库数量:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"
                 android:duplicateParentState="true"/>
             <TextView
                 android:id="@+id/rksl"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
                 android:text="入库数量"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:duplicateParentState="true"/>
         </LinearLayout>
-<!--        <LinearLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical">-->
-<!--            <CheckBox-->
-<!--                android:id="@+id/checked"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:scaleX="0.7"-->
-<!--                android:scaleY="0.7"-->
-<!--                android:button="@null"-->
-<!--                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"-->
-<!--                android:theme="@style/MyCheckBox2"-->
-<!--                android:gravity="center"-->
-<!--                />-->
-<!--        </LinearLayout>-->
     </LinearLayout>
 
 </com.example.kymanage.definedClass.CheckableLayout>

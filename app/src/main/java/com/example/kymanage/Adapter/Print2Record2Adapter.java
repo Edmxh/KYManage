@@ -98,14 +98,15 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlpz.setText(rep.getMblnr());
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sd1 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getPostingdate()))));
-        viewHolder.gzrq.setText(sd1);
+//        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String sd1 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getPostingdate()))));
+        viewHolder.gzrq.setText(rep.getPostingdate());
 
-        String sd2 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getDocumentdate()))));
-        viewHolder.pzrq.setText(sd2);
+//        String sd2 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getDocumentdate()))));
+        viewHolder.pzrq.setText(rep.getDocumentdate());
 
-        viewHolder.scddh.setText(rep.getProductOrderNO());
+        String newStr0 = rep.getProductOrderNO().replaceAll("^(0+)", "");
+        viewHolder.scddh.setText(newStr0);
 
         String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
         String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");

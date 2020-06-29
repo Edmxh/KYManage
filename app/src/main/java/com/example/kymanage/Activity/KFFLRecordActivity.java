@@ -2,6 +2,7 @@ package com.example.kymanage.Activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Vibrator;
@@ -94,6 +95,11 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         cb=new CreateBitmap();
         //初始化打印类
         initPrinter();
+
+        //从asset 读取字体
+        AssetManager mgr = getAssets();
+        //根据路径得到Typeface
+        tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
     }
 
     @Override
@@ -169,11 +175,6 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
         int labelnum=0;
         if(data1!=null){
-            printHelper.printBlankLine(10);
-            String Linestr="--------------------------------------------------------------";
-            printHelper.PrintLineInit(24);
-            printHelper.PrintLineStringByType(Linestr, 24, PrintHelper.PrintType.Centering, false);
-            printHelper.PrintLineEnd();
             if(data1.size()>0){
 //                System.out.println();
                 for (int i = 0; i < data1.size(); i++) {
@@ -185,18 +186,16 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                                 KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
                                 Bitmap bm=cb.createImage2(labelBean,tf);
                                 printHelper.PrintBitmapAtCenter(bm,384,480);
-                                printHelper.printBlankLine(40);
+                                printHelper.printBlankLine(80);
                                 labelnum++;
                             }
-
                         }
                     }
                 }
             }
         }
-        printHelper.printBlankLine(100);
         System.out.println("打印标签的数量为"+labelnum);
-        Toast.makeText(KFFLRecordActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(KFFLRecordActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
         //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
     }
 

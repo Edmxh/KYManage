@@ -185,8 +185,13 @@ public class CGDDDialogActivity extends AppCompatActivity implements View.OnClic
                 List<MaterialFlow103Req> detail=new ArrayList<MaterialFlow103Req>();
                 MaterialFlow103Req req=new MaterialFlow103Req(receinum,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getLGFSB(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
                 detail.add(req);
-                presenter2.CG103SHReceive(getCurrentdate(),getCurrentdate(),username,detail);
-                isReceive=true;
+                if(dhsl>=receinum){
+                    presenter2.CG103SHReceive(getCurrentdate(),getCurrentdate(),username,detail);
+                    isReceive=true;
+                }else {
+                    Toast.makeText(this, "输入总数量超出，请重新输入", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.cancel:
                 vibrator.vibrate(30);

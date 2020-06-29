@@ -155,6 +155,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                 //fld
 //                List<GetIssueNoteDetailPOReq> productOrder = (List<GetIssueNoteDetailPOReq>)data.getSerializableExtra("productOrder");
                 boolean confirm=data.getBooleanExtra("confirm",false);
+                int flIndex=data.getIntExtra("index",-1);
                 ArrayList<Integer> ids = data.getIntegerArrayListExtra("FIssueIds");
                 System.out.println("发料接收的id信息是："+ids.toString());
 //                float allnum=data.getFloatExtra("allNum",0);
@@ -169,30 +170,9 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                         GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+ids.get(i)));
                         flDatas.add(flData);
                     }
-//                    currentdata.setQty(allnum);
-//                    currentdata.setLabelSeqNum(labelSquNum);
-//                    datas.add(currentdata);
-//                    flData.setProductOrder(productOrder);
-//                    bqPrintData.setProductOrder(productOrderBeans);
-
-//                    currentData.setAllnum(allnum);
-//                    datas.add(currentData);
-                    //测试数据
-//                    GetIssueNoteDetailPOReq req1=new GetIssueNoteDetailPOReq("10053470",2,2);
-//                    GetIssueNoteDetailPOReq req2=new GetIssueNoteDetailPOReq("10053470",3,3);
-//                    productOrder.clear();
-//                    productOrder.add(req1);
-//                    productOrder.add(req2);
-//                    flData.setProductOrder(productOrder);
-//                    flDatas.add(flData);
-//                    //bqcs
-//                    ProductOrderBean req3=new ProductOrderBean("10051586",2);
-//                    ProductOrderBean req4=new ProductOrderBean("10051586",3);
-//                    productOrderBeans.clear();
-//                    productOrderBeans.add(req3);
-//                    productOrderBeans.add(req4);
-//                    bqPrintData.setProductOrder(productOrderBeans);
-//                    bqPrintDatas.add(bqPrintData);
+                    if(flIndex!=-1){
+                        datas.remove(flIndex);
+                    }
 
                 }
                 adapter.notifyDataSetChanged();
@@ -349,11 +329,6 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 
         int labelnum=0;
         if(data1!=null){
-            printHelper.printBlankLine(10);
-            String Linestr="--------------------------------------------------------------";
-            printHelper.PrintLineInit(24);
-            printHelper.PrintLineStringByType(Linestr, 24, PrintHelper.PrintType.Centering, false);
-            printHelper.PrintLineEnd();
             if(data1.size()>0){
 //                System.out.println();
                 for (int i = 0; i < data1.size(); i++) {
@@ -376,7 +351,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
         }
 //        printHelper.printBlankLine(100);
         System.out.println("打印标签的数量为"+labelnum);
-        Toast.makeText(KFFLActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(KFFLActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
         //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
     }
 

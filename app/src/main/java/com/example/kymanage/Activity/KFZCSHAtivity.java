@@ -181,7 +181,8 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     @Override
     public void onDataSuccess1(InsertDumpTransferRecordRep data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-
+        datas.clear();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

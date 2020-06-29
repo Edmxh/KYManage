@@ -390,7 +390,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
         view.findViewById(R.id.xh).setBackgroundResource(i);
         view.findViewById(R.id.wlbm).setBackgroundResource(i);
         view.findViewById(R.id.wlms).setBackgroundResource(i);
-        view.findViewById(R.id.yrksl).setBackgroundResource(i);
+//        view.findViewById(R.id.yrksl).setBackgroundResource(i);
         view.findViewById(R.id.yirksl).setBackgroundResource(i);
         view.findViewById(R.id.rksl).setBackgroundResource(i);
     }

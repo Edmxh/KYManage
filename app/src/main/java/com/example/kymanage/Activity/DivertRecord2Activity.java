@@ -47,6 +47,7 @@ public class DivertRecord2Activity extends BaseActivity implements BaseView1<Get
         id=intent.getStringExtra("id");
 
         GetDumpRecordReq req=new GetDumpRecordReq(id);
+        System.out.println("转储详情");
         presenter1.GetDumpRecord(req);
     }
 

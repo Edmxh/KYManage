@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.DivertRecord2Activity"></activity>
+        <activity android:name=".Activity.XSFHRecordActivity"></activity>
+        <activity android:name=".Activity.DivertRecord2Activity" />
         <activity android:name=".Activity.DivertRecord1Activity" />
         <activity android:name=".Activity.PrintXSFHDActivity" />
         <activity android:name=".Activity.PrintKGCPSDActivity" />
@@ -83,13 +84,14 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.MainMenuActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
+
         <receiver android:name=".receiver.DownLoadCompleteReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".Activity.CGDDListActivity"
             android:windowSoftInputMode="adjustPan" />

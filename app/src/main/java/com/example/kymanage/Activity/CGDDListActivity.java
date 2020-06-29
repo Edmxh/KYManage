@@ -382,7 +382,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                 }
 //                printHelper.printBlankLine(40);
                 System.out.println("打印标签的数量为"+data.getData().size());
-                Toast.makeText(CGDDListActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CGDDListActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
             }
         }else {
             System.out.println("未打印标签");
@@ -521,7 +521,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
             case KeyEvent.KEYCODE_VOLUME_UP:
 //                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
                 // 音量增大时应该执行的功能代码
-                printHelper.Step((byte) 0x5f);
+                printHelper.Step((byte) 0x1f);
                 return true;
         }
         return super.onKeyDown (keyCode, event);

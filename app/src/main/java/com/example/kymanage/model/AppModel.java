@@ -1990,7 +1990,7 @@ public class AppModel extends BaseModel{
         JSONObject jsonObject = new JSONObject();
         Object obj = JSON.toJSON(data);
 //        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
-//        System.out.println("301转储数据:"+obj.toString());
+        System.out.println("转储详情数据:"+obj.toString());
         try {
             jsonObject.put("data",obj);
         } catch (JSONException e) {

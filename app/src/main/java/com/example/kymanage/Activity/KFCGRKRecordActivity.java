@@ -10,6 +10,7 @@ import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -102,13 +103,14 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<Warehouse105WriteoffReq> datas;
-                datas=new ArrayList<Warehouse105WriteoffReq>();
-
-                SparseBooleanArray checkedItemPositions = listview1.getCheckedItemPositions();
-                for (int i = 0; i < allDatas.size(); i++) {
-                    if(checkedItemPositions.get(i)){
-                        datas.add(allDatas.get(i));
+                List<Warehouse105WriteoffReq> datas=new ArrayList<Warehouse105WriteoffReq>();
+                for (int i = 0; i < data1.size(); i++) {
+                    View itmeview=listview1.getAdapter().getView(i,null,null);
+                    CheckBox cb= itmeview.findViewById(R.id.checked);
+                    if(cb.isChecked()){
+                        WarehouseReceiptRecordRep currData = data1.get(i);
+                        Warehouse105WriteoffReq req=new Warehouse105WriteoffReq(currData.getMaterialType(),currData.getStorageId());
+                        datas.add(req);
                     }
                 }
                 presenter2.WarehouseReceiptRecord(datas,getCurrentdate());
@@ -149,7 +151,7 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
         listview1.setOnItemClickListener(new ListViewItemOnClick());
 
         for (WarehouseReceiptRecordRep warehouseReceiptRecordRep : data1) {
-            Warehouse105WriteoffReq tmp=new Warehouse105WriteoffReq(warehouseReceiptRecordRep.getId(),warehouseReceiptRecordRep.getStorageId());
+            Warehouse105WriteoffReq tmp=new Warehouse105WriteoffReq(warehouseReceiptRecordRep.getMaterialType(),warehouseReceiptRecordRep.getStorageId());
             allDatas.add(tmp);
         }
     }
