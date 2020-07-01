@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Vibrator;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -215,10 +216,9 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
         try {
             List<GetOutsourceFinProLableJSRepBean> beans = data.getData();
             for (GetOutsourceFinProLableJSRepBean bean : beans) {
-                printHelper.printBlankLine(10);
                 Bitmap bm=cb.createImage7(bean,tf);
                 printHelper.PrintBitmapAtCenter(bm,384,480);
-                printHelper.printBlankLine(40);
+                printHelper.printBlankLine(80);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,5 +251,26 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        // 获取手机当前音量值
+//        int i = getCurrentRingValue ();
+        switch (keyCode) {
+            // 音量减小
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
+                // 音量减小时应该执行的功能代码
+                return true;
+            // 音量增大
+            case KeyEvent.KEYCODE_VOLUME_UP:
+//                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
+                // 音量增大时应该执行的功能代码
+//                printHelper.Unreeling((byte) 0x1f);
+                printHelper.Step((byte) 0x1f);
+                return true;
+        }
+        return super.onKeyDown (keyCode, event);
     }
 }

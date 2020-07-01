@@ -61,6 +61,7 @@ public class KFFLRecordAdapter extends ArrayAdapter<GetIssueDetailRecordRep> {
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.flsl=view.findViewById(R.id.flsl);
+        viewHolder.flzt=view.findViewById(R.id.flzt);
         viewHolder.xqsl=view.findViewById(R.id.xqsl);
         viewHolder.yfsl=view.findViewById(R.id.yfsl);
         viewHolder.checked=view.findViewById(R.id.checked);
@@ -96,6 +97,7 @@ public class KFFLRecordAdapter extends ArrayAdapter<GetIssueDetailRecordRep> {
         viewHolder.yfsl.setText(num2str);
         String num3str=""+rep.getIssueQty();
         viewHolder.flsl.setText(num3str);
+        viewHolder.flzt.setText(rep.getStatus());
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
@@ -140,6 +142,7 @@ public class KFFLRecordAdapter extends ArrayAdapter<GetIssueDetailRecordRep> {
         TextView xqsl;
         TextView yfsl;
         TextView flsl;
+        TextView flzt;
         CheckBox checked;
     }
 

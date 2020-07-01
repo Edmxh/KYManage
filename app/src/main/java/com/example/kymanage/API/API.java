@@ -74,6 +74,8 @@ public interface API {
     String GetIssueNoteDetail="ThingX/Things/AppProgramThing/Services/GetIssueNoteDetail";
     //库房发料记录接口
     String GetIssueDetailRecord="ThingX/Things/AppProgramThing/Services/GetIssueDetailRecord";
+    //库房261发料冲销
+    String WriteOffProductOrderIssue="ThingX/Things/AppProgramThing/Services/WriteOffProductOrderIssue";
     //打印库房标签接口
     String InsertStorageLableRecord="ThingX/Things/AppProgramThing/Services/InsertStorageLableRecord";
     //补打库房标签接口
@@ -150,6 +152,9 @@ public interface API {
 
     //###获取交货单信息
     String GetDeliveryListInfoJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListInfoJS";
+
+    //###获取交货单信息
+    String GetDeliveryListDetailDataJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListDetailDataJS";
 
     //获取销售发货物料信息及库存地点
     String GetLableStorageInfoJS="ThingX/Things/AppProgramThing/Services/GetLableStorageInfoJS";

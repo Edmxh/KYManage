@@ -11,22 +11,34 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.kymanage.Adapter.XSFHRecordAdapter;
+import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
+import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRepBean;
 import com.example.kymanage.R;
+import com.example.kymanage.presenter.InterfaceView.BaseView2;
+import com.example.kymanage.presenter.Print3Record.GetDeliveryListDetailDataJSPresenter;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class XSFHRecordActivity extends BaseActivity {
+public class XSFHRecordActivity extends BaseActivity implements BaseView2<GetDeliveryListDetailDataJSRep> {
     //print
     private ImageView print;
     //选择日期
     private TextView date;
     //listview
     private ListView listview1;
+    private List<GetDeliveryListDetailDataJSRepBean> datas;
+    private XSFHRecordAdapter adapter;
     //
     private String username;
+    //
+    private GetDeliveryListDetailDataJSPresenter presenter2;
     //震动
     private Vibrator vibrator;
 
@@ -41,6 +53,9 @@ public class XSFHRecordActivity extends BaseActivity {
         date = findViewById(R.id.date);
         print = findViewById(R.id.print);
         listview1 = findViewById(R.id.listview1);
+
+        presenter2=new GetDeliveryListDetailDataJSPresenter();
+        presenter2.setView(this);
     }
 
     @Override
@@ -48,6 +63,7 @@ public class XSFHRecordActivity extends BaseActivity {
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
 
+        datas=new ArrayList<GetDeliveryListDetailDataJSRepBean>();
     }
 
     @Override
@@ -76,7 +92,7 @@ public class XSFHRecordActivity extends BaseActivity {
                 str2=(i1+1)<10?("-0"+(i1+1)):"-" + (i1+1);
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
-
+                presenter2.GetDeliveryListDetailDataJS((str1+str2+str3),username,"S");
 //                presenter1.Semi_FinishedProductReceivingRecordJS((str1+str2+str3),username,"外协半成品");
 
             }
@@ -92,5 +108,19 @@ public class XSFHRecordActivity extends BaseActivity {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+    @Override
+    public void onDataSuccess2(GetDeliveryListDetailDataJSRep data) {
+        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+//        System.out.println(data.getData().get(0).getClientName());
+        datas=data.getData();
+        adapter=new XSFHRecordAdapter(this, R.layout.xsfhrecorditem,datas);
+        listview1.setAdapter(adapter);
+    }
+
+    @Override
+    public void onFailed(String msg) {
+
     }
 }

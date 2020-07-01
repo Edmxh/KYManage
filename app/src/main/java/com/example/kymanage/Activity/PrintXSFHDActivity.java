@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageView;
@@ -264,12 +265,18 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
                         Toast.makeText(PrintXSFHDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                     }
                     if(lableObject!=null) {
-                        no=lableObject.getString("no");
-                        line=lableObject.getString("line");
-                        code=lableObject.getString("bm");
-                        num=lableObject.getFloat("sl");
-                        long id=lableObject.getLong("fid");
-                        String type=lableObject.getString("type");
+                        long id= 0;
+                        String type= null;
+                        try {
+                            no=lableObject.getString("no");
+                            line=lableObject.getString("line");
+                            code=lableObject.getString("bm");
+                            num=lableObject.getFloat("sl");
+                            id = lableObject.getLong("fid");
+                            type = lableObject.getString("type");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         //判断是否重复扫码
                         boolean repeat=false;
                         for (int i = 0; i < printReqs.size(); i++) {
@@ -325,5 +332,26 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        // 获取手机当前音量值
+//        int i = getCurrentRingValue ();
+        switch (keyCode) {
+            // 音量减小
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
+                // 音量减小时应该执行的功能代码
+                return true;
+            // 音量增大
+            case KeyEvent.KEYCODE_VOLUME_UP:
+//                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
+                // 音量增大时应该执行的功能代码
+//                printHelper.Unreeling((byte) 0x1f);
+                printHelper.Step((byte) 0x1f);
+                return true;
+        }
+        return super.onKeyDown (keyCode, event);
     }
 }

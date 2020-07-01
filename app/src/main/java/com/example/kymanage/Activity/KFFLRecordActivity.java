@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Vibrator;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kymanage.Adapter.KFFLRecordAdapter;
+import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean1;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean2;
@@ -24,26 +26,38 @@ import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.KFLabelBean;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordRep;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
+import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReq;
+import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReqBean;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
+import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
+import com.example.kymanage.presenter.InterfaceView.BaseView4;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetail2Presenter;
+import com.example.kymanage.presenter.Presenters.KFPage3Record.GetIssueNoteDetail4Presenter;
+import com.example.kymanage.presenter.Presenters.KFPage3Record.WriteOffProductOrderIssuePresenter;
 import com.example.kymanage.presenter.Presenters.KFPage4.GetIssueRecordPresenter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Printer.PrintHelper;
 
-public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIssueDetailRecordReps>, BaseView3<GetIssueNoteDetailRep> {
+public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIssueDetailRecordReps>, BaseView3<GetIssueNoteDetailRep>, BaseView2<StatusRespBean>, BaseView4<GetIssueNoteDetailRep> {
     //选择日期
     private TextView date;
     //入库冲销
     private ImageView receive;
+    private WriteOffProductOrderIssuePresenter presenter3;
+    //补打发料单
+    private ImageView print1;
+    private GetIssueNoteDetail4Presenter presenter4;
     //补打标签
-    private ImageView print;
+    private ImageView print2;
     //listview
     private ListView listview1;
     //
@@ -75,7 +89,8 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         date = findViewById(R.id.date);
         receive = findViewById(R.id.receive);
-        print = findViewById(R.id.print);
+        print1 = findViewById(R.id.print1);
+        print2 = findViewById(R.id.print2);
         listview1 = findViewById(R.id.listview1);
 
         presenter1=new GetIssueRecordPresenter();
@@ -83,6 +98,12 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
         presenter2=new GetIssueNoteDetail2Presenter();
         presenter2.setView(this);
+
+        presenter3=new WriteOffProductOrderIssuePresenter();
+        presenter3.setView(this);
+
+        presenter4=new GetIssueNoteDetail4Presenter();
+        presenter4.setView(this);
 
     }
 
@@ -115,13 +136,42 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
+                List<WriteOffProductOrderIssueReqBean> cxDatas=new ArrayList<WriteOffProductOrderIssueReqBean>();
+                for (int i = 0; i < datas.size(); i++) {
+                    View itmeview=listview1.getAdapter().getView(i,null,null);
+                    CheckBox cb= itmeview.findViewById(R.id.checked);
+                    if (cb.isChecked()){
+                        WriteOffProductOrderIssueReqBean cxData=new WriteOffProductOrderIssueReqBean((""+datas.get(i).getIssueId()));
+                        cxDatas.add(cxData);
+                    }
+                }
+                WriteOffProductOrderIssueReq cxReq=new WriteOffProductOrderIssueReq(getCurrentdate(),cxDatas);
+                presenter3.WriteOffProductOrderIssue(cxReq);
 //                Toast.makeText(KFFLRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
             }
         });
-        print.setOnClickListener(new View.OnClickListener() {
+        print1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
+                flDatas.clear();
+                for (int i = 0; i < datas.size(); i++) {
+                    View itmeview=listview1.getAdapter().getView(i,null,null);
+                    CheckBox cb= itmeview.findViewById(R.id.checked);
+                    if (cb.isChecked()){
+                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
+                        flDatas.add(flData);
+                    }
+                }
+                presenter4.GetIssueNoteDetail2(flDatas);
+                //Toast.makeText(KFFLRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
+            }
+        });
+        print2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                flDatas.clear();
                 for (int i = 0; i < datas.size(); i++) {
                     View itmeview=listview1.getAdapter().getView(i,null,null);
                     CheckBox cb= itmeview.findViewById(R.id.checked);
@@ -200,6 +250,38 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     }
 
     @Override
+    public void onDataSuccess2(StatusRespBean data) {
+        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        GetIssueDetailRecordReq req=new GetIssueDetailRecordReq(username, date.getText().toString());
+        presenter1.GetIssueRecord(req);
+    }
+
+    @Override
+    public void onDataSuccess4(GetIssueNoteDetailRep data) {
+        Toast.makeText(KFFLRecordActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
+        List<GetIssueNoteDetailBean2> data1 = data.getData();
+        if(data1!=null){
+            if(data1.size()>0){
+                Bitmap bm=cb.createImage3(data,tf);//创建发料单
+
+                int picHeight = 100;//生成图片的高度，基础100+heightone85+heighttwo55+bottom 30
+                List<GetIssueNoteDetailBean2> orders = data.getData();
+                for (GetIssueNoteDetailBean2 order : orders) {
+                    picHeight+=85;
+                    List<GetIssueNoteDetailBean1> materials = order.getData();
+                    for (GetIssueNoteDetailBean1 material : materials) {
+                        picHeight+=55;
+                    }
+                }
+                picHeight+=30;
+                printHelper.PrintBitmapAtCenter(bm,384,picHeight);
+                printHelper.printBlankLine(80);
+//                hasFL=true;
+            }
+        }
+    }
+
+    @Override
     public void onFailed(String msg) {
 
     }
@@ -240,5 +322,33 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         printHelper=new PrintHelper();
         printHelper.Open(KFFLRecordActivity.this);
         Toast.makeText(KFFLRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+    }
+
+    //获取当前日期
+    private String getCurrentdate(){
+        Date date0 = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = sf.format(date0);//凭证日期
+        return currentDate;
+    }
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        // 获取手机当前音量值
+//        int i = getCurrentRingValue ();
+        switch (keyCode) {
+            // 音量减小
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
+                // 音量减小时应该执行的功能代码
+                return true;
+            // 音量增大
+            case KeyEvent.KEYCODE_VOLUME_UP:
+//                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
+                // 音量增大时应该执行的功能代码
+                printHelper.Step((byte) 0x1f);
+                return true;
+        }
+        return super.onKeyDown (keyCode, event);
     }
 }

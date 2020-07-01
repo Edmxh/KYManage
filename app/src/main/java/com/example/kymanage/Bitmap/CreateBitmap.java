@@ -69,7 +69,7 @@ public class CreateBitmap{
 
     //画图1,采购标签
     public Bitmap createImage1(GetParchaseCenterLableRep rep, Typeface tf) {
-        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getNum()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+rep.getPo()+"\",\"porow\":\""+rep.getPoRow()+"\",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getAreaNO()+"\",\"cs\":"+rep.getBatchNumber()+"}";
+        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getNum()+",\"aid\":"+rep.getAdvanceStorageId()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+rep.getPo()+"\",\"porow\":\""+rep.getPoRow()+"\",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getAreaNo()+"\",\"cs\":"+rep.getBatchNumber()+"}";
         System.out.println("content:"+content);
         int picWidth = 480;//生成图片的宽度
         int picHeight = 380;//生成图片的高度
@@ -123,15 +123,17 @@ public class CreateBitmap{
 
         String str3=rep.getMaterialCode();
         paint.setTextSize(text3);
+        paint.setFakeBoldText(true);
         top+=titleTextSize*2+40;
         canvas.drawText(str3,0,top,paint);
+        paint.setFakeBoldText(false);
 
         String str4="单位:"+rep.getUnit()+" "+"数量:"+(int)(rep.getNum());
         paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
 
-        String str5=rep.getFactory()+"    "+rep.getAreaNO();
+        String str5=rep.getFactory()+"    "+rep.getAreaNo();
 
         paint.setTextSize(text2);
         top+=text1+lineSpacing;
@@ -271,9 +273,11 @@ public class CreateBitmap{
         layout.draw(canvas);
 
         String str3=rep.getMaterialCode();
+        paint.setFakeBoldText(true);
         paint.setTextSize(text3);
         top+=titleTextSize*2+30;
         canvas.drawText(str3,0,top,paint);
+        paint.setFakeBoldText(false);
 
         String str4="单位:"+"EA"+" "+"数量:"+(int)(rep.getData().getIssueQty());
         paint.setTextSize(text3);
@@ -746,9 +750,11 @@ public class CreateBitmap{
         layout.draw(canvas);
 
         String str3=rep.getMaterialCode();
+        paint.setFakeBoldText(true);
         paint.setTextSize(text8);
         top+=titleTextSize*2+30;
         canvas.drawText(str3,0,top,paint);
+        paint.setFakeBoldText(false);
 
         String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(int)(rep.getAllocatedQty());
         paint.setTextSize(text3);
@@ -902,9 +908,11 @@ public class CreateBitmap{
         layout.draw(canvas);
 
         String str3=rep.getMaterialCode();
+        paint.setFakeBoldText(true);
         paint.setTextSize(text3);
         top+=titleTextSize*2+30;
         canvas.drawText(str3,0,top,paint);
+        paint.setFakeBoldText(false);
 
         String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(int)(rep.getQty());
         paint.setTextSize(text3);

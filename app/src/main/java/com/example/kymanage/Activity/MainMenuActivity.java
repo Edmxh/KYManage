@@ -71,6 +71,8 @@ public class MainMenuActivity extends BaseActivity{
 
     @Override
     public void initview() {
+//        this.getWindow().setStatusBarColor(this.getResources().getColor(R.color.colorBlank));
+
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         //
         logout=findViewById(R.id.logout);

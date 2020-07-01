@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -241,7 +242,6 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                 vibrator.vibrate(30);
                 if(!hasFL){
                     for (GetIssueNoteDetailReq tempData : flDatas) {
-
                     }
                     presenter2.GetIssueNoteDetail(flDatas);
                 }else {
@@ -315,8 +315,8 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                 }
                 picHeight+=30;
                 printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-                printHelper.printBlankLine(30);
-                hasFL=true;
+                printHelper.printBlankLine(80);
+//                hasFL=true;
             }
 
         }
@@ -528,5 +528,25 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     protected void onResume() {
         super.onResume();
         registerBroadcast();
+    }
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        // 获取手机当前音量值
+//        int i = getCurrentRingValue ();
+        switch (keyCode) {
+            // 音量减小
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
+                // 音量减小时应该执行的功能代码
+                return true;
+            // 音量增大
+            case KeyEvent.KEYCODE_VOLUME_UP:
+//                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
+                // 音量增大时应该执行的功能代码
+                printHelper.Step((byte) 0x1f);
+                return true;
+        }
+        return super.onKeyDown (keyCode, event);
     }
 }

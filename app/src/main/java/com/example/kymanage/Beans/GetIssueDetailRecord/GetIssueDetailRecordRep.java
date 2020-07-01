@@ -24,6 +24,7 @@ public class GetIssueDetailRecordRep {
      * ID : 25.0
      * Unit : EA
      * MaterialCode : LJ2015000594-A01
+     * Status: ""
      */
 
     private String MaterialDesc;
@@ -37,6 +38,7 @@ public class GetIssueDetailRecordRep {
     private long ID;
     private String Unit;
     private String MaterialCode;
+    private String Status;
 
     public static GetIssueDetailRecordRep objectFromData(String str) {
 
@@ -168,5 +170,13 @@ public class GetIssueDetailRecordRep {
 
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
     }
 }

@@ -110,7 +110,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
         query=findViewById(R.id.query);
         cgddh=findViewById(R.id.cgddh);
         record=findViewById(R.id.record);
-        cgddh.setText("4100011743");
+//        cgddh.setText("4100011743");
         presenter1=new CGSHQueryPresenter();
         presenter1.setView(this);
 
@@ -277,7 +277,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     public void receive(int checkednum){
         GetRecevingDetailrep checkedData=list.get(checkednum);
 //        if(((checkedData.getMaterialType()).equals("专有物料"))){
-        if(checkedData.getMaterialType().equals("专有")){
+        if(checkedData.getMaterialType().equals("专有")||checkedData.getMaterialType().equals("独立")){
             Intent intent=new Intent(CGDDListActivity.this,CGDDDialogActivity.class);
             intent.putExtra("materialCode",checkedData.getCode());
             System.out.println(checkedData.getCode()+"|||"+checkedData.getFactory());
@@ -342,13 +342,12 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
         list=data.getData();
 //        System.out.println(data.getStatus().getMessage());
         //System.out.println(list.get(0).toString());
-        if(data.getStatus().getCode()==1){
-            adapter=new CGListAdapter(CGDDListActivity.this,R.layout.cgddlistitem,list);
-            adapter.setOnInnerItemOnClickListener(this);
-            // 将适配器上的数据传递给listView
-            cglistview.setAdapter(adapter);
-            cglistview.setOnItemClickListener(this);
-        }
+        adapter=new CGListAdapter(CGDDListActivity.this,R.layout.cgddlistitem,list);
+        adapter.setOnInnerItemOnClickListener(this);
+        // 将适配器上的数据传递给listView
+        cglistview.setAdapter(adapter);
+        cglistview.setOnItemClickListener(this);
+
         Toast.makeText(CGDDListActivity.this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
 //        datas1=data.getData();
     }

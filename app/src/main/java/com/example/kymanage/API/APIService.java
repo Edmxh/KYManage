@@ -4,6 +4,7 @@ package com.example.kymanage.API;
 
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
+import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
 import com.example.kymanage.Beans.GetDumpRecord.GetDumpRecordRep;
@@ -148,6 +149,11 @@ public interface APIService {
     //库房发料记录接口
     @POST(API.GetIssueDetailRecord)
     Observable<GetIssueDetailRecordReps> GetIssueDetailRecord(@Body RequestBody issuevouchernumber);
+
+    //库房261发料冲销
+    @POST(API.WriteOffProductOrderIssue)
+    Observable<StatusRespBean> WriteOffProductOrderIssue(@Body RequestBody issuevouchernumber);
+
     //打印库房标签接口
     @POST(API.InsertStorageLableRecord)
     Observable<InsertStorageLableRecordReps> InsertStorageLableRecord(@Body RequestBody issuevouchernumber);
@@ -250,6 +256,10 @@ public interface APIService {
     //###获取交货单信息
     @POST(API.GetDeliveryListInfoJS)
     Observable<GetDeliveryListInfoJSRepBean3> GetDeliveryListInfoJS(@Body RequestBody issuevouchernumber);
+
+    //###获取交货记录
+    @POST(API.GetDeliveryListDetailDataJS)
+    Observable<GetDeliveryListDetailDataJSRep> GetDeliveryListDetailDataJS(@Body RequestBody issuevouchernumber);
 
     //获取销售发货物料信息及库存地点
     @POST(API.GetLableStorageInfoJS)

@@ -65,6 +65,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     private float sl;
     private String area;
     private int cs;
+    private long aid;
     //收货数据
     private List<WarehouseReceiptReq> receiptReqs;
     private WarehouseReceiptReq req;
@@ -270,7 +271,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     public void onDataSuccessScan(GetPurWayMaterialDataRep data) {
         Toast.makeText(KFCGSHRKActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
         if(data.getData()!=null){
-            req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs);
+            req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid);
             receiptReqs.add(req);
             data.getData().setFactory(factory);
             data.getData().setLabelSeqNum(labelSquNum);
@@ -449,15 +450,20 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                     }
                     if(lableObject!=null) {
 //                    System.out.println(lableObject.getString("bm"));
-                        pono=lableObject.getString("pono");
-                        porow=lableObject.getString("porow");
-                        po=lableObject.getString("po");
-                        sl=lableObject.getFloat("sl");
-                        bm = lableObject.getString("bm");
-                        area = lableObject.getString("cd");
-                        factory=lableObject.getString("gc");
-                        labelSquNum=lableObject.getString("num");
-                        cs=lableObject.getInteger("cs");
+                        try {
+                            pono=lableObject.getString("pono");
+                            porow=lableObject.getString("porow");
+                            po=lableObject.getString("po");
+                            sl=lableObject.getFloat("sl");
+                            bm = lableObject.getString("bm");
+                            area = lableObject.getString("cd");
+                            factory=lableObject.getString("gc");
+                            labelSquNum=lableObject.getString("num");
+                            cs=lableObject.getInteger("cs");
+                            aid=lableObject.getLong("aid");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         //判断是否重复扫码
                         boolean repeat=false;
@@ -471,11 +477,9 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                             Toast.makeText(KFCGSHRKActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
 
                         }else {
-
                             if(porow!=null&&pono!=null&&bm!=null&&factory!=null){
                                 presenter1.GetPurWayMaterialData(porow,pono,sl,bm,factory);
                             }
-
                         }
 //                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
                         scanString="";

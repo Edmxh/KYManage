@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.example.kymanage.API.APIService;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
+import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSReqBean1;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
@@ -75,6 +76,7 @@ import com.example.kymanage.Beans.WarehouseReceiptRecord.WarehouseReceiptRecordR
 import com.example.kymanage.Beans.WriteOffMaterialFactoryDump.WriteOffMaterialFactoryDumpReqBean;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReq;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReqBean;
+import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReq;
 import com.example.kymanage.Beans.warehousereceipts.warehousereceiptsReq;
 import com.example.kymanage.net.HttpDataListener;
 import com.example.kymanage.net.RetrofitManager;
@@ -1109,6 +1111,49 @@ public class AppModel extends BaseModel{
                     }
                 });
     }
+
+    //库房261发料记录冲销
+    public void WriteOffProductOrderIssue(WriteOffProductOrderIssueReq data, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
+//        System.out.println(jsonArray.toString());
+        Object obj = JSON.toJSON(data);
+        System.out.println("261冲销入参"+obj.toString());
+        try {
+            jsonObject.put("data",obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                WriteOffProductOrderIssue(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<StatusRespBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(StatusRespBean value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
     //打印库房标签接口
     public void InsertStorageLableRecord(List<InsertStorageLableRecordReq> data, final HttpDataListener httpDataListener) {
 
@@ -2174,6 +2219,50 @@ public class AppModel extends BaseModel{
 
                     @Override
                     public void onNext(GetDeliveryListInfoJSRepBean3 value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //##获取交货记录
+    public void GetDeliveryListDetailDataJS(String Time,String Handler,String Code, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(detail);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(materialArr));
+        System.out.println("Time："+Time);
+        System.out.println("Handler："+Handler);
+        System.out.println("Code："+Code);
+        try {
+            jsonObject.put("Time",Time);
+            jsonObject.put("Handler",Handler);
+            jsonObject.put("Code",Code);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetDeliveryListDetailDataJS(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDeliveryListDetailDataJSRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDeliveryListDetailDataJSRep value) {
                         httpDataListener.onDataSuccess(value);
                     }
 

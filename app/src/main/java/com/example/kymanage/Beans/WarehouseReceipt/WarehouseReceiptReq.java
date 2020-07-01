@@ -1,5 +1,7 @@
 package com.example.kymanage.Beans.WarehouseReceipt;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  *  {
  *             "orderNum": "OrderNum",
@@ -23,11 +25,12 @@ public class WarehouseReceiptReq {
     private float receNum;
     private String targetArea;
     private int batchNumber;
+    private long AdvanceStorageId;
 
     public WarehouseReceiptReq() {
     }
 
-    public WarehouseReceiptReq(String orderNum, String orderRow, String productOrder, String materialCode, String demandFactory, String demandStorage, float receNum, String targetArea, int batchNumber) {
+    public WarehouseReceiptReq(String orderNum, String orderRow, String productOrder, String materialCode, String demandFactory, String demandStorage, float receNum, String targetArea, int batchNumber, long advanceStorageId) {
         this.orderNum = orderNum;
         this.orderRow = orderRow;
         this.productOrder = productOrder;
@@ -37,6 +40,7 @@ public class WarehouseReceiptReq {
         this.receNum = receNum;
         this.targetArea = targetArea;
         this.batchNumber = batchNumber;
+        AdvanceStorageId = advanceStorageId;
     }
 
     public String getOrderNum() {
@@ -109,5 +113,14 @@ public class WarehouseReceiptReq {
 
     public void setBatchNumber(int batchNumber) {
         this.batchNumber = batchNumber;
+    }
+
+    @JSONField(name = "AdvanceStorageId")
+    public long getAdvanceStorageId() {
+        return AdvanceStorageId;
+    }
+    @JSONField(name = "AdvanceStorageId")
+    public void setAdvanceStorageId(long advanceStorageId) {
+        AdvanceStorageId = advanceStorageId;
     }
 }

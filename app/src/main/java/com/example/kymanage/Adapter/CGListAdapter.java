@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.kymanage.Activity.CGDDListActivity;
 import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailrep;
 import com.example.kymanage.R;
 
@@ -26,6 +27,7 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
     private InnerItemOnclickListener mListener;
     private List<GetRecevingDetailrep> mList;
     HashMap<Integer, Boolean> select=new HashMap<>();
+    HashMap<Integer, Float> unable=new HashMap<>();
 
     //private DataBean1 DataBean1;
 
@@ -39,6 +41,7 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
     private void initData() {
         for(int i=0;i<mList.size();i++){
             select.put(i, false);
+            unable.put(i, mList.get(i).getCurrentQty());
         }
     }
 
@@ -63,11 +66,18 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
 
             // 避免每次调用getView()时都要重新获取控件实例
             viewHolder=new ViewHolder();
-
             view.setTag(viewHolder);
         } else{
-            view=convertView;
-            viewHolder=(ViewHolder) view.getTag();
+
+            view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+
+            // 避免每次调用getView()时都要重新获取控件实例
+            viewHolder=new ViewHolder();
+            view.setTag(viewHolder);
+
+
+//            view=convertView;
+//            viewHolder=(ViewHolder) view.getTag();
         }
         //获取控件和设置监听
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
@@ -117,8 +127,10 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
 //        rep.setReceivenum(rep.getDemand()-rep.getInStorageQty());
         String num3str=""+rep.getCurrentQty();
         viewHolder.dhsl.setText(num3str);
-        if(rep.getCurrentQty()==0){
+        if(unable.get(position)<=0){
             viewHolder.dhsl.setBackgroundColor(Color.GRAY);
+            viewHolder.receive.setBackgroundColor(Color.GRAY);
+            viewHolder.receive.setClickable(false);
         }
         if(select.get(position)){
             viewHolder.checked.setChecked(true);

@@ -19,7 +19,8 @@ package com.example.kymanage.Beans.GetParchaseCenterLable;
  *             "printTime": "2020-01-01",
  *             "printFactory": "PD",
  *             "Po": "4100011740",
- *             "OrderMaterialDesc": "上游BJ描述"
+ *             "OrderMaterialDesc": "上游BJ描述",
+ *             "AdvanceStorageId": 1
  *         }
  */
 
@@ -45,6 +46,8 @@ public class GetParchaseCenterLableRep {
     private String OrderMaterialDesc;
     private String OrderMaterialCode;
     private int batchNumber;
+
+    private long AdvanceStorageId;
 
     public GetParchaseCenterLableRep() {
     }
@@ -122,11 +125,11 @@ public class GetParchaseCenterLableRep {
         this.unit = unit;
     }
 
-    public String getAreaNO() {
+    public String getAreaNo() {
         return areaNo;
     }
 
-    public void setAreaNO(String areaNo) {
+    public void setAreaNo(String areaNo) {
         this.areaNo = areaNo;
     }
 
@@ -208,5 +211,13 @@ public class GetParchaseCenterLableRep {
 
     public void setBatchNumber(int batchNumber) {
         this.batchNumber = batchNumber;
+    }
+
+    public long getAdvanceStorageId() {
+        return AdvanceStorageId;
+    }
+
+    public void setAdvanceStorageId(long advanceStorageId) {
+        AdvanceStorageId = advanceStorageId;
     }
 }
