@@ -245,8 +245,6 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
             }
         }
         System.out.println("打印标签的数量为"+labelnum);
-//        Toast.makeText(KFFLRecordActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
-        //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
