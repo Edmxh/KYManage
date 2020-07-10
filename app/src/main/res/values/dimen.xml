@@ -29,8 +29,8 @@
     <dimen name="tabelcontent1">10dp</dimen>
     <!--主菜单-->
     <dimen name="text1">30dp</dimen>
-    <dimen name="text2">12dp</dimen>
-    <dimen name="text22">14dp</dimen>
+    <dimen name="text2">14dp</dimen>
+    <dimen name="text22">16dp</dimen>
     <dimen name="text3">25dp</dimen>
     <!--物料查询-->
     <dimen name="text4">20dp</dimen>
@@ -38,5 +38,8 @@
     <!--库房发料-->
     <dimen name="text6">12dp</dimen>
     <dimen name="divider">5dp</dimen>
+
+    <dimen name="titlewidth1">80dp</dimen>
+    <dimen name="titlewidth2">100dp</dimen>
 
 </resources>

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.3"
@@ -61,4 +62,7 @@ dependencies {
     //fastjson
     implementation 'com.alibaba:fastjson:1.1.54.android'
     implementation files('src/main/libs/scan.jar')
+
+    // 基础依赖包，必须要依赖,沉浸式状态栏immersionBar-3.0.0.apk
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
 }

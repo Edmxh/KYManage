@@ -17,8 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kymanage.R;
+import com.gyf.immersionbar.ImmersionBar;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -108,10 +111,11 @@ public class MainMenuActivity extends BaseActivity{
         iconmap.put("采购收货", R.drawable.icon_cgsh);
         iconmap.put("采购入库", R.drawable.icon_kfcg);
         iconmap.put("转储收货", R.drawable.icon_pssh);
+        iconmap.put("发料单打印", R.drawable.icon_printkgcpsd);
         iconmap.put("库房发料", R.drawable.icon_kffl);
         iconmap.put("半成品收货", R.drawable.icon_bcpsh);
         iconmap.put("成品收货", R.drawable.icon_cpsh);
-        iconmap.put("半成品加工入库", R.drawable.icon_bcprk);
+        iconmap.put("加工成品入库", R.drawable.icon_bcprk);
         iconmap.put("厂内配送", R.drawable.icon_printcnpsd);
         iconmap.put("跨工厂配送", R.drawable.icon_printkgcpsd);
         iconmap.put("销售发货", R.drawable.icon_printxsfhd);
@@ -164,11 +168,11 @@ public class MainMenuActivity extends BaseActivity{
             s.replace(" ","");
         }
         int length2 = strarr2.length;
-        System.out.println("外协功能数量"+length2);
+//        System.out.println("外协功能数量"+length2);
         ViewGroup.LayoutParams lp;
         lp= wxgl_layout.getLayoutParams();
         if(length2>4){
-            System.out.println("功能数量超出");
+//            System.out.println("功能数量超出");
 //            lp.width=400;
             lp.height=350;
             wxgl_layout.setLayoutParams(lp);
@@ -176,6 +180,11 @@ public class MainMenuActivity extends BaseActivity{
             lp.height=200;
             wxgl_layout.setLayoutParams(lp);
         }
+
+//        ImmersionBar.with(this)
+//                .statusBarColor(R.color.colorBackground2)
+//                .fitsSystemWindows(true)
+//                .init();
     }
 
     @Override
@@ -184,10 +193,11 @@ public class MainMenuActivity extends BaseActivity{
         FunctionActivity.put("采购收货",CGDDListActivity.class);
         FunctionActivity.put("采购入库", KFCGSHRKActivity.class);
         FunctionActivity.put("转储收货", KFZCSHAtivity.class);
-        FunctionActivity.put("库房发料", KFFLActivity.class);
+        FunctionActivity.put("发料单打印", KFFLActivity.class);
+        FunctionActivity.put("库房发料", KFFL2Activity.class);
         FunctionActivity.put("半成品收货", WXBCPSHActivity.class);
         FunctionActivity.put("成品收货", WXCPSHActivity.class);
-        FunctionActivity.put("半成品加工入库", WXBCPJGRKActivity.class);
+        FunctionActivity.put("加工成品入库", WXBCPJGRKActivity.class);
         FunctionActivity.put("厂内配送", PrintCNPSDActivity.class);
         FunctionActivity.put("跨工厂配送", PrintKGCPSDActivity.class);
         FunctionActivity.put("销售发货", PrintXSFHDActivity.class);
@@ -208,13 +218,13 @@ public class MainMenuActivity extends BaseActivity{
                 MainMenuActivity.this.finish();
             }
         });
-//        home.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                vibrator.vibrate(30);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
 //                downLoadApk();
-//            }
-//        });
+            }
+        });
 
     }
 
@@ -249,7 +259,7 @@ public class MainMenuActivity extends BaseActivity{
         int length = strarr.length;
         for (int i = 0; i < length; i++) {
             String functionnamestr=strarr[i].trim();
-            System.out.println("--"+functionnamestr+"--");
+//            System.out.println("--"+functionnamestr+"--");
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("ItemImageView", iconmap.get(functionnamestr));
             map.put("ItemTextView", functionnamestr);
@@ -272,6 +282,7 @@ public class MainMenuActivity extends BaseActivity{
             case KeyEvent.KEYCODE_VOLUME_DOWN:
 //                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
                 // 音量减小时应该执行的功能代码
+                //printHelper.GoToNextPage();
                 return true;
             // 音量增大
             case KeyEvent.KEYCODE_VOLUME_UP:
@@ -295,7 +306,7 @@ public class MainMenuActivity extends BaseActivity{
     //更新功能
     private void downLoadApk() {
         //创建request对象
-        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("http://10.254.100.81/ThingX/FileRepositories/SystemRepository/Area/7e92cd2b-498b-432d-b19c-5ed46cb5c609/app-debug.apk"));
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("http://10.254.100.81/updateAPP/app-debug.apk"));
         //设置什么网络情况下可以下载
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
         //设置通知栏的标题
@@ -312,4 +323,15 @@ public class MainMenuActivity extends BaseActivity{
         long id = downloadManager.enqueue(request);
     }
 
+
+//    private void installApp() {
+//        File appFile = new File("update.apk");
+//        if(!appFile.exists()) {
+//            return;
+//        }
+//        // 跳转到新版本应用安装页面
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setDataAndType(Uri.parse("file://" + appFile.toString()), "application/vnd.android.package-archive");
+//        this.startActivity(intent);
+//    }
 }

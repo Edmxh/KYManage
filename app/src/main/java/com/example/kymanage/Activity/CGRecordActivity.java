@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +49,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     //选择日期
     private TextView date;
     //入库冲销
-    private ImageView receive;
+//    private ImageView receive;
     //listview
     private ListView listview1;
     //测试数据
@@ -60,7 +62,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     private CGSHRecordPresenter presenter2;
 
     //打印
-    private ImageView print;
+//    private ImageView print;
     private CGSHPrintPresenter presenter3;
     //打印类
     private PrintHelper printHelper=null;
@@ -73,6 +75,9 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     private  String username;
     //震动
     private Vibrator vibrator;
+
+    private ImageView menupoint;
+    PopupMenu popup = null;
     @Override
     public int initLayoutId() {
         return R.layout.activity_cgrecord;
@@ -82,8 +87,9 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         date = findViewById(R.id.date);
-        receive = findViewById(R.id.receive);
-        print = findViewById(R.id.print);
+//        receive = findViewById(R.id.receive);
+//        print = findViewById(R.id.print);
+        menupoint = findViewById(R.id.menupoint);
         listview1 = findViewById(R.id.listview1);
 
         presenter103=new YRKCX103Presenter();
@@ -94,6 +100,8 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
 
         presenter3=new CGSHPrintPresenter();
         presenter3.setView(this);
+
+
     }
 
     @Override
@@ -109,6 +117,12 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+
+//        onPopupButtonClick(menupoint);
+
+        //初始今天记录
+        date.setText(getCurrentdate());
+        presenter2.CGSHRecord(date.getText().toString(),username);
     }
 
     @Override
@@ -120,57 +134,89 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                 showDateAndTable();
             }
         });
-        receive.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<Long> intlist=new ArrayList<Long>();
-                    if(datas!=null){
-                        for (int i = 0; i < datas.size(); i++) {
-//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
-                            View itmeview=listview1.getAdapter().getView(i,null,null);
-                            CheckBox cb= itmeview.findViewById(R.id.checked);
-                            if(cb.isChecked()){
-                                intlist.add(datas.get(i).getAdvanceStorageId());
-                            }
-                        }
-                    }
-                System.out.println("冲销选中数:"+intlist.size());
-//                intlist.add(1L);
-//                intlist.add(2L);
-//                intlist.add(3L);
-                presenter103.YRKCX103(intlist,getCurrentdate());
-                //Toast.makeText(CGRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
+                onPopupButtonClick(menupoint);
             }
         });
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                List<Long> AvanceStorageIds=new ArrayList<Long>();
-                    if(datas!=null){
-                        for (int i = 0; i < datas.size(); i++) {
-//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
-                            View itmeview=listview1.getAdapter().getView(i,null,null);
-                            CheckBox cb= itmeview.findViewById(R.id.checked);
-                            if(cb.isChecked()){
-                                AvanceStorageIds.add(datas.get(i).getAdvanceStorageId());
-                            }
-                        }
-                    }
-                System.out.println("打印选中数:"+AvanceStorageIds.size());
-                //当前时间
-                Date dateNow = new Date();
-                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                String currentdate = sf.format(dateNow);
-                if(AvanceStorageIds.size()==0){
-                    Toast.makeText(CGRecordActivity.this, "未选中要打印的标签行", Toast.LENGTH_SHORT).show();
-                }else {
-                    presenter3.CGSHPrint(AvanceStorageIds,username,currentdate);
-                }
+    }
 
-            }
-        });
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.cgrecordmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.print:
+                                // 隐藏该对话框
+                                vibrator.vibrate(30);
+                                List<Long> AvanceStorageIds=new ArrayList<Long>();
+                                if(datas!=null){
+                                    for (int i = 0; i < datas.size(); i++) {
+//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
+                                        View itmeview=listview1.getAdapter().getView(i,null,null);
+                                        CheckBox cb= itmeview.findViewById(R.id.checked);
+                                        if(cb.isChecked()){
+                                            AvanceStorageIds.add(datas.get(i).getAdvanceStorageId());
+                                        }
+                                    }
+                                }
+                                System.out.println("打印选中数:"+AvanceStorageIds.size());
+                                //当前时间
+                                Date dateNow = new Date();
+                                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                String currentdate = sf.format(dateNow);
+                                if(AvanceStorageIds.size()==0){
+                                    Toast.makeText(CGRecordActivity.this, "未选中要打印的标签行", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    AvanceStorageIds.clear();
+                                    AvanceStorageIds.add(1562L);
+                                    presenter3.CGSHPrint(AvanceStorageIds,username,currentdate);
+                                }
+                                break;
+                            case R.id.exit:
+                                vibrator.vibrate(30);
+                                // 隐藏该对话框
+                                popup.dismiss();
+                                break;
+                            case R.id.receive:
+                                vibrator.vibrate(30);
+                                // 隐藏该对话框
+                                vibrator.vibrate(30);
+                                List<Long> intlist=new ArrayList<Long>();
+                                if(datas!=null){
+                                    for (int i = 0; i < datas.size(); i++) {
+                                        View itmeview=listview1.getAdapter().getView(i,null,null);
+                                        CheckBox cb= itmeview.findViewById(R.id.checked);
+                                        if(cb.isChecked()){
+                                            intlist.add(datas.get(i).getAdvanceStorageId());
+                                        }
+                                    }
+                                }
+                                System.out.println("冲销选中数:"+intlist.size());
+                                presenter103.YRKCX103(intlist,getCurrentdate());
+                                break;
+                            default:
+                                // 使用Toast显示用户单击的菜单项
+                                Toast.makeText(CGRecordActivity.this,
+                                        "您单击了【" + item.getTitle() + "】菜单项"
+                                        , Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+        popup.show();
     }
 
     //日期弹窗
@@ -227,9 +273,20 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
         //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
         if(labels!=null){
             for (GetParchaseCenterLableRep label : labels) {
-                Bitmap bm=cb.createImage1(label,tf);
-                printHelper.PrintBitmapAtCenter(bm,384,480);
-                printHelper.printBlankLine(80);
+                if(label.isSeparateLabel()){
+                    int labelNum= (int) label.getNum();
+//                    System.out.println("分签了，分签的数量是"+labelNum);
+                    for (int i = 0; i <labelNum ; i++) {
+                        System.out.println("第"+i+"个签打印");
+                        Bitmap bm=cb.createImage1(label,tf);
+                        printHelper.PrintBitmapAtCenter(bm,384,480);
+                        printHelper.printBlankLine(80);
+                    }
+                }else {
+                    Bitmap bm=cb.createImage1(label,tf);
+                    printHelper.PrintBitmapAtCenter(bm,384,480);
+                    printHelper.printBlankLine(80);
+                }
             }
             System.out.println("打印标签的数量为"+data.getData().size());
 //            Toast.makeText(CGRecordActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();

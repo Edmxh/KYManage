@@ -11,11 +11,13 @@ import android.os.Vibrator;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetDispatchListJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetPurchaseOrderInfoJSPresenter;
 import com.example.kymanage.utils.Base64Tool;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -63,11 +66,11 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
     private String marketorderno;
     private String marketorderrow;
     //print
-    private ImageView print;
+//    private ImageView print;
     private GetDispatchListJSPresenter presenter2;
     private List<Long> AdvanceStorageId;
     //record
-    private ImageView record;
+//    private ImageView record;
 
     //
     private String username;
@@ -85,6 +88,11 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
      */
     private static final int REQUEST_CODE = 1;
 
+    private ImageView menupoint;
+    PopupMenu popup = null;
+
+    private mPrintUtil mPrintUtil=new mPrintUtil();
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_wxbcpsh;
@@ -95,8 +103,9 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         //按钮
         scan=findViewById(R.id.scan);
-        print=findViewById(R.id.print);
-        record=findViewById(R.id.record);
+//        print=findViewById(R.id.print);
+//        record=findViewById(R.id.record);
+        menupoint=findViewById(R.id.menupoint);
         //表格
         listview1=findViewById(R.id.listview1);
 
@@ -215,23 +224,54 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
 //                }
             }
         });
-        print.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                presenter2.GetDispatchListJS(AdvanceStorageId,username);
+                onPopupButtonClick(menupoint);
             }
         });
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                Intent intent = new Intent(WXBCPSHActivity.this, WXBCPSHRecordActivity.class);
-                intent.putExtra("username",username);
-//                System.out.println("外协二级菜单发："+username);
-                startActivity(intent);
-            }
-        });
+    }
+
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.wxbcpmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.exit:
+                                // 隐藏该对话框
+                                popup.dismiss();
+                                break;
+                            case R.id.record:
+                                // 隐藏该对话框
+                                Intent intent = new Intent(WXBCPSHActivity.this, WXBCPSHRecordActivity.class);
+                                intent.putExtra("username",username);
+                                startActivity(intent);
+                                break;
+                            case R.id.print:
+                                // 隐藏该对话框
+                                presenter2.GetDispatchListJS(AdvanceStorageId,username);
+                                break;
+                            default:
+                                // 使用Toast显示用户单击的菜单项
+                                Toast.makeText(WXBCPSHActivity.this,
+                                        "您单击了【" + item.getTitle() + "】菜单项"
+                                        , Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+        popup.show();
     }
 
     @Override
@@ -249,7 +289,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                 data1.add(currentData);
             }
 
-            System.out.println(data1.get(0).getEBELN());
+//            System.out.println(data1.get(0).getEBELN());
             adapter1=new WXBCPSHAdapter(this, R.layout.wxbcpshitem, data1);
             adapter1.setOnInnerItemOnClickListener(this);
             listview1.setAdapter(adapter1);
@@ -261,15 +301,17 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
 
     @Override
     public void onDataSuccessPrint(GetDispatchListJSRep data) {
-        System.out.println("print success");
+//        System.out.println("print success");
         for (GetDispatchListJSBean2 datum : data.getData()) {
-            Bitmap bm=cb.createImage5(datum,tf);
-            int picHeight = 410+55*(datum.getData().size());
-            printHelper.PrintBitmapAtCenter(bm,384,picHeight);
+//            Bitmap bm=cb.createImage5(datum,tf);
+//            int picHeight = 410+55*(datum.getData().size());
+//            printHelper.PrintBitmapAtCenter(bm,384,picHeight);
+//            printHelper.printBlankLine(80);
+            mPrintUtil.printPGBill(datum,printHelper);
             printHelper.printBlankLine(80);
         }
 
-        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -423,7 +465,6 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(WXBCPSHActivity.this);
-//        Toast.makeText(WXBCPSHActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override

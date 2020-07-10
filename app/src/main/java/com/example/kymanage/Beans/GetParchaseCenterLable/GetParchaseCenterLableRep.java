@@ -48,6 +48,7 @@ public class GetParchaseCenterLableRep {
     private int batchNumber;
 
     private long AdvanceStorageId;
+    private boolean SeparateLabel;
 
     public GetParchaseCenterLableRep() {
     }
@@ -219,5 +220,13 @@ public class GetParchaseCenterLableRep {
 
     public void setAdvanceStorageId(long advanceStorageId) {
         AdvanceStorageId = advanceStorageId;
+    }
+
+    public boolean isSeparateLabel() {
+        return SeparateLabel;
+    }
+
+    public void setSeparateLabel(boolean separateLabel) {
+        SeparateLabel = separateLabel;
     }
 }

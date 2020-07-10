@@ -33,6 +33,7 @@ import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetDispatchListJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1Record.Semi_FinishedProductReceivingRecordJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1Record.Semi_FinishedProductReceivingwriteoffJSPresenter;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
     private String username;
     //震动
     private Vibrator vibrator;
+
+    private com.example.kymanage.utils.mPrintUtil mPrintUtil=new mPrintUtil();
 
 
     @Override
@@ -108,6 +111,10 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+
+        date.setText(getCurrentdate());
+
+        presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,"外协半成品");
     }
 
     @Override
@@ -218,15 +225,16 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 
     @Override
     public void onDataSuccessPrint(GetDispatchListJSRep data) {
-        System.out.println("print success");
+//        System.out.println("print success");
         for (GetDispatchListJSBean2 datum : data.getData()) {
-            Bitmap bm=cb.createImage5(datum,tf);
-            int picHeight = 410+55*(datum.getData().size());
-            printHelper.PrintBitmapAtCenter(bm,384,picHeight);
+//            Bitmap bm=cb.createImage5(datum,tf);
+//            int picHeight = 410+55*(datum.getData().size());
+//            printHelper.PrintBitmapAtCenter(bm,384,picHeight);
+            mPrintUtil.printPGBill(datum,printHelper);
             printHelper.printBlankLine(80);
         }
 
-        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -103,6 +103,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 
     @Override
     public void initview() {
+        
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         //按钮
         scan=findViewById(R.id.scan);

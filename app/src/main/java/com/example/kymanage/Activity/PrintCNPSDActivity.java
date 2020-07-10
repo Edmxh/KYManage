@@ -27,6 +27,7 @@ import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.Print1.GetCMInFactoryDeliverPresenter;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
 
     //震动
     private Vibrator vibrator;
+
+    private com.example.kymanage.utils.mPrintUtil mPrintUtil=new mPrintUtil();
 
     @Override
     public int initLayoutId() {
@@ -162,10 +165,15 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                Bitmap bm=cb.createImage8(printData,tf);
-                int picHeight = 300+105*(printData.getData().size());
-                printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-                printHelper.printBlankLine(80);
+                try {
+//                    Bitmap bm=cb.createImage8(printData,tf);
+//                    int picHeight = 300+105*(printData.getData().size());
+//                    printHelper.PrintBitmapAtCenter(bm,384,picHeight);
+                    mPrintUtil.printCNBill(printData,printHelper);
+                    printHelper.printBlankLine(80);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

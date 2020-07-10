@@ -10,11 +10,13 @@ import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
@@ -40,6 +42,7 @@ import com.example.kymanage.presenter.Presenters.KFPage1.GetSapStoragesPresenter
 import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetail2Presenter;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetailPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetStockInformationDataJSPresenter;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +54,9 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     private static final int REQUEST_CODE = 1;
 
     private ImageView scan;
-    private ImageView print1;
-    private ImageView print2;
-    private ImageView record;
+//    private ImageView print1;
+//    private ImageView print2;
+//    private ImageView record;
     private ListView listview1;
     //cs
     private KFFLAdapter adapter;
@@ -96,6 +99,11 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     //震动
     private Vibrator vibrator;
 
+    private ImageView menupoint;
+    PopupMenu popup = null;
+
+    private mPrintUtil mPrintUtil;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_kffl;
@@ -105,10 +113,11 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         scan=findViewById(R.id.scan);
-        print1=findViewById(R.id.print1);
-        print2=findViewById(R.id.print2);
+//        print1=findViewById(R.id.print1);
+//        print2=findViewById(R.id.print2);
         listview1=findViewById(R.id.listview1);
-        record=findViewById(R.id.record);
+        menupoint=findViewById(R.id.menupoint);
+//        record=findViewById(R.id.record);
 
         presenter1=new GetStockInformationDataJSPresenter();
         presenter1.setView(this);
@@ -123,6 +132,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 
     @Override
     public void initData() {
+        mPrintUtil=new mPrintUtil();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
 //测试数据
@@ -236,38 +246,64 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 //                }
             }
         });
-        print1.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                if(!hasFL){
-                    for (GetIssueNoteDetailReq tempData : flDatas) {
-                    }
-                    presenter2.GetIssueNoteDetail(flDatas);
-                }else {
-                    Toast.makeText(KFFLActivity.this,"不可重复收货发料，请退出页面重试！",Toast.LENGTH_SHORT).show();
-                }
+                onPopupButtonClick(menupoint);
+            }
+        });
+    }
 
-                //Toast.makeText(KFFLActivity.this,"收货成功",Toast.LENGTH_SHORT).show();
-            }
-        });
-        print2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                presenter4.GetIssueNoteDetail2(flDatas);
-                //Toast.makeText(KFFLActivity.this,"收货成功",Toast.LENGTH_SHORT).show();
-            }
-        });
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                Intent intent = new Intent(KFFLActivity.this, KFFLRecordActivity.class);
-                intent.putExtra("username",username);
-                startActivity(intent);
-            }
-        });
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.kfflmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.exit:
+                                // 隐藏该对话框
+                                popup.dismiss();
+                                break;
+                            case R.id.record:
+                                // 隐藏该对话框
+                                Intent intent = new Intent(KFFLActivity.this, KFFLRecordActivity.class);
+                                intent.putExtra("username",username);
+                                startActivity(intent);
+                                break;
+                            case R.id.print1:
+                                // 隐藏该对话框
+                                if(!hasFL){
+                                    for (GetIssueNoteDetailReq tempData : flDatas) {
+                                    }
+                                    presenter2.GetIssueNoteDetail(flDatas);
+                                }else {
+                                    Toast.makeText(KFFLActivity.this,"不可重复收货发料，请退出页面重试！",Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                            case R.id.print2:
+                                // 隐藏该对话框
+                                presenter4.GetIssueNoteDetail2(flDatas);
+                                break;
+                            default:
+                                // 使用Toast显示用户单击的菜单项
+                                Toast.makeText(KFFLActivity.this,
+                                        "您单击了【" + item.getTitle() + "】菜单项"
+                                        , Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+        popup.show();
     }
 
     @Override
@@ -298,29 +334,8 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 
     @Override
     public void onDataSuccess1(GetIssueNoteDetailRep data) {
-        Toast.makeText(KFFLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        List<GetIssueNoteDetailBean2> data1 = data.getData();
-        if(data1!=null){
-            if(data1.size()>0){
-                Bitmap bm=cb.createImage3(data,tf);//创建发料单
-
-                int picHeight = 100;//生成图片的高度，基础100+heightone85+heighttwo55+bottom 30
-                List<GetIssueNoteDetailBean2> orders = data.getData();
-                for (GetIssueNoteDetailBean2 order : orders) {
-                    picHeight+=85;
-                    List<GetIssueNoteDetailBean1> materials = order.getData();
-                    for (GetIssueNoteDetailBean1 material : materials) {
-                        picHeight+=55;
-                    }
-                }
-                picHeight+=30;
-                printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-                printHelper.printBlankLine(80);
-//                hasFL=true;
-            }
-
-        }
-
+        mPrintUtil.printFLBill(data,printHelper);
+        printHelper.printBlankLine(80);
     }
     @Override
     public void onDataSuccess3(GetIssueNoteDetailRep data) {
@@ -454,7 +469,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(KFFLActivity.this);
-        Toast.makeText(KFFLActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(KFFLActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
     //扫描操作
     public void scan(){

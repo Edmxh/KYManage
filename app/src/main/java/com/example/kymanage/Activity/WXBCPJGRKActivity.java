@@ -528,7 +528,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     public void initPrinter() {
         printHelper = new PrintHelper();
         printHelper.Open(WXBCPJGRKActivity.this);
-        Toast.makeText(WXBCPJGRKActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(WXBCPJGRKActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override

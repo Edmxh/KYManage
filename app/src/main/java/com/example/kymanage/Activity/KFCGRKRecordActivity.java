@@ -87,6 +87,10 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
 
+        date.setText(getCurrentdate());
+//                System.out.println(username);
+        presenter1.WarehouseReceiptRecord(date.getText().toString(),username);
+
 
     }
 

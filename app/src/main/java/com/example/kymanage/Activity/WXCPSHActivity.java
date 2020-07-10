@@ -12,12 +12,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,8 +62,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     //震动
     private Vibrator vibrator;
     private ImageView scan;
-    private ImageView print;
-    private ImageView record;
+//    private ImageView print;
+//    private ImageView record;
     //表格
     private ListView listview1;
     //scan
@@ -110,6 +112,9 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     private static final int REQUEST_CODE_1 = 1;
     private static final int REQUEST_CODE_2 = 2;
 
+    private ImageView menupoint;
+    PopupMenu popup = null;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_wxcpsh;
@@ -120,8 +125,9 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         //按钮
         scan=findViewById(R.id.scan);
-        print=findViewById(R.id.print);
-        record=findViewById(R.id.record);
+//        print=findViewById(R.id.print);
+//        record=findViewById(R.id.record);
+        menupoint=findViewById(R.id.menupoint);
         //表格
         listview1=findViewById(R.id.listview1);
 
@@ -256,29 +262,54 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
 //                }
             }
         });
-        print.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                //测试数据
-//                printList.clear();
-//                GetOutsourceFinProLableJSReqBean csbean1=new GetOutsourceFinProLableJSReqBean(140,"10",441);
-//                GetOutsourceFinProLableJSReqBean csbean2=new GetOutsourceFinProLableJSReqBean(157,"20",459);
-//                printList.add(csbean1);
-//                printList.add(csbean2);
-                presenter3.GetOutsourceFinProLableJS(username,getCurrentdate2(),printList);
+                onPopupButtonClick(menupoint);
             }
         });
+    }
 
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                Intent intent = new Intent(WXCPSHActivity.this, WXCPSHRecordActivity.class);
-                intent.putExtra("username",username);
-                startActivity(intent);
-            }
-        });
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.wxmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.exit:
+                                // 隐藏该对话框
+                                popup.dismiss();
+                                break;
+                            case R.id.record:
+                                // 隐藏该对话框
+                                Intent intent = new Intent(WXCPSHActivity.this, WXCPSHRecordActivity.class);
+                                intent.putExtra("username",username);
+                                startActivity(intent);
+                                break;
+                            case R.id.print:
+                                // 隐藏该对话框
+                                presenter3.GetOutsourceFinProLableJS(username,getCurrentdate2(),printList);
+                                break;
+                            default:
+                                // 使用Toast显示用户单击的菜单项
+                                Toast.makeText(WXCPSHActivity.this,
+                                        "您单击了【" + item.getTitle() + "】菜单项"
+                                        , Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+        popup.show();
     }
 
     @Override
@@ -535,7 +566,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(WXCPSHActivity.this);
-        Toast.makeText(WXCPSHActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(WXCPSHActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override

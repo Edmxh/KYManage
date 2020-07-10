@@ -23,6 +23,7 @@ import com.example.kymanage.Activity.MainMenuActivity;
 import com.example.kymanage.Beans.LoginBean;
 import com.example.kymanage.presenter.IBaseView;
 import com.example.kymanage.presenter.LoginPresenter;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -72,6 +73,10 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
         sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         //remember = findViewById(R.id.remember);
 
+//        ImmersionBar.with(this)
+//                .navigationBarDarkIcon(true)
+//                .statusBarDarkFont(true)
+//                .init();
 
     }
 

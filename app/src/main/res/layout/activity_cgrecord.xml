@@ -18,7 +18,7 @@
             android:id="@+id/receive"
             android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:src="@drawable/cx"
+            android:src="@null"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"/>
         <TextView
@@ -30,10 +30,10 @@
             android:gravity="center"
             android:textSize="@dimen/text22"/>
         <ImageView
-            android:id="@+id/print"
+            android:id="@+id/menupoint"
             android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:src="@drawable/print"
+            android:src="@drawable/menupoint"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"/>
     </LinearLayout>

@@ -14,20 +14,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Activity.XSFHRecordActivity"></activity>
-        <activity android:name=".Activity.DivertRecord2Activity" />
-        <activity android:name=".Activity.DivertRecord1Activity" />
-        <activity android:name=".Activity.PrintXSFHDActivity" />
-        <activity android:name=".Activity.PrintKGCPSDActivity" />
-        <activity android:name=".Activity.PrintCNPSDActivity" />
-        <activity android:name=".Activity.WXCPSHRecordActivity" />
-        <activity android:name=".Activity.WXCPSHDialog2Activity" />
-        <activity android:name=".Activity.WXBCPSHRecordActivity" />
-        <activity android:name=".Activity.WXBCPJGRKDialog2Activity" />
-        <activity android:name=".Activity.KFCGRKRecordActivity" />
-        <activity android:name=".Activity.DJDYPrintPerviewActivity" />
-        <activity android:name=".Activity.KFFLRecordActivity" />
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustPan">
+        <activity android:name=".Activity.KFFL2Activity" android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".Activity.XSFHRecordActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.DivertRecord2Activity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.DivertRecord1Activity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.PrintXSFHDActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.PrintKGCPSDActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.PrintCNPSDActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.WXCPSHRecordActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.WXCPSHDialog2Activity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.WXBCPSHRecordActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.WXBCPJGRKDialog2Activity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.KFCGRKRecordActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.DJDYPrintPerviewActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activity.KFFLRecordActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Activity.WXDJDYJLActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -72,9 +75,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.KFZCSHAtivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".Activity.UpdatefinishedStorageActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.PrintPerviewActivity"

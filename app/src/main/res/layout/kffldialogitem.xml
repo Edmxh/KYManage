@@ -19,7 +19,7 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="80dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="需   求  级   别:"
                 android:textSize="@dimen/text2"
@@ -44,7 +44,7 @@
             android:gravity="center"
             >
             <TextView
-                android:layout_width="80dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="match_parent"
                 android:text="生 产 订 单 号:"
                 android:textSize="@dimen/text2"
@@ -69,7 +69,7 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="80dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="计划开始日期:"
                 android:textSize="@dimen/text2"

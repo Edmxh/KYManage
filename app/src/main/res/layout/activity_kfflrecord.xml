@@ -14,13 +14,6 @@
         android:orientation="horizontal"
         android:background="@color/colorBackground2"
         >
-        <ImageView
-            android:id="@+id/receive"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:src="@drawable/cx"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -34,18 +27,11 @@
             android:gravity="center"
             android:textSize="@dimen/text22"/>
         <ImageView
-            android:id="@+id/print1"
+            android:id="@+id/menupoint"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:src="@drawable/kffl_fld"
-            android:layout_marginRight="10dp"/>
-        <ImageView
-            android:id="@+id/print2"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:src="@drawable/kffl_bq"
+            android:src="@drawable/menupoint"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
     <LinearLayout

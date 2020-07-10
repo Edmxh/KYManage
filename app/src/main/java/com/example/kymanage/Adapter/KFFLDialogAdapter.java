@@ -83,7 +83,7 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
         String num1str=""+rep.getDemandNum();
         viewHolder.xqsl.setText(num1str);
         String num2str=""+rep.getCurrentNum();
-        viewHolder.fpsl.setText(num2str);
+        viewHolder.fpsl.setText("0.0");
         String num3str=""+rep.getIssueNum();
         viewHolder.yfpsl.setText(num3str);
 //        switch (position%2){

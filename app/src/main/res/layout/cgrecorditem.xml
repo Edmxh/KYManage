@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="@dimen/titlewidth1"
                 android:layout_height="wrap_content"
                 android:text="序            号:"
                 android:textSize="@dimen/text2"
@@ -46,7 +46,7 @@
             android:gravity="center"
             >
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="@dimen/titlewidth1"
                 android:layout_height="match_parent"
                 android:text="采购订单号:"
                 android:textSize="@dimen/text2"
@@ -71,7 +71,7 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="@dimen/titlewidth1"
                 android:layout_height="wrap_content"
                 android:text="物 料  类 型:"
                 android:textSize="@dimen/text2"
@@ -96,7 +96,7 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="@dimen/titlewidth1"
                 android:layout_height="wrap_content"
                 android:text="物 料  编 码:"
                 android:textSize="@dimen/text2"
@@ -121,7 +121,7 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="@dimen/titlewidth1"
                 android:layout_height="wrap_content"
                 android:text="更 新  时 间:"
                 android:textSize="@dimen/text2"

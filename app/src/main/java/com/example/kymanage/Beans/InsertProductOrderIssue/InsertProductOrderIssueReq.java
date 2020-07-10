@@ -57,10 +57,14 @@ public class InsertProductOrderIssueReq {
     private String ProOMaterialDesc;
     private String ProOMaterialUnit;
 
+
+    private String ProcessNo;
+    private String ProcessText;
+
     public InsertProductOrderIssueReq() {
     }
 
-    public InsertProductOrderIssueReq(String ordernum, String rowno, String budat, String bldat, String uname, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit) {
+    public InsertProductOrderIssueReq(String ordernum, String rowno, String budat, String bldat, String uname, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText) {
         this.ordernum = ordernum;
         this.rowno = rowno;
         this.budat = budat;
@@ -87,6 +91,8 @@ public class InsertProductOrderIssueReq {
         ProOMaterialNO = proOMaterialNO;
         ProOMaterialDesc = proOMaterialDesc;
         ProOMaterialUnit = proOMaterialUnit;
+        ProcessNo = processNo;
+        ProcessText = processText;
     }
 
     public String getOrdernum() {
@@ -296,5 +302,22 @@ public class InsertProductOrderIssueReq {
     @JSONField(name="proOMaterialUnit")
     public void setProOMaterialUnit(String proOMaterialUnit) {
         ProOMaterialUnit = proOMaterialUnit;
+    }
+
+    @JSONField(name="ProcessNo")
+    public String getProcessNo() {
+        return ProcessNo;
+    }
+    @JSONField(name="ProcessNo")
+    public void setProcessNo(String processNo) {
+        ProcessNo = processNo;
+    }
+    @JSONField(name="ProcessText")
+    public String getProcessText() {
+        return ProcessText;
+    }
+    @JSONField(name="ProcessText")
+    public void setProcessText(String processText) {
+        ProcessText = processText;
     }
 }

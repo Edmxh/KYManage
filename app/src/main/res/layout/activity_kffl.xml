@@ -17,38 +17,24 @@
         <ImageView
             android:id="@+id/scan"
             android:layout_width="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:src="@drawable/scan"
-            android:layout_marginLeft="10dp"/>
-        <ImageView
-            android:id="@+id/record"
-            android:layout_width="0dp"
-            android:layout_weight="0.6"
-            android:layout_height="wrap_content"
-            android:src="@drawable/record"
             android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="match_parent"
-            android:text="库房发料"
+            android:text="发料单打印"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:textSize="@dimen/text22"/>
         <ImageView
-            android:id="@+id/print1"
+            android:id="@+id/menupoint"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:src="@drawable/kffl_fld"
-            android:layout_marginRight="10dp"/>
-        <ImageView
-            android:id="@+id/print2"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:src="@drawable/kffl_bq"
+            android:src="@drawable/menupoint"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
     <LinearLayout

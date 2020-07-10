@@ -16,15 +16,15 @@
         android:background="@color/colorBackground2"
         >
         <ImageView
-            android:id="@+id/record"
+            android:id="@+id/scan"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:src="@drawable/record"
+            android:src="@drawable/scan"
             android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:layout_height="match_parent"
             android:text="采购收货"
             android:textStyle="bold"
@@ -32,11 +32,11 @@
             android:gravity="center"
             android:textSize="14sp"/>
         <ImageView
-            android:id="@+id/print"
+            android:id="@+id/menupoint"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:src="@drawable/print"
+            android:src="@drawable/menupoint"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
     <LinearLayout

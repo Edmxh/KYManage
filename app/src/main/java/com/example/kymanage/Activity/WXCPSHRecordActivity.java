@@ -106,6 +106,9 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+
+        date.setText(getCurrentdate());
+        presenter1.GetOutsoureFinProductDataJS(date.getText().toString(),username);
     }
 
     @Override

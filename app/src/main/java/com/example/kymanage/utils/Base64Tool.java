@@ -16,8 +16,12 @@ public class Base64Tool {
 //		System.out.println(base64Encode("LJ6025009378"));
 //		System.out.println(base64Encode("CL1001000029"));//Q0wxMDAxMDAwMDI5
 //		System.out.println(base64Encode("LJ7015001194"));//TEo3MDE1MDAxMTk0
-		System.out.println(base64Encode("LJ5525003029-TZ2010041014"));//TEo1NTI1MDAzMDI5LVRaMjAxMDA0MTAxNA==
-		System.out.println(base64Encode("LJ2015000594-TZ2010043020"));//TEoyMDE1MDAwNTk0LVRaMjAxMDA0MzAyMA==
+//		System.out.println(base64Encode("LJ5525003029-TZ2010041014"));//TEo1NTI1MDAzMDI5LVRaMjAxMDA0MTAxNA==
+//		System.out.println(base64Encode("LJ2015000594-TZ2010043020"));//TEoyMDE1MDAwNTk0LVRaMjAxMDA0MzAyMA==
+//		System.out.println(base64Encode("LJ6510001528-A01"));//TEo2NTEwMDAxNTI4LUEwMQ==
+//		System.out.println(base64Encode("LJ6510001528-A01"));//TEo2NTEwMDAxNTI4LUEwMQ==
+//		System.out.println(base64Encode("LJ6510001463-A01"));//TEo2NTEwMDAxNDYzLUEwMQ==外协半成品收货
+		System.out.println(base64Encode("LJ2015002373"));//TEoyMDE1MDAyMzcz
 	}
 
 //	// Base64 加密

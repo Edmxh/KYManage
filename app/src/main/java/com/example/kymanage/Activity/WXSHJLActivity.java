@@ -42,8 +42,10 @@ import com.example.kymanage.presenter.Presenters.WXPage3Record.GetFinProStorageR
 import com.example.kymanage.presenter.Presenters.WXPage3Record.GetFinProStorageRecordPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.WriteOffProStorageRecordPresenter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Printer.PrintHelper;
@@ -113,6 +115,12 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+
+        date.setText(getCurrentdate());
+
+        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),username);
+//                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq("2020-05-31","kzheng");
+        presenter1.GetFinProStorageRecord(req);
     }
 
     @Override
@@ -269,5 +277,13 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
                 return true;
         }
         return super.onKeyDown (keyCode, event);
+    }
+
+    //获取当前日期
+    private String getCurrentdate(){
+        Date date0 = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = sf.format(date0);//凭证日期
+        return currentDate;
     }
 }

@@ -36,6 +36,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.Presenters.Print2.GetDumpRecordNodePresenter;
 import com.example.kymanage.presenter.Presenters.Print2Record1.GetMainDumpRecordPresenter;
 import com.example.kymanage.presenter.Presenters.Print2Record1.WriteOffMaterialFactoryDumpPresenter;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,6 +77,8 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
     //震动
     private Vibrator vibrator;
 
+    private mPrintUtil mPrintUtil;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_divert_record1;
@@ -103,6 +106,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 
     @Override
     public void initData() {
+        mPrintUtil=new mPrintUtil();
         cxDatas=new ArrayList<WriteOffMaterialFactoryDumpReqBean>();
         printDatas=new ArrayList<GetDumpRecordNodeReqBean>();
         datas=new ArrayList<GetMainDumpRecordRepBean>();
@@ -116,6 +120,10 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+
+        date.setText(getCurrentdate());
+        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username);
+        presenter1.GetMainDumpRecord(req);
     }
 
     @Override
@@ -212,14 +220,17 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         try {
             printHelper.printBlankLine(10);
             for (GetDumpRecordNodeRepBean2 data2 : data1) {
-                Bitmap bm=cb.createImage10(data2,tf);
-                printHelper.PrintBitmapAtCenter(bm,384,450+55*(data2.getData().size()));
-                printHelper.printBlankLine(40);
+//                Bitmap bm=cb.createImage10(data2,tf);
+//                printHelper.PrintBitmapAtCenter(bm,384,450+55*(data2.getData().size()));
+//                printHelper.printBlankLine(40);
+                mPrintUtil.printKGCBill(data2,printHelper);
+                printHelper.printBlankLine(80);
             }
-            printHelper.printBlankLine(40);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 

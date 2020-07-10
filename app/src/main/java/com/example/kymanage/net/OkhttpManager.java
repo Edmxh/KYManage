@@ -14,9 +14,9 @@ public class OkhttpManager {
 
     private OkhttpManager() {
         mOkHttpClient = new OkHttpClient.Builder()
-                .writeTimeout(5000, TimeUnit.MILLISECONDS)
-                .readTimeout(5000, TimeUnit.MILLISECONDS)
-                .connectTimeout(5000, TimeUnit.MILLISECONDS)
+                .writeTimeout(180000, TimeUnit.MILLISECONDS)
+                .readTimeout(180000, TimeUnit.MILLISECONDS)
+                .connectTimeout(180000, TimeUnit.MILLISECONDS)
                 .addInterceptor(new HanderInterceptor())
                 .addInterceptor(new HttpLoggingInterceptor(new MyLogger()).setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();

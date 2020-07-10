@@ -15,10 +15,9 @@
         android:background="@color/colorBackground2"
         >
         <ImageView
-            android:id="@+id/receive"
             android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:src="@drawable/cx"
+            android:src="@null"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"/>
         <TextView
@@ -29,9 +28,11 @@
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:textSize="@dimen/text22"/>
-        <TextView
+        <ImageView
+            android:id="@+id/receive"
             android:layout_width="0dp"
             android:layout_weight="0.5"
+            android:src="@drawable/cx"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"/>
     </LinearLayout>

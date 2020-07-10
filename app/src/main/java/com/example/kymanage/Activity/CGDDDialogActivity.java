@@ -1,15 +1,9 @@
 package com.example.kymanage.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.text.Layout;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,23 +14,19 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kymanage.Adapter.CGDialogAdapter;
-import com.example.kymanage.Beans.DemoBeans.DemoBean1;
-import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailrep;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
-import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Req;
+import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103RepStatus;
+import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103ReqBean;
 import com.example.kymanage.Beans.MaterialFlow103.ProductOrderBean;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
 import com.example.kymanage.Beans.UpdateStorage.UpdateStorageReq;
 import com.example.kymanage.R;
-import com.example.kymanage.definedClass.CheckableLayout;
-import com.example.kymanage.presenter.CGSH103ReceivePresenter;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.Presenters.CGPage1.CG103SHReceivePresenter;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
-import com.example.kymanage.presenter.ReceiveView;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -44,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CGDDDialogActivity extends AppCompatActivity implements View.OnClickListener, BaseView1<PreMaterialProductOrderReps>, BaseView2<MaterialFlow103Rep> {
+public class CGDDDialogActivity extends AppCompatActivity implements View.OnClickListener, BaseView1<PreMaterialProductOrderReps>, BaseView2<MaterialFlow103RepStatus> {
 
     /**
      * 确定
@@ -182,9 +172,9 @@ public class CGDDDialogActivity extends AppCompatActivity implements View.OnClic
                 }
 
 //                presenter2.CG103SHReceive("2020-01-01",getCurrentdate(),username,receinum,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
-                List<MaterialFlow103Req> detail=new ArrayList<MaterialFlow103Req>();
-                MaterialFlow103Req req=new MaterialFlow103Req(dhsl,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getLGFSB(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
-                detail.add(req);
+                List<MaterialFlow103ReqBean> detail=new ArrayList<MaterialFlow103ReqBean>();
+//                MaterialFlow103ReqBean req=new MaterialFlow103ReqBean(dhsl,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getLGFSB(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
+//                detail.add(req);
                 if(dhsl>=receinum){
                     presenter2.CG103SHReceive(getCurrentdate(),getCurrentdate(),username,detail);
                     isReceive=true;
@@ -257,15 +247,15 @@ public class CGDDDialogActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onDataSuccess2(MaterialFlow103Rep data) {
+    public void onDataSuccess2(MaterialFlow103RepStatus data) {
 
-        Toast.makeText(this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        if(data.getStatus().getData()!=null&&data.getStatus().getData().size()>0){
-            System.out.println(data.getStatus().getData().size());
-            System.out.println(data.getStatus().getData().get(0));
-            AdvanceStorageId=data.getStatus().getData().get(0);
-        }
-        CGDDDialogActivity.this.finish();
+//        Toast.makeText(this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
+//        if(data.getStatus().getData()!=null&&data.getStatus().getData().size()>0){
+//            System.out.println(data.getStatus().getData().size());
+//            System.out.println(data.getStatus().getData().get(0));
+//            AdvanceStorageId=data.getStatus().getData().get(0);
+//        }
+//        CGDDDialogActivity.this.finish();
     }
 
     @Override

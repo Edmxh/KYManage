@@ -7,12 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordRep;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReq;
 import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReqBean;
+import com.example.kymanage.Bitmap.BigBitmap;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
@@ -38,6 +41,7 @@ import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetail2Pres
 import com.example.kymanage.presenter.Presenters.KFPage3Record.GetIssueNoteDetail4Presenter;
 import com.example.kymanage.presenter.Presenters.KFPage3Record.WriteOffProductOrderIssuePresenter;
 import com.example.kymanage.presenter.Presenters.KFPage4.GetIssueRecordPresenter;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,13 +55,13 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     //选择日期
     private TextView date;
     //入库冲销
-    private ImageView receive;
+//    private ImageView receive;
     private WriteOffProductOrderIssuePresenter presenter3;
     //补打发料单
-    private ImageView print1;
+//    private ImageView print1;
     private GetIssueNoteDetail4Presenter presenter4;
     //补打标签
-    private ImageView print2;
+//    private ImageView print2;
     //listview
     private ListView listview1;
     //
@@ -75,9 +79,13 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     //打印类
     private PrintHelper printHelper=null;
     private String username;
+    private mPrintUtil mPrintUtil;
 
     //震动
     private Vibrator vibrator;
+
+    private ImageView menupoint;
+    PopupMenu popup = null;
 
     @Override
     public int initLayoutId() {
@@ -88,9 +96,10 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         date = findViewById(R.id.date);
-        receive = findViewById(R.id.receive);
-        print1 = findViewById(R.id.print1);
-        print2 = findViewById(R.id.print2);
+//        receive = findViewById(R.id.receive);
+//        print1 = findViewById(R.id.print1);
+//        print2 = findViewById(R.id.print2);
+        menupoint=findViewById(R.id.menupoint);
         listview1 = findViewById(R.id.listview1);
 
         presenter1=new GetIssueRecordPresenter();
@@ -109,6 +118,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     @Override
     public void initData() {
+        mPrintUtil=new mPrintUtil();
         flDatas=new ArrayList<GetIssueNoteDetailReq>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
@@ -121,6 +131,10 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+
+        date.setText(getCurrentdate());
+        GetIssueDetailRecordReq req=new GetIssueDetailRecordReq(username, date.getText().toString());
+        presenter1.GetIssueRecord(req);
     }
 
     @Override
@@ -132,58 +146,85 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                 showDateAndTable();
             }
         });
-        receive.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<WriteOffProductOrderIssueReqBean> cxDatas=new ArrayList<WriteOffProductOrderIssueReqBean>();
-                for (int i = 0; i < datas.size(); i++) {
-                    View itmeview=listview1.getAdapter().getView(i,null,null);
-                    CheckBox cb= itmeview.findViewById(R.id.checked);
-                    if (cb.isChecked()){
-                        WriteOffProductOrderIssueReqBean cxData=new WriteOffProductOrderIssueReqBean((""+datas.get(i).getIssueId()));
-                        cxDatas.add(cxData);
-                    }
-                }
-                WriteOffProductOrderIssueReq cxReq=new WriteOffProductOrderIssueReq(getCurrentdate(),cxDatas);
-                presenter3.WriteOffProductOrderIssue(cxReq);
-//                Toast.makeText(KFFLRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
+                onPopupButtonClick(menupoint);
             }
         });
-        print1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                flDatas.clear();
-                for (int i = 0; i < datas.size(); i++) {
-                    View itmeview=listview1.getAdapter().getView(i,null,null);
-                    CheckBox cb= itmeview.findViewById(R.id.checked);
-                    if (cb.isChecked()){
-                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
-                        flDatas.add(flData);
+    }
+
+    //弹出菜单
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.kfflrecordmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.exit:
+                                // 隐藏该对话框
+                                popup.dismiss();
+                                break;
+                            case R.id.receive:
+                                // 隐藏该对话框
+                                List<WriteOffProductOrderIssueReqBean> cxDatas=new ArrayList<WriteOffProductOrderIssueReqBean>();
+                                for (int i = 0; i < datas.size(); i++) {
+                                    View itmeview=listview1.getAdapter().getView(i,null,null);
+                                    CheckBox cb= itmeview.findViewById(R.id.checked);
+                                    if (cb.isChecked()){
+                                        WriteOffProductOrderIssueReqBean cxData=new WriteOffProductOrderIssueReqBean((""+datas.get(i).getIssueId()));
+                                        cxDatas.add(cxData);
+                                    }
+                                }
+                                WriteOffProductOrderIssueReq cxReq=new WriteOffProductOrderIssueReq(getCurrentdate(),cxDatas);
+                                presenter3.WriteOffProductOrderIssue(cxReq);
+                                break;
+                            case R.id.print1:
+                                // 隐藏该对话框
+                                flDatas.clear();
+                                for (int i = 0; i < datas.size(); i++) {
+                                    View itmeview=listview1.getAdapter().getView(i,null,null);
+                                    CheckBox cb= itmeview.findViewById(R.id.checked);
+                                    if (cb.isChecked()){
+                                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
+                                        flDatas.add(flData);
+                                    }
+                                }
+                                presenter4.GetIssueNoteDetail2(flDatas);
+                                break;
+                            case R.id.print2:
+                                // 隐藏该对话框
+                                flDatas.clear();
+                                for (int i = 0; i < datas.size(); i++) {
+                                    View itmeview=listview1.getAdapter().getView(i,null,null);
+                                    CheckBox cb= itmeview.findViewById(R.id.checked);
+                                    if (cb.isChecked()){
+                                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
+                                        flDatas.add(flData);
+                                    }
+                                }
+                                presenter2.GetIssueNoteDetail2(flDatas);
+                                break;
+                            default:
+                                // 使用Toast显示用户单击的菜单项
+                                Toast.makeText(KFFLRecordActivity.this,
+                                        "您单击了【" + item.getTitle() + "】菜单项"
+                                        , Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
                     }
-                }
-                presenter4.GetIssueNoteDetail2(flDatas);
-                //Toast.makeText(KFFLRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
-            }
-        });
-        print2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                flDatas.clear();
-                for (int i = 0; i < datas.size(); i++) {
-                    View itmeview=listview1.getAdapter().getView(i,null,null);
-                    CheckBox cb= itmeview.findViewById(R.id.checked);
-                    if (cb.isChecked()){
-                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
-                        flDatas.add(flData);
-                    }
-                }
-                presenter2.GetIssueNoteDetail2(flDatas);
-                //Toast.makeText(KFFLRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
-            }
-        });
+                });
+        popup.show();
     }
     //日期弹窗
     private void showDateAndTable() {
@@ -256,27 +297,8 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     @Override
     public void onDataSuccess4(GetIssueNoteDetailRep data) {
-        Toast.makeText(KFFLRecordActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        List<GetIssueNoteDetailBean2> data1 = data.getData();
-        if(data1!=null){
-            if(data1.size()>0){
-                Bitmap bm=cb.createImage3(data,tf);//创建发料单
-
-                int picHeight = 100;//生成图片的高度，基础100+heightone85+heighttwo55+bottom 30
-                List<GetIssueNoteDetailBean2> orders = data.getData();
-                for (GetIssueNoteDetailBean2 order : orders) {
-                    picHeight+=85;
-                    List<GetIssueNoteDetailBean1> materials = order.getData();
-                    for (GetIssueNoteDetailBean1 material : materials) {
-                        picHeight+=55;
-                    }
-                }
-                picHeight+=30;
-                printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-                printHelper.printBlankLine(80);
-//                hasFL=true;
-            }
-        }
+        mPrintUtil.printFLBill(data,printHelper);
+        printHelper.printBlankLine(80);
     }
 
     @Override
@@ -319,7 +341,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(KFFLRecordActivity.this);
-        Toast.makeText(KFFLRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(KFFLRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     //获取当前日期
@@ -349,4 +371,6 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         }
         return super.onKeyDown (keyCode, event);
     }
+
+
 }

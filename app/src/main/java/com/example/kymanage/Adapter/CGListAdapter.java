@@ -2,6 +2,8 @@ package com.example.kymanage.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +29,7 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
     private InnerItemOnclickListener mListener;
     private List<GetRecevingDetailrep> mList;
     HashMap<Integer, Boolean> select=new HashMap<>();
+    HashMap<Integer, Boolean> select1=new HashMap<>();
     HashMap<Integer, Float> unable=new HashMap<>();
 
     //private DataBean1 DataBean1;
@@ -40,7 +43,12 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
     }
     private void initData() {
         for(int i=0;i<mList.size();i++){
-            select.put(i, false);
+            if(mList.get(i).getCurrentQty()>0){
+                select.put(i, true);
+            }else {
+                select.put(i, false);
+            }
+            select1.put(i, false);
             unable.put(i, mList.get(i).getCurrentQty());
         }
     }
@@ -66,41 +74,85 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
 
             // 避免每次调用getView()时都要重新获取控件实例
             viewHolder=new ViewHolder();
+            //获取控件和设置监听
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.wllx=view.findViewById(R.id.wllx);
+            viewHolder.xqsl=view.findViewById(R.id.xqsl);
+            viewHolder.dhsl=view.findViewById(R.id.dhsl);
+            viewHolder.rksl=view.findViewById(R.id.rksl);
+            viewHolder.checked=view.findViewById(R.id.checked);
+            viewHolder.checked1=view.findViewById(R.id.checked1);
+            viewHolder.label=view.findViewById(R.id.label);
+            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    select.put(position, isChecked);
+                }
+            });
+            viewHolder.checked1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    select1.put(position, isChecked);
+                }
+            });
+//            viewHolder.blank=view.findViewById(R.id.blank);
+            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+            // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.dhsl.addTextChangedListener(viewHolder.mTextWatcher);
+            viewHolder.updatePosition(position);
             view.setTag(viewHolder);
+//            viewHolder.updatePosition(position);
         } else{
 
             view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
 
             // 避免每次调用getView()时都要重新获取控件实例
             viewHolder=new ViewHolder();
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.wllx=view.findViewById(R.id.wllx);
+            viewHolder.xqsl=view.findViewById(R.id.xqsl);
+            viewHolder.dhsl=view.findViewById(R.id.dhsl);
+            viewHolder.rksl=view.findViewById(R.id.rksl);
+            viewHolder.checked=view.findViewById(R.id.checked);
+            viewHolder.checked1=view.findViewById(R.id.checked1);
+            viewHolder.label=view.findViewById(R.id.label);
+            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    select.put(position, isChecked);
+                }
+            });
+            viewHolder.checked1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    select1.put(position, isChecked);
+                }
+            });
+//            viewHolder.blank=view.findViewById(R.id.blank);
+            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+            // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.dhsl.addTextChangedListener(viewHolder.mTextWatcher);
             view.setTag(viewHolder);
-
-
+            viewHolder.updatePosition(position);
 //            view=convertView;
 //            viewHolder=(ViewHolder) view.getTag();
+//            viewHolder.updatePosition(position);
         }
-        //获取控件和设置监听
-        viewHolder.wlbm=view.findViewById(R.id.wlbm);
-        viewHolder.wlms=view.findViewById(R.id.wlms);
-        viewHolder.wllx=view.findViewById(R.id.wllx);
-        viewHolder.xqsl=view.findViewById(R.id.xqsl);
-        viewHolder.dhsl=view.findViewById(R.id.dhsl);
-        viewHolder.rksl=view.findViewById(R.id.rksl);
-        viewHolder.checked=view.findViewById(R.id.checked);
-        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                select.put(position, isChecked);
-            }
-        });
-        viewHolder.receive=view.findViewById(R.id.receive);
-//            viewHolder.blank=view.findViewById(R.id.blank);
-        viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
-        // 将ViewHolder存储在View中（即将控件的实例存储在其中）
-        viewHolder.receive.setOnClickListener(this);
-        viewHolder.receive.setTag(position);
         // 获取控件实例，并调用set...方法使其显示出来
 //        viewHolder.check.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -129,13 +181,22 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
         viewHolder.dhsl.setText(num3str);
         if(unable.get(position)<=0){
             viewHolder.dhsl.setBackgroundColor(Color.GRAY);
-            viewHolder.receive.setBackgroundColor(Color.GRAY);
-            viewHolder.receive.setClickable(false);
+            viewHolder.checked1.setVisibility(View.GONE);
+            viewHolder.label.setVisibility(View.GONE);
+        }
+        if(!rep.getMaterialType().equals("专有")){
+            viewHolder.checked1.setVisibility(View.GONE);
+            viewHolder.label.setVisibility(View.GONE);
         }
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
             viewHolder.checked.setChecked(false);
+        }
+        if(select1.get(position)){
+            viewHolder.checked1.setChecked(true);
+        }else{
+            viewHolder.checked1.setChecked(false);
         }
 //        switch (position%2){
 //            default:
@@ -211,12 +272,49 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
         EditText dhsl;
         TextView rksl;
         CheckBox checked;
-//        TextView blank;
+        CheckBox checked1;
+        TextView label;
         View parent_layout;
-        Button receive;
+
+        MyTextWatcher mTextWatcher;
+
+        //动态更新TextWathcer的position
+        public void updatePosition(int position) {
+            mTextWatcher.updatePosition(position);
+        }
     }
 
     public interface DetailViewHolderListener {
         void setData(ViewHolder viewHolder, int position);
+    }
+
+    class MyTextWatcher implements TextWatcher {
+        //由于TextWatcher的afterTextChanged中拿不到对应的position值，所以自己创建一个子类
+        private int mPosition;
+
+        public void updatePosition(int position) {
+            mPosition = position;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            float num;
+            if(s.toString().equals("")){
+                num=Float.parseFloat(("0"+s.toString()));
+            }else {
+                num=Float.parseFloat((s.toString()));
+            }
+            mList.get(mPosition).setCurrentQty(num);
+        }
     }
 }

@@ -14,9 +14,12 @@ import android.os.Vibrator;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
@@ -40,6 +43,7 @@ import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.Print2.GetDumpRecordNodePresenter;
 import com.example.kymanage.presenter.Presenters.Print2.MaterialFactoryDumpPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3.GetMaterialMasterDataJSPresenter;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,9 +56,9 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     //震动
     private Vibrator vibrator;
     private ImageView scan;
-    private ImageView print;
-    private ImageView divert;
-    private ImageView record;
+//    private ImageView print;
+//    private ImageView divert;
+//    private ImageView record;
     //表格
     private ListView listview1;
     private List<MaterialFactoryDumpReqBean> datas;
@@ -89,6 +93,11 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     //自定义字体
     private Typeface tf;
 
+    private ImageView menupoint;
+    PopupMenu popup = null;
+
+    private mPrintUtil mPrintUtil=new mPrintUtil();
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_print_kgcpsd;
@@ -98,9 +107,10 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         scan=findViewById(R.id.scan);
-        print=findViewById(R.id.print);
-        divert=findViewById(R.id.divert);
-        record=findViewById(R.id.record);
+//        print=findViewById(R.id.print);
+//        divert=findViewById(R.id.divert);
+//        record=findViewById(R.id.record);
+        menupoint=findViewById(R.id.menupoint);
         listview1=findViewById(R.id.listview1);
 
         presenter1=new GetMaterialMasterDataJSPresenter();
@@ -206,38 +216,69 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 //                }
             }
         });
-        divert.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                if(datas.size()>0){
-                    MaterialFactoryDumpReq req=new MaterialFactoryDumpReq(username,datas);
-                    presenter2.MaterialFactoryDump(req);
-                }
+                onPopupButtonClick(menupoint);
 
             }
         });
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                Intent intent=new Intent(PrintKGCPSDActivity.this,DivertRecord1Activity.class);
-                intent.putExtra("username",username);
-                startActivity(intent);
-            }
-        });
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                if(printDatas.size()>0){
-                    presenter3.GetDumpRecordNode(printDatas);
-                }else {
-                    Toast.makeText(PrintKGCPSDActivity.this, "请先转储", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
+    }
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.kgcpsmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.divert:
+                                // 隐藏该对话框
+                                vibrator.vibrate(30);
+                                if(datas.size()>0){
+                                    MaterialFactoryDumpReq req=new MaterialFactoryDumpReq(username,datas);
+                                    presenter2.MaterialFactoryDump(req);
+                                }
+                                break;
+                            case R.id.print:
+                                // 隐藏该对话框
+                                vibrator.vibrate(30);
+                                if(printDatas.size()>0){
+                                    presenter3.GetDumpRecordNode(printDatas);
+                                }else {
+                                    Toast.makeText(PrintKGCPSDActivity.this, "请先转储", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                            case R.id.exit:
+                                vibrator.vibrate(30);
+                                // 隐藏该对话框
+                                popup.dismiss();
+                                break;
+                            case R.id.record:
+                                vibrator.vibrate(30);
+                                // 隐藏该对话框
+                                Intent intent=new Intent(PrintKGCPSDActivity.this,DivertRecord1Activity.class);
+                                intent.putExtra("username",username);
+                                startActivity(intent);
+                                break;
+                            default:
+                                // 使用Toast显示用户单击的菜单项
+                                Toast.makeText(PrintKGCPSDActivity.this,
+                                        "您单击了【" + item.getTitle() + "】菜单项"
+                                        , Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+        popup.show();
     }
 
     @Override
@@ -267,11 +308,13 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
         try {
             printHelper.printBlankLine(10);
             for (GetDumpRecordNodeRepBean2 data2 : data1) {
-                Bitmap bm=cb.createImage10(data2,tf);
-                printHelper.PrintBitmapAtCenter(bm,384,450+55*(data2.getData().size()));
-                printHelper.printBlankLine(40);
+//                Bitmap bm=cb.createImage10(data2,tf);
+//                printHelper.PrintBitmapAtCenter(bm,384,450+55*(data2.getData().size()));
+//                printHelper.printBlankLine(40);
+                mPrintUtil.printKGCBill(data2,printHelper);
+                printHelper.printBlankLine(80);
             }
-            printHelper.printBlankLine(40);
+//            printHelper.printBlankLine(40);
         } catch (Exception e) {
             e.printStackTrace();
         }

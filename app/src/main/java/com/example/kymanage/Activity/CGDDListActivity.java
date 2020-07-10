@@ -1,8 +1,10 @@
 package com.example.kymanage.Activity;
 
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -11,14 +13,15 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.kymanage.Adapter.CGListAdapter;
@@ -27,7 +30,8 @@ import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailreps;
 import com.example.kymanage.Beans.GetParchaseCenterLable.GetParchaseCenterLableRep;
 import com.example.kymanage.Beans.GetParchaseCenterLable.GetParchaseCenterLableReps;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
-import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Req;
+import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103RepStatus;
+import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103ReqBean;
 import com.example.kymanage.Beans.MaterialFlow103.ProductOrderBean;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
@@ -47,7 +51,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecevingDetailreps>, BaseView2<MaterialFlow103Rep>, PrintBaseView<GetParchaseCenterLableReps>, CGListAdapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
+public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecevingDetailreps>, BaseView2<MaterialFlow103RepStatus>, PrintBaseView<GetParchaseCenterLableReps>, CGListAdapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
     //自定义请求码常量
     private static final int REQUEST_CODE = 1;
     //从主菜单传递
@@ -66,11 +70,11 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 //    private Button receive;
     private CG103SHReceivePresenter presenter2;
     //打印
-    private ImageView print;
+//    private ImageView print;
     private List<Long> printList;
     private CGSHPrintPresenter presenter3;
     //记录
-    private ImageView record;
+//    private ImageView record;
     //打印类
     private PrintHelper printHelper=null;
     //listview
@@ -87,10 +91,20 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     //全选框
 //    private CheckBox checkAll;
 
+    //扫描相关
+    private ImageView scan;
+    private String m_Broadcastname="com.barcode.sendBroadcast";
+    private MyCodeReceiver receiver = new MyCodeReceiver();
+    //扫到的string
+    private String scanString;
+
     //选中收货的index
     private int checkednum;
     //震动
     private Vibrator vibrator;
+
+    private ImageView menupoint;
+    PopupMenu popup = null;
 
 
 
@@ -109,7 +123,8 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         query=findViewById(R.id.query);
         cgddh=findViewById(R.id.cgddh);
-        record=findViewById(R.id.record);
+//        record=findViewById(R.id.record);
+        menupoint=findViewById(R.id.menupoint);
 //        cgddh.setText("4100011743");
         presenter1=new CGSHQueryPresenter();
         presenter1.setView(this);
@@ -118,7 +133,8 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
         presenter2=new CG103SHReceivePresenter();
         presenter2.setView(this);
 
-        print=findViewById(R.id.print);
+//        print=findViewById(R.id.print);
+        scan=findViewById(R.id.scan);
         presenter3=new CGSHPrintPresenter();
         presenter3.setView(this);
 
@@ -143,9 +159,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 //        datas1=new ArrayList<GetRecevingDetailrep>();
         list=new ArrayList<GetRecevingDetailrep>();
         printList=new ArrayList<Long>();
-        for (int i = 0; i < 100; i++) {
-            printList.add(0L);
-        }
+
         cb=new CreateBitmap();
         //初始化打印类
         initPrinter();
@@ -207,13 +221,32 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 //                }
 //            }
 //        });
-        record.setOnClickListener(new View.OnClickListener() {
+        scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                Intent intent2 = new Intent(CGDDListActivity.this, CGRecordActivity.class);
-                intent2.putExtra("username", username);
-                startActivity(intent2);
+                //确保扫描完毕scanString被赋值后才被解析
+                Thread scanThread=new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        scan();
+                    }
+                });
+
+                scanThread.start();
+                try {
+                    scanThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        menupoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                onPopupButtonClick(menupoint);
             }
         });
         query.setOnClickListener(new View.OnClickListener() {
@@ -229,43 +262,44 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 ////                receive(checkednum);
 //            }
 //        });
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                //当前时间
-                Date dateNow = new Date();
-                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                currentdate = sf.format(dateNow);
-
-                List<Long> checkedPrintList=new ArrayList<Long>();
-                int cbs=0;
-//                System.out.println("list.size():"+list.size());
-                for (int i = 0; i < list.size(); i++) {
+//        print.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//                //当前时间
+//                Date dateNow = new Date();
+//                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//                currentdate = sf.format(dateNow);
+//
+//                List<Long> checkedPrintList=new ArrayList<Long>();
+//                int cbs=0;
+////                System.out.println("list.size():"+list.size());
+//                for (int i = 0; i < list.size(); i++) {
+////                    View itmeview=cglistview.getAdapter().getView(i,null,null);
+////                    CheckBox cb= itmeview.findViewById(R.id.checked);
 //                    View itmeview=cglistview.getAdapter().getView(i,null,null);
 //                    CheckBox cb= itmeview.findViewById(R.id.checked);
-                    View itmeview=cglistview.getAdapter().getView(i,null,null);
-                    CheckBox cb= itmeview.findViewById(R.id.checked);
-//                    CheckBox cb=cglistview.getChildAt(i - cglistview.getFirstVisiblePosition()).findViewById(R.id.checked);
-                    //EditText et=itmeview.findViewById(R.id.dhsl);
-                    //float num=Float.parseFloat(""+et.getText().toString());
-                    //printList.get(i).setReceiveNum(num);
-                    if (cb.isChecked()){
-                        checkedPrintList.add(printList.get(i));
-                        cbs++;
-                    }
-                }
-                System.out.println("收货打印选中数:"+cbs);
-                if(cbs==0){
-                    Toast.makeText(CGDDListActivity.this, "未选中要打印的标签行", Toast.LENGTH_SHORT).show();
-                }else {
-                    presenter3.CGSHPrint(checkedPrintList,username,currentdate);
-                }
-//                Intent intent = new Intent(CGDDListActivity.this, PrintPerviewActivity.class);
-//                startActivity(intent);
-                //Toast.makeText(CGDDListActivity.this, "正在打印...", Toast.LENGTH_SHORT).show();
-            }
-        });
+////                    CheckBox cb=cglistview.getChildAt(i - cglistview.getFirstVisiblePosition()).findViewById(R.id.checked);
+//                    //EditText et=itmeview.findViewById(R.id.dhsl);
+//                    //float num=Float.parseFloat(""+et.getText().toString());
+//                    //printList.get(i).setReceiveNum(num);
+//                    if (cb.isChecked()){
+//                        checkedPrintList.add(printList.get(i));
+//                        cbs++;
+//                    }
+//                }
+//                System.out.println("收货打印选中数:"+cbs);
+//                if(cbs==0){
+//                    Toast.makeText(CGDDListActivity.this, "未选中要打印的标签行", Toast.LENGTH_SHORT).show();
+//
+//                }else {
+//                    presenter3.CGSHPrint(checkedPrintList,username,currentdate);
+//                }
+////                Intent intent = new Intent(CGDDListActivity.this, PrintPerviewActivity.class);
+////                startActivity(intent);
+//                //Toast.makeText(CGDDListActivity.this, "正在打印...", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 //        date.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -274,39 +308,23 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 //        });
     }
 
-    public void receive(int checkednum){
-        GetRecevingDetailrep checkedData=list.get(checkednum);
-//        if(((checkedData.getMaterialType()).equals("专有物料"))){
-        if(checkedData.getMaterialType().equals("专有")||checkedData.getMaterialType().equals("独立")){
-            Intent intent=new Intent(CGDDListActivity.this,CGDDDialogActivity.class);
-            intent.putExtra("materialCode",checkedData.getCode());
-            System.out.println(checkedData.getCode()+"|||"+checkedData.getFactory());
-//            intent.putExtra("materialCode","LJ4515006377-A01");
-            intent.putExtra("factoryNO",checkedData.getFactory());
-//            intent.putExtra("factoryNO","2090");
-            EditText et=cglistview.getChildAt(checkednum - cglistview.getFirstVisiblePosition()).findViewById(R.id.dhsl);
-            String recenumstr=et.getText().toString();
-            float num=Float.parseFloat(("0"+recenumstr));
-            intent.putExtra("dhsl",num);
-            intent.putExtra("index",checkednum);
-            intent.putExtra("username",username);
-            intent.putExtra("checkedData",(Serializable) checkedData);
-            startActivityForResult(intent,REQUEST_CODE);
-//            overridePendingTransition(android.R.anim.slide_in_left,0);
-        }else {
-            List<ProductOrderBean> productOrder=new ArrayList<ProductOrderBean>();
-            EditText et=cglistview.getChildAt(checkednum - cglistview.getFirstVisiblePosition()).findViewById(R.id.dhsl);
-            String recenumstr=et.getText().toString();
-            float num=Float.parseFloat(("0"+recenumstr));
-            System.out.println(num);
-            productOrder.clear();
-            List<MaterialFlow103Req> detail=new ArrayList<MaterialFlow103Req>();
-            MaterialFlow103Req req=new MaterialFlow103Req(num,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getLGFSB(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
-            detail.add(req);
-            presenter2.CG103SHReceive(getCurrentdate(),getCurrentdate(),username,detail);
-//            presenter2.CG103SHReceive("2020-01-01",getCurrentdate(),username,num,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
-            //Toast.makeText(CGDDListActivity.this, "采购收货成功", Toast.LENGTH_SHORT).show();
+    public void receive(){
+        List<MaterialFlow103ReqBean> detail=new ArrayList<MaterialFlow103ReqBean>();
+        for (int i = 0; i < list.size(); i++) {
+            GetRecevingDetailrep currentData = list.get(i);
+            View itmeview=cglistview.getAdapter().getView(i,null,null);
+            EditText et=itmeview.findViewById(R.id.dhsl);
+            CheckBox cb= itmeview.findViewById(R.id.checked);
+            CheckBox cb1= itmeview.findViewById(R.id.checked1);
+
+            if(cb.isChecked()){
+                String recenumstr=et.getText().toString();
+                float num=Float.parseFloat(("0"+recenumstr));
+                MaterialFlow103ReqBean req=new MaterialFlow103ReqBean(currentData.getOrderNum(), currentData.getRow(), currentData.getFactory(), currentData.getCode(), currentData.getMaterialType(), currentData.getDescription(), num, currentData.getUnit(), currentData.getRemark(), cb1.isChecked(), currentData.getLGPRO());
+                detail.add(req);
+            }
         }
+        presenter2.CG103SHReceive(getCurrentdate(),getCurrentdate(),username,detail);
     }
 
     //日期弹窗
@@ -353,40 +371,44 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     }
 
     @Override
-    public void onDataSuccess2(MaterialFlow103Rep data) {
-        Toast.makeText(CGDDListActivity.this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        if(data.getStatus().getData()!=null){
-            if(data.getStatus().getData().size()>0){
-                System.out.println(data.getStatus().getData().size());
-                System.out.println(data.getStatus().getData().get(0));
-                printList.set(checkednum,data.getStatus().getData().get(0));
+    public void onDataSuccess2(MaterialFlow103RepStatus data) {
+        try {
+            printList.clear();
+            Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            for (Long aLong : data.getData()) {
+                printList.add(aLong);
             }
+            queryList();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        queryList();
     }
 
     @Override
     public void onDataSuccessPrint(GetParchaseCenterLableReps data) {
-//        System.out.println("打印成功？");
         List<GetParchaseCenterLableRep> labels=data.getData();
         Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
         if(labels!=null){
-            if (labels.size()==0){
-                printHelper.Step((byte) 0x5f);
-            }else {
                 for (GetParchaseCenterLableRep label : labels) {
-                    Bitmap bm=cb.createImage1(label,tf);
-                    printHelper.PrintBitmapAtCenter(bm,384,480);
-                    printHelper.printBlankLine(80);
+                    if(label.isSeparateLabel()){
+                        int labelNum= (int) label.getNum();
+                        for (int i = 0; i <labelNum ; i++) {
+                            Bitmap bm=cb.createImage1(label,tf);
+                            printHelper.PrintBitmapAtCenter(bm,384,480);
+                            printHelper.printBlankLine(80);
+                        }
+                    }else {
+                        Bitmap bm=cb.createImage1(label,tf);
+                        printHelper.PrintBitmapAtCenter(bm,384,480);
+                        printHelper.printBlankLine(80);
+                    }
                 }
 //                printHelper.printBlankLine(40);
                 System.out.println("打印标签的数量为"+data.getData().size());
 //                Toast.makeText(CGDDListActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
-            }
         }else {
             System.out.println("未打印标签");
         }
-
     }
 
     @Override
@@ -414,68 +436,13 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
         switch (v.getId()) {
             case R.id.receive:
                 vibrator.vibrate(30);
-                Log.e("内部receive>>", position + "");
-                checkednum = position;
-                receive(checkednum);
+//                Log.e("内部receive>>", position + "");
+//                checkednum = position;
+//                receive();
                 break;
             default:
                 break;
         }
-    }
-    //时间弹窗
-//    private void showtime(){
-//        new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT,new TimePickerDialog.OnTimeSetListener() {
-//
-//            @Override
-//            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//
-//                String day;
-//                if (hourOfDay < 10){
-//                    day="0"+hourOfDay;
-//                }else {
-//                    day=""+hourOfDay;
-//                }
-//                if (minute < 10){
-//                    time.setText(day+":"+"0"+minute);
-//                }else {
-//                    time.setText(day+":"+minute);
-//                }
-//            }
-//        }, 0, 0, true).show();
-//
-//    }
-
-    public class ListViewItemOnClick implements AdapterView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            //View itme=cglistview.getChildAt(position);
-
-            //CheckableLayout itemlayout=itme.findViewById(R.id.parent_layout);
-            //单选
-//            for (int i = 0; i < list.size(); i++) {
-//                //View itme=cgshlistview.getChildAt(i);
-////                View itme=cglistview.getChildAt(i);
-//                View itme=cglistview.getChildAt(i - cglistview.getFirstVisiblePosition());
-//                if (i==position){
-//                    setBackgroundChange(itme, R.drawable.tablebody3);
-//                }else {
-//                    setBackgroundChange(itme, R.drawable.tablebody4);
-//                }
-//            }
-//            if(itemlayout.isChecked()){
-//                setBackgroundChange(itme, R.drawable.tablebody3);
-//            }else {
-//                if(position%2==1){
-//                    setBackgroundChange(itme, R.drawable.tablebody1);
-//                }else {
-//                    setBackgroundChange(itme, R.drawable.tablebody2);
-//                }
-//            }
-//            itemlayout.toggle();
-        }
-
     }
 
     public void setBackgroundChange(View view,int i){
@@ -491,7 +458,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(CGDDListActivity.this);
-        Toast.makeText(CGDDListActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(CGDDListActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     //查询&&刷新
@@ -524,6 +491,108 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                 return true;
         }
         return super.onKeyDown (keyCode, event);
+    }
+
+    //扫描操作
+    public void scan(){
+        Intent intent = new Intent();
+        intent.setAction("com.barcode.sendBroadcastScan");
+        sendBroadcast(intent);
+    }
+    //注册广播
+    public void registerBroadcast() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(m_Broadcastname);
+//        Toast.makeText(KFFLActivity.this, "扫描注册初始化", Toast.LENGTH_SHORT).show();
+        registerReceiver(receiver, intentFilter);
+    }
+    //接收类
+    public class MyCodeReceiver extends BroadcastReceiver
+    {
+        private static final String TAG = "MycodeReceiver";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(m_Broadcastname)) {
+                String str = intent.getStringExtra("BARCODE");
+                if (!"".equals(str)) {
+                    //tv.setText(str);
+                    scanString=str;
+                    cgddh.setText(scanString);
+                }else {
+                    Toast.makeText(CGDDListActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerBroadcast();
+    }
+
+
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.cgmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.receive:
+                                vibrator.vibrate(30);
+                                if(list.size()==0){
+                                    Toast.makeText(CGDDListActivity.this, "未查出要收货的物料", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    receive();
+                                }
+                                break;
+                            case R.id.print:
+                                // 隐藏该对话框
+                                vibrator.vibrate(30);
+                                //当前时间
+                                Date dateNow = new Date();
+                                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                currentdate = sf.format(dateNow);
+
+                                presenter3.CGSHPrint(printList,username,currentdate);
+
+                                break;
+                            case R.id.exit:
+                                vibrator.vibrate(30);
+                                // 隐藏该对话框
+                                popup.dismiss();
+                                break;
+                            case R.id.record:
+                                vibrator.vibrate(30);
+                                // 隐藏该对话框
+                                Intent intent2 = new Intent(CGDDListActivity.this, CGRecordActivity.class);
+                                intent2.putExtra("username", username);
+                                startActivity(intent2);
+                                break;
+                            default:
+                                // 使用Toast显示用户单击的菜单项
+                                Toast.makeText(CGDDListActivity.this,
+                                        "您单击了【" + item.getTitle() + "】菜单项"
+                                        , Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+        popup.show();
     }
 
 }

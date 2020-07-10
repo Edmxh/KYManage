@@ -37,11 +37,13 @@ import com.example.kymanage.Beans.LabelBean;
 import com.example.kymanage.Beans.LoginBean;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
+import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103RepStatus;
 import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
 import com.example.kymanage.Beans.PurchaseCenterRecord.PurchaseCenterRecordReps;
 import com.example.kymanage.Beans.FlagAndMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
+import com.example.kymanage.Beans.ScanIssueNoteDetail.ScanIssueNoteDetailRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRep;
 import com.example.kymanage.Beans.WarehouseReceiptRecord.WarehouseReceiptRecordReps;
@@ -57,46 +59,6 @@ public interface APIService {
     Observable<LoginBean> login(@Body RequestBody login);
 
 
-
-    //查询标签
-    @POST(API.QueryLabel)
-    Observable<LabelBean> querylabel(@Body RequestBody lableseqnum);
-
-    //收货
-    @POST(API.Receipt)
-    Observable<StatusRespBean> receipt(@Body RequestBody datas);
-
-    //物料状态查询
-    @POST(API.LabelStatus)
-    Observable<LabelStatussBean> labelstatus(@Body RequestBody lableseqnum);
-
-    //物料状态查询
-    @POST(API.LabelAreaChange)
-    Observable<FlagAndMessageBean> labelareachange(@Body RequestBody changeinfo);
-
-    //采购半成品收货(机加103预入库)
-    @POST(API.UpdateSemiStorage)
-    Observable<StatusRespBean> updatesemistorage(@Body RequestBody updatesemistoragereq);
-
-    //成品入库
-    @POST(API.UpdatefinishedStorage)
-    Observable<StatusRespBean> updatefinishedstorage(@Body RequestBody finishedinfo);
-
-    //物料配送-物流属性接口
-    @POST(API.GetMaterialInfo)
-    Observable<GetMaterialInfoBean> getmaterialinfo(@Body RequestBody material);
-
-
-    //库房301转储
-    @POST(API.WarehouseReceipts)
-    Observable<StatusRespBean> warehousereceipts(@Body RequestBody material);
-
-
-
-    //机加101入库
-    @POST(API.InsertCMStorageRecevingRecordDetail)
-    Observable<StatusRespBean> InsertCMStorageRecevingRecordDetail(@Body RequestBody material);
-
     //物流通用
     //物流通用103预入库冲销
     @POST(API.MaterialFlow103WriteOff)
@@ -111,7 +73,7 @@ public interface APIService {
     Observable<GetRecevingDetailreps> GetRecevingDetail(@Body RequestBody noandrow);
     //采购收货103预入库
     @POST(API.MaterialFlow103)
-    Observable<MaterialFlow103Rep> MaterialFlow103(@Body RequestBody noandrow);
+    Observable<MaterialFlow103RepStatus> MaterialFlow103(@Body RequestBody noandrow);
     //获取采购中心收货记录
     @POST(API.PurchaseCenterRecord)
     Observable<PurchaseCenterRecordReps> PurchaseCenterRecord(@Body RequestBody noandrow);
@@ -140,8 +102,12 @@ public interface APIService {
     Observable<GetStockInformationDataJSRep> GetStockInformationDataJS(@Body RequestBody issuevouchernumber);
 
     //261发料
-    @POST(API.InsertProductOrderIssue)
+    @POST(API.SendProductOrderIssue)
     Observable<InsertProductOrderIssueRep> InsertProductOrderIssue(@Body RequestBody material);
+
+    //扫码发料
+    @POST(API.ScanIssueNoteDetail)
+    Observable<ScanIssueNoteDetailRep> ScanIssueNoteDetail(@Body RequestBody material);
 
     //打印发料单及发料接口
     @POST(API.GetIssueNoteDetail)

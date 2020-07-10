@@ -2,6 +2,7 @@ package com.example.kymanage.Bitmap;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -30,6 +31,8 @@ import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRec
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -128,6 +131,9 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
         paint.setFakeBoldText(false);
 
+        if(rep.isSeparateLabel()){
+            rep.setNum(1);
+        }
         String str4="单位:"+rep.getUnit()+" "+"数量:"+(int)(rep.getNum());
         paint.setTextSize(text3);
         top+=text1+lineSpacing;
@@ -331,7 +337,7 @@ public class CreateBitmap{
         top+=lineSpacing;
         canvas.drawLine (0,top,picWidth,top,paint);
 
-        String str10="TKAS"+"                    "+getCurrentdate()+" "+"CM";
+        String str10="TKAS"+"             "+getCurrentdate()+" "+"CM";
         paint.setTextSize(text4);
         paint.setFakeBoldText(false);
         top+=text4;
@@ -400,7 +406,8 @@ public class CreateBitmap{
     public Bitmap createImage3(GetIssueNoteDetailRep rep,Typeface tf) {
 //    public Bitmap createImage3() {
         int picWidth = 384;//生成图片的宽度
-        int height1 = 100;//基础100
+        int QRx = 96;//二维码坐标
+        int height1 = 100+(picWidth-QRx*2);//基础100
         int height2 = 85;//heightone85
         int height3 = 55;//heighttwo55
         int height4 = 30;//bottom 30
@@ -451,6 +458,25 @@ public class CreateBitmap{
         paint.setTextSize(titleTextSize);
         int titlex=(picWidth-5*titleTextSize)/2;
         canvas.drawText(strTitle,titlex,top,paint);
+
+        top+=lineSpacing;
+
+        //补二维码
+        //画二维码
+        String content="{\"no\":\"123456\"}";
+        Bitmap bm=null;
+        try {
+            bm = BarcodeUtil.encodeAsBitmap(content,
+                    BarcodeFormat.QR_CODE,picWidth-QRx*2, picWidth-QRx*2);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        canvas.drawBitmap(bm,QRx,top,paint);
+
+        top+=(picWidth-QRx*2);
+
+
+
         //凭证号和流水号
 //        //凭证号暂时和流水号取同一个值
 //        String str1="凭证号："+rep.getSeriesNumber();
@@ -1502,7 +1528,7 @@ public class CreateBitmap{
         return result;
     }
 
-    //厂内配送单内容行
+    //跨工厂配送单内容行
     private void drawKGCPSDContentLine1(Canvas canvas, Paint paint, int top, int textsize, GetDumpRecordNodeRepBean1 bean,int i){
         drawBlackLine(canvas,paint,top);
         top+=textsize+5;
@@ -1510,5 +1536,26 @@ public class CreateBitmap{
         canvas.drawText((i+1)+"             "+bean.getMaterialCode(),10,top,paint);
         top+=textsize+5;
         canvas.drawText(bean.getMaterialDesc()+"             "+bean.getQty()+"/"+bean.getTQty(),10,top,paint);
+    }
+
+
+    /**
+     * 压缩图片
+     *
+     * @param image
+     * @return
+     */
+    public Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;//每次都减少10
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        return bitmap;
     }
 }

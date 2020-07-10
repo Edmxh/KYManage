@@ -5,37 +5,6 @@ public interface API {
     //登录
     String LOGIN = "ThingX/Things/AppProgramThing/Services/Login";
 
-    //查询标签
-    String QueryLabel="ThingX/Things/AppProgramThing/Services/RegenerateLabel";
-
-    //收货
-    String Receipt="ThingX/Things/AppProgramThing/Services/UpdateStorage";
-
-    //物料状态查询
-    String LabelStatus="ThingX/Things/AppProgramThing/Services/GetLableInfo";
-
-    //物料场地变更
-    String LabelAreaChange="ThingX/Things/AppProgramThing/Services/UpdateLableRecord";
-
-
-
-    //采购半成品收货(机加103预入库)
-    String UpdateSemiStorage="ThingX/Things/AppProgramThing/Services/UpdateSemiStorage";
-
-    //成品入库
-    String UpdatefinishedStorage="ThingX/Things/AppProgramThing/Services/UpdatefinishedStorage";
-
-    //物料配送-物流属性接口
-    String GetMaterialInfo="ThingX/Things/AppProgramThing/Services/GetMaterialInfo";
-
-
-
-    //库房301
-    String WarehouseReceipts="ThingX/Things/AppProgramThing/Services/WarehouseReceipts";
-
-
-    //机加101入库
-    String InsertCMStorageRecevingRecordDetail="ThingX/Things/AppProgramThing/Services/InsertCMStorageRecevingRecordDetail";
 
     //物流通用-----------------------------------------------------------------------
     //获取物料主数据接口
@@ -69,6 +38,11 @@ public interface API {
     String GetStockInformationDataJS="ThingX/Things/AppProgramThing/Services/GetStockInformationDataJS";
     //261生产订单发料
     String InsertProductOrderIssue="ThingX/Things/AppProgramThing/Services/InsertProductOrderIssue";
+
+    String SendProductOrderIssue="ThingX/Things/AppProgramThing/Services/SendProductOrderIssue";
+
+    //扫码发料
+    String ScanIssueNoteDetail="ThingX/Things/AppProgramThing/Services/ScanIssueNoteDetail";
 
     //打印发料单及发料接口
     String GetIssueNoteDetail="ThingX/Things/AppProgramThing/Services/GetIssueNoteDetail";

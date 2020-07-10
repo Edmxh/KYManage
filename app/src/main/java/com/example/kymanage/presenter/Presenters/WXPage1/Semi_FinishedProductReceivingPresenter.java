@@ -1,16 +1,12 @@
 package com.example.kymanage.presenter.Presenters.WXPage1;
 
 
-import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
-import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Req;
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingReq;
 import com.example.kymanage.model.AppModel;
 import com.example.kymanage.net.HttpDataListener;
 import com.example.kymanage.presenter.BasePresenter;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
-
-import java.util.List;
 
 public class Semi_FinishedProductReceivingPresenter extends BasePresenter<BaseView2<Semi_FinishedProductReceivingRep>> {
 
