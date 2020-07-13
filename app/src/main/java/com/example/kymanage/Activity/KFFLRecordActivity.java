@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.example.kymanage.Adapter.KFFLRecordAdapter;
 import com.example.kymanage.Beans.General.StatusRespBean;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordReq;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordReqBean;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean1;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean2;
@@ -30,7 +33,6 @@ import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordRep;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReq;
 import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReqBean;
-import com.example.kymanage.Bitmap.BigBitmap;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
@@ -38,7 +40,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.InterfaceView.BaseView4;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetail2Presenter;
-import com.example.kymanage.presenter.Presenters.KFPage3Record.GetIssueNoteDetail4Presenter;
+import com.example.kymanage.presenter.Presenters.KFPage3Record.GenerateStorageLssueRecord4Presenter;
 import com.example.kymanage.presenter.Presenters.KFPage3Record.WriteOffProductOrderIssuePresenter;
 import com.example.kymanage.presenter.Presenters.KFPage4.GetIssueRecordPresenter;
 import com.example.kymanage.utils.mPrintUtil;
@@ -51,7 +53,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIssueDetailRecordReps>, BaseView3<GetIssueNoteDetailRep>, BaseView2<StatusRespBean>, BaseView4<GetIssueNoteDetailRep> {
+public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIssueDetailRecordReps>, BaseView3<GetIssueNoteDetailRep>, BaseView2<StatusRespBean>, BaseView4<GenerateStorageLssueRecordRep> {
     //选择日期
     private TextView date;
     //入库冲销
@@ -59,7 +61,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     private WriteOffProductOrderIssuePresenter presenter3;
     //补打发料单
 //    private ImageView print1;
-    private GetIssueNoteDetail4Presenter presenter4;
+    private GenerateStorageLssueRecord4Presenter presenter4;
     //补打标签
 //    private ImageView print2;
     //listview
@@ -71,7 +73,8 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     private GetIssueRecordPresenter presenter1;
     //补打标签
     private GetIssueNoteDetail2Presenter presenter2;
-    private List<GetIssueNoteDetailReq> flDatas;
+    private List<GenerateStorageLssueRecordReqBean> flDatas;
+    private List<GetIssueNoteDetailReq> bqDatas;
     //标签生成器
     private CreateBitmap cb;
     //自定义字体
@@ -111,7 +114,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         presenter3=new WriteOffProductOrderIssuePresenter();
         presenter3.setView(this);
 
-        presenter4=new GetIssueNoteDetail4Presenter();
+        presenter4=new GenerateStorageLssueRecord4Presenter();
         presenter4.setView(this);
 
     }
@@ -119,7 +122,8 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     @Override
     public void initData() {
         mPrintUtil=new mPrintUtil();
-        flDatas=new ArrayList<GetIssueNoteDetailReq>();
+        flDatas=new ArrayList<GenerateStorageLssueRecordReqBean>();
+        bqDatas=new ArrayList<GetIssueNoteDetailReq>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
         datas=new ArrayList<GetIssueDetailRecordRep>();
@@ -196,11 +200,12 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                                     View itmeview=listview1.getAdapter().getView(i,null,null);
                                     CheckBox cb= itmeview.findViewById(R.id.checked);
                                     if (cb.isChecked()){
-                                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
+                                        GenerateStorageLssueRecordReqBean flData=new GenerateStorageLssueRecordReqBean(datas.get(i).getIssueId());
                                         flDatas.add(flData);
                                     }
                                 }
-                                presenter4.GetIssueNoteDetail2(flDatas);
+                                GenerateStorageLssueRecordReq FLReq=new GenerateStorageLssueRecordReq(username,flDatas);
+                                presenter4.GenerateStorageLssueRecord2(FLReq);
                                 break;
                             case R.id.print2:
                                 // 隐藏该对话框
@@ -209,11 +214,11 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                                     View itmeview=listview1.getAdapter().getView(i,null,null);
                                     CheckBox cb= itmeview.findViewById(R.id.checked);
                                     if (cb.isChecked()){
-                                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
-                                        flDatas.add(flData);
+                                        GetIssueNoteDetailReq bqData=new GetIssueNoteDetailReq((""+datas.get(i).getIssueId()));
+                                        bqDatas.add(bqData);
                                     }
                                 }
-                                presenter2.GetIssueNoteDetail2(flDatas);
+                                presenter2.GetIssueNoteDetail2(bqDatas);
                                 break;
                             default:
                                 // 使用Toast显示用户单击的菜单项
@@ -296,7 +301,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     }
 
     @Override
-    public void onDataSuccess4(GetIssueNoteDetailRep data) {
+    public void onDataSuccess4(GenerateStorageLssueRecordRep data) {
         mPrintUtil.printFLBill(data,printHelper);
         printHelper.printBlankLine(80);
     }

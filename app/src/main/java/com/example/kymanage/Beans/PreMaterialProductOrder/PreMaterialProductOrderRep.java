@@ -65,6 +65,10 @@ public class PreMaterialProductOrderRep {
 
     private SAPStorageBean SAPStorage;
 
+    private String PLNFL;
+    private String LTXA1;
+    private String MATKL;
+
 
 
 
@@ -298,5 +302,29 @@ public class PreMaterialProductOrderRep {
 
     public void setSAPStorage(SAPStorageBean SAPStorage) {
         this.SAPStorage = SAPStorage;
+    }
+
+    public String getPLNFL() {
+        return PLNFL;
+    }
+
+    public void setPLNFL(String PLNFL) {
+        this.PLNFL = PLNFL;
+    }
+
+    public String getLTXA1() {
+        return LTXA1;
+    }
+
+    public void setLTXA1(String LTXA1) {
+        this.LTXA1 = LTXA1;
+    }
+
+    public String getMATKL() {
+        return MATKL;
+    }
+
+    public void setMATKL(String MATKL) {
+        this.MATKL = MATKL;
     }
 }

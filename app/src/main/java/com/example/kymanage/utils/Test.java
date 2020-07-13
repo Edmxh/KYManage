@@ -4,10 +4,18 @@ import android.util.Base64;
 
 import com.example.kymanage.Bitmap.CreateBitmap;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Test {
     public static void main(String[] args) {
-//        String str="TEo1NTI1MDAzMDI5";
-//        String decodestr = new String(Base64.decode(str.getBytes(), Base64.DEFAULT));
-//        System.out.println(decodestr);
+        System.out.println(getSeriesNumber());
+    }
+
+    public static String getSeriesNumber(){
+        Date date0 = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat("yyMMddHHmmss");
+        String currentDate = sf.format(date0)+Math.round((Math.random()+1) * 1000);//凭证日期
+        return currentDate;
     }
 }

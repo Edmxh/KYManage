@@ -137,15 +137,14 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                 if(datas!=null){
                     for (int i = 0; i < datas.size(); i++) {
                         PreMaterialProductOrderRep currentRep = datas.get(i);
-//                        System.out.println(i);
-//                        System.out.println(mListview1.getFirstVisiblePosition());
                         View listItem=mListview1.getAdapter().getView(i,null,null);
-//                        System.out.println(i - mListview1.getFirstVisiblePosition());
                         EditText et1=listItem.findViewById(R.id.fpsl);
+                        System.out.println("填写的数量："+et1.getText().toString());
                         float issueNum=Float.parseFloat(("0"+et1.getText().toString()));
                         if(issueNum!=0){
+                            //System.out.println("发料请求增加一条");
 //                            InsertProductOrderIssueReq req=new InsertProductOrderIssueReq(pono, porow, "2020-01-01", "2020-01-01", username, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
-                            InsertProductOrderIssueReq req=new InsertProductOrderIssueReq(pono, porow, getCurrentdate(), getCurrentdate(), username, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssueNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),"","");
+                            InsertProductOrderIssueReq req=new InsertProductOrderIssueReq(pono, porow, getCurrentdate(), getCurrentdate(), username, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssueNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL());
                             allNum+=issueNum;
                             FLreqs.add(req);
                         }
@@ -153,10 +152,7 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
 //                    FLreqs.clear();
 //                    InsertProductOrderIssueReq req=new InsertProductOrderIssueReq("41000117372", "00010", "2020-01-01", "2020-01-01", username, "", "20000012", currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
                     presenter2.InsertProductOrderIssue(FLreqs);
-
                 }
-
-
                 break;
             case R.id.cancel:
                 vibrator.vibrate(30);

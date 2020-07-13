@@ -65,7 +65,7 @@ public class CreateBitmap{
     //发料单流水号
     public String getSeriesNumber(){
         Date date0 = new Date();
-        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat sf = new SimpleDateFormat("yyMMddHHmmss");
         String currentDate = sf.format(date0)+Math.round((Math.random()+1) * 1000);//凭证日期
         return currentDate;
     }

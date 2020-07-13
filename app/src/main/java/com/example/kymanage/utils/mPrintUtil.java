@@ -2,6 +2,9 @@ package com.example.kymanage.utils;
 
 import android.graphics.Bitmap;
 
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRepBean1;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRepBean2;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRepBean;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean1;
@@ -41,12 +44,12 @@ public class mPrintUtil {
      * @param printHelper
      */
     //发料单打印--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public void printFLBill(GetIssueNoteDetailRep rep, PrintHelper printHelper){
+    public void printFLBill(GenerateStorageLssueRecordRep rep, PrintHelper printHelper){
         printHelper.PrintLineInit(titleTextSize);
         printHelper.PrintLineStringByType("库房发料单",titleTextSize, PrintHelper.PrintType.Centering,false);
         printHelper.PrintLineEnd();
         //画二维码
-        String content="{\"no\":\"123456\"}";
+        String content="{\"no\":\""+rep.getIssueListNo()+"\"}";
         Bitmap bm=null;
         try {
             bm = BarcodeUtil.encodeAsBitmap(content,
@@ -63,8 +66,8 @@ public class mPrintUtil {
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
 
-        List<GetIssueNoteDetailBean2> data = rep.getData();
-        for (GetIssueNoteDetailBean2 bean : data) {
+        List<GenerateStorageLssueRecordRepBean2> data = rep.getData();
+        for (GenerateStorageLssueRecordRepBean2 bean : data) {
             printFLBillContent1(bean,printHelper);
         }
 
@@ -81,14 +84,14 @@ public class mPrintUtil {
 
     }
     //发料单第一层内容
-    private void printFLBillContent1(GetIssueNoteDetailBean2 bean,PrintHelper printHelper){
+    private void printFLBillContent1(GenerateStorageLssueRecordRepBean2 bean,PrintHelper printHelper){
 
         String str="----------------------------------------------------------------------------------";
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,true);
         printHelper.PrintLineEnd();
 
-        List<GetIssueNoteDetailBean1> materials = bean.getData();
+        List<GenerateStorageLssueRecordRepBean1> materials = bean.getData();
         //共有内容
         String newStr1 = bean.getMarketOrderNO().replaceAll("^(0+)", "");
         String newStr2 = bean.getMarketOrderRow().replaceAll("^(0+)", "");
@@ -110,13 +113,13 @@ public class mPrintUtil {
 
         //发料单第二层内容方法
         for (int i = 0; i < materials.size(); i++) {
-            GetIssueNoteDetailBean1 material = materials.get(i);
+            GenerateStorageLssueRecordRepBean1 material = materials.get(i);
             printFLBillContent2(material,printHelper);
         }
 
     }
     //第二层内容
-    private void printFLBillContent2(GetIssueNoteDetailBean1 bean, PrintHelper printHelper){
+    private void printFLBillContent2(GenerateStorageLssueRecordRepBean1 bean, PrintHelper printHelper){
         String str=bean.getMaterialCode()+"          "+bean.getDemandQty()+"/"+bean.getLastQty()+"/"+bean.getIssueQty()+"-个";
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);

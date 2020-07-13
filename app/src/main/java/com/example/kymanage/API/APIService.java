@@ -3,6 +3,7 @@ package com.example.kymanage.API;
 
 
 import com.example.kymanage.Beans.General.CodeMessageBean;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
 import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
@@ -109,7 +110,11 @@ public interface APIService {
     @POST(API.ScanIssueNoteDetail)
     Observable<ScanIssueNoteDetailRep> ScanIssueNoteDetail(@Body RequestBody material);
 
-    //打印发料单及发料接口
+    //打印发料单
+    @POST(API.GenerateStorageLssueRecord)
+    Observable<GenerateStorageLssueRecordRep> GenerateStorageLssueRecord(@Body RequestBody issuevouchernumber);
+
+    //打印库房标签
     @POST(API.GetIssueNoteDetail)
     Observable<GetIssueNoteDetailRep> getissuenotedetail(@Body RequestBody issuevouchernumber);
     //库房发料记录接口

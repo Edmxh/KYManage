@@ -60,11 +60,14 @@ public class InsertProductOrderIssueReq {
 
     private String ProcessNo;
     private String ProcessText;
+    private String RSNum;
+    private String RSPos;
+    private String Matkl;
 
     public InsertProductOrderIssueReq() {
     }
 
-    public InsertProductOrderIssueReq(String ordernum, String rowno, String budat, String bldat, String uname, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText) {
+    public InsertProductOrderIssueReq(String ordernum, String rowno, String budat, String bldat, String uname, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl) {
         this.ordernum = ordernum;
         this.rowno = rowno;
         this.budat = budat;
@@ -93,6 +96,9 @@ public class InsertProductOrderIssueReq {
         ProOMaterialUnit = proOMaterialUnit;
         ProcessNo = processNo;
         ProcessText = processText;
+        this.RSNum = RSNum;
+        this.RSPos = RSPos;
+        Matkl = matkl;
     }
 
     public String getOrdernum() {
@@ -319,5 +325,30 @@ public class InsertProductOrderIssueReq {
     @JSONField(name="ProcessText")
     public void setProcessText(String processText) {
         ProcessText = processText;
+    }
+
+    @JSONField(name = "RSNum")
+    public String getRSNum() {
+        return RSNum;
+    }
+    @JSONField(name = "RSNum")
+    public void setRSNum(String RSNum) {
+        this.RSNum = RSNum;
+    }
+    @JSONField(name = "RSPos")
+    public String getRSPos() {
+        return RSPos;
+    }
+    @JSONField(name = "RSPos")
+    public void setRSPos(String RSPos) {
+        this.RSPos = RSPos;
+    }
+    @JSONField(name = "Matkl")
+    public String getMatkl() {
+        return Matkl;
+    }
+    @JSONField(name = "Matkl")
+    public void setMatkl(String matkl) {
+        Matkl = matkl;
     }
 }

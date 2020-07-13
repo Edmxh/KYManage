@@ -13,7 +13,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -21,26 +20,25 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.KFFLAdapter;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordReq;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordReqBean;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean1;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean2;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.KFLabelBean;
-import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.GetSapStorageInfoByFactoryJSBean;
 import com.example.kymanage.Beans.GetStockInformationDataJS.GetStockInformationDataJSBean;
 import com.example.kymanage.Beans.GetStockInformationDataJS.GetStockInformationDataJSRep;
-import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordRep;
-import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReps;
 import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReq;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
-import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.KFPage1.GetSapStoragesPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetail2Presenter;
-import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetailPresenter;
+import com.example.kymanage.presenter.Presenters.KFPage3.GenerateStorageLssueRecordPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetStockInformationDataJSPresenter;
 import com.example.kymanage.utils.mPrintUtil;
 
@@ -49,7 +47,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockInformationDataJSRep>, BaseView1<GetIssueNoteDetailRep>,BaseView3<GetIssueNoteDetailRep>, KFFLAdapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
+public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockInformationDataJSRep>, BaseView1<GenerateStorageLssueRecordRep>,BaseView3<GetIssueNoteDetailRep>, KFFLAdapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
     //自定义请求码常量
     private static final int REQUEST_CODE = 1;
 
@@ -79,12 +77,13 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     private String porow;
     private GetStockInformationDataJSBean currentdata;
     //打印发料单接口
-    private GetIssueNoteDetailPresenter presenter2;
-    private List<GetIssueNoteDetailReq> flDatas;
+    private GenerateStorageLssueRecordPresenter presenter2;
+    private List<GenerateStorageLssueRecordReqBean> flDatas;
     //获取主料仓
     private GetSapStoragesPresenter presenter3;
     //标签打印
     private GetIssueNoteDetail2Presenter presenter4;
+    private List<GetIssueNoteDetailReq> bqDatas;
     private List<InsertStorageLableRecordReq> bqPrintDatas;
     private InsertStorageLableRecordReq bqPrintData;
     //标签生成器
@@ -122,7 +121,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
         presenter1=new GetStockInformationDataJSPresenter();
         presenter1.setView(this);
 
-        presenter2=new GetIssueNoteDetailPresenter();
+        presenter2=new GenerateStorageLssueRecordPresenter();
         presenter2.setView(this);
 
 
@@ -140,7 +139,8 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 //        currentData=new GetMaterialMasterDataInfo();
         datas=new ArrayList<GetStockInformationDataJSBean>();
         currentdata=new GetStockInformationDataJSBean();
-        flDatas=new ArrayList<GetIssueNoteDetailReq>();
+        flDatas=new ArrayList<GenerateStorageLssueRecordReqBean>();
+        bqDatas=new ArrayList<GetIssueNoteDetailReq>();
 
 
         adapter=new KFFLAdapter(KFFLActivity.this, R.layout.kfflitem,datas);
@@ -178,8 +178,11 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 //                System.out.println("2传递的生产订单信息是："+jsonArray2.toString());
                 if(confirm){
                     for (int i = 0; i < ids.size(); i++) {
-                        GetIssueNoteDetailReq flData=new GetIssueNoteDetailReq((""+ids.get(i)));
+                        GenerateStorageLssueRecordReqBean flData=new GenerateStorageLssueRecordReqBean(ids.get(i));
                         flDatas.add(flData);
+
+                        GetIssueNoteDetailReq bqData=new GetIssueNoteDetailReq((""+ids.get(i)));
+                        bqDatas.add(bqData);
                     }
                     if(flIndex!=-1){
                         datas.remove(flIndex);
@@ -283,16 +286,15 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                             case R.id.print1:
                                 // 隐藏该对话框
                                 if(!hasFL){
-                                    for (GetIssueNoteDetailReq tempData : flDatas) {
-                                    }
-                                    presenter2.GetIssueNoteDetail(flDatas);
+                                    GenerateStorageLssueRecordReq FLReq=new GenerateStorageLssueRecordReq(username,flDatas);
+                                    presenter2.GenerateStorageLssueRecord(FLReq);
                                 }else {
                                     Toast.makeText(KFFLActivity.this,"不可重复收货发料，请退出页面重试！",Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case R.id.print2:
                                 // 隐藏该对话框
-                                presenter4.GetIssueNoteDetail2(flDatas);
+                                presenter4.GetIssueNoteDetail2(bqDatas);
                                 break;
                             default:
                                 // 使用Toast显示用户单击的菜单项
@@ -333,7 +335,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     }
 
     @Override
-    public void onDataSuccess1(GetIssueNoteDetailRep data) {
+    public void onDataSuccess1(GenerateStorageLssueRecordRep data) {
         mPrintUtil.printFLBill(data,printHelper);
         printHelper.printBlankLine(80);
     }

@@ -20,7 +20,7 @@
             <TextView
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:text="序                 号:"
+                android:text="序                号:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"

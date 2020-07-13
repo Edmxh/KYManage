@@ -180,8 +180,8 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                                 if(AvanceStorageIds.size()==0){
                                     Toast.makeText(CGRecordActivity.this, "未选中要打印的标签行", Toast.LENGTH_SHORT).show();
                                 }else {
-                                    AvanceStorageIds.clear();
-                                    AvanceStorageIds.add(1562L);
+//                                    AvanceStorageIds.clear();
+//                                    AvanceStorageIds.add(1562L);
                                     presenter3.CGSHPrint(AvanceStorageIds,username,currentdate);
                                 }
                                 break;

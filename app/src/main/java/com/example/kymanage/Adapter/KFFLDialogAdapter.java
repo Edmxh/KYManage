@@ -28,6 +28,9 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
         mList=objects==null?new ArrayList<PreMaterialProductOrderRep>():objects;
+        for (PreMaterialProductOrderRep bean : mList) {
+            bean.setCurrentNum(0);
+        }
     }
 
     // convertView 参数用于将之前加载好的布局进行缓存
@@ -82,8 +85,11 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
         viewHolder.jhksrq.setText(rep.getPlanStartTime());
         String num1str=""+rep.getDemandNum();
         viewHolder.xqsl.setText(num1str);
+
+        //CurrentNum归0
+//        rep.setCurrentNum(0);
         String num2str=""+rep.getCurrentNum();
-        viewHolder.fpsl.setText("0.0");
+        viewHolder.fpsl.setText(num2str);
         String num3str=""+rep.getIssueNum();
         viewHolder.yfpsl.setText(num3str);
 //        switch (position%2){
@@ -166,7 +172,12 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
 
         @Override
         public void afterTextChanged(Editable s) {
-            float num=Float.parseFloat(("0"+s.toString()));
+            float num;
+            if(s.toString().equals("")){
+                num=Float.parseFloat(("0"+s.toString()));
+            }else {
+                num=Float.parseFloat((s.toString()));
+            }
             mList.get(mPosition).setCurrentNum(num);
         }
     }

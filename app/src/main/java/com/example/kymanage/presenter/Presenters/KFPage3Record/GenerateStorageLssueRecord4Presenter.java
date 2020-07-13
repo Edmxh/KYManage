@@ -1,6 +1,8 @@
 package com.example.kymanage.presenter.Presenters.KFPage3Record;
 
 
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordReq;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailReq;
 import com.example.kymanage.model.AppModel;
@@ -11,21 +13,21 @@ import com.example.kymanage.presenter.InterfaceView.BaseView4;
 
 import java.util.List;
 
-public class GetIssueNoteDetail4Presenter extends BasePresenter<BaseView4<GetIssueNoteDetailRep>> {
+public class GenerateStorageLssueRecord4Presenter extends BasePresenter<BaseView4<GenerateStorageLssueRecordRep>> {
 
 
     private final AppModel appModel;
 
-    public GetIssueNoteDetail4Presenter() {
+    public GenerateStorageLssueRecord4Presenter() {
         appModel = new AppModel();
     }
 
-    public void GetIssueNoteDetail2(List<GetIssueNoteDetailReq> data){
-        appModel.GetIssueNoteDetail(data, new HttpDataListener<GetIssueNoteDetailRep>() {
+    public void GenerateStorageLssueRecord2(GenerateStorageLssueRecordReq data){
+        appModel.GenerateStorageLssueRecord(data, new HttpDataListener<GenerateStorageLssueRecordRep>() {
 
 
             @Override
-            public void onDataSuccess(GetIssueNoteDetailRep data) {
+            public void onDataSuccess(GenerateStorageLssueRecordRep data) {
                 getView().onDataSuccess4(data);
             }
 

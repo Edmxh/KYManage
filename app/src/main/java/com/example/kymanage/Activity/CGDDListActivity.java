@@ -400,7 +400,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                     }else {
                         Bitmap bm=cb.createImage1(label,tf);
                         printHelper.PrintBitmapAtCenter(bm,384,480);
-                        printHelper.printBlankLine(80);
+                        printHelper.printBlankLine(85);
                     }
                 }
 //                printHelper.printBlankLine(40);

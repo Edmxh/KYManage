@@ -348,7 +348,7 @@ public class PrintPerviewActivity extends BaseActivity implements PrintBaseView<
     }
 
     //发料单打印
-//    public Bitmap createImage3(GetIssueNoteDetailRep rep) {
+//    public Bitmap createImage3(GenerateStorageLssueRecordRep rep) {
     public Bitmap createImage3() {
         int picWidth = 480;//生成图片的宽度
         int picHeight = 325;//生成图片的高度，基础100+heightone85+heighttwo55+bottom 30

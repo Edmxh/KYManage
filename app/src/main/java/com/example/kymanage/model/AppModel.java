@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.kymanage.API.APIService;
 import com.example.kymanage.Beans.General.CodeMessageBean;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
+import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordReq;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
 import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
@@ -712,12 +714,12 @@ public class AppModel extends BaseModel{
                 });
     }
 
-    //打印发料单及发料接口
+    //打印库房标签
     public void GetIssueNoteDetail(List<GetIssueNoteDetailReq> data, final HttpDataListener httpDataListener) {
 
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
-        System.out.println("打印发料单:"+jsonArray.toString());
+        System.out.println("打印库房标签:"+jsonArray.toString());
         try {
             jsonObject.put("data",jsonArray);
         } catch (JSONException e) {
@@ -750,6 +752,48 @@ public class AppModel extends BaseModel{
                     }
                 });
     }
+
+    //打印发料单
+    public void GenerateStorageLssueRecord(GenerateStorageLssueRecordReq data, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+        Object obj = JSON.toJSON(data);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
+        System.out.println("打印发料单:"+obj.toString());
+        try {
+            jsonObject.put("data",obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GenerateStorageLssueRecord(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GenerateStorageLssueRecordRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GenerateStorageLssueRecordRep value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
     //库房发料记录接口
     public void GetIssueDetailRecord(GetIssueDetailRecordReq data, final HttpDataListener httpDataListener) {
 

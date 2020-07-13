@@ -44,7 +44,11 @@ public interface API {
     //扫码发料
     String ScanIssueNoteDetail="ThingX/Things/AppProgramThing/Services/ScanIssueNoteDetail";
 
-    //打印发料单及发料接口
+
+    //打印库房标签
+    String GenerateStorageLssueRecord="ThingX/Things/AppProgramThing/Services/GenerateStorageLssueRecord";
+
+    //打印库房标签
     String GetIssueNoteDetail="ThingX/Things/AppProgramThing/Services/GetIssueNoteDetail";
     //库房发料记录接口
     String GetIssueDetailRecord="ThingX/Things/AppProgramThing/Services/GetIssueDetailRecord";
