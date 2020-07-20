@@ -45,6 +45,7 @@ public class GetPurchaseOrderInfoJSRep implements Serializable {
 
     private String marketorderno;
     private String marketorderrow;
+    private String upstreamFactory;
 
 
 
@@ -199,5 +200,13 @@ public class GetPurchaseOrderInfoJSRep implements Serializable {
 
     public void setMarketorderrow(String marketorderrow) {
         this.marketorderrow = marketorderrow;
+    }
+
+    public String getUpstreamFactory() {
+        return upstreamFactory;
+    }
+
+    public void setUpstreamFactory(String upstreamFactory) {
+        this.upstreamFactory = upstreamFactory;
     }
 }

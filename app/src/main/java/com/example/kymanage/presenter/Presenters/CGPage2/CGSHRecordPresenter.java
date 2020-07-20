@@ -18,8 +18,8 @@ public class CGSHRecordPresenter extends BasePresenter<BaseView2<PurchaseCenterR
         appModel = new AppModel();
     }
 
-    public void CGSHRecord(String documentDate,String user){
-        appModel.PurchaseCenterRecord(documentDate,user,new HttpDataListener<PurchaseCenterRecordReps>() {
+    public void CGSHRecord(String documentDate,String user,String po,String materialCode,boolean checked){
+        appModel.PurchaseCenterRecord(documentDate,user,po,materialCode,checked,new HttpDataListener<PurchaseCenterRecordReps>() {
 
 
             @Override

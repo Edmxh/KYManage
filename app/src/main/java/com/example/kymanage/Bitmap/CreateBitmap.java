@@ -109,14 +109,20 @@ public class CreateBitmap{
         //画文字
         String str1=rep.getMaterialDesc();
 //        titleTextSize=(QRx)/(str1.length());
-//
+        System.out.println();
         paint.setColor(Color.BLACK);
 //        paint.setTextSize(titleTextSize);
         int top=15;
 //        canvas.drawText(str1,0,top,paint);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(text2);
+        if(str1.length()<30){
+            textPaint.setTextSize(text2);
+        }else if(str1.length()>=30&&str1.length()<=40) {
+            textPaint.setTextSize(text4);
+        }else {
+            textPaint.setTextSize(text6);
+        }
         textPaint.setTypeface(tf);
         StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
 
@@ -134,7 +140,7 @@ public class CreateBitmap{
         if(rep.isSeparateLabel()){
             rep.setNum(1);
         }
-        String str4="单位:"+rep.getUnit()+" "+"数量:"+(int)(rep.getNum());
+        String str4="单位:"+rep.getUnit()+" "+"数量:"+(rep.getNum());
         paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
@@ -204,7 +210,7 @@ public class CreateBitmap{
         int y1=picWidth-QRx+10;
 
 //        String str11=rep.getLabelSeqNum();
-        String str11=getSeriesNumber();
+        String str11=rep.getPo()+"-"+Math.round((Math.random()+1) * 1000);
         paint.setTextSize(text5);
         canvas.drawText(str11,QRx,y1,paint);
         String str12="备注:";
@@ -270,7 +276,13 @@ public class CreateBitmap{
 //        canvas.drawText(str1,0,top,paint);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(text2);
+        if(str1.length()<30){
+            textPaint.setTextSize(text2);
+        }else if(str1.length()>=30&&str1.length()<=40) {
+            textPaint.setTextSize(text4);
+        }else {
+            textPaint.setTextSize(text6);
+        }
         textPaint.setTypeface(tf);
         StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
 
@@ -285,7 +297,7 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
         paint.setFakeBoldText(false);
 
-        String str4="单位:"+"EA"+" "+"数量:"+(int)(rep.getData().getIssueQty());
+        String str4="单位:"+"EA"+" "+"数量:"+(rep.getData().getIssueQty());
         paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
@@ -782,7 +794,7 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
         paint.setFakeBoldText(false);
 
-        String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(int)(rep.getAllocatedQty());
+        String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(rep.getAllocatedQty());
         paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
@@ -940,7 +952,7 @@ public class CreateBitmap{
         canvas.drawText(str3,0,top,paint);
         paint.setFakeBoldText(false);
 
-        String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(int)(rep.getQty());
+        String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(rep.getQty());
         paint.setTextSize(text3);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);

@@ -1,7 +1,19 @@
 package com.example.kymanage.API;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+
+import com.example.kymanage.utils.PropertiesUtil;
+
+import java.io.File;
+
 public interface API {
-    String BASEURL = "http://10.254.100.81/";
+//    PropertiesUtil pt = new PropertiesUtil();
+//    String filename = new File("app/src/main/java/com/example/kymanage/config/config.properties").getAbsolutePath();
+
+
+//    String BASEURL = "http://"+pt.getString("baseurl")+"/";
+    String BASEURL = "http://"+"10.254.100.81"+"/";
     //登录
     String LOGIN = "ThingX/Things/AppProgramThing/Services/Login";
 
@@ -11,6 +23,10 @@ public interface API {
     String GetMaterialMasterDataJS="ThingX/Things/AppProgramThing/Services/GetMaterialMasterDataJS";
     //获取要预占物料的生产订单信息
     String PreMaterialProductOrder= "ThingX/Things/AppProgramThing/Services/PreMaterialProductOrder";
+
+    //批量获取预占物料的生产订单信息接口
+    String PreMaterialProductOrderJS= "ThingX/Things/AppProgramThing/Services/PreMaterialProductOrderJS";
+
 
     //采购---------------------------------------------------------------------------
     //查询采购列表
@@ -59,7 +75,7 @@ public interface API {
     //补打库房标签接口
     String GetWarehouselabel="ThingX/Things/AppProgramThing/Services/GetWarehouselabel";
     //库房105入库冲销接口
-    String Warehouse105Writeoff="ThingX/Things/AppProgramThing/Services/Warehouse105Writeoff";
+    String Warehouse105Writeoff="ThingX/Things/AppProgramThing/Services/WarehouseReceiptWriteoff";
 
     //#获取301转储收获确认记录
     String GetTransferRecord="ThingX/Things/AppProgramThing/Services/GetTransferRecord";
@@ -142,10 +158,5 @@ public interface API {
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------
     //物料查询
     String GetMaterialStorage="ThingX/Things/AppProgramThing/Services/GetMaterialStorage";
-
-
-
-
-
 
 }

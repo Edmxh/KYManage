@@ -11,6 +11,7 @@ import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +23,14 @@ import com.example.kymanage.Beans.ScanIssueNoteDetail.ScanIssueNoteDetailReqBean
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.KFScanFL.ScanIssueNoteDetailPresenter;
+import com.jensdriller.libs.multistatelistview.MultiStateListView;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.popup.QMUIPopups;
+import com.qmuiteam.qmui.widget.popup.QMUIQuickAction;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,11 +53,13 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
     private String scanString;
 
     //列表
-    private ListView listview1;
+    private MultiStateListView listview1;
     private KFFLFKAdapter adapter;
-
+    private ImageView sx;
     //震动
     private Vibrator vibrator;
+
+    private List<ScanIssueNoteDetailRepBean> list2;
 
 
 
@@ -62,6 +71,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
     @Override
     public void initview() {
         scan=findViewById(R.id.scan);
+        sx=findViewById(R.id.sx);
         fldxx_layout=findViewById(R.id.fldxx_layout);
         fldxx_layout.setVisibility(View.INVISIBLE);
 
@@ -71,6 +81,10 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 
 
         listview1=findViewById(R.id.listview1);
+        //listview1.showLoadingView();
+        adapter=new KFFLFKAdapter(this, R.layout.kfflfkitem,new ArrayList<ScanIssueNoteDetailRepBean>());
+        listview1.setAdapter(adapter);
+
 
         presenter1=new ScanIssueNoteDetailPresenter();
         presenter1.setView(this);
@@ -79,6 +93,8 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
     @Override
     public void initData() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
+
+        list2=new ArrayList<ScanIssueNoteDetailRepBean>();
 
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
@@ -103,6 +119,72 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+            }
+        });
+        sx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                QMUIPopups.quickAction(getApplicationContext(),
+                        QMUIDisplayHelper.dp2px(getApplicationContext(), 48),
+                        QMUIDisplayHelper.dp2px(getApplicationContext(), 48))
+                        .shadow(true)
+                        .skinManager(QMUISkinManager.defaultInstance(getApplicationContext()))
+                        .edgeProtection(QMUIDisplayHelper.dp2px(getApplicationContext(), 1))
+                        .addAction(new QMUIQuickAction.Action().icon(R.drawable.icon_all).text("全部").onClick(
+                                new QMUIQuickAction.OnClickListener() {
+                                    @Override
+                                    public void onClick(QMUIQuickAction quickAction, QMUIQuickAction.Action action, int position) {
+                                        quickAction.dismiss();
+                                        List<ScanIssueNoteDetailRepBean> list=new ArrayList<ScanIssueNoteDetailRepBean>();
+                                        for (ScanIssueNoteDetailRepBean bean : list2) {
+                                            list.add(bean);
+                                        }
+                                        adapter=new KFFLFKAdapter(getApplicationContext(), R.layout.kfflfkitem,list);
+                                        listview1.setAdapter(adapter);
+                                    }
+                                }
+                        ))
+                        .addAction(new QMUIQuickAction.Action().icon(R.drawable.icon_success).text("成功").onClick(
+                                new QMUIQuickAction.OnClickListener() {
+                                    @Override
+                                    public void onClick(QMUIQuickAction quickAction, QMUIQuickAction.Action action, int position) {
+                                        quickAction.dismiss();
+                                        List<ScanIssueNoteDetailRepBean> list=new ArrayList<ScanIssueNoteDetailRepBean>();
+                                        for (ScanIssueNoteDetailRepBean bean : list2) {
+                                            if(bean.getStatus().equals("已发料")){
+                                                list.add(bean);
+                                            }
+                                        }
+                                        adapter=new KFFLFKAdapter(getApplicationContext(), R.layout.kfflfkitem,list);
+                                        listview1.setAdapter(adapter);
+                                        if(list.size()==0){
+                                            listview1.showEmptyView();
+                                        }
+                                    }
+                                }
+                        ))
+                        .addAction(new QMUIQuickAction.Action().icon(R.drawable.icon_fail).text("失败").onClick(
+                                new QMUIQuickAction.OnClickListener() {
+                                    @Override
+                                    public void onClick(QMUIQuickAction quickAction, QMUIQuickAction.Action action, int position) {
+                                        quickAction.dismiss();
+                                        List<ScanIssueNoteDetailRepBean> list=new ArrayList<ScanIssueNoteDetailRepBean>();
+                                        for (ScanIssueNoteDetailRepBean bean : list2) {
+                                            if(bean.getStatus().equals("待发料")){
+                                                list.add(bean);
+                                            }
+                                        }
+                                        adapter=new KFFLFKAdapter(getApplicationContext(), R.layout.kfflfkitem,list);
+                                        listview1.setAdapter(adapter);
+                                        if(list.size()==0){
+                                            listview1.showEmptyView();
+                                        }
+                                    }
+                                }
+                        ))
+                        .show(v);
             }
         });
 
@@ -125,9 +207,13 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 
     @Override
     public void onDataSuccessScan(ScanIssueNoteDetailRep data) {
+        list2=data.getData();
         List<ScanIssueNoteDetailRepBean> list = data.getData();
         adapter=new KFFLFKAdapter(this, R.layout.kfflfkitem,list);
         listview1.setAdapter(adapter);
+        //listview1.showView(MultiStateListView.State.LOADING);
+//        listview1.setVisibility(View.VISIBLE);
+//        loading.setVisibility(View.GONE);
     }
 
     @Override
@@ -160,6 +246,12 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
                         flry.setText(username);
                         flsj.setText(getCurrentdate2());
                         fldxx_layout.setVisibility(View.VISIBLE);
+                        //加载动画
+                        adapter.clear();
+                        adapter.notifyDataSetChanged();
+                        listview1.showLoadingView();
+//                        listview1.setVisibility(View.GONE);
+//                        loading.setVisibility(View.VISIBLE);
 //                        String factory=lableObject.getString("gc");
 //                        presenter1.GetStockInformationDataJS(materialCode,factory);
 

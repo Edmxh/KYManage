@@ -61,6 +61,7 @@ public class CGRecordAdapter extends ArrayAdapter<PurchaseCenterRecordRep> {
         viewHolder.cgddh=view.findViewById(R.id.cgddh);
         viewHolder.wllx=view.findViewById(R.id.wllx);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
+        viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.shsl=view.findViewById(R.id.shsl);
         viewHolder.shzt=view.findViewById(R.id.shzt);
         viewHolder.gxsj=view.findViewById(R.id.gxsj);
@@ -90,7 +91,8 @@ public class CGRecordAdapter extends ArrayAdapter<PurchaseCenterRecordRep> {
         viewHolder.xh.setText(no);
         viewHolder.cgddh.setText(rep.getOrderNum());
         viewHolder.wllx.setText(rep.getMaterialType());
-        viewHolder.wlbm.setText(rep.getCode());
+        viewHolder.wlbm.setText(rep.getMaterialCode());
+        viewHolder.wlms.setText(rep.getMaterialDesc());
         viewHolder.gxsj.setText(rep.getUpdateTime());
         String num1str=""+rep.getReceiveNum();
         viewHolder.shsl.setText(num1str);
@@ -145,6 +147,7 @@ public class CGRecordAdapter extends ArrayAdapter<PurchaseCenterRecordRep> {
         TextView cgddh;
         TextView wllx;
         TextView wlbm;
+        TextView wlms;
         TextView shzt;
         TextView shsl;
         TextView gxsj;

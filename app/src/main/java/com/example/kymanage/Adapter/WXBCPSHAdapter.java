@@ -1,6 +1,8 @@
 package com.example.kymanage.Adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,55 +17,59 @@ import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataBea
 import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataRep;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSRep;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.iddesBean;
+import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>implements View.OnClickListener {
+public class WXBCPSHAdapter extends ArrayAdapter<PreMaterialProductOrderRep>{
     private int resourceId;
-    private ArrayAdapter<String> adapter2;
-    private List<iddesBean> areadess=new ArrayList<iddesBean>();
-    private List<String> dess=new ArrayList<String>();
-    private InnerItemOnclickListener mListener;
+    private List<PreMaterialProductOrderRep> mList;
     //private DataBean1 DataBean1;
 
     // 适配器的构造函数，把要适配的数据传入这里
-    public WXBCPSHAdapter(Context context, int textViewResourceId, List<GetPurchaseOrderInfoJSRep> objects){
+    public WXBCPSHAdapter(Context context, int textViewResourceId, List<PreMaterialProductOrderRep> objects){
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
+        mList=objects==null?new ArrayList<PreMaterialProductOrderRep>():objects;
     }
 
     // convertView 参数用于将之前加载好的布局进行缓存
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        final GetPurchaseOrderInfoJSRep rep=getItem(position); //获取当前项的DataBean1实例
+        final PreMaterialProductOrderRep rep=getItem(position); //获取当前项的DataBean1实例
+
         // 加个判断，以免ListView每次滚动时都要重新加载布局，以提高运行效率
         View view;
-        final ViewHolder viewHolder;
+        ViewHolder viewHolder;
         if (convertView==null){
+
             // 避免ListView每次滚动时都要重新加载布局，以提高运行效率
             view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
 
             // 避免每次调用getView()时都要重新获取控件实例
             viewHolder=new ViewHolder();
-            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.xqjb=view.findViewById(R.id.xqjb);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
-            viewHolder.cgddh_hang=view.findViewById(R.id.cgddh_hang);
+            viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
-            viewHolder.rksl=view.findViewById(R.id.rksl);
-            viewHolder.dhsl=view.findViewById(R.id.dhsl);
-            viewHolder.spinner1=view.findViewById(R.id.spinner1);
-            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
-            viewHolder.receive=view.findViewById(R.id.receive);
-            viewHolder.receive.setOnClickListener(this);
-            viewHolder.receive.setTag(position);
+            viewHolder.fpsl=view.findViewById(R.id.fpsl);
+            viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
+
+
+            // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
+            viewHolder.updatePosition(position);
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         } else{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
+            viewHolder.updatePosition(position);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来
@@ -77,41 +83,19 @@ public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>imple
 //                }
 //            }
 //        });
-        String no=(position+1)+"";
-        viewHolder.xh.setText(no);
-        viewHolder.wlbm.setText(rep.getMATNR());
-        viewHolder.wlms.setText(rep.getTXZ01());
-        viewHolder.cgddh_hang.setText(rep.getEBELN()+"/"+rep.getEBELP());
-        String num1str=""+rep.getMENGE();
-        viewHolder.xqsl.setText(num1str);
-        String num2str=""+rep.getInStorage();
-        viewHolder.rksl.setText(num2str);
-        String num3str=""+rep.getWESBS();
-        viewHolder.dhsl.setText(num3str);
-        areadess=rep.getStorage();
-        for (iddesBean iddesBean : areadess) {
-            dess.add(iddesBean.getDesc());
-        }
-        //下拉框
-        adapter2 = new ArrayAdapter<String>(getContext(), R.layout.defined_spinner_item, dess);
-        //设置下拉列表的风格
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //将adapter 添加到spinner中
-        viewHolder.spinner1.setAdapter(adapter2);
 
-//        viewHolder.spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//
-//            public void onItemSelected(AdapterView<?> arg0, View arg1,
-//                                       int arg2, long arg3) {
-//                // TODO Auto-generated method stub
-//                chosenArea=areadess.get(arg2).getId();
-//                System.out.println(viewHolder.spinner1.getSelectedItemPosition());
-//            }
-//
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//                // TODO Auto-generated method stub
-//            }
-//        });
+
+        viewHolder.xqjb.setText(rep.getDemandLevel());
+        viewHolder.wlbm.setText(rep.getProOrderMaterialCode());
+        viewHolder.wlms.setText(rep.getProOrderMaterialDesc());
+        viewHolder.scddh.setText(rep.getProductOrderNO());
+        viewHolder.jhksrq.setText(rep.getPlanStartTime());
+        String num1str=""+rep.getDemandNum();
+        viewHolder.xqsl.setText(num1str);
+        String num2str=""+rep.getCurrentNum();
+        viewHolder.fpsl.setText(num2str);
+        String num3str=""+rep.getDispatchNum();
+        viewHolder.yfpsl.setText(num3str);
 //        switch (position%2){
 //            default:
 //                break;
@@ -122,64 +106,78 @@ public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>imple
 //                setRowBackgroundColor(viewHolder,R.drawable.tablebody1);
 //                break;
 //        }
-        viewHolder.dhsl.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ((ViewGroup)viewHolder.parent_layout)
-                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-                ((ViewGroup) v.getParent())
-                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-                return false;
-            }
-        });
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ((ViewGroup) v)
-                        .setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                return false;
-            }
-        });
+//        viewHolder.fpsl.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                ((ViewGroup) v.getParent())
+//                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+//                return false;
+//            }
+//        });
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                ((ViewGroup) v)
+//                        .setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+//                return false;
+//            }
+//        });
         return view;
     }
 
-    public void setRowBackgroundColor(ViewHolder vh,int i){
-        vh.xh.setBackgroundResource(i);
-        vh.wlbm.setBackgroundResource(i);
-        vh.wlms.setBackgroundResource(i);
-//        vh.yrksl.setBackgroundResource(i);
-//        vh.yirksl.setBackgroundResource(i);
-        vh.rksl.setBackgroundResource(i);
-    }
-
-    public interface InnerItemOnclickListener {
-        void itemClick(View v);
-    }
-
-    public void setOnInnerItemOnClickListener(InnerItemOnclickListener listener){
-        this.mListener=listener;
-    }
-    @Override
-    public void onClick(View view) {
-        mListener.itemClick(view);
+    public void setRowBackgroundColor(CGDialogAdapter.ViewHolder vh, int i){
+        vh.xqjb.setBackgroundResource(i);
+        vh.scddh.setBackgroundResource(i);
+        vh.jhksrq.setBackgroundResource(i);
+        vh.xqsl.setBackgroundResource(i);
+        vh.fpsl.setBackgroundResource(i);
+        vh.yfpsl.setBackgroundResource(i);
     }
 
     // 定义一个内部类，用于对控件的实例进行缓存
     class ViewHolder{
-        TextView xh;
+        TextView xqjb;
         TextView wlbm;
         TextView wlms;
-        TextView cgddh_hang;
+        TextView scddh;
+        TextView jhksrq;
         TextView xqsl;
-        TextView rksl;
-        EditText dhsl;
-        Spinner spinner1;
-        Button receive;
-        View parent_layout;
+        TextView yfpsl;
+        EditText fpsl;
+        MyTextWatcher mTextWatcher;
+
+        //动态更新TextWathcer的position
+        public void updatePosition(int position) {
+            mTextWatcher.updatePosition(position);
+        }
     }
 
     public interface DetailViewHolderListener {
-        void setData(ViewHolder viewHolder, int position);
+        void setData(CGDialogAdapter.ViewHolder viewHolder, int position);
+    }
+    class MyTextWatcher implements TextWatcher {
+        //由于TextWatcher的afterTextChanged中拿不到对应的position值，所以自己创建一个子类
+        private int mPosition;
+
+        public void updatePosition(int position) {
+            mPosition = position;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            float num=Float.parseFloat(("0"+s.toString()));
+            mList.get(mPosition).setCurrentNum(num);
+        }
     }
 }

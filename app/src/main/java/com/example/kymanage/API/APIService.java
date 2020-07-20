@@ -68,6 +68,14 @@ public interface APIService {
     @POST(API.GetMaterialMasterDataJS)
     Observable<GetMaterialMasterDataRep> GetMaterialMasterDataJS(@Body RequestBody datas);
 
+    //获取要预占物料的生产订单信息
+    @POST(API.PreMaterialProductOrder)
+    Observable<PreMaterialProductOrderReps> PreMaterialProductOrder(@Body RequestBody noandrow);
+
+    //获取要预占物料的生产订单信息
+    @POST(API.PreMaterialProductOrderJS)
+    Observable<PreMaterialProductOrderReps> PreMaterialProductOrderJS(@Body RequestBody noandrow);
+
     //采购
     //采购查询列表
     @POST(API.GetRecevingDetail)
@@ -78,9 +86,7 @@ public interface APIService {
     //获取采购中心收货记录
     @POST(API.PurchaseCenterRecord)
     Observable<PurchaseCenterRecordReps> PurchaseCenterRecord(@Body RequestBody noandrow);
-    //获取要预占物料的生产订单信息
-    @POST(API.PreMaterialProductOrder)
-    Observable<PreMaterialProductOrderReps> PreMaterialProductOrder(@Body RequestBody noandrow);
+
     //打印采购中心标签接口
     @POST(API.GetParchaseCenterLable)
     Observable<GetParchaseCenterLableReps> GetParchaseCenterLable(@Body RequestBody changeinfo);

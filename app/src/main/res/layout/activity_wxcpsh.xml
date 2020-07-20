@@ -37,12 +37,225 @@
             android:src="@drawable/menupoint"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/tablebody4"
+        android:showDividers="middle"
+        android:divider="@drawable/linearlayout_divider"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="@dimen/titlewidth2"
+                    android:layout_height="wrap_content"
+                    android:text="采购订单号/行:"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+                <Spinner
+                    android:id="@+id/spinner2"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:textSize="@dimen/text2"
+                    android:background="@drawable/spinnerbox"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/receive"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="20dp"
+                    android:text="收货"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/buttonstyle3"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="10dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <TextView
+                    android:layout_width="@dimen/titlewidth2"
+                    android:layout_height="match_parent"
+                    android:text="物   料   编   码:"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+                <TextView
+                    android:id="@+id/wlbm"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="物料编码"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center_vertical"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="@dimen/titlewidth2"
+                    android:layout_height="wrap_content"
+                    android:text="物   料   描   述:"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+                <TextView
+                    android:id="@+id/wlms"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="物  料  描  述"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center_vertical"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="@dimen/titlewidth2"
+                    android:layout_height="wrap_content"
+                    android:text="库   存   地   点:"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+                <TextView
+                    android:id="@+id/kcdd"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="库  存  地  点"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center_vertical"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            android:divider="@drawable/linearlayout_divider">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="需求数量"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+                <TextView
+                    android:id="@+id/xqsl"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="需求数量"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="入库数量"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:textCursorDrawable="@null"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+                <TextView
+                    android:id="@+id/rksl"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="入库数量"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:textCursorDrawable="@null"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="到货数量"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+                <EditText
+                    android:id="@+id/dhsl"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="到货数量"
+                    android:textSize="@dimen/text2"
+                    android:textColor="@color/fontcolor1"
+                    android:background="@color/colorGreen"
+                    android:digits="@string/filter_vcode"
+                    style="@style/EditTextStyle"
+                    android:textCursorDrawable="@null"
+                    android:gravity="center"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="7"
         android:orientation="vertical"
+        android:layout_marginTop="5dp"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,8 +265,51 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:id="@+id/ll_scdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/colorWhite">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="生产订单："
+                    android:textSize="@dimen/text2" />
+                <RadioGroup
+                    android:id="@+id/radiogroup1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/ben"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:textSize="@dimen/text2"
+                        android:text="本" />
+                    <RadioButton
+                        android:id="@+id/shangyou"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:checked="false"
+                        android:textSize="@dimen/text2"
+                        android:text="上游" />
+                </RadioGroup>
+            </LinearLayout>
             <ListView
                 android:id="@+id/listview1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7"
+                android:choiceMode="singleChoice"
+                android:dividerHeight="@dimen/divider"
+                android:divider="@color/colorBackground3"/>
+            <ListView
+                android:id="@+id/listview2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="7"

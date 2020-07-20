@@ -48,7 +48,7 @@ public class WXCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>implem
             viewHolder.xh=view.findViewById(R.id.xh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
-            viewHolder.cgddh_hang=view.findViewById(R.id.cgddh_hang);
+//            viewHolder.cgddh_hang=view.findViewById(R.id.cgddh_hang);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.rksl=view.findViewById(R.id.rksl);
             viewHolder.dhsl=view.findViewById(R.id.dhsl);

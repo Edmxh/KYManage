@@ -5,6 +5,7 @@ package com.example.kymanage.Beans.WarehouseReceiptRecord;
  *             "purchaseOrderNo": "4100011740",
  *             "advanceStorageId": 179,
  *             "materialType": "非专有",
+ *             "PurchaseOrderRow":"",
  *             "qty": 9.0,
  *             "recStatus": "入库",
  *             "materialCode": "DQ5095000046",
@@ -15,6 +16,7 @@ package com.example.kymanage.Beans.WarehouseReceiptRecord;
  */
 public class WarehouseReceiptRecordRep {
     private String purchaseOrderNo;
+    private String PurchaseOrderRow;
     private String materialType;
     private float qty;
     private String materialCode;
@@ -30,6 +32,14 @@ public class WarehouseReceiptRecordRep {
 
     public void setPurchaseOrderNo(String purchaseOrderNo) {
         this.purchaseOrderNo = purchaseOrderNo;
+    }
+
+    public String getPurchaseOrderRow() {
+        return PurchaseOrderRow;
+    }
+
+    public void setPurchaseOrderRow(String purchaseOrderRow) {
+        PurchaseOrderRow = purchaseOrderRow;
     }
 
     public String getMaterialType() {

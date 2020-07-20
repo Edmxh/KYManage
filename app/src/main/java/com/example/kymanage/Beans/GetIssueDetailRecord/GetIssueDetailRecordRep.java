@@ -40,6 +40,8 @@ public class GetIssueDetailRecordRep {
     private String MaterialCode;
     private String Status;
 
+    private String UpdateTime;
+
     public static GetIssueDetailRecordRep objectFromData(String str) {
 
         return new Gson().fromJson(str, GetIssueDetailRecordRep.class);
@@ -178,5 +180,13 @@ public class GetIssueDetailRecordRep {
 
     public void setStatus(String status) {
         Status = status;
+    }
+
+    public String getUpdateTime() {
+        return UpdateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        UpdateTime = updateTime;
     }
 }

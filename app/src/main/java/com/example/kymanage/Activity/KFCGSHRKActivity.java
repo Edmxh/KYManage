@@ -1,10 +1,12 @@
 package com.example.kymanage.Activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
@@ -479,7 +481,15 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 
                         }else {
                             if(porow!=null&&pono!=null&&bm!=null&&factory!=null){
-                                presenter1.GetPurWayMaterialData(porow,pono,sl,bm,factory);
+                                SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+                                        Activity.MODE_PRIVATE);
+                                String fac =sharedPreferences.getString("factory", "");
+                                if(factory.equals(fac)){
+                                    presenter1.GetPurWayMaterialData(porow,pono,sl,bm,factory);
+                                }else {
+                                    Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         }
 //                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");

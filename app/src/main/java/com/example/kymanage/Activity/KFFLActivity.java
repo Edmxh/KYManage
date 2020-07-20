@@ -1,9 +1,11 @@
 package com.example.kymanage.Activity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -180,14 +182,12 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                     for (int i = 0; i < ids.size(); i++) {
                         GenerateStorageLssueRecordReqBean flData=new GenerateStorageLssueRecordReqBean(ids.get(i));
                         flDatas.add(flData);
-
                         GetIssueNoteDetailReq bqData=new GetIssueNoteDetailReq((""+ids.get(i)));
                         bqDatas.add(bqData);
                     }
                     if(flIndex!=-1){
                         datas.remove(flIndex);
                     }
-
                 }
                 adapter.notifyDataSetChanged();
 
@@ -283,15 +283,15 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                                 intent.putExtra("username",username);
                                 startActivity(intent);
                                 break;
-                            case R.id.print1:
-                                // 隐藏该对话框
-                                if(!hasFL){
-                                    GenerateStorageLssueRecordReq FLReq=new GenerateStorageLssueRecordReq(username,flDatas);
-                                    presenter2.GenerateStorageLssueRecord(FLReq);
-                                }else {
-                                    Toast.makeText(KFFLActivity.this,"不可重复收货发料，请退出页面重试！",Toast.LENGTH_SHORT).show();
-                                }
-                                break;
+//                            case R.id.print1:
+//                                // 隐藏该对话框
+//                                if(!hasFL){
+//                                    GenerateStorageLssueRecordReq FLReq=new GenerateStorageLssueRecordReq(username,flDatas);
+//                                    presenter2.GenerateStorageLssueRecord(FLReq);
+//                                }else {
+//                                    Toast.makeText(KFFLActivity.this,"不可重复收货发料，请退出页面重试！",Toast.LENGTH_SHORT).show();
+//                                }
+//                                break;
                             case R.id.print2:
                                 // 隐藏该对话框
                                 presenter4.GetIssueNoteDetail2(bqDatas);
@@ -356,11 +356,11 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                             for (GetIssueNoteDetailBean1 data4 : data3) {
                                 KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
                                 Bitmap bm=cb.createImage2(labelBean,tf);
+                                printHelper.GoToNextPage();
                                 printHelper.PrintBitmapAtCenter(bm,384,480);
-                                printHelper.printBlankLine(80);
+//                                printHelper.printBlankLine(82);
                                 labelnum++;
                             }
-
                         }
                     }
                 }
@@ -522,7 +522,16 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                         if(repeat){
                             Toast.makeText(KFFLActivity.this, "该物料已存在", Toast.LENGTH_SHORT).show();
                         }else {
-                            presenter1.GetStockInformationDataJS(materialCode,factory);
+                            SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+                                    Activity.MODE_PRIVATE);
+// 使用getString方法获得value，注意第2个参数是value的默认值
+                            String fac =sharedPreferences.getString("factory", "");
+                            if(factory.equals(fac)){
+                                presenter1.GetStockInformationDataJS(materialCode,factory);
+                            }else {
+                                Toast.makeText(context, "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 //                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
                         scanString="";

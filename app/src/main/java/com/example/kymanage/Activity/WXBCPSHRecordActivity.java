@@ -73,7 +73,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 
     @Override
     public int initLayoutId() {
-        return R.layout.activity_wxshjl;
+        return R.layout.activity_wxbcpshrecord;
     }
 
     @Override

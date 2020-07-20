@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.CGListAdapter;
 import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailrep;
 import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailreps;
@@ -168,6 +169,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+//        tf = Typeface.createFromAsset(mgr, "fonts/STXIHEI.TTF");//细黑
 //        //测试数据
 //        DemoBean1 rep1=new DemoBean1("ZJ00000001","测试物料1","专有物料","","",10,10);
 //        DemoBean1 rep2=new DemoBean1("ZJ00000002","测试物料2","专有物料","","",13,13);
@@ -378,6 +380,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
             for (Long aLong : data.getData()) {
                 printList.add(aLong);
             }
+            LoadingBar.dialog(CGDDListActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
             queryList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -394,13 +397,15 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                         int labelNum= (int) label.getNum();
                         for (int i = 0; i <labelNum ; i++) {
                             Bitmap bm=cb.createImage1(label,tf);
+//                            printHelper.GoToNextPage();
                             printHelper.PrintBitmapAtCenter(bm,384,480);
-                            printHelper.printBlankLine(80);
+                            printHelper.printBlankLine(82);
                         }
                     }else {
                         Bitmap bm=cb.createImage1(label,tf);
+//                        printHelper.GoToNextPage();
                         printHelper.PrintBitmapAtCenter(bm,384,480);
-                        printHelper.printBlankLine(85);
+                        printHelper.printBlankLine(82);
                     }
                 }
 //                printHelper.printBlankLine(40);
@@ -558,6 +563,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                                     Toast.makeText(CGDDListActivity.this, "未查出要收货的物料", Toast.LENGTH_SHORT).show();
                                 }else {
                                     receive();
+                                    LoadingBar.dialog(CGDDListActivity.this).setFactoryFromResource(R.layout.layout_custom1).show();
                                 }
                                 break;
                             case R.id.print:

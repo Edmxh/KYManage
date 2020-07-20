@@ -5,17 +5,12 @@ package com.example.kymanage;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Vibrator;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kymanage.Activity.BaseActivity;
@@ -23,14 +18,13 @@ import com.example.kymanage.Activity.MainMenuActivity;
 import com.example.kymanage.Beans.LoginBean;
 import com.example.kymanage.presenter.IBaseView;
 import com.example.kymanage.presenter.LoginPresenter;
-import com.gyf.immersionbar.ImmersionBar;
+import com.example.kymanage.utils.PropertiesUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
@@ -93,7 +87,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
 
         loginPresenter = new LoginPresenter();
         loginPresenter.setView(this);
-        SharedPreferences preferences = MainActivity.this.getSharedPreferences("user", Context.MODE_PRIVATE);
+
         //String names = preferences.getString("name", "");
         //String passwords = preferences.getString("password", "");
 //        if (names!=""){
@@ -105,6 +99,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
 //        }
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
+
 
     @Override
     public void initLisenter() {
@@ -119,7 +114,6 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
                     @Override
                     public void run() {
                         URL url = null;
-
                         try {
                             url = new URL("http://" + "10.254.100.81" + "/ThingX" + "/Home/");
                             //url = new URL("http://" + "192.168.43.126" + "/Thingworx" + "/Home/");
@@ -186,9 +180,6 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
             }
         });
 //        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//
-//
 //            @Override
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                checked = remember.isChecked();
@@ -210,16 +201,17 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
         if (login==true){
             Log.i(TAG, "onDataSuccess: checked: "+ checked);
             if (checked){
-                SharedPreferences user = MainActivity.this.getSharedPreferences("user",Context.MODE_PRIVATE);
+                SharedPreferences user = MainActivity.this.getSharedPreferences("userInfo",Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = user.edit();
                 edit.putString("name",string_name );
                 edit.putString("password",string_password );
                 edit.commit();
                 //remember.setChecked(true);
             }else {
-                SharedPreferences preferences = MainActivity.this.getSharedPreferences("user", Context.MODE_PRIVATE);
-                SharedPreferences.Editor edit = preferences.edit();
-                edit.clear().commit();
+                SharedPreferences preferences = MainActivity.this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("factory", data.getFactory());
+                editor.commit();
                 //remember.setChecked(false);
             }
             Toast.makeText(this, "登陆成功！", Toast.LENGTH_SHORT).show();

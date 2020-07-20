@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="baseurl">10.254.100.81</string>
+    <bool name="labelpaper">true</bool>
+</resources>

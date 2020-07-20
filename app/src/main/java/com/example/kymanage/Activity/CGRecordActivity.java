@@ -20,6 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.CGRecordAdapter;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GetLableRecords.GetLableRecordsReps;
@@ -48,6 +49,11 @@ import Printer.PrintHelper;
 public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRespBean>, BaseView2<PurchaseCenterRecordReps>, PrintBaseView<GetParchaseCenterLableReps> {
     //选择日期
     private TextView date;
+    //筛选条件
+    private TextView wlbm;
+    private TextView cgddh;
+    private ImageView query;
+    private Button reset;
     //入库冲销
 //    private ImageView receive;
     //listview
@@ -87,6 +93,10 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         date = findViewById(R.id.date);
+        wlbm = findViewById(R.id.wlbm);
+        cgddh = findViewById(R.id.cgddh);
+        query = findViewById(R.id.query);
+        reset = findViewById(R.id.reset);
 //        receive = findViewById(R.id.receive);
 //        print = findViewById(R.id.print);
         menupoint = findViewById(R.id.menupoint);
@@ -117,12 +127,13 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+//        tf = Typeface.createFromAsset(mgr, "fonts/STXIHEI.TTF");//细黑
 
 //        onPopupButtonClick(menupoint);
 
         //初始今天记录
-        date.setText(getCurrentdate());
-        presenter2.CGSHRecord(date.getText().toString(),username);
+//        date.setText(getCurrentdate());
+//        presenter2.CGSHRecord(date.getText().toString(),username);
     }
 
     @Override
@@ -131,7 +142,22 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
+//                System.out.println("未选择日期时："+date.getText().toString());
                 showDateAndTable();
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                date.setText("");
+            }
+        });
+        query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),false);
             }
         });
         menupoint.setOnClickListener(new View.OnClickListener() {
@@ -205,6 +231,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                                     }
                                 }
                                 System.out.println("冲销选中数:"+intlist.size());
+                                LoadingBar.dialog(CGRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
                                 presenter103.YRKCX103(intlist,getCurrentdate());
                                 break;
                             default:
@@ -235,7 +262,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
 //                presenter2.CGSHRecord((str1+str2+str3),"1");
-                presenter2.CGSHRecord(date.getText().toString(),username);
+                presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),false);
 
             }
         }, mYear,mMonth, mDay);//将年月日放入DatePickerDialog中，并将值传给参数
@@ -248,7 +275,8 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     @Override
     public void onDataSuccess1(StatusRespBean data) {
         Toast.makeText(CGRecordActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        presenter2.CGSHRecord(date.getText().toString(),username);
+        LoadingBar.dialog(CGRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
+        presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),false);
     }
 
     @Override
@@ -279,13 +307,17 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                     for (int i = 0; i <labelNum ; i++) {
                         System.out.println("第"+i+"个签打印");
                         Bitmap bm=cb.createImage1(label,tf);
+//                        printHelper.GoToNextPage();
                         printHelper.PrintBitmapAtCenter(bm,384,480);
-                        printHelper.printBlankLine(80);
+
+                        printHelper.printBlankLine(82);
                     }
                 }else {
                     Bitmap bm=cb.createImage1(label,tf);
+//                    printHelper.GoToNextPage();
                     printHelper.PrintBitmapAtCenter(bm,384,480);
-                    printHelper.printBlankLine(80);
+//                    printHelper.GoToNextPage();
+                    printHelper.printBlankLine(82);
                 }
             }
             System.out.println("打印标签的数量为"+data.getData().size());
@@ -360,6 +392,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
             case KeyEvent.KEYCODE_VOLUME_DOWN:
 //                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
                 // 音量减小时应该执行的功能代码
+                printHelper.GoToNextPage();
                 return true;
             // 音量增大
             case KeyEvent.KEYCODE_VOLUME_UP:

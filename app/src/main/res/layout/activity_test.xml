@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.TestActivity">
+    <com.jensdriller.libs.multistatelistview.MultiStateListView
+        android:id="@+id/listview1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:clickable="true"
+        android:focusable="true"
+        android:choiceMode="singleChoice"
+        android:dividerHeight="@dimen/divider"
+        android:divider="@color/colorBackground3"
+        custom:loadingView="@layout/loading_view"
+        custom:emptyView="@layout/empty_view"
+        custom:errorView="@layout/error_view"
+        />
+
+</LinearLayout>

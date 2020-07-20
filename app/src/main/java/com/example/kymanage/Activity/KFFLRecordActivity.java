@@ -1,7 +1,10 @@
 package com.example.kymanage.Activity;
 
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -18,6 +21,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.KFFLRecordAdapter;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
@@ -69,6 +75,10 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     //
     private List<GetIssueDetailRecordRep> datas;
     private KFFLRecordAdapter adapter;
+    //筛选
+    private ImageView query;
+    private TextView wlbm;
+    private List<GetIssueDetailRecordRep> datas2;
     //获取记录
     private GetIssueRecordPresenter presenter1;
     //补打标签
@@ -83,6 +93,13 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     private PrintHelper printHelper=null;
     private String username;
     private mPrintUtil mPrintUtil;
+
+    //扫描相关
+    private ImageView scan;
+    private String m_Broadcastname="com.barcode.sendBroadcast";
+    private MyCodeReceiver receiver = new MyCodeReceiver();
+    //扫到的string
+    private String scanString;
 
     //震动
     private Vibrator vibrator;
@@ -104,6 +121,9 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 //        print2 = findViewById(R.id.print2);
         menupoint=findViewById(R.id.menupoint);
         listview1 = findViewById(R.id.listview1);
+        query = findViewById(R.id.query);
+        scan = findViewById(R.id.scan);
+        wlbm = findViewById(R.id.wlbm);
 
         presenter1=new GetIssueRecordPresenter();
         presenter1.setView(this);
@@ -127,6 +147,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
         datas=new ArrayList<GetIssueDetailRecordRep>();
+        datas2=new ArrayList<GetIssueDetailRecordRep>();
         cb=new CreateBitmap();
         //初始化打印类
         initPrinter();
@@ -143,6 +164,27 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     @Override
     public void initLisenter() {
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                //确保扫描完毕scanString被赋值后才被解析
+                Thread scanThread=new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        scan();
+                    }
+                });
+
+                scanThread.start();
+                try {
+                    scanThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +197,25 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 onPopupButtonClick(menupoint);
+            }
+        });
+        query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                datas.clear();
+                String code = wlbm.getText().toString();
+                System.out.println("筛选条件"+code);
+//                JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(datas2));
+//                System.out.println("datas2数据:"+jsonArray.toString());
+                for (GetIssueDetailRecordRep cdata : datas2) {
+//                    System.out.println("物料编码:"+cdata.getMaterialCode());
+                    if(cdata.getMaterialCode().contains(code)){
+                        datas.add(cdata);
+                    }
+                }
+                adapter=new KFFLRecordAdapter(KFFLRecordActivity.this, R.layout.kfflrecorditem,datas);
+                listview1.setAdapter(adapter);
             }
         });
     }
@@ -190,23 +251,23 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                                         cxDatas.add(cxData);
                                     }
                                 }
-                                WriteOffProductOrderIssueReq cxReq=new WriteOffProductOrderIssueReq(getCurrentdate(),cxDatas);
-                                presenter3.WriteOffProductOrderIssue(cxReq);
+//                                WriteOffProductOrderIssueReq cxReq=new WriteOffProductOrderIssueReq(getCurrentdate(),cxDatas);
+                                presenter3.WriteOffProductOrderIssue(cxDatas);
                                 break;
-                            case R.id.print1:
-                                // 隐藏该对话框
-                                flDatas.clear();
-                                for (int i = 0; i < datas.size(); i++) {
-                                    View itmeview=listview1.getAdapter().getView(i,null,null);
-                                    CheckBox cb= itmeview.findViewById(R.id.checked);
-                                    if (cb.isChecked()){
-                                        GenerateStorageLssueRecordReqBean flData=new GenerateStorageLssueRecordReqBean(datas.get(i).getIssueId());
-                                        flDatas.add(flData);
-                                    }
-                                }
-                                GenerateStorageLssueRecordReq FLReq=new GenerateStorageLssueRecordReq(username,flDatas);
-                                presenter4.GenerateStorageLssueRecord2(FLReq);
-                                break;
+//                            case R.id.print1:
+//                                // 隐藏该对话框
+//                                flDatas.clear();
+//                                for (int i = 0; i < datas.size(); i++) {
+//                                    View itmeview=listview1.getAdapter().getView(i,null,null);
+//                                    CheckBox cb= itmeview.findViewById(R.id.checked);
+//                                    if (cb.isChecked()){
+//                                        GenerateStorageLssueRecordReqBean flData=new GenerateStorageLssueRecordReqBean(datas.get(i).getIssueId());
+//                                        flDatas.add(flData);
+//                                    }
+//                                }
+//                                GenerateStorageLssueRecordReq FLReq=new GenerateStorageLssueRecordReq(username,flDatas);
+//                                presenter4.GenerateStorageLssueRecord2(FLReq);
+//                                break;
                             case R.id.print2:
                                 // 隐藏该对话框
                                 flDatas.clear();
@@ -257,9 +318,15 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     @Override
     public void onDataSuccess1(GetIssueDetailRecordReps data) {
-        datas=data.getData();
+        datas.clear();
+        datas2=data.getData();
+        for (GetIssueDetailRecordRep rdata : datas2) {
+            datas.add(rdata);
+        }
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(datas2));
+//        System.out.println("datas2数据:"+jsonArray.toString());
         //表格
-        adapter=new KFFLRecordAdapter(KFFLRecordActivity.this, R.layout.kfflrecorditem,data.getData());
+        adapter=new KFFLRecordAdapter(KFFLRecordActivity.this, R.layout.kfflrecorditem,datas);
         listview1.setAdapter(adapter);
         listview1.setOnItemClickListener(new ListViewItemOnClick());
     }
@@ -281,8 +348,9 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                             for (GetIssueNoteDetailBean1 data4 : data3) {
                                 KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
                                 Bitmap bm=cb.createImage2(labelBean,tf);
+                                printHelper.GoToNextPage();
                                 printHelper.PrintBitmapAtCenter(bm,384,480);
-                                printHelper.printBlankLine(80);
+//                                printHelper.printBlankLine(82);
                                 labelnum++;
                             }
                         }
@@ -375,6 +443,57 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                 return true;
         }
         return super.onKeyDown (keyCode, event);
+    }
+
+    //扫描操作
+    public void scan(){
+        Intent intent = new Intent();
+        intent.setAction("com.barcode.sendBroadcastScan");
+        sendBroadcast(intent);
+    }
+    //注册广播
+    public void registerBroadcast() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(m_Broadcastname);
+//        Toast.makeText(KFFLActivity.this, "扫描注册初始化", Toast.LENGTH_SHORT).show();
+        registerReceiver(receiver, intentFilter);
+    }
+    //接收类
+    public class MyCodeReceiver extends BroadcastReceiver
+    {
+        private static final String TAG = "MycodeReceiver";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(m_Broadcastname)) {
+                String str = intent.getStringExtra("BARCODE");
+                if (!"".equals(str)) {
+                    //tv.setText(str);
+                    scanString=str;
+                    JSONObject lableObject= null;
+                    try {
+                        lableObject = JSONObject.parseObject(scanString);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(KFFLRecordActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+                    }
+                    String materialCode = lableObject.getString("bm");
+                    wlbm.setText(materialCode);
+                }else {
+                    Toast.makeText(KFFLRecordActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerBroadcast();
     }
 
 

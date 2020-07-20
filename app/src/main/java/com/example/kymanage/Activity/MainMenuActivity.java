@@ -14,14 +14,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kymanage.R;
-import com.gyf.immersionbar.ImmersionBar;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -111,8 +107,8 @@ public class MainMenuActivity extends BaseActivity{
         iconmap.put("采购收货", R.drawable.icon_cgsh);
         iconmap.put("采购入库", R.drawable.icon_kfcg);
         iconmap.put("转储收货", R.drawable.icon_pssh);
-        iconmap.put("发料单打印", R.drawable.icon_printkgcpsd);
         iconmap.put("库房发料", R.drawable.icon_kffl);
+        iconmap.put("出库发料", R.drawable.icon_ckfl);
         iconmap.put("半成品收货", R.drawable.icon_bcpsh);
         iconmap.put("成品收货", R.drawable.icon_cpsh);
         iconmap.put("加工成品入库", R.drawable.icon_bcprk);
@@ -193,8 +189,8 @@ public class MainMenuActivity extends BaseActivity{
         FunctionActivity.put("采购收货",CGDDListActivity.class);
         FunctionActivity.put("采购入库", KFCGSHRKActivity.class);
         FunctionActivity.put("转储收货", KFZCSHAtivity.class);
-        FunctionActivity.put("发料单打印", KFFLActivity.class);
-        FunctionActivity.put("库房发料", KFFL2Activity.class);
+        FunctionActivity.put("库房发料", KFFLActivity.class);
+        FunctionActivity.put("出库发料", KFFL2Activity.class);
         FunctionActivity.put("半成品收货", WXBCPSHActivity.class);
         FunctionActivity.put("成品收货", WXCPSHActivity.class);
         FunctionActivity.put("加工成品入库", WXBCPJGRKActivity.class);
@@ -222,6 +218,9 @@ public class MainMenuActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
+//                Intent intent = new Intent(MainMenuActivity.this,TestActivity.class );
+                //intent.putExtra("username", username);
+//                startActivity(intent);
 //                downLoadApk();
             }
         });

@@ -20,8 +20,8 @@ public class WarehouseReceiptRecordPresenter extends BasePresenter<BaseView1<War
         appModel = new AppModel();
     }
 
-    public void WarehouseReceiptRecord(String DocumentDate,String user){
-        appModel.WarehouseReceiptRecord(DocumentDate,user, new HttpDataListener<WarehouseReceiptRecordReps>() {
+    public void WarehouseReceiptRecord(String DocumentDate,String user,String po,String materialCode,String storage,boolean checked){
+        appModel.WarehouseReceiptRecord(DocumentDate,user,po ,materialCode,storage,checked,new HttpDataListener<WarehouseReceiptRecordReps>() {
 
             @Override
             public void onDataSuccess(WarehouseReceiptRecordReps data) {

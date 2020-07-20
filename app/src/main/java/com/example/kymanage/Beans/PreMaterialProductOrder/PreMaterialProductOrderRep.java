@@ -38,7 +38,7 @@ public class PreMaterialProductOrderRep {
     private String factory;
     private String planStartTime;
     private float demandNum;
-    private float issueNum;
+    private float IssuedNum;
     private String RSART;
     private String MENGE;
     private String MEINS;
@@ -68,6 +68,8 @@ public class PreMaterialProductOrderRep {
     private String PLNFL;
     private String LTXA1;
     private String MATKL;
+
+    private float dispatchNum;
 
 
 
@@ -104,12 +106,12 @@ public class PreMaterialProductOrderRep {
         this.demandNum = demandNum;
     }
 
-    public float getIssueNum() {
-        return issueNum;
+    public float getIssuedNum() {
+        return IssuedNum;
     }
 
-    public void setIssueNum(float issueNum) {
-        this.issueNum = issueNum;
+    public void setIssuedNum(float issuedNum) {
+        IssuedNum = issuedNum;
     }
 
     public String getRSART() {
@@ -326,5 +328,13 @@ public class PreMaterialProductOrderRep {
 
     public void setMATKL(String MATKL) {
         this.MATKL = MATKL;
+    }
+
+    public float getDispatchNum() {
+        return dispatchNum;
+    }
+
+    public void setDispatchNum(float dispatchNum) {
+        this.dispatchNum = dispatchNum;
     }
 }

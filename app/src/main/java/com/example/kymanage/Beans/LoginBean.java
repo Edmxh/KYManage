@@ -16,6 +16,7 @@ public class LoginBean {
     private ArrayList<String> Authority3;
     private ArrayList<String> Authority4;
     private String namedes;
+    private String factory;
 
     public String getNamedes() {
         return namedes;
@@ -83,5 +84,13 @@ public class LoginBean {
 
     public LoginBean(boolean login) {
         this.login = login;
+    }
+
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory;
     }
 }

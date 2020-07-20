@@ -63,6 +63,7 @@ public class KFCGSHRecordAdapter extends ArrayAdapter<WarehouseReceiptRecordRep>
         viewHolder.cgddh=view.findViewById(R.id.cgddh);
         viewHolder.wllx=view.findViewById(R.id.wllx);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
+        viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.rksl=view.findViewById(R.id.rksl);
         viewHolder.rklx=view.findViewById(R.id.rklx);
         viewHolder.checked=view.findViewById(R.id.checked);
@@ -89,9 +90,12 @@ public class KFCGSHRecordAdapter extends ArrayAdapter<WarehouseReceiptRecordRep>
 
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
-        viewHolder.cgddh.setText(rep.getPurchaseOrderNo());
+        String newStr1 = rep.getPurchaseOrderNo().replaceAll("^(0+)", "");
+        String newStr2 = rep.getPurchaseOrderRow().replaceAll("^(0+)", "");
+        viewHolder.cgddh.setText(newStr1+"/"+newStr2);
         viewHolder.wllx.setText(rep.getMaterialType());
         viewHolder.wlbm.setText(rep.getMaterialCode());
+        viewHolder.wlms.setText(rep.getMaterialDescription());
         viewHolder.rklx.setText(rep.getRecStatus());
         String num1str=""+rep.getQty();
         viewHolder.rksl.setText(num1str);
@@ -145,6 +149,7 @@ public class KFCGSHRecordAdapter extends ArrayAdapter<WarehouseReceiptRecordRep>
         TextView cgddh;
         TextView wllx;
         TextView wlbm;
+        TextView wlms;
         TextView rklx;
         TextView rksl;
         CheckBox checked;

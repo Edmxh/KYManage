@@ -4,10 +4,10 @@
         android:id="@+id/receive"
         android:icon="@android:drawable/ic_menu_search"
         android:title="冲销" />
-    <item
-        android:id="@+id/print1"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="发料单打印" />
+<!--    <item-->
+<!--        android:id="@+id/print1"-->
+<!--        android:icon="@android:drawable/ic_menu_search"-->
+<!--        android:title="发料单打印" />-->
     <item
         android:id="@+id/print2"
         android:icon="@android:drawable/ic_menu_search"

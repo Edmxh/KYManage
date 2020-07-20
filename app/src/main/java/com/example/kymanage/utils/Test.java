@@ -4,12 +4,17 @@ import android.util.Base64;
 
 import com.example.kymanage.Bitmap.CreateBitmap;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Test {
     public static void main(String[] args) {
-        System.out.println(getSeriesNumber());
+
     }
 
     public static String getSeriesNumber(){

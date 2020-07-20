@@ -40,6 +40,12 @@ import java.util.List;
 public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<WarehouseReceiptRecordReps>, BaseView2<CodeMessageBean> {
     //选择日期
     private TextView date;
+    //筛选条件
+    private TextView wlbm;
+    private TextView cgddh;
+    private TextView kwxx;
+    private ImageView query;
+    private Button reset;
     //入库冲销
     private ImageView receive;
     //listview
@@ -67,6 +73,11 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         date = findViewById(R.id.date);
+        wlbm = findViewById(R.id.wlbm);
+        cgddh = findViewById(R.id.cgddh);
+        kwxx = findViewById(R.id.kwxx);
+        query = findViewById(R.id.query);
+        reset = findViewById(R.id.reset);
         receive = findViewById(R.id.receive);
         listview1 = findViewById(R.id.listview1);
 
@@ -82,14 +93,14 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
         allDatas=new ArrayList<Warehouse105WriteoffReq>();
 
         data1=new ArrayList<WarehouseReceiptRecordRep>();
-
+        getSupportFragmentManager();
 
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
 
-        date.setText(getCurrentdate());
-//                System.out.println(username);
-        presenter1.WarehouseReceiptRecord(date.getText().toString(),username);
+//        date.setText(getCurrentdate());
+////                System.out.println(username);
+//        presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString());
 
 
     }
@@ -103,6 +114,21 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
                 showDateAndTable();
             }
         });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                date.setText("");
+            }
+        });
+        query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),false);
+            }
+        });
+
         receive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,11 +139,11 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
                     CheckBox cb= itmeview.findViewById(R.id.checked);
                     if(cb.isChecked()){
                         WarehouseReceiptRecordRep currData = data1.get(i);
-                        Warehouse105WriteoffReq req=new Warehouse105WriteoffReq(currData.getMaterialType(),currData.getStorageId());
+                        Warehouse105WriteoffReq req=new Warehouse105WriteoffReq(currData.getStorageId());
                         datas.add(req);
                     }
                 }
-                presenter2.WarehouseReceiptRecord(datas,getCurrentdate());
+                presenter2.WarehouseReceiptRecord(datas,getCurrentdate2());
             }
         });
     }
@@ -137,7 +163,7 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
 //                System.out.println(username);
-                presenter1.WarehouseReceiptRecord((str1+str2+str3),username);
+                presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),false);
 //                presenter2.CGSHRecord((str1+str2+str3),"1");
 
             }
@@ -155,7 +181,7 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
         listview1.setOnItemClickListener(new ListViewItemOnClick());
 
         for (WarehouseReceiptRecordRep warehouseReceiptRecordRep : data1) {
-            Warehouse105WriteoffReq tmp=new Warehouse105WriteoffReq(warehouseReceiptRecordRep.getMaterialType(),warehouseReceiptRecordRep.getStorageId());
+            Warehouse105WriteoffReq tmp=new Warehouse105WriteoffReq(warehouseReceiptRecordRep.getStorageId());
             allDatas.add(tmp);
         }
     }
@@ -163,7 +189,7 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
         Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
-        presenter1.WarehouseReceiptRecord(date.getText().toString(),username);
+        presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),false);
     }
 
     @Override
@@ -205,6 +231,14 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
     private String getCurrentdate(){
         Date date0 = new Date();
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = sf.format(date0);//凭证日期
+        return currentDate;
+    }
+
+    //获取当前日期
+    private String getCurrentdate2(){
+        Date date0 = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
     }

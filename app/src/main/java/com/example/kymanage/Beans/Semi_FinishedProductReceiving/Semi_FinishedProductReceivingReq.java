@@ -1,6 +1,6 @@
 package com.example.kymanage.Beans.Semi_FinishedProductReceiving;
 
-import com.example.kymanage.Beans.MaterialFlow103.ProductOrderBean;
+import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.List;
 
@@ -29,6 +29,9 @@ import java.util.List;
  *         }
  */
 public class Semi_FinishedProductReceivingReq {
+    private String marketOrderNO;
+    private String marketOrderRow;
+    private String upstreamFactory;
     private float receNum;
     private String orderNum;
     private String orderRow;
@@ -39,12 +42,15 @@ public class Semi_FinishedProductReceivingReq {
     private String description;
     private String unit;
     private String remark;
-    private List<WXProductOrderBean> productOrder;
+    private List<Semi_FinishedProductReceivingReqBean> productOrder;
 
     public Semi_FinishedProductReceivingReq() {
     }
 
-    public Semi_FinishedProductReceivingReq(float receNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String demandStorage, String description, String unit, String remark, List<WXProductOrderBean> productOrder) {
+    public Semi_FinishedProductReceivingReq(String marketOrderNO, String marketOrderRow, String upstreamFactory, float receNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String demandStorage, String description, String unit, String remark, List<Semi_FinishedProductReceivingReqBean> productOrder) {
+        this.marketOrderNO = marketOrderNO;
+        this.marketOrderRow = marketOrderRow;
+        this.upstreamFactory = upstreamFactory;
         this.receNum = receNum;
         this.orderNum = orderNum;
         this.orderRow = orderRow;
@@ -56,6 +62,31 @@ public class Semi_FinishedProductReceivingReq {
         this.unit = unit;
         this.remark = remark;
         this.productOrder = productOrder;
+    }
+
+    @JSONField(name = "marketOrderNO")
+    public String getMarketOrderNO() {
+        return marketOrderNO;
+    }
+    @JSONField(name = "marketOrderNO")
+    public void setMarketOrderNO(String marketOrderNO) {
+        this.marketOrderNO = marketOrderNO;
+    }
+
+    public String getMarketOrderRow() {
+        return marketOrderRow;
+    }
+
+    public void setMarketOrderRow(String marketOrderRow) {
+        this.marketOrderRow = marketOrderRow;
+    }
+
+    public String getUpstreamFactory() {
+        return upstreamFactory;
+    }
+
+    public void setUpstreamFactory(String upstreamFactory) {
+        this.upstreamFactory = upstreamFactory;
     }
 
     public float getReceNum() {
@@ -138,11 +169,11 @@ public class Semi_FinishedProductReceivingReq {
         this.remark = remark;
     }
 
-    public List<WXProductOrderBean> getProductOrder() {
+    public List<Semi_FinishedProductReceivingReqBean> getProductOrder() {
         return productOrder;
     }
 
-    public void setProductOrder(List<WXProductOrderBean> productOrder) {
+    public void setProductOrder(List<Semi_FinishedProductReceivingReqBean> productOrder) {
         this.productOrder = productOrder;
     }
 }

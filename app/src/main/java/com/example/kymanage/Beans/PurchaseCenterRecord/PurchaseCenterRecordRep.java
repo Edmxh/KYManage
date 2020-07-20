@@ -1,58 +1,103 @@
 package com.example.kymanage.Beans.PurchaseCenterRecord;
 
-/**
- * {
- *             "code": "1",
- *             "materialType": "1",
- *             "orderNum": "1",
- *             "description": "1",
- *             "ID": 19,
- *             "row": "1",
- *             "receiveNum": 1.0
- *         }
- */
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 public class PurchaseCenterRecordRep {
-    private long AdvanceStorageId;
-    private String code;
+
+    /**
+     * purchaseOrderNO : 4100029758
+     * materialDesc : 深沟球轴承/GB/T276-6018
+     * materialType : 专有
+     * orderNum : 4100029758
+     * purchaseOrderRow : 00050
+     * materialCode : BZ1510100070
+     * updateTime : 2020-07-08 14:29:27
+     * ID : 225.0
+     * row : 00050
+     * receiveNum : 2.0
+     * describe : 104预入库冲销
+     * AdvanceStorageId : 782.0
+     */
+
+    private String purchaseOrderNO;
+    private String materialDesc;
     private String materialType;
     private String orderNum;
-    private String description;
+    private String purchaseOrderRow;
+    private String materialCode;
+    private String updateTime;
     private long ID;
     private String row;
     private float receiveNum;
     private String describe;
-    private String updateTime;
+    private long AdvanceStorageId;
 
-    public PurchaseCenterRecordRep() {
+    public static PurchaseCenterRecordRep objectFromData(String str) {
+
+        return new Gson().fromJson(str, PurchaseCenterRecordRep.class);
     }
 
-    public PurchaseCenterRecordRep(long advanceStorageId, String code, String materialType, String orderNum, String description, long ID, String row, float receiveNum, String describe, String updateTime) {
-        AdvanceStorageId = advanceStorageId;
-        this.code = code;
-        this.materialType = materialType;
-        this.orderNum = orderNum;
-        this.description = description;
-        this.ID = ID;
-        this.row = row;
-        this.receiveNum = receiveNum;
-        this.describe = describe;
-        this.updateTime = updateTime;
+    public static PurchaseCenterRecordRep objectFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+
+            return new Gson().fromJson(jsonObject.getString(str), PurchaseCenterRecordRep.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public long getAdvanceStorageId() {
-        return AdvanceStorageId;
+    public static List<PurchaseCenterRecordRep> arrayPurchaseCenterRecordRepFromData(String str) {
+
+        Type listType = new TypeToken<ArrayList<PurchaseCenterRecordRep>>() {
+        }.getType();
+
+        return new Gson().fromJson(str, listType);
     }
 
-    public void setAdvanceStorageId(long advanceStorageId) {
-        AdvanceStorageId = advanceStorageId;
+    public static List<PurchaseCenterRecordRep> arrayPurchaseCenterRecordRepFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+            Type listType = new TypeToken<ArrayList<PurchaseCenterRecordRep>>() {
+            }.getType();
+
+            return new Gson().fromJson(jsonObject.getString(str), listType);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList();
+
+
     }
 
-    public String getCode() {
-        return code;
+    public String getPurchaseOrderNO() {
+        return purchaseOrderNO;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setPurchaseOrderNO(String purchaseOrderNO) {
+        this.purchaseOrderNO = purchaseOrderNO;
+    }
+
+    public String getMaterialDesc() {
+        return materialDesc;
+    }
+
+    public void setMaterialDesc(String materialDesc) {
+        this.materialDesc = materialDesc;
     }
 
     public String getMaterialType() {
@@ -71,12 +116,28 @@ public class PurchaseCenterRecordRep {
         this.orderNum = orderNum;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPurchaseOrderRow() {
+        return purchaseOrderRow;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPurchaseOrderRow(String purchaseOrderRow) {
+        this.purchaseOrderRow = purchaseOrderRow;
+    }
+
+    public String getMaterialCode() {
+        return materialCode;
+    }
+
+    public void setMaterialCode(String materialCode) {
+        this.materialCode = materialCode;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     public long getID() {
@@ -111,11 +172,11 @@ public class PurchaseCenterRecordRep {
         this.describe = describe;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
+    public long getAdvanceStorageId() {
+        return AdvanceStorageId;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
+    public void setAdvanceStorageId(long AdvanceStorageId) {
+        this.AdvanceStorageId = AdvanceStorageId;
     }
 }

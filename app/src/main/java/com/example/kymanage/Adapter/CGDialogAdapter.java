@@ -85,7 +85,7 @@ public class CGDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> {
         viewHolder.xqsl.setText(num1str);
         String num2str=""+rep.getCurrentNum();
         viewHolder.fpsl.setText(num2str);
-        String num3str=""+rep.getIssueNum();
+        String num3str=""+rep.getIssuedNum();
         viewHolder.yfpsl.setText(num3str);
 //        switch (position%2){
 //            default:
