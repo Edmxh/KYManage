@@ -63,8 +63,10 @@ public class CGRecordAdapter extends ArrayAdapter<PurchaseCenterRecordRep> {
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.shsl=view.findViewById(R.id.shsl);
+        viewHolder.cxqrk=view.findViewById(R.id.cxqrk);
         viewHolder.shzt=view.findViewById(R.id.shzt);
         viewHolder.gxsj=view.findViewById(R.id.gxsj);
+        viewHolder.shr=view.findViewById(R.id.shr);
         viewHolder.checked=view.findViewById(R.id.checked);
         viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
@@ -94,9 +96,20 @@ public class CGRecordAdapter extends ArrayAdapter<PurchaseCenterRecordRep> {
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlms.setText(rep.getMaterialDesc());
         viewHolder.gxsj.setText(rep.getUpdateTime());
+        viewHolder.shr.setText(rep.getHandler());
         String num1str=""+rep.getReceiveNum();
         viewHolder.shsl.setText(num1str);
-        viewHolder.shzt.setText(rep.getDescribe());
+
+        String num2str=""+rep.getMoreQty();
+        viewHolder.cxqrk.setText(num2str);
+
+        String str="";
+        if(rep.getReverseHandler().equals("")){
+            str=rep.getDescribe();
+        }else {
+            str=rep.getDescribe()+"("+rep.getReverseHandler()+")";
+        }
+        viewHolder.shzt.setText(str);
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
@@ -150,7 +163,9 @@ public class CGRecordAdapter extends ArrayAdapter<PurchaseCenterRecordRep> {
         TextView wlms;
         TextView shzt;
         TextView shsl;
+        TextView cxqrk;
         TextView gxsj;
+        TextView shr;
         CheckBox checked;
     }
 

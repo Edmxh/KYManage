@@ -21,7 +21,7 @@ public class Base64Tool {
 //		System.out.println(base64Encode("LJ6510001528-A01"));//TEo2NTEwMDAxNTI4LUEwMQ==
 //		System.out.println(base64Encode("LJ6510001528-A01"));//TEo2NTEwMDAxNTI4LUEwMQ==
 //		System.out.println(base64Encode("LJ6510001463-A01"));//TEo2NTEwMDAxNDYzLUEwMQ==外协半成品收货
-		System.out.println(base64Encode("LJ2015002373"));//TEoyMDE1MDAyMzcz
+//		System.out.println(base64Encode("LJ2015002373"));//TEoyMDE1MDAyMzcz
 	}
 
 //	// Base64 加密

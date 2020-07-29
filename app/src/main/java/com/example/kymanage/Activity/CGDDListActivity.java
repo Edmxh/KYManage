@@ -163,7 +163,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 
         cb=new CreateBitmap();
         //初始化打印类
-        initPrinter();
+//        initPrinter();
 
         //从asset 读取字体
         AssetManager mgr = getAssets();
@@ -322,7 +322,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
             if(cb.isChecked()){
                 String recenumstr=et.getText().toString();
                 float num=Float.parseFloat(("0"+recenumstr));
-                MaterialFlow103ReqBean req=new MaterialFlow103ReqBean(currentData.getOrderNum(), currentData.getRow(), currentData.getFactory(), currentData.getCode(), currentData.getMaterialType(), currentData.getDescription(), num, currentData.getUnit(), currentData.getRemark(), cb1.isChecked(), currentData.getLGPRO());
+                MaterialFlow103ReqBean req=new MaterialFlow103ReqBean(currentData.getOrderNum(), currentData.getRow(), currentData.getFactory(), currentData.getCode(), currentData.getMaterialType(), currentData.getDescription(), num, currentData.getUnit(), currentData.getRemark(), cb1.isChecked(), currentData.getLGFSB(),currentData.getLGPBE(),currentData.getLOGGR(),currentData.getDemand(),currentData.getInStorageQty());
                 detail.add(req);
             }
         }
@@ -397,15 +397,42 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                         int labelNum= (int) label.getNum();
                         for (int i = 0; i <labelNum ; i++) {
                             Bitmap bm=cb.createImage1(label,tf);
-//                            printHelper.GoToNextPage();
+
+                            //确保跳转到下一页了再进行打印
+//                            Thread printThread=new Thread(new Runnable(){
+//                                @Override
+//                                public void run() {
+//                                    printHelper.GoToNextPage();
+//                                }
+//                            });
+//                            printThread.start();
+//                            try {
+//                                Log.i("token","scanThread.join();");
+//                                printThread.join();
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
                             printHelper.PrintBitmapAtCenter(bm,384,480);
-                            printHelper.printBlankLine(82);
+                            printHelper.printBlankLine(81);
                         }
                     }else {
                         Bitmap bm=cb.createImage1(label,tf);
-//                        printHelper.GoToNextPage();
+                        //确保跳转到下一页了再进行打印
+//                        Thread printThread=new Thread(new Runnable(){
+//                            @Override
+//                            public void run() {
+//                                printHelper.GoToNextPage();
+//                            }
+//                        });
+//                        printThread.start();
+//                        try {
+//                            Log.i("token","scanThread.join();");
+//                            printThread.join();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
                         printHelper.PrintBitmapAtCenter(bm,384,480);
-                        printHelper.printBlankLine(82);
+                        printHelper.printBlankLine(81);
                     }
                 }
 //                printHelper.printBlankLine(40);
@@ -462,7 +489,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     //初始化
     public void   initPrinter(){
         printHelper=new PrintHelper();
-        printHelper.Open(CGDDListActivity.this);
+        printHelper.Open(getApplicationContext());
 //        Toast.makeText(CGDDListActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
@@ -487,6 +514,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
             case KeyEvent.KEYCODE_VOLUME_DOWN:
 //                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
                 // 音量减小时应该执行的功能代码
+                printHelper.GoToNextPage();
                 return true;
             // 音量增大
             case KeyEvent.KEYCODE_VOLUME_UP:
@@ -533,12 +561,14 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        printHelper.Close();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         registerBroadcast();
+        initPrinter();
     }
 
 

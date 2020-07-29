@@ -15,7 +15,8 @@ import android.widget.Toast;
 import com.example.kymanage.Adapter.KFFLDialogAdapter;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRepBean;
-import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueReq;
+import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueReqBean;
+import com.example.kymanage.Beans.InsertProductOrderIssue.SendProductOrderIssueReq;
 import com.example.kymanage.Beans.MaterialFlow103.ProductOrderBean;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
@@ -59,7 +60,7 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
     private CGSHReceiveDetailPresenter presenter1;
     //发料
     private InsertProductOrderIssuePresenter presenter2;
-    private List<InsertProductOrderIssueReq> FLreqs;
+    private List<InsertProductOrderIssueReqBean> FLreqs;
     //是否发料
     private boolean confirm;
 
@@ -106,7 +107,7 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
         FIssueIds=new ArrayList<Integer>();
 
         datas=new ArrayList<PreMaterialProductOrderRep>();
-        FLreqs=new ArrayList<InsertProductOrderIssueReq>();
+        FLreqs=new ArrayList<InsertProductOrderIssueReqBean>();
 
         Intent intent=getIntent();
         dhsl=intent.getFloatExtra("qty",0);
@@ -143,15 +144,16 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                         float issueNum=Float.parseFloat(("0"+et1.getText().toString()));
                         if(issueNum!=0){
                             //System.out.println("发料请求增加一条");
-//                            InsertProductOrderIssueReq req=new InsertProductOrderIssueReq(pono, porow, "2020-01-01", "2020-01-01", username, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
-                            InsertProductOrderIssueReq req=new InsertProductOrderIssueReq(pono, porow, getCurrentdate(), getCurrentdate(), username, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssuedNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL());
+//                            InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "2020-01-01", "2020-01-01", username, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
+                            InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", currentRep.getDemandNum(), currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssuedNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL(),currentRep.getLOGGR(),currentRep.getLGPBE(),"货架名称");
                             allNum+=issueNum;
                             FLreqs.add(req);
                         }
                     }
 //                    FLreqs.clear();
-//                    InsertProductOrderIssueReq req=new InsertProductOrderIssueReq("41000117372", "00010", "2020-01-01", "2020-01-01", username, "", "20000012", currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
-                    presenter2.InsertProductOrderIssue(FLreqs);
+//                    InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean("41000117372", "00010", "2020-01-01", "2020-01-01", username, "", "20000012", currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
+                    SendProductOrderIssueReq req=new SendProductOrderIssueReq(username,FLreqs);
+                    presenter2.InsertProductOrderIssue(req);
                 }
                 break;
             case R.id.cancel:

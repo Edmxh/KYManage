@@ -14,16 +14,14 @@ import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordR
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
-import com.example.kymanage.Beans.GetLableInfo.LabelStatussBean;
 import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
-import com.example.kymanage.Beans.GetMaterialInfo.GetMaterialInfoBean;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
 import com.example.kymanage.Beans.GetMaterialStorage.GetMaterialStorageRep;
 import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRep;
 import com.example.kymanage.Beans.GetOutsourceFinProLableJS.GetOutsourceFinProLableJSRep;
 import com.example.kymanage.Beans.GetOutsoureFinProductDataJS.GetOutsoureFinProductDataJSRep;
-import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataRep;
+import com.example.kymanage.Beans.GetMaterialPropertieInfoJS.GetPurWayMaterialDataRep;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSReps;
 import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailreps;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.GetSapStorageInfoByFactoryJSBean;
@@ -34,19 +32,17 @@ import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRec
 import com.example.kymanage.Beans.InsertFinProStorageRecord.InsertFinProStorageRecordRep;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
 import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReps;
-import com.example.kymanage.Beans.LabelBean;
 import com.example.kymanage.Beans.LoginBean;
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpRep;
-import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103Rep;
 import com.example.kymanage.Beans.MaterialFlow103.MaterialFlow103RepStatus;
 import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
 import com.example.kymanage.Beans.PurchaseCenterRecord.PurchaseCenterRecordReps;
-import com.example.kymanage.Beans.FlagAndMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.ScanIssueNoteDetail.ScanIssueNoteDetailRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRep;
+import com.example.kymanage.Beans.UpdateApp.UpdateAppRep;
 import com.example.kymanage.Beans.WarehouseReceiptRecord.WarehouseReceiptRecordReps;
 
 import io.reactivex.Observable;
@@ -58,6 +54,10 @@ public interface APIService {
     //登录
     @POST(API.LOGIN)
     Observable<LoginBean> login(@Body RequestBody login);
+
+    //登录
+    @POST(API.UpdateApp)
+    Observable<UpdateAppRep> UpdateApp(@Body RequestBody login);
 
 
     //物流通用
@@ -96,8 +96,8 @@ public interface APIService {
 
     //库房---------------------------------------------------------------------------
     //获取库房收货物料信息接口
-    @POST(API.GetPurWayMaterialData)
-    Observable<GetPurWayMaterialDataRep> GetPurWayMaterialData(@Body RequestBody material);
+    @POST(API.GetMaterialPropertieInfoJS)
+    Observable<GetPurWayMaterialDataRep> GetMaterialPropertieInfoJS(@Body RequestBody material);
     //库房收货及发料接口
     @POST(API.WarehouseReceipt)
     Observable<CodeMessageBean> warehousereceipt(@Body RequestBody material);

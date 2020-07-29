@@ -153,7 +153,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 //        datas.add(db3);
         cb=new CreateBitmap();
         //初始化打印类
-        initPrinter();
+//        initPrinter();
 
         //从asset 读取字体
         AssetManager mgr = getAssets();
@@ -218,8 +218,14 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                     e.printStackTrace();
                 }
                 //Toast.makeText(AdvancedReceiveActivity.this, scanString, Toast.LENGTH_SHORT).show();
-//                scanString="{\"bm\":\"DQ2002020001\",\"sl\":2.0,\"num\":\"15905735622182\",\"po\":\"000010031196\",\"pono\":\"4100011740\",\"porow\":\"00020\",\"gc\":\"2010\",\"cd\":\"A12\",\"cs\":6}";
-//                JSONObject lableObject=JSONObject.parseObject(scanString);
+//                scanString="{\"bm\":\"DQ3008000001\",\"sl\":1.0,\"aid\":2995,\"num\":\"2007222012101587\",\"po\":\"\",\"pono\":\"4100026847\",\"porow\":\"00010\",\"gc\":\"2020\",\"cd\":\"\",\"cs\":0}";
+//                JSONObject lableObject= null;
+//                try {
+//                    lableObject = JSONObject.parseObject(scanString);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Toast.makeText(KFFLActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+//                }
 //                if(lableObject!=null) {
 //                    materialCode = lableObject.getString("bm");
 //                    factory=lableObject.getString("gc");
@@ -227,9 +233,6 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 //                    labelSquNum=lableObject.getString("num");
 //                    pono=lableObject.getString("pono");
 //                    porow=lableObject.getString("porow");
-//                    System.out.println("扫到的pono"+pono);
-//                    System.out.println("扫到的porow"+porow);
-//                    int batch=lableObject.getInteger("cs");
 //                    //判断是否重复扫码
 //                    boolean repeat=false;
 //                    for (GetStockInformationDataJSBean data : datas) {
@@ -240,7 +243,16 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 //                    if(repeat){
 //                        Toast.makeText(KFFLActivity.this, "该物料已存在", Toast.LENGTH_SHORT).show();
 //                    }else {
-//                        presenter1.GetStockInformationDataJS(materialCode,factory);
+//                        SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+//                                Activity.MODE_PRIVATE);
+//// 使用getString方法获得value，注意第2个参数是value的默认值
+//                        String fac =sharedPreferences.getString("factory", "");
+//                        if(factory.equals(fac)){
+//                            presenter1.GetStockInformationDataJS(materialCode,factory);
+//                        }else {
+//                            Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+//                        }
+//
 //                    }
 ////                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
 //                    scanString="";
@@ -273,10 +285,10 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.exit:
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
+//                            case R.id.exit:
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
                             case R.id.record:
                                 // 隐藏该对话框
                                 Intent intent = new Intent(KFFLActivity.this, KFFLRecordActivity.class);
@@ -356,9 +368,9 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                             for (GetIssueNoteDetailBean1 data4 : data3) {
                                 KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
                                 Bitmap bm=cb.createImage2(labelBean,tf);
-                                printHelper.GoToNextPage();
+//                                printHelper.GoToNextPage();
                                 printHelper.PrintBitmapAtCenter(bm,384,480);
-//                                printHelper.printBlankLine(82);
+                                printHelper.printBlankLine(81);
                                 labelnum++;
                             }
                         }
@@ -368,6 +380,8 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
         }
 //        printHelper.printBlankLine(100);
         System.out.println("打印标签的数量为"+labelnum);
+
+        bqDatas.clear();
        // Toast.makeText(KFFLActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
         //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
     }
@@ -470,7 +484,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     //初始化
     public void   initPrinter(){
         printHelper=new PrintHelper();
-        printHelper.Open(KFFLActivity.this);
+        printHelper.Open(getApplicationContext());
 //        Toast.makeText(KFFLActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
     //扫描操作
@@ -548,12 +562,14 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        printHelper.Close();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         registerBroadcast();
+        initPrinter();
     }
 
     @Override

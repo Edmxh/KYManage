@@ -3,6 +3,7 @@ package com.example.kymanage.presenter.Presenters.WXPage3Record;
 
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
+import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteReqBean;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReq;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReqBean;
 import com.example.kymanage.model.AppModel;
@@ -22,7 +23,7 @@ public class GetFinProStorageRecordNotePresenter extends BasePresenter<BaseView3
         appModel = new AppModel();
     }
 
-    public void GetFinProStorageRecordNote(List<WriteOffProStorageRecordReqBean> data){
+    public void GetFinProStorageRecordNote(List<GetFinProStorageRecordNoteReqBean> data){
         appModel.GetFinProStorageRecordNote(data,new HttpDataListener<GetFinProStorageRecordNoteRep>() {
 
 

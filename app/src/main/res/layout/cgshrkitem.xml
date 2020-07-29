@@ -100,6 +100,54 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="物料类型:"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/wllx"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="物料类型"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center_vertical"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="货  架  号 :"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/hjh"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="货架号"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center_vertical"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"

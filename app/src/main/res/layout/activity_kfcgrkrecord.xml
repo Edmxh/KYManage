@@ -59,7 +59,7 @@
             <TextView
                 android:id="@+id/date"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="1.8"
                 android:hint="请选择日期"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
@@ -70,7 +70,7 @@
             <Button
                 android:id="@+id/reset"
                 android:layout_width="0dp"
-                android:layout_weight="0.4"
+                android:layout_weight="0.6"
                 android:layout_height="25dp"
                 android:text="重置"
                 android:textSize="@dimen/text2"
@@ -91,6 +91,18 @@
                 android:singleLine="true"
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"/>
+            <CheckBox
+                android:id="@+id/queryself"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:button="@null"
+                android:text="仅自己"
+                android:textSize="@dimen/text2"
+                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                android:theme="@style/MyCheckBox2"
+                android:gravity="center"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

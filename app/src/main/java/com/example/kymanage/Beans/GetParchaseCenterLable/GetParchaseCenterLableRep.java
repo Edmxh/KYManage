@@ -50,6 +50,10 @@ public class GetParchaseCenterLableRep {
     private long AdvanceStorageId;
     private boolean SeparateLabel;
 
+    private String LogisticsGroup;
+    private String ShelfNO;
+
+
     public GetParchaseCenterLableRep() {
     }
 
@@ -228,5 +232,21 @@ public class GetParchaseCenterLableRep {
 
     public void setSeparateLabel(boolean separateLabel) {
         SeparateLabel = separateLabel;
+    }
+
+    public String getLogisticsGroup() {
+        return LogisticsGroup;
+    }
+
+    public void setLogisticsGroup(String logisticsGroup) {
+        LogisticsGroup = logisticsGroup;
+    }
+
+    public String getShelfNO() {
+        return ShelfNO;
+    }
+
+    public void setShelfNO(String shelfNO) {
+        ShelfNO = shelfNO;
     }
 }

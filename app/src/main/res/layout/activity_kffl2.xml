@@ -189,7 +189,7 @@
 
             </LinearLayout>
 
-            <com.jensdriller.libs.multistatelistview.MultiStateListView
+            <ListView
                 android:id="@+id/listview1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -199,9 +199,6 @@
                 android:choiceMode="singleChoice"
                 android:dividerHeight="@dimen/divider"
                 android:divider="@color/colorBackground3"
-                custom:loadingView="@layout/error_view"
-                custom:emptyView="@layout/loading_view"
-                custom:errorView="@layout/empty_view"
                 />
             <!--      上面控件view是错位的（控件的问题）    -->
         </LinearLayout>

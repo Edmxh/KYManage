@@ -54,13 +54,6 @@ public class WXCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>implem
             viewHolder.dhsl=view.findViewById(R.id.dhsl);
             viewHolder.spinner1=view.findViewById(R.id.spinner1);
             viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
-            viewHolder.receive1=view.findViewById(R.id.receive1);
-            viewHolder.receive1.setOnClickListener(this);
-            viewHolder.receive1.setTag(position);
-            viewHolder.receive2=view.findViewById(R.id.receive2);
-            viewHolder.receive2.setOnClickListener(this);
-            viewHolder.receive2.setTag(position);
-            viewHolder.receive3=view.findViewById(R.id.receive3);
             viewHolder.receive3.setOnClickListener(this);
             viewHolder.receive3.setTag(position);
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）

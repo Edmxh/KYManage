@@ -19,10 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.CGSHRKAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
-import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataBean;
-import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataRep;
+import com.example.kymanage.Beans.GetMaterialPropertieInfoJS.GetMaterialPropertieInfoJSRepBean;
+import com.example.kymanage.Beans.GetMaterialPropertieInfoJS.GetPurWayMaterialDataRep;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.GetSapStorageInfoByFactoryJSBean;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.iddesBean;
 import com.example.kymanage.Beans.WarehouseReceipt.WarehouseReceiptReq;
@@ -30,7 +31,7 @@ import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
-import com.example.kymanage.presenter.Presenters.KFPage1.GetPurWayMaterialDataPresenter;
+import com.example.kymanage.presenter.Presenters.KFPage1.GetMaterialPropertieInfoJSPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage1.GetSapStoragesPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage1.KFReceivePresenter;
 
@@ -57,7 +58,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     private TextView cd;
     //扫描查询
     private List<GetPurWayMaterialDataRep> datas;
-    private GetPurWayMaterialDataPresenter presenter1;
+    private GetMaterialPropertieInfoJSPresenter presenter1;
     private String factory;
     private String labelSquNum;
     private String po;
@@ -116,7 +117,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
         presenter3=new KFReceivePresenter();
         presenter3.setView(this);
 
-        presenter1=new GetPurWayMaterialDataPresenter();
+        presenter1=new GetMaterialPropertieInfoJSPresenter();
         presenter1.setView(this);
 
         presenter2=new GetSapStoragesPresenter();
@@ -200,9 +201,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                 }
 
                 //Toast.makeText(AdvancedReceiveActivity.this, scanString, Toast.LENGTH_SHORT).show();
-//                scanString="{\"bm\":\"DQ5095000046\",\"sl\":2.0,\"num\":\"15914359052732\",\"po\":\"\",\"pono\":\"4100011740\",\"porow\":\"00010\",\"gc\":\"2010\",\"cd\":\"A38\",\"cs\":19}";
-//                scanString="{”id” : “123”, “name” : “hello”, “title” : “work”}";
-
+//                scanString="{\"bm\":\"DQ3008000001\",\"sl\":1.0,\"aid\":2995,\"num\":\"2007222012101587\",\"po\":\"\",\"pono\":\"4100026847\",\"porow\":\"00010\",\"gc\":\"2020\",\"cd\":\"\",\"cs\":0}";
 //                JSONObject lableObject= null;
 //                try {
 //                    lableObject = JSONObject.parseObject(scanString);
@@ -212,21 +211,25 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 //                }
 //                if(lableObject!=null) {
 ////                    System.out.println(lableObject.getString("bm"));
-//                    String purchaseorderno=lableObject.getString("pono");
-//                    System.out.println(purchaseorderno);
-//                    String purchaseorderrow=lableObject.getString("porow");
-//                    String productOrderno=lableObject.getString("po");
-//                    float qty=lableObject.getFloat("sl");
-//                    String MaterialCode = lableObject.getString("bm");
-//                    String targetArea = lableObject.getString("cd");
-//                    factory=lableObject.getString("gc");
-//                    labelSquNum=lableObject.getString("num");
-//                    int batch=lableObject.getInteger("cs");
+//                    try {
+//                        pono=lableObject.getString("pono");
+//                        porow=lableObject.getString("porow");
+//                        po=lableObject.getString("po");
+//                        sl=lableObject.getFloat("sl");
+//                        bm = lableObject.getString("bm");
+//                        area = lableObject.getString("cd");
+//                        factory=lableObject.getString("gc");
+//                        labelSquNum=lableObject.getString("num");
+//                        cs=lableObject.getInteger("cs");
+//                        aid=lableObject.getLong("aid");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
 //
 //                    //判断是否重复扫码
 //                    boolean repeat=false;
 //                    for (GetPurWayMaterialDataRep data : datas) {
-//                        if(labelSquNum.equals(data.getData().getLabelSeqNum())){
+//                        if(labelSquNum.equals(data.getData().getLabelSquNum())){
 //                            repeat=true;
 //                        }
 //                    }
@@ -235,9 +238,18 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 //                        Toast.makeText(KFCGSHRKActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
 //
 //                    }else {
-//                        req=new WarehouseReceiptReq(purchaseorderno, purchaseorderrow, productOrderno, MaterialCode, factory, null, qty,targetArea, batch);
-//                        receiptReqs.add(req);
-//                        presenter1.GetPurWayMaterialData(purchaseorderrow,purchaseorderno,qty,MaterialCode,factory);
+//                        if(porow!=null&&pono!=null&&bm!=null&&factory!=null){
+//                            SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+//                                    Activity.MODE_PRIVATE);
+//                            String fac =sharedPreferences.getString("factory", "");
+//                            System.out.println("所在部门是"+fac);
+//                            if(factory.equals(fac)){
+//                                presenter1.GetMaterialPropertieInfoJS(aid);
+//                            }else {
+//                                Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                        }
 //                    }
 ////                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
 //                    scanString="";
@@ -245,6 +257,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 //                    Log.i("token","扫描结果为空");
 //                    Toast.makeText(KFCGSHRKActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
 //                }
+
             }
         });
 
@@ -277,9 +290,11 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
             req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid);
             receiptReqs.add(req);
             data.getData().setFactory(factory);
-            data.getData().setLabelSeqNum(labelSquNum);
+            data.getData().setLabelSquNum(labelSquNum);
+            data.getData().setQty(sl);
             factory="";
             labelSquNum="";
+            sl=0;
             datas.add(data);
 
             adapter=new CGSHRKAdapter(KFCGSHRKActivity.this, R.layout.cgshrkitem,datas);
@@ -307,6 +322,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
             receiptReqs.remove(currentIndex);
             currentIndex=-1;
             adapter.notifyDataSetChanged();
+            LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -347,13 +363,14 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                     //选中的需求仓库
                     int selectedItemPosition = sp.getSelectedItemPosition();
 //                System.out.println("选中的仓库index:"+selectedItemPosition);
-                    areadess=datas.get(position).getStorage();
+                    areadess=datas.get(position).getData().getStorage();
                     ckid=areadess.get(selectedItemPosition).getId();
                     checkedReq.setDemandStorage(ckid);
 //                System.out.println("ckid:"+ckid);
                     List<WarehouseReceiptReq> checkedListReq=new ArrayList<WarehouseReceiptReq>();
                     checkedListReq.add(checkedReq);
                     currentIndex=position;
+                    LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).show();
                     presenter3.WarehouseReceipt(getCurrentdate(),getCurrentdate(),username,checkedListReq);
                 }else {
                     Toast.makeText(KFCGSHRKActivity.this,"未选中收货行",Toast.LENGTH_SHORT).show();
@@ -382,7 +399,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 //                }
 //            }
 
-            GetPurWayMaterialDataBean tempdb=datas.get(position).getData();
+            GetMaterialPropertieInfoJSRepBean tempdb=datas.get(position).getData();
 //            gc.setText(tempdb.getFactory());
 
             presenter2.GetSapStorages(tempdb.getFactory());
@@ -471,7 +488,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                         //判断是否重复扫码
                         boolean repeat=false;
                         for (GetPurWayMaterialDataRep data : datas) {
-                            if(labelSquNum.equals(data.getData().getLabelSeqNum())){
+                            if(labelSquNum.equals(data.getData().getLabelSquNum())){
                                 repeat=true;
                             }
                         }
@@ -484,8 +501,9 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                                 SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
                                         Activity.MODE_PRIVATE);
                                 String fac =sharedPreferences.getString("factory", "");
+                                System.out.println("所在部门是"+fac);
                                 if(factory.equals(fac)){
-                                    presenter1.GetPurWayMaterialData(porow,pono,sl,bm,factory);
+                                    presenter1.GetMaterialPropertieInfoJS(aid);
                                 }else {
                                     Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
                                 }
@@ -498,8 +516,6 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                         Log.i("token","扫描结果为空");
                         Toast.makeText(KFCGSHRKActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
 
             }

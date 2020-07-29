@@ -181,6 +181,7 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
         viewHolder.dhsl.setText(num3str);
         if(unable.get(position)<=0){
             viewHolder.dhsl.setBackgroundColor(Color.GRAY);
+            viewHolder.checked.setEnabled(false);
             viewHolder.checked1.setVisibility(View.GONE);
             viewHolder.label.setVisibility(View.GONE);
         }

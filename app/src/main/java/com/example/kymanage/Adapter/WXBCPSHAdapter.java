@@ -4,19 +4,12 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataBean;
-import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataRep;
-import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSRep;
-import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.iddesBean;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.R;
 

@@ -33,6 +33,8 @@ public class Semi_FinishedProductReceivingReq {
     private String marketOrderRow;
     private String upstreamFactory;
     private float receNum;
+    private float inStorage;
+    private float demandNum;
     private String orderNum;
     private String orderRow;
     private String materialCode;
@@ -47,11 +49,13 @@ public class Semi_FinishedProductReceivingReq {
     public Semi_FinishedProductReceivingReq() {
     }
 
-    public Semi_FinishedProductReceivingReq(String marketOrderNO, String marketOrderRow, String upstreamFactory, float receNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String demandStorage, String description, String unit, String remark, List<Semi_FinishedProductReceivingReqBean> productOrder) {
+    public Semi_FinishedProductReceivingReq(String marketOrderNO, String marketOrderRow, String upstreamFactory, float receNum, float inStorage, float demandNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String demandStorage, String description, String unit, String remark, List<Semi_FinishedProductReceivingReqBean> productOrder) {
         this.marketOrderNO = marketOrderNO;
         this.marketOrderRow = marketOrderRow;
         this.upstreamFactory = upstreamFactory;
         this.receNum = receNum;
+        this.inStorage = inStorage;
+        this.demandNum = demandNum;
         this.orderNum = orderNum;
         this.orderRow = orderRow;
         this.materialCode = materialCode;
@@ -95,6 +99,23 @@ public class Semi_FinishedProductReceivingReq {
 
     public void setReceNum(float receNum) {
         this.receNum = receNum;
+    }
+
+    @JSONField(name = "inStorage")
+    public float getInStorage() {
+        return inStorage;
+    }
+    @JSONField(name = "inStorage")
+    public void setInStorage(float inStorage) {
+        this.inStorage = inStorage;
+    }
+    @JSONField(name = "demandNum")
+    public float getDemandNum() {
+        return demandNum;
+    }
+    @JSONField(name = "demandNum")
+    public void setDemandNum(float demandNum) {
+        this.demandNum = demandNum;
     }
 
     public String getOrderNum() {

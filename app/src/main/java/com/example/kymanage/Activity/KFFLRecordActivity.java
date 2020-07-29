@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.KFFLRecordAdapter;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
@@ -84,7 +86,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     //补打标签
     private GetIssueNoteDetail2Presenter presenter2;
     private List<GenerateStorageLssueRecordReqBean> flDatas;
-    private List<GetIssueNoteDetailReq> bqDatas;
+
     //标签生成器
     private CreateBitmap cb;
     //自定义字体
@@ -143,7 +145,6 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     public void initData() {
         mPrintUtil=new mPrintUtil();
         flDatas=new ArrayList<GenerateStorageLssueRecordReqBean>();
-        bqDatas=new ArrayList<GetIssueNoteDetailReq>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
         datas=new ArrayList<GetIssueDetailRecordRep>();
@@ -236,23 +237,10 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.exit:
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
                             case R.id.receive:
-                                // 隐藏该对话框
-                                List<WriteOffProductOrderIssueReqBean> cxDatas=new ArrayList<WriteOffProductOrderIssueReqBean>();
-                                for (int i = 0; i < datas.size(); i++) {
-                                    View itmeview=listview1.getAdapter().getView(i,null,null);
-                                    CheckBox cb= itmeview.findViewById(R.id.checked);
-                                    if (cb.isChecked()){
-                                        WriteOffProductOrderIssueReqBean cxData=new WriteOffProductOrderIssueReqBean((""+datas.get(i).getIssueId()));
-                                        cxDatas.add(cxData);
-                                    }
-                                }
-//                                WriteOffProductOrderIssueReq cxReq=new WriteOffProductOrderIssueReq(getCurrentdate(),cxDatas);
-                                presenter3.WriteOffProductOrderIssue(cxDatas);
+                                // 遮罩
+                                LoadingBar.dialog(KFFLRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
+                                writeOff();
                                 break;
 //                            case R.id.print1:
 //                                // 隐藏该对话框
@@ -271,6 +259,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                             case R.id.print2:
                                 // 隐藏该对话框
                                 flDatas.clear();
+                                List<GetIssueNoteDetailReq> bqDatas =new ArrayList<GetIssueNoteDetailReq>();
                                 for (int i = 0; i < datas.size(); i++) {
                                     View itmeview=listview1.getAdapter().getView(i,null,null);
                                     CheckBox cb= itmeview.findViewById(R.id.checked);
@@ -291,6 +280,20 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                     }
                 });
         popup.show();
+    }
+
+    private void writeOff(){
+        List<WriteOffProductOrderIssueReqBean> cxDatas=new ArrayList<WriteOffProductOrderIssueReqBean>();
+        for (int i = 0; i < datas.size(); i++) {
+            View itmeview=listview1.getAdapter().getView(i,null,null);
+            CheckBox cb= itmeview.findViewById(R.id.checked);
+            if (cb.isChecked()){
+                WriteOffProductOrderIssueReqBean cxData=new WriteOffProductOrderIssueReqBean((""+datas.get(i).getIssueId()));
+                cxDatas.add(cxData);
+            }
+        }
+        WriteOffProductOrderIssueReq cxReq=new WriteOffProductOrderIssueReq(username,cxDatas);
+        presenter3.WriteOffProductOrderIssue(cxReq);
     }
     //日期弹窗
     private void showDateAndTable() {
@@ -318,6 +321,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     @Override
     public void onDataSuccess1(GetIssueDetailRecordReps data) {
+
         datas.clear();
         datas2=data.getData();
         for (GetIssueDetailRecordRep rdata : datas2) {
@@ -333,9 +337,9 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
 
     @Override
     public void onDataSuccess3(GetIssueNoteDetailRep data) {
+        System.out.println(data.getStatus().getMessage());
         Toast.makeText(KFFLRecordActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
         List<GetIssueNoteDetailBean2> data1 = data.getData();
-
         int labelnum=0;
         if(data1!=null){
             if(data1.size()>0){
@@ -348,9 +352,9 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                             for (GetIssueNoteDetailBean1 data4 : data3) {
                                 KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
                                 Bitmap bm=cb.createImage2(labelBean,tf);
-                                printHelper.GoToNextPage();
+//                                printHelper.GoToNextPage();
                                 printHelper.PrintBitmapAtCenter(bm,384,480);
-//                                printHelper.printBlankLine(82);
+                                printHelper.printBlankLine(81);
                                 labelnum++;
                             }
                         }
@@ -364,6 +368,7 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     @Override
     public void onDataSuccess2(StatusRespBean data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        LoadingBar.dialog(KFFLRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
         GetIssueDetailRecordReq req=new GetIssueDetailRecordReq(username, date.getText().toString());
         presenter1.GetIssueRecord(req);
     }

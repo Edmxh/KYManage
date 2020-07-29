@@ -23,13 +23,16 @@ public class GetOutStorageMaterialOrderJSRepBean {
     private String MEINS;
     private String AUFNR;
     private float PSMNG;
+    private float INQTY;
     private String MATNR;
     private String WERKS;
     private String MAKTX;
     private String MCODE;
     private String GSTRS;
     private String LGORT;
-    private List<iddesBean> STORAGE;
+    private GetOutStorageMaterialOrderJSRepBean1 STORAGE;
+
+    private boolean chosen;
 
     public float getWEMNG() {
         return WEMNG;
@@ -111,11 +114,27 @@ public class GetOutStorageMaterialOrderJSRepBean {
         this.LGORT = LGORT;
     }
 
-    public List<iddesBean> getSTORAGE() {
+    public float getINQTY() {
+        return INQTY;
+    }
+
+    public void setINQTY(float INQTY) {
+        this.INQTY = INQTY;
+    }
+
+    public GetOutStorageMaterialOrderJSRepBean1 getSTORAGE() {
         return STORAGE;
     }
 
-    public void setSTORAGE(List<iddesBean> STORAGE) {
+    public void setSTORAGE(GetOutStorageMaterialOrderJSRepBean1 STORAGE) {
         this.STORAGE = STORAGE;
+    }
+
+    public boolean isChosen() {
+        return chosen;
+    }
+
+    public void setChosen(boolean chosen) {
+        this.chosen = chosen;
     }
 }

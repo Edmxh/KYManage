@@ -34,7 +34,7 @@
 <!--                android:title="粘贴" />-->
 <!--        </menu>-->
 <!--    </item>-->
-    <item
-        android:id="@+id/exit"
-        android:title="隐藏菜单" />
+<!--    <item-->
+<!--        android:id="@+id/exit"-->
+<!--        android:title="隐藏菜单" />-->
 </menu>

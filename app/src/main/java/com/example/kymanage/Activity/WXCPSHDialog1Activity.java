@@ -30,8 +30,6 @@ import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
-import com.example.kymanage.presenter.Presenters.WXPage2.OutsourceFinishedProductReceivingJSPresenter;
-import com.example.kymanage.presenter.Presenters.WXPage3Dialog1.GetOutStorageMaterialOrderJSPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

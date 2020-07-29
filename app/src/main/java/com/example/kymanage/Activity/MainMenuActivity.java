@@ -1,8 +1,9 @@
 package com.example.kymanage.Activity;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Vibrator;
@@ -14,8 +15,17 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.azhon.appupdate.manager.DownloadManager;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
+import com.example.kymanage.Beans.UpdateApp.UpdateAppRep;
 import com.example.kymanage.R;
+import com.example.kymanage.presenter.InterfaceView.BaseView1;
+import com.example.kymanage.presenter.Presenters.mainPage.UpdateAppPresenter;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +33,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class MainMenuActivity extends BaseActivity{
+public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAppRep> {
 
     private ImageView home;
 
@@ -62,6 +72,10 @@ public class MainMenuActivity extends BaseActivity{
 
     //打印类
     private PrintHelper printHelper=null;
+
+    private UpdateAppPresenter presenter1;
+
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
 
     @Override
     public int initLayoutId() {
@@ -177,6 +191,9 @@ public class MainMenuActivity extends BaseActivity{
             wxgl_layout.setLayoutParams(lp);
         }
 
+        presenter1=new UpdateAppPresenter();
+        presenter1.setView(this);
+
 //        ImmersionBar.with(this)
 //                .statusBarColor(R.color.colorBackground2)
 //                .fitsSystemWindows(true)
@@ -202,7 +219,9 @@ public class MainMenuActivity extends BaseActivity{
         //FunctionActivity.put("物料状态查询",LabelStatusActivity.class);
         //FunctionActivity.put("返回发料单",GetIssueNoteDetailActivity.class);
 
-        initPrinter();
+
+//        initPrinter();
+        presenter1.UpdateApp(username);
     }
 
     @Override
@@ -217,13 +236,53 @@ public class MainMenuActivity extends BaseActivity{
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(30);
-//                Intent intent = new Intent(MainMenuActivity.this,TestActivity.class );
-                //intent.putExtra("username", username);
-//                startActivity(intent);
-//                downLoadApk();
+//                vibrator.vibrate(30);
+
             }
         });
+
+    }
+
+    @Override
+    public void onDataSuccess1(UpdateAppRep data) {
+        PackageManager packageManager = getPackageManager();
+        String packageName = getPackageName();
+        int flag = 0;
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = packageManager.getPackageInfo(packageName, flag);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String versionName = packageInfo.versionName;
+        if(data.getVersion().equals(versionName)){
+            Toast.makeText(this, "已是最新版本", Toast.LENGTH_SHORT).show();
+        }else {
+            new QMUIDialog.MessageDialogBuilder(this)
+                    .setTitle("有可用更新")
+                    .setMessage("请更新后使用")
+                    .setSkinManager(QMUISkinManager.defaultInstance(getApplicationContext()))
+                    .addAction("取消", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            finish();
+                        }
+                    })
+                    .addAction(0, "更新", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            updateApp();
+                            dialog.dismiss();
+                            LoadingBar.dialog(MainMenuActivity.this).setFactoryFromResource(R.layout.layout_custom4).show();
+                        }
+                    })
+                    .create(mCurrentDialogStyle).show();
+//            updateApp();
+        }
+    }
+
+    @Override
+    public void onFailed(String msg) {
 
     }
 
@@ -281,7 +340,7 @@ public class MainMenuActivity extends BaseActivity{
             case KeyEvent.KEYCODE_VOLUME_DOWN:
 //                Toast.makeText (CGDDListActivity.this, "上上上", Toast.LENGTH_SHORT).show ();
                 // 音量减小时应该执行的功能代码
-                //printHelper.GoToNextPage();
+                printHelper.GoToNextPage();
                 return true;
             // 音量增大
             case KeyEvent.KEYCODE_VOLUME_UP:
@@ -297,29 +356,39 @@ public class MainMenuActivity extends BaseActivity{
     //初始化
     public void   initPrinter(){
         printHelper=new PrintHelper();
-        printHelper.Open(MainMenuActivity.this);
+        printHelper.Open(getApplicationContext());
 //        Toast.makeText(MainMenuActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        printHelper.Close();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initPrinter();
+    }
 
     //更新功能
     private void downLoadApk() {
         //创建request对象
-        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("http://10.254.100.81/updateAPP/app-debug.apk"));
-        //设置什么网络情况下可以下载
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-        //设置通知栏的标题
-        request.setTitle("下载");
-        //设置通知栏的message
-        request.setDescription("测试下载.....");
-        //设置漫游状态下是否可以下载
-        request.setAllowedOverRoaming(false);
-        //设置文件存放目录
-        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS,"update.apk");
-        //获取系统服务
-        DownloadManager downloadManager= (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        //进行下载
-        long id = downloadManager.enqueue(request);
+//        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("http://10.254.100.81/updateAPP/app-debug.apk"));
+//        //设置什么网络情况下可以下载
+//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+//        //设置通知栏的标题
+//        request.setTitle("下载");
+//        //设置通知栏的message
+//        request.setDescription("测试下载.....");
+//        //设置漫游状态下是否可以下载
+//        request.setAllowedOverRoaming(false);
+//        //设置文件存放目录
+//        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS,"update.apk");
+//        //获取系统服务
+//        DownloadManager downloadManager= (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+//        //进行下载
+//        long id = downloadManager.enqueue(request);
     }
 
 
@@ -333,4 +402,15 @@ public class MainMenuActivity extends BaseActivity{
 //        intent.setDataAndType(Uri.parse("file://" + appFile.toString()), "application/vnd.android.package-archive");
 //        this.startActivity(intent);
 //    }
+
+
+    private void updateApp() {
+        DownloadManager manager = DownloadManager.getInstance(this);
+        manager.setApkName("appupdate.apk")
+                .setApkUrl("http://10.254.100.81/updateAPP/app-debug.apk")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .download();
+    }
+
+
 }

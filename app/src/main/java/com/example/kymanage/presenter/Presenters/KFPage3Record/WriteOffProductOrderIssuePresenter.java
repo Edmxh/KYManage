@@ -2,8 +2,6 @@ package com.example.kymanage.presenter.Presenters.KFPage3Record;
 
 
 import com.example.kymanage.Beans.General.StatusRespBean;
-import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
-import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueReq;
 import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReq;
 import com.example.kymanage.Beans.WriteOffProductOrderIssue.WriteOffProductOrderIssueReqBean;
 import com.example.kymanage.model.AppModel;
@@ -22,7 +20,7 @@ public class WriteOffProductOrderIssuePresenter extends BasePresenter<BaseView2<
         appModel = new AppModel();
     }
 
-    public void WriteOffProductOrderIssue(List<WriteOffProductOrderIssueReqBean> data){
+    public void WriteOffProductOrderIssue(WriteOffProductOrderIssueReq data){
         appModel.WriteOffProductOrderIssue(data, new HttpDataListener<StatusRespBean>() {
 
 

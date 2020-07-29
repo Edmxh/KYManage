@@ -7,13 +7,15 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 public class GetFinProStorageRecordReq {
     private String CurrentDate;
+    private String Factory;
     private String Handler;
 
     public GetFinProStorageRecordReq() {
     }
 
-    public GetFinProStorageRecordReq(String currentDate, String handler) {
+    public GetFinProStorageRecordReq(String currentDate, String factory, String handler) {
         CurrentDate = currentDate;
+        Factory = factory;
         Handler = handler;
     }
 
@@ -25,6 +27,15 @@ public class GetFinProStorageRecordReq {
     public void setCurrentDate(String currentDate) {
         CurrentDate = currentDate;
     }
+    @JSONField(name="Factory")
+    public String getFactory() {
+        return Factory;
+    }
+    @JSONField(name="Factory")
+    public void setFactory(String factory) {
+        Factory = factory;
+    }
+
     @JSONField(name="Handler")
     public String getHandler() {
         return Handler;

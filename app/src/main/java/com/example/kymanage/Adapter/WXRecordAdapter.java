@@ -60,11 +60,14 @@ public class WXRecordAdapter extends ArrayAdapter<GetFinProStorageRecordRep> {
         }
 //获取控件实例
         viewHolder.xh=view.findViewById(R.id.xh);
-        viewHolder.ddh=view.findViewById(R.id.ddh);
-        viewHolder.ddlx=view.findViewById(R.id.ddlx);
+        viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
+        viewHolder.wlms=view.findViewById(R.id.wlms);
+        viewHolder.wllx=view.findViewById(R.id.wllx);
         viewHolder.xqgc=view.findViewById(R.id.xqgc);
         viewHolder.xqck=view.findViewById(R.id.xqck);
+        viewHolder.rksj=view.findViewById(R.id.rksj);
+        viewHolder.rkry=view.findViewById(R.id.rkry);
         viewHolder.gxsj=view.findViewById(R.id.gxsj);
 
         viewHolder.rksl=view.findViewById(R.id.rksl);
@@ -93,15 +96,28 @@ public class WXRecordAdapter extends ArrayAdapter<GetFinProStorageRecordRep> {
 
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
-        viewHolder.ddh.setText(rep.getProductOrderNO());
-        viewHolder.ddlx.setText(rep.getType());
+        String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+        String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+        viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
+
         viewHolder.wlbm.setText(rep.getMaterialCode());
+        viewHolder.wlms.setText(rep.getMaterialDesc());
+        viewHolder.wllx.setText(rep.getMaterialType());
         viewHolder.xqgc.setText(rep.getDemandFactory());
         viewHolder.xqck.setText(rep.getDemandStorage());
+        viewHolder.rksj.setText(rep.getCreateTime());
+        viewHolder.rkry.setText(rep.getHandler());
         viewHolder.gxsj.setText(rep.getCreateTime());
         String num1str=""+rep.getQty();
         viewHolder.rksl.setText(num1str);
-        viewHolder.rkzt.setText(rep.getStatus());
+
+        String str="";
+        if(rep.getReverseHandler().equals("")){
+            str=rep.getReceiveType();
+        }else {
+            str=rep.getReceiveType()+"("+rep.getReverseHandler()+")";
+        }
+        viewHolder.rkzt.setText(str);
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
@@ -131,11 +147,14 @@ public class WXRecordAdapter extends ArrayAdapter<GetFinProStorageRecordRep> {
     // 定义一个内部类，用于对控件的实例进行缓存
     class ViewHolder{
         TextView xh;
-        TextView ddh;
-        TextView ddlx;
+        TextView xsddh_hang;
         TextView wlbm;
+        TextView wlms;
+        TextView wllx;
         TextView xqgc;
         TextView xqck;
+        TextView rksj;
+        TextView rkry;
         TextView gxsj;
         TextView rksl;
         TextView rkzt;

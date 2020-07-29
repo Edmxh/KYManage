@@ -106,6 +106,7 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
 
     @Override
     public void initLisenter() {
+        //扫描派工单
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -26,6 +26,11 @@ public class WarehouseReceiptRecordRep {
     private String materialDescription;
     private String recStatus;
 
+    private String ReverseHandler;
+    private String CreateTime ;
+    private String UpdateTime ;
+    private String Handler ;
+
     public String getPurchaseOrderNo() {
         return purchaseOrderNo;
     }
@@ -104,5 +109,37 @@ public class WarehouseReceiptRecordRep {
 
     public void setRecStatus(String recStatus) {
         this.recStatus = recStatus;
+    }
+
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String reverseHandler) {
+        ReverseHandler = reverseHandler;
+    }
+
+    public String getCreateTime() {
+        return CreateTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        CreateTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return UpdateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        UpdateTime = updateTime;
+    }
+
+    public String getHandler() {
+        return Handler;
+    }
+
+    public void setHandler(String handler) {
+        Handler = handler;
     }
 }

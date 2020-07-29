@@ -50,6 +50,7 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
             viewHolder=new ViewHolder();
             viewHolder.xqjb=view.findViewById(R.id.xqjb);
             viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
             viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
@@ -82,6 +83,10 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
 
         viewHolder.xqjb.setText(rep.getDemandLevel());
         viewHolder.scddh.setText(rep.getProductOrderNO());
+
+        String newStr1 = rep.getKDAUF().replaceAll("^(0+)", "");
+        String newStr2 = rep.getKDPOS().replaceAll("^(0+)", "");
+        viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
         viewHolder.jhksrq.setText(rep.getPlanStartTime());
         String num1str=""+rep.getDemandNum();
         viewHolder.xqsl.setText(num1str);
@@ -136,6 +141,7 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
     class ViewHolder{
         TextView xqjb;
         TextView scddh;
+        TextView xsddh_hang;
         TextView jhksrq;
         TextView xqsl;
         TextView yfpsl;

@@ -18,8 +18,8 @@ public class GetOutStorageMaterialOrderJSPresenter extends BasePresenter<BaseVie
         appModel = new AppModel();
     }
 
-    public void GetOutStorageMaterialOrderJS(String I_INKDPOS,String I_INMATNR,String I_INKDAUF,String I_INWERKS,boolean I_INFLAG){
-        appModel.GetOutStorageMaterialOrderJS(I_INKDPOS,I_INMATNR,I_INKDAUF,I_INWERKS,I_INFLAG,new HttpDataListener<GetOutStorageMaterialOrderJSRep>() {
+    public void GetOutStorageMaterialOrderJS(String KDPOS,String MATNR,String KDAUF,String WERKS,float RQTY){
+        appModel.GetOutStorageMaterialOrderJS(KDPOS,MATNR,KDAUF,WERKS,RQTY,new HttpDataListener<GetOutStorageMaterialOrderJSRep>() {
 
 
             @Override

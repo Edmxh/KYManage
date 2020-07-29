@@ -1,4 +1,4 @@
-package com.example.kymanage.Beans.GetPurWayMaterialData;
+package com.example.kymanage.Beans.GetMaterialPropertieInfoJS;
 
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.iddesBean;
 
@@ -29,9 +29,8 @@ import java.util.List;
  */
 public class GetPurWayMaterialDataRep {
     private long code;
-    private GetPurWayMaterialDataBean data;
+    private GetMaterialPropertieInfoJSRepBean data;
     private String message;
-    private List<iddesBean> storage;
 
     public long getCode() {
         return code;
@@ -41,11 +40,11 @@ public class GetPurWayMaterialDataRep {
         this.code = code;
     }
 
-    public GetPurWayMaterialDataBean getData() {
+    public GetMaterialPropertieInfoJSRepBean getData() {
         return data;
     }
 
-    public void setData(GetPurWayMaterialDataBean data) {
+    public void setData(GetMaterialPropertieInfoJSRepBean data) {
         this.data = data;
     }
 
@@ -55,13 +54,5 @@ public class GetPurWayMaterialDataRep {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public List<iddesBean> getStorage() {
-        return storage;
-    }
-
-    public void setStorage(List<iddesBean> storage) {
-        this.storage = storage;
     }
 }

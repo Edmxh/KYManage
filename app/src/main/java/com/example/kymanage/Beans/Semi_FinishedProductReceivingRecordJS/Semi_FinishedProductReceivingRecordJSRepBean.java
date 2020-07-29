@@ -14,33 +14,34 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
 
     /**
      * Description : 支架加工完成半成品
-     * MarketOrderNO : 0010000208
+     * MarketOrderNO : 0010000316
      * DemandFactory : 2090
      * Unit : EA
-     * StorageId : 82
-     * AdvanceStorageId : 318
+     * StorageId : 348
+     * AdvanceStorageId : 3002
      * DemandStorage : 2912
-     * Remark : 支架加工完成半成品
+     * Remark : 测试备注
      * MaterialType : 独立
      * MblnrRow : 0001
-     * Qty : 2
-     * ID : 25
-     * MarketOrderRow : 000026
+     * Qty : 1
+     * ID : 37
+     * MarketOrderRow : 000035
+     * MoreQty : 0
      * OutsourcingType : 外协半成品
      * Mjahr : 2020
-     * Status : 1105
-     * Describe : 入库冲销
+     * Status : 105
+     * Describe : 105已入库
      * Messa : S
-     * PurchaseOrderRow : 00010
-     * CreateTime : 1591266712720
+     * PurchaseOrderRow : 01970
+     * CreateTime : 1595488819224
      * Handler : xmao
-     * Mblnr : 5000148968
+     * Mblnr : 5000402863
      * Type : 外协入库
-     * PostingDate : 1588262400000
-     * UpdateTime : 1591266712720
-     * MaterialCode : LJ2015000594-A01
-     * DocumentDate : 1588262400000
-     * PurchaseOrderNO : 4800000039
+     * PostingDate : 1595433600000
+     * UpdateTime : 1595488819224
+     * MaterialCode : LJ5540018426-A01
+     * DocumentDate : 1595433600000
+     * PurchaseOrderNO : 4800002219
      */
 
     private String Description;
@@ -56,6 +57,7 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
     private float Qty;
     private long ID;
     private String MarketOrderRow;
+    private float MoreQty;
     private String OutsourcingType;
     private String Mjahr;
     private String Status;
@@ -218,6 +220,14 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
 
     public void setMarketOrderRow(String MarketOrderRow) {
         this.MarketOrderRow = MarketOrderRow;
+    }
+
+    public float getMoreQty() {
+        return MoreQty;
+    }
+
+    public void setMoreQty(float MoreQty) {
+        this.MoreQty = MoreQty;
     }
 
     public String getOutsourcingType() {

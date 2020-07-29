@@ -10,13 +10,11 @@
     >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
@@ -40,8 +38,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
             >
@@ -66,8 +63,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
@@ -91,8 +87,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
@@ -116,8 +111,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
@@ -139,18 +133,41 @@
                 android:gravity="center_vertical"
                 android:duplicateParentState="true"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="发   料   人:"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/flr"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="发料人"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center_vertical"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:showDividers="middle"
         android:divider="@drawable/linearlayout_divider">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
@@ -175,7 +192,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
@@ -200,7 +217,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView

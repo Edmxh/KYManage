@@ -23,8 +23,8 @@ public class Warehouse105WriteoffPresenter extends BasePresenter<BaseView2<CodeM
         appModel = new AppModel();
     }
 
-    public void WarehouseReceiptRecord(List<Warehouse105WriteoffReq> data,String documentData){
-        appModel.Warehouse105Writeoff(data,documentData, new HttpDataListener<CodeMessageBean>() {
+    public void WarehouseReceiptRecord(List<Warehouse105WriteoffReq> data,String documentData,String handler){
+        appModel.Warehouse105Writeoff(data,documentData,handler, new HttpDataListener<CodeMessageBean>() {
 
             @Override
             public void onDataSuccess(CodeMessageBean data) {

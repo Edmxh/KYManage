@@ -3,23 +3,23 @@ package com.example.kymanage.Beans.WriteOffProductOrderIssue;
 import java.util.List;
 
 public class WriteOffProductOrderIssueReq {
-    private String dldate;
+    private String handler;
     private List<WriteOffProductOrderIssueReqBean> data;
 
     public WriteOffProductOrderIssueReq() {
     }
 
-    public WriteOffProductOrderIssueReq(String dldate, List<WriteOffProductOrderIssueReqBean> data) {
-        this.dldate = dldate;
+    public WriteOffProductOrderIssueReq(String handler, List<WriteOffProductOrderIssueReqBean> data) {
+        this.handler = handler;
         this.data = data;
     }
 
-    public String getDldate() {
-        return dldate;
+    public String getHandler() {
+        return handler;
     }
 
-    public void setDldate(String dldate) {
-        this.dldate = dldate;
+    public void setHandler(String handler) {
+        this.handler = handler;
     }
 
     public List<WriteOffProductOrderIssueReqBean> getData() {

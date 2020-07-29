@@ -18,8 +18,8 @@ public class Semi_FinishedProductReceivingRecordJSPresenter extends BasePresente
         appModel = new AppModel();
     }
 
-    public void Semi_FinishedProductReceivingRecordJS(String documentDate, String user,String OutsourcingType){
-        appModel.Semi_FinishedProductReceivingRecordJS(documentDate,user,OutsourcingType,new HttpDataListener<Semi_FinishedProductReceivingRecordJSRep>() {
+    public void Semi_FinishedProductReceivingRecordJS(String documentDate, String user,boolean Checked,String MarketOrderNO,String MarketOrderRow,String MaterialCode,String PurchaseOrderNO,String PurchaseOrderRow){
+        appModel.Semi_FinishedProductReceivingRecordJS(documentDate,user,Checked,MarketOrderNO,MarketOrderRow,MaterialCode,PurchaseOrderNO,PurchaseOrderRow,new HttpDataListener<Semi_FinishedProductReceivingRecordJSRep>() {
 
 
             @Override

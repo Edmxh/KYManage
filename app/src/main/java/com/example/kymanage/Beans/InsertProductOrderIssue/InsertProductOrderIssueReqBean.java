@@ -28,12 +28,10 @@ import com.alibaba.fastjson.annotation.JSONField;
  *
  * }
  */
-public class InsertProductOrderIssueReq {
+public class InsertProductOrderIssueReqBean {
     private String ordernum;
     private String rowno;
-    private String budat;
-    private String bldat;
-    private String uname;
+//    private String uname;
     private String hetxt;
     private String matnr;
     private String mdesc;
@@ -64,15 +62,17 @@ public class InsertProductOrderIssueReq {
     private String RSPos;
     private String Matkl;
 
-    public InsertProductOrderIssueReq() {
+    private String Loggr;
+    private String Lgpbe;
+    private String Lgobe;
+
+    public InsertProductOrderIssueReqBean() {
     }
 
-    public InsertProductOrderIssueReq(String ordernum, String rowno, String budat, String bldat, String uname, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl) {
+    public InsertProductOrderIssueReqBean(String ordernum, String rowno, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl, String loggr, String lgpbe, String lgobe) {
         this.ordernum = ordernum;
         this.rowno = rowno;
-        this.budat = budat;
-        this.bldat = bldat;
-        this.uname = uname;
+//        this.uname = uname;
         this.hetxt = hetxt;
         this.matnr = matnr;
         this.mdesc = mdesc;
@@ -99,6 +99,9 @@ public class InsertProductOrderIssueReq {
         this.RSNum = RSNum;
         this.RSPos = RSPos;
         Matkl = matkl;
+        Loggr = loggr;
+        Lgpbe = lgpbe;
+        Lgobe = lgobe;
     }
 
     public String getOrdernum() {
@@ -115,30 +118,6 @@ public class InsertProductOrderIssueReq {
 
     public void setRowno(String rowno) {
         this.rowno = rowno;
-    }
-
-    public String getBudat() {
-        return budat;
-    }
-
-    public void setBudat(String budat) {
-        this.budat = budat;
-    }
-
-    public String getBldat() {
-        return bldat;
-    }
-
-    public void setBldat(String bldat) {
-        this.bldat = bldat;
-    }
-
-    public String getUname() {
-        return uname;
-    }
-
-    public void setUname(String uname) {
-        this.uname = uname;
     }
 
     public String getHetxt() {
@@ -350,5 +329,30 @@ public class InsertProductOrderIssueReq {
     @JSONField(name = "Matkl")
     public void setMatkl(String matkl) {
         Matkl = matkl;
+    }
+
+    @JSONField(name = "Loggr")
+    public String getLoggr() {
+        return Loggr;
+    }
+    @JSONField(name = "Loggr")
+    public void setLoggr(String loggr) {
+        Loggr = loggr;
+    }
+    @JSONField(name = "Lgpbe")
+    public String getLgpbe() {
+        return Lgpbe;
+    }
+    @JSONField(name = "Lgpbe")
+    public void setLgpbe(String lgpbe) {
+        Lgpbe = lgpbe;
+    }
+    @JSONField(name = "Lgobe")
+    public String getLgobe() {
+        return Lgobe;
+    }
+    @JSONField(name = "Lgobe")
+    public void setLgobe(String lgobe) {
+        Lgobe = lgobe;
     }
 }

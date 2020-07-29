@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.KFCGSHRecordAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
@@ -64,6 +65,9 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
     private Vibrator vibrator;
 
 
+    private CheckBox queryself;
+    private boolean queryall=true;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_kfcgrkrecord;
@@ -80,6 +84,7 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
         reset = findViewById(R.id.reset);
         receive = findViewById(R.id.receive);
         listview1 = findViewById(R.id.listview1);
+        queryself = findViewById(R.id.queryself);
 
         presenter1=new WarehouseReceiptRecordPresenter();
         presenter1.setView(this);
@@ -125,7 +130,12 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),false);
+                if(queryself.isChecked()){
+                    queryall=false;
+                }else {
+                    queryall=true;
+                }
+                presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),queryall);
             }
         });
 
@@ -143,7 +153,8 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
                         datas.add(req);
                     }
                 }
-                presenter2.WarehouseReceiptRecord(datas,getCurrentdate2());
+                LoadingBar.dialog(KFCGRKRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
+                presenter2.WarehouseReceiptRecord(datas,getCurrentdate2(),username);
             }
         });
     }
@@ -163,7 +174,12 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
 //                System.out.println(username);
-                presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),false);
+                if(queryself.isChecked()){
+                    queryall=false;
+                }else {
+                    queryall=true;
+                }
+                presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),queryall);
 //                presenter2.CGSHRecord((str1+str2+str3),"1");
 
             }
@@ -189,7 +205,13 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
         Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
-        presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),false);
+        LoadingBar.dialog(KFCGRKRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
+        if(queryself.isChecked()){
+            queryall=false;
+        }else {
+            queryall=true;
+        }
+        presenter1.WarehouseReceiptRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),kwxx.getText().toString(),queryall);
     }
 
     @Override

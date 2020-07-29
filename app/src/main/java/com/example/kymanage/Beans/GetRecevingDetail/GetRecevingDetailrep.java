@@ -49,6 +49,9 @@ public class GetRecevingDetailrep implements Serializable {
     private float inStorageQty;
     private String LABOR;
 
+    private String LOGGR;
+    private String LGPBE ;
+
     public static GetRecevingDetailrep objectFromData(String str) {
 
         return new Gson().fromJson(str, GetRecevingDetailrep.class);
@@ -219,5 +222,21 @@ public class GetRecevingDetailrep implements Serializable {
 
     public void setLABOR(String LABOR) {
         this.LABOR = LABOR;
+    }
+
+    public String getLOGGR() {
+        return LOGGR;
+    }
+
+    public void setLOGGR(String LOGGR) {
+        this.LOGGR = LOGGR;
+    }
+
+    public String getLGPBE() {
+        return LGPBE;
+    }
+
+    public void setLGPBE(String LGPBE) {
+        this.LGPBE = LGPBE;
     }
 }

@@ -84,7 +84,7 @@ public class CreateBitmap{
         int text4 = 26;
         int text5 = 24;//
         int text6 = 22;//
-        int text7 = 15;//
+        int text7 = 20;//
         int lineSpacing = 10;//行间距
 
         //生成的图片
@@ -108,6 +108,7 @@ public class CreateBitmap{
 
         //画文字
         String str1=rep.getMaterialDesc();
+//        str1="旋转编码器（中空）|E80H30-360-3-N-24";
 //        titleTextSize=(QRx)/(str1.length());
         System.out.println();
         paint.setColor(Color.BLACK);
@@ -116,9 +117,9 @@ public class CreateBitmap{
 //        canvas.drawText(str1,0,top,paint);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        if(str1.length()<30){
+        if(str1.length()<20){
             textPaint.setTextSize(text2);
-        }else if(str1.length()>=30&&str1.length()<=40) {
+        }else if(str1.length()>=20&&str1.length()<=40) {
             textPaint.setTextSize(text4);
         }else {
             textPaint.setTextSize(text6);
@@ -131,7 +132,12 @@ public class CreateBitmap{
         layout.draw(canvas);
 
         String str3=rep.getMaterialCode();
-        paint.setTextSize(text3);
+        System.out.println(str3.length());
+        if(str3.length()>16){
+            paint.setTextSize(text7);
+        }else {
+            paint.setTextSize(text3);
+        }
         paint.setFakeBoldText(true);
         top+=titleTextSize*2+40;
         canvas.drawText(str3,0,top,paint);
@@ -141,7 +147,7 @@ public class CreateBitmap{
             rep.setNum(1);
         }
         String str4="单位:"+rep.getUnit()+" "+"数量:"+(rep.getNum());
-        paint.setTextSize(text3);
+        paint.setTextSize(text4);
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
 
@@ -153,7 +159,9 @@ public class CreateBitmap{
 
         String str6="";
         if(rep.getMarketOrderNO()==null||rep.getMarketOrderRow()==null||rep.getProductOrderNO()==null){
-            str6="";
+            if(rep.getShelfNO()!=null){
+                str6=""+rep.getShelfNO();
+            }
         }else {
             String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
             String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
@@ -210,8 +218,9 @@ public class CreateBitmap{
         int y1=picWidth-QRx+10;
 
 //        String str11=rep.getLabelSeqNum();
-        String str11=rep.getPo()+"-"+Math.round((Math.random()+1) * 1000);
-        paint.setTextSize(text5);
+        String strporow = rep.getPoRow().replaceAll("^(0+)", "");
+        String str11=rep.getPo()+"/"+strporow+"-"+Math.round((Math.random()+1) * 1000);
+        paint.setTextSize(text6);
         canvas.drawText(str11,QRx,y1,paint);
         String str12="备注:";
         if(rep.getRemark()==null){
@@ -245,6 +254,7 @@ public class CreateBitmap{
         int text4 = 26;
         int text5 = 24;//
         int text6 = 22;//
+        int text7 = 20;//
         int lineSpacing = 10;//行间距
 
         //生成的图片
@@ -290,9 +300,13 @@ public class CreateBitmap{
         canvas.translate(0,top);
         layout.draw(canvas);
 
-        String str3=rep.getMaterialCode();
+        String str3=rep.getData().getMaterialCode();
         paint.setFakeBoldText(true);
-        paint.setTextSize(text3);
+        if(str3.length()>16){
+            paint.setTextSize(text7);
+        }else {
+            paint.setTextSize(text3);
+        }
         top+=titleTextSize*2+30;
         canvas.drawText(str3,0,top,paint);
         paint.setFakeBoldText(false);
@@ -302,9 +316,10 @@ public class CreateBitmap{
         top+=text1+lineSpacing;
         canvas.drawText(str4,0,top,paint);
 
-        String str5="2010"+"    "+rep.getData().getArea();
+//        String str5="2010"+"    "+rep.getData().getArea();
+        String str5="2010"+"/"+rep.getData().getArea()+"/"+rep.getData().getLgpbe();
 
-        paint.setTextSize(text2);
+        paint.setTextSize(text4);
         top+=text1+lineSpacing;
         canvas.drawText(str5,0,top,paint);
 
@@ -315,9 +330,9 @@ public class CreateBitmap{
             String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
             String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
             String newStr3 = rep.getProductOrderNO().replaceAll("^(0+)", "");
-            str6=newStr1+"/"+newStr2+"   "+newStr3;
+            str6=newStr1+"/"+newStr2+" "+newStr3;
         }
-        paint.setTextSize(20);
+        paint.setTextSize(text5);
         top+=text2+lineSpacing;
         canvas.drawText(str6,0,top,paint);
 
@@ -336,6 +351,7 @@ public class CreateBitmap{
             str8="";
         }else {
             str8=""+rep.getMaterialDesc();
+//            str8="泰安五岳专用汽车自卸车前版焊接";
         }
         paint.setTextSize(text3);
         top+=text3+lineSpacing;
@@ -779,7 +795,13 @@ public class CreateBitmap{
 //        canvas.drawText(str1,0,top,paint);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(titleTextSize);
+        if(str1.length()<30){
+            textPaint.setTextSize(text2);
+        }else if(str1.length()>=30&&str1.length()<=40) {
+            textPaint.setTextSize(text4);
+        }else {
+            textPaint.setTextSize(text6);
+        }
         textPaint.setTypeface(tf);
         StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
 
@@ -789,7 +811,11 @@ public class CreateBitmap{
 
         String str3=rep.getMaterialCode();
         paint.setFakeBoldText(true);
-        paint.setTextSize(text8);
+        if(str3.length()>16){
+            paint.setTextSize(text8);
+        }else {
+            paint.setTextSize(text3);
+        }
         top+=titleTextSize*2+30;
         canvas.drawText(str3,0,top,paint);
         paint.setFakeBoldText(false);
@@ -804,7 +830,7 @@ public class CreateBitmap{
         if(rep.getNoteType().equals("销售发货")){
             str5=rep.getFactory()+"  "+rep.getArea();
         }else {
-            str5=rep.getClientName()+"  "+rep.getClientNo();
+            str5=rep.getClientShortName()+"  "+rep.getClientNO();
         }
 
 
@@ -853,7 +879,7 @@ public class CreateBitmap{
         top+=lineSpacing;
         canvas.drawLine (0,top,picWidth,top,paint);
 
-        String str10="TKAS"+"         "+rep.getDeliveryDate()+" "+"CM";
+        String str10="TKAS"+"         "+rep.getCreateDate()+" "+"CM";
         paint.setTextSize(text4);
         paint.setFakeBoldText(false);
         top+=text4;
@@ -874,7 +900,7 @@ public class CreateBitmap{
         paint.setTextSize(text5);
         canvas.drawText(str11,QRx,y1,paint);
         String str12="备注:";
-        if(rep.getNoteType().equals("未知类型")){
+        if(rep.getNoteType().equals("未知类型")||rep.getNoteType().equals("超量入库")){
             str12="备注:"+rep.getNoteType();
         }else {
             str12="备注:";
@@ -907,6 +933,7 @@ public class CreateBitmap{
         int text4 = 26;
         int text5 = 24;//
         int text6 = 22;//
+        int text7 = 20;//
         int lineSpacing = 10;//行间距
 
         //生成的图片
@@ -937,7 +964,13 @@ public class CreateBitmap{
 //        canvas.drawText(str1,0,top,paint);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(titleTextSize);
+        if(str1.length()<30){
+            textPaint.setTextSize(text2);
+        }else if(str1.length()>=30&&str1.length()<=40) {
+            textPaint.setTextSize(text4);
+        }else {
+            textPaint.setTextSize(text6);
+        }
         textPaint.setTypeface(tf);
         StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
 
@@ -947,7 +980,11 @@ public class CreateBitmap{
 
         String str3=rep.getMaterialCode();
         paint.setFakeBoldText(true);
-        paint.setTextSize(text3);
+        if(str3.length()>16){
+            paint.setTextSize(text7);
+        }else {
+            paint.setTextSize(text3);
+        }
         top+=titleTextSize*2+30;
         canvas.drawText(str3,0,top,paint);
         paint.setFakeBoldText(false);

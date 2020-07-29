@@ -1,7 +1,6 @@
 package com.example.kymanage.presenter.Presenters.KFPage2;
 
 
-import com.example.kymanage.Beans.GetPurWayMaterialData.GetPurWayMaterialDataRep;
 import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRep;
 import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordReqBean;
 import com.example.kymanage.model.AppModel;

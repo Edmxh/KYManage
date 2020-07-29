@@ -2,8 +2,10 @@ package com.example.kymanage.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -29,6 +31,7 @@ import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordR
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReq;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRepBean;
+import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteReqBean;
 import com.example.kymanage.Beans.StatusBean;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReq;
 import com.example.kymanage.Beans.WriteOffProStorageRecord.WriteOffProStorageRecordReqBean;
@@ -67,6 +70,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
     private WXRecordAdapter adapter;
 
     private String username;
+    private String fac;
     //震动
     private Vibrator vibrator;
 
@@ -102,6 +106,10 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
 
     @Override
     public void initData() {
+
+        SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+                Activity.MODE_PRIVATE);
+        fac =sharedPreferences.getString("factory", "");
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
 //        System.out.println("username:"+username);
@@ -118,7 +126,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
 
         date.setText(getCurrentdate());
 
-        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),username);
+        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),fac,username);
 //                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq("2020-05-31","kzheng");
         presenter1.GetFinProStorageRecord(req);
     }
@@ -142,7 +150,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
                         View itmeview=listview1.getAdapter().getView(i,null,null);
                         CheckBox cb= itmeview.findViewById(R.id.checked);
                         if(cb.isChecked()){
-                            WriteOffProStorageRecordReqBean idreq=new WriteOffProStorageRecordReqBean((""+data1.get(i).getFinProEnterID()));
+                            WriteOffProStorageRecordReqBean idreq=new WriteOffProStorageRecordReqBean((data1.get(i).getID()));
                             idlist.add(idreq);
                         }
                     }
@@ -158,14 +166,14 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<WriteOffProStorageRecordReqBean> idlist=new ArrayList<WriteOffProStorageRecordReqBean>();
+                List<GetFinProStorageRecordNoteReqBean> idlist=new ArrayList<GetFinProStorageRecordNoteReqBean>();
                 if(data1!=null){
                     for (int i = 0; i < data1.size(); i++) {
 //                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
                         View itmeview=listview1.getAdapter().getView(i,null,null);
                         CheckBox cb= itmeview.findViewById(R.id.checked);
                         if(cb.isChecked()){
-                            WriteOffProStorageRecordReqBean idreq=new WriteOffProStorageRecordReqBean((""+data1.get(i).getFinProEnterID()));
+                            GetFinProStorageRecordNoteReqBean idreq=new GetFinProStorageRecordNoteReqBean((data1.get(i).getID()));
                             idlist.add(idreq);
                         }
                     }
@@ -193,7 +201,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
 
-                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq((str1+str2+str3),username);
+                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq((str1+str2+str3),fac,username);
 //                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq("2020-05-31","kzheng");
                 presenter1.GetFinProStorageRecord(req);
 
@@ -221,7 +229,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
     @Override
     public void onDataSuccess2(StatusRespBean data) {
         Toast.makeText(WXSHJLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),username);
+        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),fac,username);
 //                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq("2020-05-31","kzheng");
         presenter1.GetFinProStorageRecord(req);
     }
@@ -256,7 +264,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(WXSHJLActivity.this);
-        Toast.makeText(WXSHJLActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(WXSHJLActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override

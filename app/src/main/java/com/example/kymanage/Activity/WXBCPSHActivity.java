@@ -306,7 +306,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                     }
                 }
                 float recNum=Float.parseFloat(("0"+dhsl.getText().toString()));
-                Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getUpstreamFactory(), recNum, selectedRep.getEBELN(), selectedRep.getEBELP(), selectedRep.getMATNR(), selectedRep.getMaterialType(), selectedRep.getWERKS(), selectedRep.getLGPRO(), selectedRep.getTXZ01(), selectedRep.getMEINS(), selectedRep.getCGTXT(), productOrderReqs);
+                Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getUpstreamFactory(), recNum,selectedRep.getInStorage(),selectedRep.getMENGE(),selectedRep.getEBELN(), selectedRep.getEBELP(), selectedRep.getMATNR(), selectedRep.getMaterialType(), selectedRep.getWERKS(), selectedRep.getLGPRO(), selectedRep.getTXZ01(), selectedRep.getMEINS(), selectedRep.getCGTXT(), productOrderReqs);
                 presenter4.Semi_FinishedProductReceiving(getCurrentdate(),getCurrentdate(),username,req);
             }
         });

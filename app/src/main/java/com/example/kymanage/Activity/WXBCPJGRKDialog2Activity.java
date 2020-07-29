@@ -10,25 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kymanage.Adapter.CGDialogAdapter;
-import com.example.kymanage.Adapter.WXBCPJGRKDialog1Adapter;
 import com.example.kymanage.Adapter.WXBCPJGRKDialog2Adapter;
-import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRep;
-import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRepBean;
-import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailrep;
-import com.example.kymanage.Beans.InsertFinProStorageRecord.InsertFinProStorageRecordReqBean;
-import com.example.kymanage.Beans.MaterialFlow103.ProductOrderBean;
+import com.example.kymanage.Beans.InsertFinProStorageRecord.InsertFinProStorageRecordReqBean1;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
-import com.example.kymanage.Beans.UpdateStorage.UpdateStorageReq;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
-import com.example.kymanage.presenter.Presenters.CGPage1.CG103SHReceivePresenter;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
-import com.example.kymanage.presenter.Presenters.WXPage3Dialog1.GetOutStorageMaterialOrderJSPresenter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,7 +50,7 @@ public class WXBCPJGRKDialog2Activity extends AppCompatActivity implements View.
     private String MaterialType;
 
     //传递的数据
-    private List<InsertFinProStorageRecordReqBean> detail;
+    private List<InsertFinProStorageRecordReqBean1> detail;
     //adapter
     List<PreMaterialProductOrderRep> listData;
     private WXBCPJGRKDialog2Adapter adapter;
@@ -105,7 +95,7 @@ public class WXBCPJGRKDialog2Activity extends AppCompatActivity implements View.
 
 //        datas=new ArrayList<GetOutStorageMaterialOrderJSRepBean>();
 
-        detail=new ArrayList<InsertFinProStorageRecordReqBean>();
+        detail=new ArrayList<InsertFinProStorageRecordReqBean1>();
 
     }
 
@@ -132,7 +122,7 @@ public class WXBCPJGRKDialog2Activity extends AppCompatActivity implements View.
                     float recenum=Float.parseFloat(("0"+et.getText().toString()));
 
                     if(recenum!=0){
-                        InsertFinProStorageRecordReqBean bean=new InsertFinProStorageRecordReqBean(currData.getFactory(),storage, currData.getKDAUF(), currData.getKDPOS(), currData.getProductOrderNO(), currData.getProOrderDesc(),currData.getProOrderMaterialCode(), currData.getProOrderMaterialDesc(), currData.getProOrderMaterialUnit(), currData.getDemandNum(), recenum,currData.getAllocatedNum(), currData.getRSNUM(), currData.getRSPOS(),currData.getMCODE());
+                        InsertFinProStorageRecordReqBean1 bean=new InsertFinProStorageRecordReqBean1(currData.getFactory(),storage, currData.getKDAUF(), currData.getKDPOS(), currData.getProductOrderNO(), currData.getProOrderDesc(),currData.getProOrderMaterialCode(), currData.getProOrderMaterialDesc(), currData.getProOrderMaterialUnit(), currData.getDemandNum(), recenum,currData.getAllocatedNum(), currData.getRSNUM(), currData.getRSPOS(),currData.getMCODE());
                         detail.add(bean);
                         allNum+=recenum;
                     }

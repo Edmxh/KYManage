@@ -1,196 +1,209 @@
 package com.example.kymanage.Beans.InsertFinProStorageRecord;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * {
- * "BLDAT":"2020-01-02",
- * "BUDAT":"2020-01-02",
- * "MATNR":"LJ4510000719-TZ4020100000",
- * "WERKS":"2090",
- * "LGORT":"2906",
- * "AUFNR":"10044960",
- * "MENGE":1,
- * "KDAUF":"30000160",
- * "KDPOS":"000010",
- * "MEINS":"EA",
- * "MCODE":"M002012",
- * "MaterialDesc":"测试20200601",
- * "MaterialType":"非专有",
- * "Handler":"kzheng",
- * "data":[{
- * 	"Factory":"",
- * 	"MarketOrderNO":"",
- * 	"MarketOrderRow":"",
- * 	"ProductOrderNO":"",
- * 	"ProductOrderDesc":"",
- * 	"ProOMaterialNO":"",
- * 	"ProOMaterialDesc":"",
- * 	"ProOMaterialUnit":"",
- * 	"DemandQty":"",
- * 	"AllocatedQty":"",
- * 	"ProductOrderReservedNO":"",
- * 	"ProductOrderReservedRowNO":""
- * }]
- *        }
- */
+
 public class InsertFinProStorageRecordReq {
-    private String BLDAT;
-    private String BUDAT;
-    private String MATNR;
-    private String WERKS;
-    private String LGORT;
-    private String AUFNR;
-    private float MENGE;
-    private String KDAUF;
-    private String KDPOS;
-    private String MEINS;
-    private String MCODE;
+
+    /**
+     * MaterialCode : LJ6025011857
+     * MaterialDesc : 测试20200601
+     * MaterialType : 非专有
+     * Factory : 2090
+     * Storage : 2906
+     * Qty : 5
+     * Unit : EA
+     * MarketOrderNO : 30000115
+     * MarketOrderRow : 000020
+     * Handler : kzheng
+     */
+
+    private String MaterialCode;
     private String MaterialDesc;
     private String MaterialType;
+    private String Factory;
+    private String Storage;
+    private float Qty;
+    private float MQty;
+    private String Unit;
+    private String MarketOrderNO;
+    private String MarketOrderRow;
     private String Handler;
-    private List<InsertFinProStorageRecordReqBean> data;
 
-    public InsertFinProStorageRecordReq() {
-    }
+    private List<InsertFinProStorageRecordReqBean2> ldata;
+    private List<InsertFinProStorageRecordReqBean1> sdata;
 
-    public InsertFinProStorageRecordReq(String BLDAT, String BUDAT, String MATNR, String WERKS, String LGORT, String AUFNR, float MENGE, String KDAUF, String KDPOS, String MEINS, String MCODE, String materialDesc, String materialType, String handler, List<InsertFinProStorageRecordReqBean> data) {
-        this.BLDAT = BLDAT;
-        this.BUDAT = BUDAT;
-        this.MATNR = MATNR;
-        this.WERKS = WERKS;
-        this.LGORT = LGORT;
-        this.AUFNR = AUFNR;
-        this.MENGE = MENGE;
-        this.KDAUF = KDAUF;
-        this.KDPOS = KDPOS;
-        this.MEINS = MEINS;
-        this.MCODE = MCODE;
+    public InsertFinProStorageRecordReq(String materialCode, String materialDesc, String materialType, String factory, String storage, float qty, float MQty, String unit, String marketOrderNO, String marketOrderRow, String handler, List<InsertFinProStorageRecordReqBean2> ldata, List<InsertFinProStorageRecordReqBean1> sdata) {
+        MaterialCode = materialCode;
         MaterialDesc = materialDesc;
         MaterialType = materialType;
+        Factory = factory;
+        Storage = storage;
+        Qty = qty;
+        this.MQty = MQty;
+        Unit = unit;
+        MarketOrderNO = marketOrderNO;
+        MarketOrderRow = marketOrderRow;
         Handler = handler;
-        this.data = data;
+        this.ldata = ldata;
+        this.sdata = sdata;
     }
-    @JSONField(name = "BLDAT")
-    public String getBLDAT() {
-        return BLDAT;
+
+    public static InsertFinProStorageRecordReq objectFromData(String str) {
+
+        return new Gson().fromJson(str, InsertFinProStorageRecordReq.class);
     }
-    @JSONField(name = "BLDAT")
-    public void setBLDAT(String BLDAT) {
-        this.BLDAT = BLDAT;
+
+    public static InsertFinProStorageRecordReq objectFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+
+            return new Gson().fromJson(jsonObject.getString(str), InsertFinProStorageRecordReq.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
-    @JSONField(name = "BUDAT")
-    public String getBUDAT() {
-        return BUDAT;
+
+    public static List<InsertFinProStorageRecordReq> arrayInsertFinProStorageRecordReqFromData(String str) {
+
+        Type listType = new TypeToken<ArrayList<InsertFinProStorageRecordReq>>() {
+        }.getType();
+
+        return new Gson().fromJson(str, listType);
     }
-    @JSONField(name = "BUDAT")
-    public void setBUDAT(String BUDAT) {
-        this.BUDAT = BUDAT;
+
+    public static List<InsertFinProStorageRecordReq> arrayInsertFinProStorageRecordReqFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+            Type listType = new TypeToken<ArrayList<InsertFinProStorageRecordReq>>() {
+            }.getType();
+
+            return new Gson().fromJson(jsonObject.getString(str), listType);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList();
+
+
     }
-    @JSONField(name = "MATNR")
-    public String getMATNR() {
-        return MATNR;
+    @JSONField(name = "MaterialCode")
+    public String getMaterialCode() {
+        return MaterialCode;
     }
-    @JSONField(name = "MATNR")
-    public void setMATNR(String MATNR) {
-        this.MATNR = MATNR;
-    }
-    @JSONField(name = "WERKS")
-    public String getWERKS() {
-        return WERKS;
-    }
-    @JSONField(name = "WERKS")
-    public void setWERKS(String WERKS) {
-        this.WERKS = WERKS;
-    }
-    @JSONField(name = "LGORT")
-    public String getLGORT() {
-        return LGORT;
-    }
-    @JSONField(name = "LGORT")
-    public void setLGORT(String LGORT) {
-        this.LGORT = LGORT;
-    }
-    @JSONField(name = "AUFNR")
-    public String getAUFNR() {
-        return AUFNR;
-    }
-    @JSONField(name = "AUFNR")
-    public void setAUFNR(String AUFNR) {
-        this.AUFNR = AUFNR;
-    }
-    @JSONField(name = "MENGE")
-    public float getMENGE() {
-        return MENGE;
-    }
-    @JSONField(name = "MENGE")
-    public void setMENGE(float MENGE) {
-        this.MENGE = MENGE;
-    }
-    @JSONField(name = "KDAUF")
-    public String getKDAUF() {
-        return KDAUF;
-    }
-    @JSONField(name = "KDAUF")
-    public void setKDAUF(String KDAUF) {
-        this.KDAUF = KDAUF;
-    }
-    @JSONField(name = "KDPOS")
-    public String getKDPOS() {
-        return KDPOS;
-    }
-    @JSONField(name = "KDPOS")
-    public void setKDPOS(String KDPOS) {
-        this.KDPOS = KDPOS;
-    }
-    @JSONField(name = "MEINS")
-    public String getMEINS() {
-        return MEINS;
-    }
-    @JSONField(name = "MEINS")
-    public void setMEINS(String MEINS) {
-        this.MEINS = MEINS;
-    }
-    @JSONField(name = "MCODE")
-    public String getMCODE() {
-        return MCODE;
-    }
-    @JSONField(name = "MCODE")
-    public void setMCODE(String MCODE) {
-        this.MCODE = MCODE;
+    @JSONField(name = "MaterialCode")
+    public void setMaterialCode(String MaterialCode) {
+        this.MaterialCode = MaterialCode;
     }
     @JSONField(name = "MaterialDesc")
     public String getMaterialDesc() {
         return MaterialDesc;
     }
     @JSONField(name = "MaterialDesc")
-    public void setMaterialDesc(String materialDesc) {
-        MaterialDesc = materialDesc;
+    public void setMaterialDesc(String MaterialDesc) {
+        this.MaterialDesc = MaterialDesc;
     }
     @JSONField(name = "MaterialType")
     public String getMaterialType() {
         return MaterialType;
     }
     @JSONField(name = "MaterialType")
-    public void setMaterialType(String materialType) {
-        MaterialType = materialType;
+    public void setMaterialType(String MaterialType) {
+        this.MaterialType = MaterialType;
+    }
+    @JSONField(name = "Factory")
+    public String getFactory() {
+        return Factory;
+    }
+    @JSONField(name = "Factory")
+    public void setFactory(String Factory) {
+        this.Factory = Factory;
+    }
+    @JSONField(name = "Storage")
+    public String getStorage() {
+        return Storage;
+    }
+    @JSONField(name = "Storage")
+    public void setStorage(String Storage) {
+        this.Storage = Storage;
+    }
+    @JSONField(name = "Qty")
+    public float getQty() {
+        return Qty;
+    }
+    @JSONField(name = "Qty")
+    public void setQty(float Qty) {
+        this.Qty = Qty;
+    }
+    @JSONField(name = "MQty")
+    public float getMQty() {
+        return MQty;
+    }
+    @JSONField(name = "MQty")
+    public void setMQty(float MQty) {
+        this.MQty = MQty;
+    }
+
+    @JSONField(name = "Unit")
+    public String getUnit() {
+        return Unit;
+    }
+    @JSONField(name = "Unit")
+    public void setUnit(String Unit) {
+        this.Unit = Unit;
+    }
+    @JSONField(name = "MarketOrderNO")
+    public String getMarketOrderNO() {
+        return MarketOrderNO;
+    }
+    @JSONField(name = "MarketOrderNO")
+    public void setMarketOrderNO(String MarketOrderNO) {
+        this.MarketOrderNO = MarketOrderNO;
+    }
+    @JSONField(name = "MarketOrderRow")
+    public String getMarketOrderRow() {
+        return MarketOrderRow;
+    }
+    @JSONField(name = "MarketOrderRow")
+    public void setMarketOrderRow(String MarketOrderRow) {
+        this.MarketOrderRow = MarketOrderRow;
     }
     @JSONField(name = "Handler")
     public String getHandler() {
         return Handler;
     }
     @JSONField(name = "Handler")
-    public void setHandler(String handler) {
-        Handler = handler;
+    public void setHandler(String Handler) {
+        this.Handler = Handler;
     }
-    @JSONField(name = "data")
-    public List<InsertFinProStorageRecordReqBean> getData() {
-        return data;
+
+    public List<InsertFinProStorageRecordReqBean2> getLdata() {
+        return ldata;
     }
-    @JSONField(name = "data")
-    public void setData(List<InsertFinProStorageRecordReqBean> data) {
-        this.data = data;
+
+    public void setLdata(List<InsertFinProStorageRecordReqBean2> ldata) {
+        this.ldata = ldata;
+    }
+
+    public List<InsertFinProStorageRecordReqBean1> getSdata() {
+        return sdata;
+    }
+
+    public void setSdata(List<InsertFinProStorageRecordReqBean1> sdata) {
+        this.sdata = sdata;
     }
 }

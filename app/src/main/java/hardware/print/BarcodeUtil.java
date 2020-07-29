@@ -17,6 +17,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.Hashtable;
 
@@ -103,8 +104,9 @@ public final class BarcodeUtil {
 		MultiFormatWriter writer = new MultiFormatWriter();
 		BitMatrix result = null;
 		try {
-
-			result = writer.encode(contents, format, desiredWidth,desiredHeight, null);
+			Hashtable hints = new Hashtable();
+			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+			result = writer.encode(contents, format, desiredWidth,desiredHeight, hints);
 		} catch (WriterException e) {
 			e.printStackTrace();
 		}

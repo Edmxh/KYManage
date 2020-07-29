@@ -20,8 +20,8 @@ public class YRKCX103Presenter extends BasePresenter<BaseView1<StatusRespBean>> 
         appModel = new AppModel();
     }
 
-    public void YRKCX103(List<Long> ids,String RequestTime){
-        appModel.MaterialFlow103WriteOff(ids,RequestTime, new HttpDataListener<StatusRespBean>() {
+    public void YRKCX103(List<Long> ids,String handler,String RequestTime){
+        appModel.MaterialFlow103WriteOff(ids,handler,RequestTime, new HttpDataListener<StatusRespBean>() {
 
 
             @Override

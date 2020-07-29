@@ -17,6 +17,9 @@ public interface API {
     //登录
     String LOGIN = "ThingX/Things/AppProgramThing/Services/Login";
 
+    //更新APP
+    String UpdateApp = "ThingX/Things/AppProgramThing/Services/UpdateAPP";
+
 
     //物流通用-----------------------------------------------------------------------
     //获取物料主数据接口
@@ -45,7 +48,7 @@ public interface API {
 
     //库房---------------------------------------------------------------------------
     //获取库房收货物料信息接口
-    String GetPurWayMaterialData="ThingX/Things/AppProgramThing/Services/GetPurWayMaterialData";
+    String GetMaterialPropertieInfoJS="ThingX/Things/AppProgramThing/Services/GetMaterialPropertieInfoJS";
     //库房收货及发料接口
     String WarehouseReceipt="ThingX/Things/AppProgramThing/Services/WarehouseReceipt";
     //库房收货(采购入库)记录
@@ -152,6 +155,7 @@ public interface API {
 
     //获取销售发货物料信息及库存地点
     String GetLableStorageInfoJS="ThingX/Things/AppProgramThing/Services/GetLableStorageInfoJS";
+
 
 
 

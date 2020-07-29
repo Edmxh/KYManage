@@ -71,6 +71,11 @@ public class PreMaterialProductOrderRep {
 
     private float dispatchNum;
 
+    private String LOGGR;
+    private String LGPBE;
+
+    private boolean chosen;
+
 
 
 
@@ -336,5 +341,29 @@ public class PreMaterialProductOrderRep {
 
     public void setDispatchNum(float dispatchNum) {
         this.dispatchNum = dispatchNum;
+    }
+
+    public String getLOGGR() {
+        return LOGGR;
+    }
+
+    public void setLOGGR(String LOGGR) {
+        this.LOGGR = LOGGR;
+    }
+
+    public String getLGPBE() {
+        return LGPBE;
+    }
+
+    public void setLGPBE(String LGPBE) {
+        this.LGPBE = LGPBE;
+    }
+
+    public boolean isChosen() {
+        return chosen;
+    }
+
+    public void setChosen(boolean chosen) {
+        this.chosen = chosen;
     }
 }

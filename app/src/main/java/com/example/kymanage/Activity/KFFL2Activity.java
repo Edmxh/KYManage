@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.KFFLFKAdapter;
 import com.example.kymanage.Beans.ScanIssueNoteDetail.ScanIssueNoteDetailRep;
 import com.example.kymanage.Beans.ScanIssueNoteDetail.ScanIssueNoteDetailRepBean;
@@ -53,7 +54,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
     private String scanString;
 
     //列表
-    private MultiStateListView listview1;
+    private ListView listview1;
     private KFFLFKAdapter adapter;
     private ImageView sx;
     //震动
@@ -120,6 +121,40 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
                     e.printStackTrace();
                 }
 
+//                scanString="{\"no\":\"200723094521873\"}";
+//                JSONObject lableObject= null;
+//                try {
+//                    lableObject = JSONObject.parseObject(scanString);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    Toast.makeText(KFFL2Activity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+//                }
+//                if(lableObject!=null) {
+//                    String flnum = lableObject.getString("no");
+//
+//                    fldh.setText(flnum);
+//                    flry.setText(username);
+//                    flsj.setText(getCurrentdate2());
+//                    fldxx_layout.setVisibility(View.VISIBLE);
+//                    //加载动画
+//                    adapter.clear();
+//                    adapter.notifyDataSetChanged();
+//                    LoadingBar.dialog(KFFL2Activity.this).setFactoryFromResource(R.layout.layout_custom3).show();
+////                        listview1.setVisibility(View.GONE);
+////                        loading.setVisibility(View.VISIBLE);
+////                        String factory=lableObject.getString("gc");
+////                        presenter1.GetStockInformationDataJS(materialCode,factory);
+//
+////                        GetMaterialStorageReq req2=new GetMaterialStorageReq(factory, materialCode);
+////                        GetMaterialStorageReq req2=new GetMaterialStorageReq("2010", "DQ4402000001");
+////                        presenter2.GetMaterialStorage(req2);
+//                    ScanIssueNoteDetailReqBean bean=new ScanIssueNoteDetailReqBean(flnum,username);
+//                    presenter1.ScanIssueNoteDetail(bean);
+//                    scanString="";
+//                }else {
+//                    Toast.makeText(KFFL2Activity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+//                }
+
             }
         });
         sx.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +195,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
                                         adapter=new KFFLFKAdapter(getApplicationContext(), R.layout.kfflfkitem,list);
                                         listview1.setAdapter(adapter);
                                         if(list.size()==0){
-                                            listview1.showEmptyView();
+                                            Toast.makeText(KFFL2Activity.this, "本次没有发料成功的物料", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
@@ -179,7 +214,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
                                         adapter=new KFFLFKAdapter(getApplicationContext(), R.layout.kfflfkitem,list);
                                         listview1.setAdapter(adapter);
                                         if(list.size()==0){
-                                            listview1.showEmptyView();
+                                            Toast.makeText(KFFL2Activity.this, "本次没有发料失败的物料", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
@@ -207,6 +242,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 
     @Override
     public void onDataSuccessScan(ScanIssueNoteDetailRep data) {
+        LoadingBar.dialog(KFFL2Activity.this).setFactoryFromResource(R.layout.layout_custom3).cancel();
         list2=data.getData();
         List<ScanIssueNoteDetailRepBean> list = data.getData();
         adapter=new KFFLFKAdapter(this, R.layout.kfflfkitem,list);
@@ -249,7 +285,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
                         //加载动画
                         adapter.clear();
                         adapter.notifyDataSetChanged();
-                        listview1.showLoadingView();
+                        LoadingBar.dialog(KFFL2Activity.this).setFactoryFromResource(R.layout.layout_custom3).show();
 //                        listview1.setVisibility(View.GONE);
 //                        loading.setVisibility(View.VISIBLE);
 //                        String factory=lableObject.getString("gc");
@@ -258,7 +294,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 //                        GetMaterialStorageReq req2=new GetMaterialStorageReq(factory, materialCode);
 //                        GetMaterialStorageReq req2=new GetMaterialStorageReq("2010", "DQ4402000001");
 //                        presenter2.GetMaterialStorage(req2);
-                        ScanIssueNoteDetailReqBean bean=new ScanIssueNoteDetailReqBean(flnum);
+                        ScanIssueNoteDetailReqBean bean=new ScanIssueNoteDetailReqBean(flnum,username);
                         presenter1.ScanIssueNoteDetail(bean);
                         scanString="";
                     }else {

@@ -13,43 +13,48 @@ import java.util.List;
 public class GetFinProStorageRecordNoteRepBean {
 
     /**
-     * MarketOrderNO : 10000208
-     * DemandQty : 1000.0
-     * MCode : M002011
-     * ProOMaterialNO : ZJ6025011857
-     * Factory : 2010
-     * DeliveryDate : 2020-06-14 00:00:00
-     * ProductOrderDesc : 测试订单001
-     * MaterialDesc : 测试20200601
-     * ProOMaterialDesc : 测试001
-     * SendStorage : 2906
-     * ProductOrderNO : 10000010
-     * MaterialUnit : EA
-     * ID : 434.0
-     * ProOMaterialUnit : EA
-     * MarketOrderRow : 26
      * SendFactory : 2090
      * FType : 机加
-     * UBNO : 22
-     * AllocatedQty : 12.0
+     * MarketOrderNO : 0010000208
+     * DemandQty : 1000.0
+     * clientShortName :
+     * MCode :
+     * ProOMaterialNO : ZJ9310000007
+     * Factory : 2010
+     * clientNO :
+     * CreateDate : 2020-06-22 18:18:27
+     * ProductOrderDesc :
+     * AllocatedQty : 20.0
+     * MaterialDesc : 板
      * Area : A11
-     * UBDemandQty : 33.0
      * Storage : 2100
-     * BUProjectNO : 22
-     * NoteType : 未知类型
-     * MaterialCode : LJ6025011857
-     * clientShortName : 沈阳海纳
-     * clientNO : 0000400013
+     * NoteType : 内部配送
+     * ProOMaterialDesc : 集中控制系统
+     * SendStorage : 2912
+     * ProductOrderNO : 000010048077
+     * MaterialUnit : EA
+     * ID : 535.0
+     * ProOMaterialUnit : EA
+     * MarketOrderRow : 000026
+     * MaterialCode : LJ5525003029-TZ2010041014
      */
 
+    private String SendFactory;
+    private String FType;
     private String MarketOrderNO;
     private float DemandQty;
+    private String clientShortName;
     private String MCode;
     private String ProOMaterialNO;
     private String Factory;
-    private String DeliveryDate;
+    private String clientNO;
+    private String CreateDate;
     private String ProductOrderDesc;
+    private float AllocatedQty;
     private String MaterialDesc;
+    private String Area;
+    private String Storage;
+    private String NoteType;
     private String ProOMaterialDesc;
     private String SendStorage;
     private String ProductOrderNO;
@@ -57,18 +62,7 @@ public class GetFinProStorageRecordNoteRepBean {
     private long ID;
     private String ProOMaterialUnit;
     private String MarketOrderRow;
-    private String SendFactory;
-    private String FType;
-    private String UBNO;
-    private float AllocatedQty;
-    private String Area;
-    private float UBDemandQty;
-    private String Storage;
-    private String BUProjectNO;
-    private String NoteType;
     private String MaterialCode;
-    private String clientShortName;
-    private String clientNO;
 
     public static GetFinProStorageRecordNoteRepBean objectFromData(String str) {
 
@@ -114,6 +108,22 @@ public class GetFinProStorageRecordNoteRepBean {
 
     }
 
+    public String getSendFactory() {
+        return SendFactory;
+    }
+
+    public void setSendFactory(String SendFactory) {
+        this.SendFactory = SendFactory;
+    }
+
+    public String getFType() {
+        return FType;
+    }
+
+    public void setFType(String FType) {
+        this.FType = FType;
+    }
+
     public String getMarketOrderNO() {
         return MarketOrderNO;
     }
@@ -128,6 +138,14 @@ public class GetFinProStorageRecordNoteRepBean {
 
     public void setDemandQty(float DemandQty) {
         this.DemandQty = DemandQty;
+    }
+
+    public String getClientShortName() {
+        return clientShortName;
+    }
+
+    public void setClientShortName(String clientShortName) {
+        this.clientShortName = clientShortName;
     }
 
     public String getMCode() {
@@ -154,12 +172,20 @@ public class GetFinProStorageRecordNoteRepBean {
         this.Factory = Factory;
     }
 
-    public String getDeliveryDate() {
-        return DeliveryDate;
+    public String getClientNO() {
+        return clientNO;
     }
 
-    public void setDeliveryDate(String DeliveryDate) {
-        this.DeliveryDate = DeliveryDate;
+    public void setClientNO(String clientNO) {
+        this.clientNO = clientNO;
+    }
+
+    public String getCreateDate() {
+        return CreateDate;
+    }
+
+    public void setCreateDate(String CreateDate) {
+        this.CreateDate = CreateDate;
     }
 
     public String getProductOrderDesc() {
@@ -170,12 +196,44 @@ public class GetFinProStorageRecordNoteRepBean {
         this.ProductOrderDesc = ProductOrderDesc;
     }
 
+    public float getAllocatedQty() {
+        return AllocatedQty;
+    }
+
+    public void setAllocatedQty(float AllocatedQty) {
+        this.AllocatedQty = AllocatedQty;
+    }
+
     public String getMaterialDesc() {
         return MaterialDesc;
     }
 
     public void setMaterialDesc(String MaterialDesc) {
         this.MaterialDesc = MaterialDesc;
+    }
+
+    public String getArea() {
+        return Area;
+    }
+
+    public void setArea(String Area) {
+        this.Area = Area;
+    }
+
+    public String getStorage() {
+        return Storage;
+    }
+
+    public void setStorage(String Storage) {
+        this.Storage = Storage;
+    }
+
+    public String getNoteType() {
+        return NoteType;
+    }
+
+    public void setNoteType(String NoteType) {
+        this.NoteType = NoteType;
     }
 
     public String getProOMaterialDesc() {
@@ -234,99 +292,11 @@ public class GetFinProStorageRecordNoteRepBean {
         this.MarketOrderRow = MarketOrderRow;
     }
 
-    public String getSendFactory() {
-        return SendFactory;
-    }
-
-    public void setSendFactory(String SendFactory) {
-        this.SendFactory = SendFactory;
-    }
-
-    public String getFType() {
-        return FType;
-    }
-
-    public void setFType(String FType) {
-        this.FType = FType;
-    }
-
-    public String getUBNO() {
-        return UBNO;
-    }
-
-    public void setUBNO(String UBNO) {
-        this.UBNO = UBNO;
-    }
-
-    public float getAllocatedQty() {
-        return AllocatedQty;
-    }
-
-    public void setAllocatedQty(float AllocatedQty) {
-        this.AllocatedQty = AllocatedQty;
-    }
-
-    public String getArea() {
-        return Area;
-    }
-
-    public void setArea(String Area) {
-        this.Area = Area;
-    }
-
-    public float getUBDemandQty() {
-        return UBDemandQty;
-    }
-
-    public void setUBDemandQty(float UBDemandQty) {
-        this.UBDemandQty = UBDemandQty;
-    }
-
-    public String getStorage() {
-        return Storage;
-    }
-
-    public void setStorage(String Storage) {
-        this.Storage = Storage;
-    }
-
-    public String getBUProjectNO() {
-        return BUProjectNO;
-    }
-
-    public void setBUProjectNO(String BUProjectNO) {
-        this.BUProjectNO = BUProjectNO;
-    }
-
-    public String getNoteType() {
-        return NoteType;
-    }
-
-    public void setNoteType(String NoteType) {
-        this.NoteType = NoteType;
-    }
-
     public String getMaterialCode() {
         return MaterialCode;
     }
 
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
-    }
-
-    public String getClientName() {
-        return clientShortName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientShortName = clientName;
-    }
-
-    public String getClientNo() {
-        return clientNO;
-    }
-
-    public void setClientNo(String clientNo) {
-        this.clientNO = clientNo;
     }
 }

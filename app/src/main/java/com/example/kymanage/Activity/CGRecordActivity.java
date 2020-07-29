@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Vibrator;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -84,6 +85,9 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
 
     private ImageView menupoint;
     PopupMenu popup = null;
+
+    private CheckBox queryself;
+    private boolean queryall=true;
     @Override
     public int initLayoutId() {
         return R.layout.activity_cgrecord;
@@ -101,6 +105,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
 //        print = findViewById(R.id.print);
         menupoint = findViewById(R.id.menupoint);
         listview1 = findViewById(R.id.listview1);
+        queryself = findViewById(R.id.queryself);
 
         presenter103=new YRKCX103Presenter();
         presenter103.setView(this);
@@ -157,7 +162,12 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),false);
+                if(queryself.isChecked()){
+                    queryall=false;
+                }else {
+                    queryall=true;
+                }
+                presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),queryall);
             }
         });
         menupoint.setOnClickListener(new View.OnClickListener() {
@@ -232,7 +242,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                                 }
                                 System.out.println("冲销选中数:"+intlist.size());
                                 LoadingBar.dialog(CGRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
-                                presenter103.YRKCX103(intlist,getCurrentdate());
+                                presenter103.YRKCX103(intlist,username,getCurrentdate());
                                 break;
                             default:
                                 // 使用Toast显示用户单击的菜单项
@@ -262,7 +272,12 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
 //                presenter2.CGSHRecord((str1+str2+str3),"1");
-                presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),false);
+                if(queryself.isChecked()){
+                    queryall=false;
+                }else {
+                    queryall=true;
+                }
+                presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),queryall);
 
             }
         }, mYear,mMonth, mDay);//将年月日放入DatePickerDialog中，并将值传给参数
@@ -276,7 +291,12 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     public void onDataSuccess1(StatusRespBean data) {
         Toast.makeText(CGRecordActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
         LoadingBar.dialog(CGRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
-        presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),false);
+        if(queryself.isChecked()){
+            queryall=false;
+        }else {
+            queryall=true;
+        }
+        presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),queryall);
     }
 
     @Override
@@ -307,17 +327,42 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                     for (int i = 0; i <labelNum ; i++) {
                         System.out.println("第"+i+"个签打印");
                         Bitmap bm=cb.createImage1(label,tf);
-//                        printHelper.GoToNextPage();
+                        //确保跳转到下一页了再进行打印
+//                        Thread printThread=new Thread(new Runnable(){
+//                            @Override
+//                            public void run() {
+//                                printHelper.GoToNextPage();
+//                            }
+//                        });
+//                        printThread.start();
+//                        try {
+//                            Log.i("token","scanThread.join();");
+//                            printThread.join();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
                         printHelper.PrintBitmapAtCenter(bm,384,480);
-
-                        printHelper.printBlankLine(82);
+                        printHelper.printBlankLine(81);
                     }
                 }else {
                     Bitmap bm=cb.createImage1(label,tf);
-//                    printHelper.GoToNextPage();
+                    //确保跳转到下一页了再进行打印
+//                    Thread printThread=new Thread(new Runnable(){
+//                        @Override
+//                        public void run() {
+//                            printHelper.GoToNextPage();
+//                        }
+//                    });
+//                    printThread.start();
+//                    try {
+//                        Log.i("token","scanThread.join();");
+//                        printThread.join();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                     printHelper.PrintBitmapAtCenter(bm,384,480);
 //                    printHelper.GoToNextPage();
-                    printHelper.printBlankLine(82);
+                    printHelper.printBlankLine(81);
                 }
             }
             System.out.println("打印标签的数量为"+data.getData().size());
@@ -370,7 +415,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     //初始化
     public void   initPrinter(){
         printHelper=new PrintHelper();
-        printHelper.Open(CGRecordActivity.this);
+        printHelper.Open(getApplicationContext());
 //        Toast.makeText(CGRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
@@ -402,5 +447,11 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                 return true;
         }
         return super.onKeyDown (keyCode, event);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        printHelper.Close();
     }
 }

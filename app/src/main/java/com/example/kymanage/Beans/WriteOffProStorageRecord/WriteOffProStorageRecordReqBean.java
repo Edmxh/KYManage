@@ -6,21 +6,17 @@ import com.alibaba.fastjson.annotation.JSONField;
  * {"FinProEnterID":"19"}
  */
 public class WriteOffProStorageRecordReqBean {
-    private String FinProEnterID;
+    private long ID;
 
-    public WriteOffProStorageRecordReqBean() {
+    public WriteOffProStorageRecordReqBean(long ID) {
+        this.ID = ID;
     }
-
-    public WriteOffProStorageRecordReqBean(String finProEnterID) {
-        FinProEnterID = finProEnterID;
+    @JSONField(name = "ID")
+    public long getID() {
+        return ID;
     }
-
-    @JSONField(name = "FinProEnterID")
-    public String getFinProEnterID() {
-        return FinProEnterID;
-    }
-    @JSONField(name = "FinProEnterID")
-    public void setFinProEnterID(String finProEnterID) {
-        FinProEnterID = finProEnterID;
+    @JSONField(name = "ID")
+    public void setID(long ID) {
+        this.ID = ID;
     }
 }

@@ -114,7 +114,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 
         date.setText(getCurrentdate());
 
-        presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,"外协半成品");
+        presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,false,"","","","","");
     }
 
     @Override
@@ -195,7 +195,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
 
-                presenter1.Semi_FinishedProductReceivingRecordJS((str1+str2+str3),username,"外协半成品");
+                presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,false,"","","","","");
 
             }
         }, mYear,mMonth, mDay);//将年月日放入DatePickerDialog中，并将值传给参数
@@ -220,7 +220,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
         Toast.makeText(WXBCPSHRecordActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
-        presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,"外协半成品");
+        presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,false,"","","","","");
     }
 
     @Override

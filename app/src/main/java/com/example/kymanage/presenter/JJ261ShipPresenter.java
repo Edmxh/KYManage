@@ -1,12 +1,10 @@
 package com.example.kymanage.presenter;
 
 
-import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueReq;
 import com.example.kymanage.Beans.General.StatusRespBean;
+import com.example.kymanage.Beans.InsertProductOrderIssue.SendProductOrderIssueReq;
 import com.example.kymanage.model.AppModel;
 import com.example.kymanage.net.HttpDataListener;
-
-import java.util.List;
 
 public class JJ261ShipPresenter extends BasePresenter<JJshipView<StatusRespBean>> {
 
@@ -17,7 +15,7 @@ public class JJ261ShipPresenter extends BasePresenter<JJshipView<StatusRespBean>
         appModel = new AppModel();
     }
 
-    public void InsertProductOrderIssue(List<InsertProductOrderIssueReq> data){
+    public void InsertProductOrderIssue(SendProductOrderIssueReq data){
         appModel.InsertProductOrderIssue(data, new HttpDataListener<StatusRespBean>() {
 
 

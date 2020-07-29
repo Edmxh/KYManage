@@ -40,6 +40,11 @@ public class PurchaseCenterRecordRep {
     private String describe;
     private long AdvanceStorageId;
 
+    private String ReverseHandler;
+    private String handler;
+
+    private float moreQty;
+
     public static PurchaseCenterRecordRep objectFromData(String str) {
 
         return new Gson().fromJson(str, PurchaseCenterRecordRep.class);
@@ -178,5 +183,29 @@ public class PurchaseCenterRecordRep {
 
     public void setAdvanceStorageId(long AdvanceStorageId) {
         this.AdvanceStorageId = AdvanceStorageId;
+    }
+
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String reverseHandler) {
+        ReverseHandler = reverseHandler;
+    }
+
+    public float getMoreQty() {
+        return moreQty;
+    }
+
+    public void setMoreQty(float moreQty) {
+        this.moreQty = moreQty;
+    }
+
+    public String getHandler() {
+        return handler;
+    }
+
+    public void setHandler(String handler) {
+        this.handler = handler;
     }
 }

@@ -64,6 +64,9 @@ public class KFCGSHRecordAdapter extends ArrayAdapter<WarehouseReceiptRecordRep>
         viewHolder.wllx=view.findViewById(R.id.wllx);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
+        viewHolder.rksj=view.findViewById(R.id.rksj);
+        viewHolder.shr=view.findViewById(R.id.shr);
+        viewHolder.gxsj=view.findViewById(R.id.gxsj);
         viewHolder.rksl=view.findViewById(R.id.rksl);
         viewHolder.rklx=view.findViewById(R.id.rklx);
         viewHolder.checked=view.findViewById(R.id.checked);
@@ -96,7 +99,17 @@ public class KFCGSHRecordAdapter extends ArrayAdapter<WarehouseReceiptRecordRep>
         viewHolder.wllx.setText(rep.getMaterialType());
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlms.setText(rep.getMaterialDescription());
-        viewHolder.rklx.setText(rep.getRecStatus());
+        viewHolder.rksj.setText(rep.getCreateTime());
+        viewHolder.shr.setText(rep.getHandler());
+        viewHolder.gxsj.setText(rep.getUpdateTime());
+
+        String str="";
+        if(rep.getReverseHandler().equals("")){
+            str=rep.getRecStatus();
+        }else {
+            str=rep.getRecStatus()+"("+rep.getReverseHandler()+")";
+        }
+        viewHolder.rklx.setText(str);
         String num1str=""+rep.getQty();
         viewHolder.rksl.setText(num1str);
         if(select.get(position)){
@@ -150,6 +163,9 @@ public class KFCGSHRecordAdapter extends ArrayAdapter<WarehouseReceiptRecordRep>
         TextView wllx;
         TextView wlbm;
         TextView wlms;
+        TextView rksj;
+        TextView shr;
+        TextView gxsj;
         TextView rklx;
         TextView rksl;
         CheckBox checked;

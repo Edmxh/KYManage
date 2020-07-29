@@ -25,6 +25,7 @@ public class GetMaterialMasterDataInfo {
     private String MATNR;
     private String marketorderno;
     private String marketorderrow;
+    private float num;
 
 
     public String getMAKTX() {
@@ -113,5 +114,13 @@ public class GetMaterialMasterDataInfo {
 
     public void setMarketorderrow(String marketorderrow) {
         this.marketorderrow = marketorderrow;
+    }
+
+    public float getNum() {
+        return num;
+    }
+
+    public void setNum(float num) {
+        this.num = num;
     }
 }

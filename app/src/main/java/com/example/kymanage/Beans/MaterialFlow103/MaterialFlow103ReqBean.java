@@ -53,12 +53,15 @@ public class MaterialFlow103ReqBean {
     private String unit;
     private String remark;
     private boolean SeparateLabel;
-    private String LGPRO;
+    private String LGFSB;
 
-    public MaterialFlow103ReqBean() {
-    }
+    private String LGPBE;
+    private String LOGGR;
 
-    public MaterialFlow103ReqBean(String po, String poLine, String factory, String materialCode, String materialType, String materialDesc, float recNum, String unit, String remark, boolean separateLabel, String LGPRO) {
+    private float demand;
+    private float inStorage;
+
+    public MaterialFlow103ReqBean(String po, String poLine, String factory, String materialCode, String materialType, String materialDesc, float recNum, String unit, String remark, boolean separateLabel, String LGFSB, String LGPBE, String LOGGR, float demand, float inStorage) {
         this.po = po;
         this.poLine = poLine;
         this.factory = factory;
@@ -69,8 +72,17 @@ public class MaterialFlow103ReqBean {
         this.unit = unit;
         this.remark = remark;
         SeparateLabel = separateLabel;
-        this.LGPRO = LGPRO;
+        this.LGFSB = LGFSB;
+        this.LGPBE = LGPBE;
+        this.LOGGR = LOGGR;
+        this.demand = demand;
+        this.inStorage = inStorage;
     }
+
+    public MaterialFlow103ReqBean() {
+    }
+
+
 
     public static MaterialFlow103ReqBean objectFromData(String str) {
 
@@ -195,12 +207,45 @@ public class MaterialFlow103ReqBean {
     public void setSeparateLabel(boolean SeparateLabel) {
         this.SeparateLabel = SeparateLabel;
     }
-    @JSONField(name = "LGPRO")
-    public String getLGPRO() {
-        return LGPRO;
+    @JSONField(name = "LGFSB")
+    public String getLGFSB() {
+        return LGFSB;
     }
-    @JSONField(name = "LGPRO")
-    public void setLGPRO(String LGPRO) {
-        this.LGPRO = LGPRO;
+    @JSONField(name = "LGFSB")
+    public void setLGFSB(String LGFSB) {
+        this.LGFSB = LGFSB;
+    }
+
+    @JSONField(name = "LGPBE")
+    public String getLGPBE() {
+        return LGPBE;
+    }
+    @JSONField(name = "LGPBE")
+    public void setLGPBE(String LGPBE) {
+        this.LGPBE = LGPBE;
+    }
+    @JSONField(name = "LOGGR")
+    public String getLOGGR() {
+        return LOGGR;
+    }
+    @JSONField(name = "LOGGR")
+    public void setLOGGR(String LOGGR) {
+        this.LOGGR = LOGGR;
+    }
+    @JSONField(name = "demand")
+    public float getDemand() {
+        return demand;
+    }
+    @JSONField(name = "demand")
+    public void setDemand(float demand) {
+        this.demand = demand;
+    }
+    @JSONField(name = "inStorage")
+    public float getInStorage() {
+        return inStorage;
+    }
+    @JSONField(name = "inStorage")
+    public void setInStorage(float inStorage) {
+        this.inStorage = inStorage;
     }
 }
