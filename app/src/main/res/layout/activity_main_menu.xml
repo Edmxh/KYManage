@@ -211,4 +211,15 @@
         android:columnWidth="90dp"-->
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:text="检测更新"
+        android:autoLink="all"
+        android:textColor="@color/colorBackground1"
+        android:textSize="@dimen/text2" />
 </LinearLayout>

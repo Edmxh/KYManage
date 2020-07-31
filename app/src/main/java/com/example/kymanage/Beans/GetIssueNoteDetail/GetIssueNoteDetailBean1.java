@@ -47,6 +47,7 @@ public class GetIssueNoteDetailBean1 {
     private float LastQty;
     private String Unit;
     private String MaterialDesc;
+    private String IssueFactory;
     private String Area;
     private String Storage;
     private String UpdateTime;
@@ -198,5 +199,13 @@ public class GetIssueNoteDetailBean1 {
 
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
+    }
+
+    public String getIssueFactory() {
+        return IssueFactory;
+    }
+
+    public void setIssueFactory(String issueFactory) {
+        IssueFactory = issueFactory;
     }
 }

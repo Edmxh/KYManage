@@ -42,14 +42,14 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
     private String ProOMaterialNO;
     private String ProOMaterialDesc;
     private String ProOMaterialUnit;
-    private float DemandQty;
-    private float AlreadyQty;
-    private float AllocatedQty;
+    private String DemandQty;
+    private String AlreadyQty;
+    private String AllocatedQty;
     private String ProductOrderReservedNO;
     private String ProductOrderReservedRowNO;
     private String MCode;
 
-    public InsertFinProStorageRecordReqBean1(String factory, String storage, String marketOrderNO, String marketOrderRow, String productOrderNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, float demandQty, float alreadyQty, float allocatedQty, String productOrderReservedNO, String productOrderReservedRowNO, String MCode) {
+    public InsertFinProStorageRecordReqBean1(String factory, String storage, String marketOrderNO, String marketOrderRow, String productOrderNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String demandQty, String alreadyQty, String allocatedQty, String productOrderReservedNO, String productOrderReservedRowNO, String MCode) {
         Factory = factory;
         Storage = storage;
         MarketOrderNO = marketOrderNO;
@@ -183,27 +183,27 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
         this.ProOMaterialUnit = ProOMaterialUnit;
     }
     @JSONField(name = "DemandQty")
-    public float getDemandQty() {
+    public String getDemandQty() {
         return DemandQty;
     }
     @JSONField(name = "DemandQty")
-    public void setDemandQty(float DemandQty) {
+    public void setDemandQty(String DemandQty) {
         this.DemandQty = DemandQty;
     }
     @JSONField(name = "AlreadyQty")
-    public float getAlreadyQty() {
+    public String getAlreadyQty() {
         return AlreadyQty;
     }
     @JSONField(name = "AlreadyQty")
-    public void setAlreadyQty(float AlreadyQty) {
+    public void setAlreadyQty(String AlreadyQty) {
         this.AlreadyQty = AlreadyQty;
     }
     @JSONField(name = "AllocatedQty")
-    public float getAllocatedQty() {
+    public String getAllocatedQty() {
         return AllocatedQty;
     }
     @JSONField(name = "AllocatedQty")
-    public void setAllocatedQty(float AllocatedQty) {
+    public void setAllocatedQty(String AllocatedQty) {
         this.AllocatedQty = AllocatedQty;
     }
     @JSONField(name = "ProductOrderReservedNO")

@@ -29,8 +29,8 @@ public abstract class BaseActivity extends AppCompatActivity implements NetBroad
             evevt = this;
             inspectNet();
             initview();
-            initLisenter();
             initData();
+            initLisenter();
             initVariable();
         } else {
             setContentView(null);

@@ -294,7 +294,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         for (int i = 0; i < productOrderList1.size(); i++) {
             GetOutStorageMaterialOrderJSRepBean currBean1 = productOrderList1.get(i);
             if(currBean1.isChosen()){
-                InsertFinProStorageRecordReqBean2 bean2=new InsertFinProStorageRecordReqBean2(currBean1.getMATNR(), currBean1.getAUFNR(),"","", currBean1.getINQTY(), marketorderno, marketorderrow, currBean1.getMEINS(), currBean1.getMCODE(), currBean1.getMAKTX());
+                InsertFinProStorageRecordReqBean2 bean2=new InsertFinProStorageRecordReqBean2(currBean1.getMATNR(), currBean1.getAUFNR(),currBean1.getWERKS(),currBean1.getLGORT(), currBean1.getINQTY(), marketorderno, marketorderrow, currBean1.getMEINS(), currBean1.getMCODE(), currBean1.getMAKTX());
                 ldata.add(bean2);
             }
         }
@@ -302,13 +302,13 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         for (int i = 0; i < productOrderList2.size(); i++) {
             PreMaterialProductOrderRep currBean2 = productOrderList2.get(i);
             if(currBean2.isChosen()){
-                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum(), currBean2.getDispatchNum(), currBean2.getCurrentNum(), currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE());
+                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum()+"", currBean2.getDispatchNum()+"", currBean2.getCurrentNum()+"", currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE());
                 sdata.add(bean1);
             }
         }
         String allnumStr=dhsl.getText().toString();
         float allnum = Float.parseFloat("0"+allnumStr);
-        InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(material.getMATNR(), material.getMAKTX(), material.getMaterialType(), material.getWERKS(), "2906", allnum,0, material.getMEINS(), marketorderno, marketorderrow, username, ldata, sdata);
+        InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(material.getMATNR(), material.getMAKTX(), material.getMaterialType(), factory, allnum,0, material.getMEINS(), marketorderno, marketorderrow, username, ldata, sdata);
         presenter2.InsertFinProStorageRecord(req);
     }
 
@@ -525,6 +525,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                     if(lableObject!=null) {
 
                         String bm= null;
+                        factory="";
                         String decodestr = null;
                         try {
                             marketorderno=lableObject.getString("no");

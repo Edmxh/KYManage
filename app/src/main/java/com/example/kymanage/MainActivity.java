@@ -106,77 +106,84 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(30);
-                Toast.makeText(MainActivity.this, "正在登陆...", Toast.LENGTH_SHORT).show();
-                string_name = name.getText().toString();
-                string_password = password.getText().toString();
-                Thread threadconn=new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        URL url = null;
-                        try {
-                            url = new URL("http://" + "10.254.100.81" + "/ThingX" + "/Home/");
-                            //url = new URL("http://" + "192.168.43.126" + "/Thingworx" + "/Home/");
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        }
+
+                try {
+                    vibrator.vibrate(30);
+//                    Toast.makeText(MainActivity.this, "正在登陆...", Toast.LENGTH_SHORT).show();
+                    string_name = name.getText().toString();
+                    string_password = password.getText().toString();
+                    System.out.println("login2");
+                    Thread threadconn=new Thread(new Runnable(){
+                        @Override
+                        public void run() {
+                            URL url = null;
+                            try {
+                                url = new URL("http://" + "10.254.100.81" + "/ThingX" + "/Home/");
+                                //url = new URL("http://" + "192.168.43.126" + "/Thingworx" + "/Home/");
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            }
 //                        String authorization = "Mobile "
 //                                + Base64.base64Encode("xmao" + ":" + "xmao");
-                        String authorization = "Mobile "
-                                + Base64.base64Encode(string_name + ":" + string_password);
-                        System.out.println(authorization);
-                        HttpURLConnection conn = null;
-                        try {
-                            conn = (HttpURLConnection) url.openConnection();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                            String authorization = "Mobile "
+                                    + Base64.base64Encode(string_name + ":" + string_password);
+                            System.out.println(authorization);
+                            HttpURLConnection conn = null;
+                            try {
+                                conn = (HttpURLConnection) url.openConnection();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 //                        conn.setRequestProperty("accept", "*/*");
 //                        conn.setRequestProperty("connection", "Keep-Alive");
 //                        conn.setRequestProperty("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4115.5 Safari/537.36");
-                        conn.setRequestProperty("Authorization", authorization);
-                        //conn.setRequestProperty("Content-type", "text");
-                        //conn.setRequestProperty("Content-type", "application/json");
-                        //conn.setRequestProperty("Accept", "application/json");
-                        conn.setDoOutput(true);
-                        code = 0;
-                        try {
-                            conn.connect();
-                            code = conn.getResponseCode();
+                            conn.setRequestProperty("Authorization", authorization);
+                            //conn.setRequestProperty("Content-type", "text");
+                            //conn.setRequestProperty("Content-type", "application/json");
+                            //conn.setRequestProperty("Accept", "application/json");
+                            conn.setDoOutput(true);
+                            code = 0;
+                            try {
+                                conn.connect();
+                                code = conn.getResponseCode();
 //                            System.out.println("---"+code);
-                            code2=code;
-                            //System.out.println(1);
-                            if (code == 403) {
-                                token = conn.getHeaderField("twx-mobile-token");
+                                code2=code;
+                                //System.out.println(1);
+                                if (code == 403) {
+                                    token = conn.getHeaderField("twx-mobile-token");
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        //System.out.println(code);
-                        //System.out.println(token);
+                            //System.out.println(code);
+                            //System.out.println(token);
 
+                        }
+                    });
+                    threadconn.start();
+                    try {
+                        threadconn.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                });
-                threadconn.start();
-                try {
-                    threadconn.join();
-                } catch (InterruptedException e) {
+                    //Toast.makeText(MainActivity.this,"completed",Toast.LENGTH_SHORT).show();
+                    //System.out.println(code2);
+                    //System.out.println(code);
+                    //System.out.println(2);
+//                System.out.println(code2);
+                    if(code2==403) {
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("USER_NAME", string_name);
+                        editor.putString("PASSWORD",string_password);
+                        editor.commit();
+                        loginPresenter.Logindata(string_name, string_password);
+                    }else {
+                        Toast.makeText(MainActivity.this, "登录失败，请验证用户名或密码！", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //Toast.makeText(MainActivity.this,"completed",Toast.LENGTH_SHORT).show();
-                //System.out.println(code2);
-                //System.out.println(code);
-                //System.out.println(2);
-//                System.out.println(code2);
-                if(code2==403) {
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("USER_NAME", string_name);
-                    editor.putString("PASSWORD",string_password);
-                    editor.commit();
-                    loginPresenter.Logindata(string_name, string_password);
-                }else {
-                    Toast.makeText(MainActivity.this, "登录失败，请验证用户名或密码！", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 //        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -194,10 +201,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
         Log.i(TAG, "onDataSuccess: 网络请求成功！");
         boolean login = data.getRes();
         String Authority=data.getAuthority().toString();
-        //ArrayList<String> Authority1=data.getAuthority1();
         String namedes=data.getNamedes();
-        //System.out.println(Authority);
-        Log.i(TAG, "onDataSuccess: code:"+login  );
         if (login==true){
             Log.i(TAG, "onDataSuccess: checked: "+ checked);
             if (checked){

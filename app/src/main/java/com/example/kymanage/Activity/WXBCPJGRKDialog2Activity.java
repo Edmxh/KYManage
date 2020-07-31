@@ -122,8 +122,8 @@ public class WXBCPJGRKDialog2Activity extends AppCompatActivity implements View.
                     float recenum=Float.parseFloat(("0"+et.getText().toString()));
 
                     if(recenum!=0){
-                        InsertFinProStorageRecordReqBean1 bean=new InsertFinProStorageRecordReqBean1(currData.getFactory(),storage, currData.getKDAUF(), currData.getKDPOS(), currData.getProductOrderNO(), currData.getProOrderDesc(),currData.getProOrderMaterialCode(), currData.getProOrderMaterialDesc(), currData.getProOrderMaterialUnit(), currData.getDemandNum(), recenum,currData.getAllocatedNum(), currData.getRSNUM(), currData.getRSPOS(),currData.getMCODE());
-                        detail.add(bean);
+//                        InsertFinProStorageRecordReqBean1 bean=new InsertFinProStorageRecordReqBean1(currData.getFactory(),storage, currData.getKDAUF(), currData.getKDPOS(), currData.getProductOrderNO(), currData.getProOrderDesc(),currData.getProOrderMaterialCode(), currData.getProOrderMaterialDesc(), currData.getProOrderMaterialUnit(), currData.getDemandNum(), recenum,currData.getAllocatedNum(), currData.getRSNUM(), currData.getRSPOS(),currData.getMCODE());
+//                        detail.add(bean);
                         allNum+=recenum;
                     }
                 }

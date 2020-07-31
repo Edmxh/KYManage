@@ -435,9 +435,11 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
     @Override
     public void onDataSuccess2(Semi_FinishedProductReceivingRep data) {
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        layout1.setVisibility(View.INVISIBLE);
-        productOrderList.clear();
-        adapter1.notifyDataSetChanged();
+        if(data.getCode()==1){
+            layout1.setVisibility(View.INVISIBLE);
+            productOrderList.clear();
+            adapter1.notifyDataSetChanged();
+        }
     }
 
     @Override

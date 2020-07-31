@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Vibrator;
@@ -13,11 +14,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.azhon.appupdate.manager.DownloadManager;
+import com.allenliu.versionchecklib.v2.AllenVersionChecker;
+import com.allenliu.versionchecklib.v2.builder.DownloadBuilder;
+import com.allenliu.versionchecklib.v2.builder.UIData;
 import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Beans.UpdateApp.UpdateAppRep;
 import com.example.kymanage.R;
@@ -77,6 +81,9 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
 
+    //更新
+    private TextView update;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_main_menu;
@@ -91,6 +98,8 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
         logout=findViewById(R.id.logout);
         user=findViewById(R.id.user);
         home=findViewById(R.id.home);
+        update=findViewById(R.id.update);
+        update.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
         cggl_layout=findViewById(R.id.cggl_layout);
         wxgl_layout=findViewById(R.id.wxgl_layout);
         kfgl_layout=findViewById(R.id.kfgl_layout);
@@ -220,8 +229,6 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
         //FunctionActivity.put("返回发料单",GetIssueNoteDetailActivity.class);
 
 
-//        initPrinter();
-        presenter1.UpdateApp(username);
     }
 
     @Override
@@ -233,11 +240,11 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
                 MainMenuActivity.this.finish();
             }
         });
-        home.setOnClickListener(new View.OnClickListener() {
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                vibrator.vibrate(30);
-
+                vibrator.vibrate(30);
+                presenter1.UpdateApp(username);
             }
         });
 
@@ -258,27 +265,26 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
         if(data.getVersion().equals(versionName)){
             Toast.makeText(this, "已是最新版本", Toast.LENGTH_SHORT).show();
         }else {
-            new QMUIDialog.MessageDialogBuilder(this)
-                    .setTitle("有可用更新")
-                    .setMessage("请更新后使用")
-                    .setSkinManager(QMUISkinManager.defaultInstance(getApplicationContext()))
-                    .addAction("取消", new QMUIDialogAction.ActionListener() {
-                        @Override
-                        public void onClick(QMUIDialog dialog, int index) {
-                            finish();
-                        }
-                    })
-                    .addAction(0, "更新", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
-                        @Override
-                        public void onClick(QMUIDialog dialog, int index) {
-                            updateApp();
-                            dialog.dismiss();
-                            LoadingBar.dialog(MainMenuActivity.this).setFactoryFromResource(R.layout.layout_custom4).show();
-                        }
-                    })
-                    .create(mCurrentDialogStyle).show();
-//            updateApp();
+            DownloadBuilder builder= AllenVersionChecker
+                    .getInstance()
+                    .downloadOnly(crateUIData());
+            builder.setApkName("appupdate.apk");
+            builder.setForceRedownload(false);
+            builder.executeMission(getApplicationContext());
         }
+    }
+    /**
+     * @return
+     * @important 使用请求版本功能，可以在这里设置downloadUrl
+     * 这里可以构造UI需要显示的数据
+     * UIData 内部是一个Bundle
+     */
+    private UIData crateUIData() {
+        UIData uiData = UIData.create();
+        uiData.setTitle("有可用更新");
+        uiData.setDownloadUrl("http://10.254.100.81/updateAPP/app-debug.apk");
+        uiData.setContent("请更新后使用");
+        return uiData;
     }
 
     @Override
@@ -405,11 +411,7 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
 
 
     private void updateApp() {
-        DownloadManager manager = DownloadManager.getInstance(this);
-        manager.setApkName("appupdate.apk")
-                .setApkUrl("http://10.254.100.81/updateAPP/app-debug.apk")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .download();
+
     }
 
 

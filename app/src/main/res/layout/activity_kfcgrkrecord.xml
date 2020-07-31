@@ -82,7 +82,7 @@
             <EditText
                 android:id="@+id/kwxx"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 style="@style/InputBoxStyle2"
                 android:textSize="@dimen/text2"
                 android:hint="库位信息"

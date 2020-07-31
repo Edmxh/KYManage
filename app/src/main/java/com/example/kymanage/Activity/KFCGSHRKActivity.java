@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -316,13 +317,13 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 
     @Override
     public void onDataSuccess1(CodeMessageBean data) {
+        LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
         Toast.makeText(KFCGSHRKActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
         try {
             datas.remove(currentIndex);
             receiptReqs.remove(currentIndex);
             currentIndex=-1;
             adapter.notifyDataSetChanged();
-            LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -331,6 +332,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     @Override
     public void onFailed(String msg) {
         currentIndex=-1;
+        LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
     }
 
     @Override
@@ -355,7 +357,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 
                 if(position>=0){
                     WarehouseReceiptReq checkedReq = receiptReqs.get(position);
-                    View itme=cgshlistview.getChildAt(position - cgshlistview.getFirstVisiblePosition());
+                    View itme=cgshlistview.getAdapter().getView(position,null,null);
                     TextView et= itme.findViewById(R.id.rksl);
                     Spinner sp= itme.findViewById(R.id.spinner1);
                     float recenum=Float.parseFloat(et.getText().toString());
@@ -379,32 +381,6 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
             default:
                 break;
         }
-    }
-
-    public class ListViewItemOnClick implements AdapterView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-//            for (int i = 0; i < datas.size(); i++) {
-//                View itme=cgshlistview.getChildAt(i - cgshlistview.getFirstVisiblePosition());
-//                if (i==position){
-//                    setBackgroundChange(itme, R.drawable.tablebody3);
-//                }else {
-//                    if(i%2==1){
-//                    setBackgroundChange(itme, R.drawable.tablebody1);
-//                    }else {
-//                    setBackgroundChange(itme, R.drawable.tablebody2);
-//                    }
-//                }
-//            }
-
-            GetMaterialPropertieInfoJSRepBean tempdb=datas.get(position).getData();
-//            gc.setText(tempdb.getFactory());
-
-            presenter2.GetSapStorages(tempdb.getFactory());
-        }
-
     }
 
     public void setBackgroundChange(View view,int i){

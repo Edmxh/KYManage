@@ -31,7 +31,6 @@ public class InsertFinProStorageRecordReq {
     private String MaterialDesc;
     private String MaterialType;
     private String Factory;
-    private String Storage;
     private float Qty;
     private float MQty;
     private String Unit;
@@ -42,12 +41,11 @@ public class InsertFinProStorageRecordReq {
     private List<InsertFinProStorageRecordReqBean2> ldata;
     private List<InsertFinProStorageRecordReqBean1> sdata;
 
-    public InsertFinProStorageRecordReq(String materialCode, String materialDesc, String materialType, String factory, String storage, float qty, float MQty, String unit, String marketOrderNO, String marketOrderRow, String handler, List<InsertFinProStorageRecordReqBean2> ldata, List<InsertFinProStorageRecordReqBean1> sdata) {
+    public InsertFinProStorageRecordReq(String materialCode, String materialDesc, String materialType, String factory, float qty, float MQty, String unit, String marketOrderNO, String marketOrderRow, String handler, List<InsertFinProStorageRecordReqBean2> ldata, List<InsertFinProStorageRecordReqBean1> sdata) {
         MaterialCode = materialCode;
         MaterialDesc = materialDesc;
         MaterialType = materialType;
         Factory = factory;
-        Storage = storage;
         Qty = qty;
         this.MQty = MQty;
         Unit = unit;
@@ -132,14 +130,6 @@ public class InsertFinProStorageRecordReq {
     @JSONField(name = "Factory")
     public void setFactory(String Factory) {
         this.Factory = Factory;
-    }
-    @JSONField(name = "Storage")
-    public String getStorage() {
-        return Storage;
-    }
-    @JSONField(name = "Storage")
-    public void setStorage(String Storage) {
-        this.Storage = Storage;
     }
     @JSONField(name = "Qty")
     public float getQty() {

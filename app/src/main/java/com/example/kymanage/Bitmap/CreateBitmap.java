@@ -242,7 +242,7 @@ public class CreateBitmap{
     }
     //画图2,库房标签
     public Bitmap createImage2(KFLabelBean rep, Typeface tf) {
-        String content="{\"bm\":\""+rep.getData().getMaterialCode()+"\",\"sl\":"+rep.getData().getIssueQty()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+"\",\"porow\":\""+"\",\"gc\":\""+"2010"+"\",\"cd\":\""+rep.getData().getArea()+"\"}";
+        String content="{\"bm\":\""+rep.getData().getMaterialCode()+"\",\"sl\":"+rep.getData().getIssueQty()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+"\",\"porow\":\""+"\",\"gc\":\""+rep.getData().getIssueFactory()+"\",\"cd\":\""+rep.getData().getArea()+"\"}";
         System.out.println(content);
         int picWidth = 480;//生成图片的宽度
         int picHeight = 380;//生成图片的高度
@@ -317,7 +317,7 @@ public class CreateBitmap{
         canvas.drawText(str4,0,top,paint);
 
 //        String str5="2010"+"    "+rep.getData().getArea();
-        String str5="2010"+"/"+rep.getData().getArea()+"/"+rep.getData().getLgpbe();
+        String str5=rep.getData().getIssueFactory()+"/"+rep.getData().getArea()+"/"+rep.getData().getLgpbe();
 
         paint.setTextSize(text4);
         top+=text1+lineSpacing;
