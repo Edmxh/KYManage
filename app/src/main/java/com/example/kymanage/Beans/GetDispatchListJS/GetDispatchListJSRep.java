@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GetDispatchListJSRep {
     private int code;
-    private List<GetDispatchListJSBean2> data;
+    private GetDispatchListJSRepBean0 data;
     private String message;
 
     public int getCode() {
@@ -15,11 +15,11 @@ public class GetDispatchListJSRep {
         this.code = code;
     }
 
-    public List<GetDispatchListJSBean2> getData() {
+    public GetDispatchListJSRepBean0 getData() {
         return data;
     }
 
-    public void setData(List<GetDispatchListJSBean2> data) {
+    public void setData(GetDispatchListJSRepBean0 data) {
         this.data = data;
     }
 

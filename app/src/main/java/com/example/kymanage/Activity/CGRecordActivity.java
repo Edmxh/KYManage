@@ -123,7 +123,6 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
     public void initData() {
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
-        System.out.println("---"+username+"---");
         datas=new ArrayList<PurchaseCenterRecordRep>();
         cb=new CreateBitmap();
         //初始化打印类
@@ -221,11 +220,11 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                                     presenter3.CGSHPrint(AvanceStorageIds,username,currentdate);
                                 }
                                 break;
-                            case R.id.exit:
-                                vibrator.vibrate(30);
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
+//                            case R.id.exit:
+//                                vibrator.vibrate(30);
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
                             case R.id.receive:
                                 vibrator.vibrate(30);
                                 // 隐藏该对话框
@@ -326,21 +325,8 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
 //                    System.out.println("分签了，分签的数量是"+labelNum);
                     for (int i = 0; i <labelNum ; i++) {
                         System.out.println("第"+i+"个签打印");
+                        label.setNum(1);
                         Bitmap bm=cb.createImage1(label,tf);
-                        //确保跳转到下一页了再进行打印
-//                        Thread printThread=new Thread(new Runnable(){
-//                            @Override
-//                            public void run() {
-//                                printHelper.GoToNextPage();
-//                            }
-//                        });
-//                        printThread.start();
-//                        try {
-//                            Log.i("token","scanThread.join();");
-//                            printThread.join();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
                         printHelper.PrintBitmapAtCenter(bm,384,480);
                         printHelper.printBlankLine(81);
                     }

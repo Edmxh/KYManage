@@ -257,11 +257,11 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                                     Toast.makeText(PrintKGCPSDActivity.this, "请先转储", Toast.LENGTH_SHORT).show();
                                 }
                                 break;
-                            case R.id.exit:
-                                vibrator.vibrate(30);
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
+//                            case R.id.exit:
+//                                vibrator.vibrate(30);
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
                             case R.id.record:
                                 vibrator.vibrate(30);
                                 // 隐藏该对话框
@@ -298,6 +298,8 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
             GetDumpRecordNodeReqBean printData=new GetDumpRecordNodeReqBean(bean.getPID());
             printDatas.add(printData);
         }
+        datas.clear();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeReqBean;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRepBean;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordReq;
+import com.example.kymanage.Beans.WriteOffMaterialFactoryDump.WriteOffMaterialFactoryDumpReq;
 import com.example.kymanage.Beans.WriteOffMaterialFactoryDump.WriteOffMaterialFactoryDumpReqBean;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
@@ -79,6 +81,11 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 
     private mPrintUtil mPrintUtil;
 
+    //筛选条件
+    private TextView zcdh;
+    private ImageView query;
+    private Button reset;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_divert_record1;
@@ -91,6 +98,11 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         print = findViewById(R.id.print);
         receive = findViewById(R.id.receive);
         listView1 = findViewById(R.id.listview1);
+
+        //筛选条件
+        zcdh = findViewById(R.id.zcdh);
+        query = findViewById(R.id.query);
+        reset = findViewById(R.id.reset);
 
 
         presenter1=new GetMainDumpRecordPresenter();
@@ -122,7 +134,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
 
         date.setText(getCurrentdate());
-        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username);
+        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
         presenter1.GetMainDumpRecord(req);
     }
 
@@ -135,7 +147,26 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
                 showDateAndTable();
             }
         });
-
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                date.setText("");
+            }
+        });
+        query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+//                if(queryself.isChecked()){
+//                    queryall=false;
+//                }else {
+//                    queryall=true;
+//                }
+                GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
+                presenter1.GetMainDumpRecord(req);
+            }
+        });
         receive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,14 +178,15 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
                         View itmeview=listView1.getAdapter().getView(i,null,null);
                         CheckBox cb= itmeview.findViewById(R.id.checked);
                         if(cb.isChecked()){
-                            WriteOffMaterialFactoryDumpReqBean cxData=new WriteOffMaterialFactoryDumpReqBean(datas.get(i).getID());
+                            WriteOffMaterialFactoryDumpReqBean cxData=new WriteOffMaterialFactoryDumpReqBean(datas.get(i).getID(),datas.get(i).getDumpNum());
                             cxDatas.add(cxData);
                         }
                     }
                     if(cxDatas.size()==0){
                         Toast.makeText(DivertRecord1Activity.this, "未选中要冲销的记录", Toast.LENGTH_SHORT).show();
                     }else {
-                        presenter3.WriteOffMaterialFactoryDump(cxDatas);
+                        WriteOffMaterialFactoryDumpReq cxreq=new WriteOffMaterialFactoryDumpReq(cxDatas,username);
+                        presenter3.WriteOffMaterialFactoryDump(cxreq);
                     }
                 }
             }
@@ -237,7 +269,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
     @Override
     public void onDataSuccess3(StatusRespBean data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username);
+        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
         presenter1.GetMainDumpRecord(req);
     }
 
@@ -261,7 +293,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
                 str2=(i1+1)<10?("-0"+(i1+1)):"-" + (i1+1);
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
-                GetMainDumpRecordReq req=new GetMainDumpRecordReq((str1+str2+str3),username);
+                GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
                 presenter1.GetMainDumpRecord(req);
 
             }

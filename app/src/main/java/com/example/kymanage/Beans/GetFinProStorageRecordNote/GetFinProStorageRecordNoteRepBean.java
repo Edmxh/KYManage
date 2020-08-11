@@ -13,7 +13,7 @@ import java.util.List;
 public class GetFinProStorageRecordNoteRepBean {
 
     /**
-     * SendFactory : 2090
+     * SendFactory : 2010
      * FType : 机加
      * MarketOrderNO : 0010000208
      * DemandQty : 1000.0
@@ -22,21 +22,20 @@ public class GetFinProStorageRecordNoteRepBean {
      * ProOMaterialNO : ZJ9310000007
      * Factory : 2010
      * clientNO :
-     * CreateDate : 2020-06-22 18:18:27
+     * CreateDate : 2020-08-01 10:13:40
      * ProductOrderDesc :
-     * AllocatedQty : 20.0
-     * MaterialDesc : 板
-     * Area : A11
+     * AllocatedQty : 10.0
+     * MaterialDesc :
+     * Area : C09
      * Storage : 2100
      * NoteType : 内部配送
      * ProOMaterialDesc : 集中控制系统
-     * SendStorage : 2912
+     * SendStorage : 2906
      * ProductOrderNO : 000010048077
-     * MaterialUnit : EA
-     * ID : 535.0
+     * ID : 8346.0
      * ProOMaterialUnit : EA
      * MarketOrderRow : 000026
-     * MaterialCode : LJ5525003029-TZ2010041014
+     * MaterialCode :
      */
 
     private String SendFactory;
@@ -58,7 +57,6 @@ public class GetFinProStorageRecordNoteRepBean {
     private String ProOMaterialDesc;
     private String SendStorage;
     private String ProductOrderNO;
-    private String MaterialUnit;
     private long ID;
     private String ProOMaterialUnit;
     private String MarketOrderRow;
@@ -258,14 +256,6 @@ public class GetFinProStorageRecordNoteRepBean {
 
     public void setProductOrderNO(String ProductOrderNO) {
         this.ProductOrderNO = ProductOrderNO;
-    }
-
-    public String getMaterialUnit() {
-        return MaterialUnit;
-    }
-
-    public void setMaterialUnit(String MaterialUnit) {
-        this.MaterialUnit = MaterialUnit;
     }
 
     public long getID() {

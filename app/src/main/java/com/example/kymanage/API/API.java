@@ -144,8 +144,11 @@ public interface API {
     //#301转储冲销
     String WriteOffMaterialFactoryDump="ThingX/Things/AppProgramThing/Services/WriteOffMaterialFactoryDump";
 
-    //##获取厂内配送单
+    //##外协采购半成品发料厂内配送单生成
     String GetCMInFactoryDeliver="ThingX/Things/AppProgramThing/Services/GetCMInFactoryDeliver";
+
+    //##外协采购半成品配送单打印接口
+    String GetCMInFactoryDeliverJS="ThingX/Things/AppProgramThing/Services/GetCMInFactoryDeliverJS";
 
     //###获取交货单信息
     String GetDeliveryListInfoJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListInfoJS";
@@ -155,6 +158,18 @@ public interface API {
 
     //获取销售发货物料信息及库存地点
     String GetLableStorageInfoJS="ThingX/Things/AppProgramThing/Services/GetLableStorageInfoJS";
+
+    //外协采购半成品配送单记录查询接口
+    String GetInFactoryDeliverListJS="ThingX/Things/AppProgramThing/Services/GetInFactoryDeliverListJS";
+
+    //外协采购半成品配送单详情查询接口
+    String GetInFactoryDeliverListDetailJS="ThingX/Things/AppProgramThing/Services/GetInFactoryDeliverListDetailJS";
+
+    //外协半成品发料配送冲销接口
+    String GetOutSemifinProductIssueWriteOffJS="ThingX/Things/AppProgramThing/Services/GetOutSemifinProductIssueWriteOffJS";
+
+    //外协标签打印接口
+    String InsertFinAProOrderRecord="ThingX/Things/AppProgramThing/Services/InsertFinAProOrderRecord";
 
 
 

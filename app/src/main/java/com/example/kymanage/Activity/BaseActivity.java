@@ -3,6 +3,7 @@ package com.example.kymanage.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.StrictMode;
 
 
 import androidx.annotation.Nullable;
@@ -36,6 +37,10 @@ public abstract class BaseActivity extends AppCompatActivity implements NetBroad
             setContentView(null);
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 禁用横屏
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     public abstract int initLayoutId();//布局

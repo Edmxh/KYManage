@@ -1,13 +1,10 @@
 package com.example.kymanage.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,8 +17,9 @@ import android.widget.Toast;
 
 import com.example.kymanage.Adapter.WXBCPSHRecordAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
-import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean2;
+import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRepBean2;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
+import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRepBean3;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRepBean;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingwriteoffJS.Semi_FinishedProductReceivingwriteoffJSReqBean;
@@ -160,7 +158,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
                         View itmeview=listview1.getAdapter().getView(i,null,null);
                         CheckBox cb= itmeview.findViewById(R.id.checked);
                         if(cb.isChecked()){
-                            AvanceStorageIds.add(data1.get(i).getAdvanceStorageId());
+                            AvanceStorageIds.add(data1.get(i).getStorageId());
                         }
                     }
                 }
@@ -172,7 +170,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
                 if(AvanceStorageIds.size()==0){
                     Toast.makeText(WXBCPSHRecordActivity.this, "未选中要打印的内容", Toast.LENGTH_SHORT).show();
                 }else {
-                    presenter3.GetDispatchListJS(AvanceStorageIds,username);
+                    presenter3.GetDispatchListJS(AvanceStorageIds,username,getCurrentdate());
                 }
 
             }
@@ -225,16 +223,20 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 
     @Override
     public void onDataSuccessPrint(GetDispatchListJSRep data) {
-//        System.out.println("print success");
-        for (GetDispatchListJSBean2 datum : data.getData()) {
-//            Bitmap bm=cb.createImage5(datum,tf);
-//            int picHeight = 410+55*(datum.getData().size());
-//            printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-            mPrintUtil.printPGBill(datum,printHelper);
-            printHelper.printBlankLine(80);
-        }
+        try {
+            for (GetDispatchListJSRepBean2 datum : data.getData().getDispatchListDataArr()) {
+                mPrintUtil.printPGBill(datum,printHelper);
+                printHelper.printBlankLine(80);
+            }
 
-//        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+            for (GetDispatchListJSRepBean3 label : data.getData().getLableDataArr()) {
+                Bitmap bm=cb.createImage5(label,tf);
+                printHelper.PrintBitmapAtCenter(bm,384,480);
+                printHelper.printBlankLine(80);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

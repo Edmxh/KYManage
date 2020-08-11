@@ -58,7 +58,7 @@ public class DivertRecord2Activity extends BaseActivity implements BaseView1<Get
 
     @Override
     public void onDataSuccess1(GetDumpRecordRep data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
         try {
             datas=data.getData();
             adapter=new Print2Record2Adapter(this, R.layout.print2record2item,datas);

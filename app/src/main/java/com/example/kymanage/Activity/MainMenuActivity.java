@@ -282,7 +282,7 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
     private UIData crateUIData() {
         UIData uiData = UIData.create();
         uiData.setTitle("有可用更新");
-        uiData.setDownloadUrl("http://10.254.100.81/updateAPP/app-debug.apk");
+        uiData.setDownloadUrl("http://10.254.100.82/updateAPP/app-debug.apk");
         uiData.setContent("请更新后使用");
         return uiData;
     }

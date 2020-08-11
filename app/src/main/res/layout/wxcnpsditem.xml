@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.example.kymanage.definedClass.CheckableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/parent_layout"
     android:descendantFocusability="blocksDescendants"
@@ -9,14 +9,13 @@
     android:divider="@drawable/linearlayout_divider"
     >
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
@@ -40,25 +39,24 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
             >
             <TextView
                 android:layout_width="@dimen/titlewidth2"
                 android:layout_height="match_parent"
-                android:text="物   料   编   码:"
+                android:text="派   工   单   号:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"
                 android:duplicateParentState="true"/>
             <TextView
-                android:id="@+id/wlbm"
+                android:id="@+id/pgdh"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="物料编码"
+                android:text="派工单号"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center_vertical"
@@ -66,24 +64,23 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
                 android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
-                android:text="物   料   描   述:"
+                android:text="派   工   人   员:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"
                 android:duplicateParentState="true"/>
             <TextView
-                android:id="@+id/wlms"
+                android:id="@+id/pgry"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="物料描述"
+                android:text="派工人员"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center_vertical"
@@ -91,166 +88,45 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
                 android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
-                android:text="上   游   物   料:"
+                android:text="创   建   时   间:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"
                 android:duplicateParentState="true"/>
             <TextView
-                android:id="@+id/pwlbm"
+                android:id="@+id/cjsj"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="上游物料"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center_vertical"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:layout_width="@dimen/titlewidth2"
-                android:layout_height="wrap_content"
-                android:text="生 产 订 单  号:"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/scddh"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="生产订单号"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center_vertical"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:layout_width="@dimen/titlewidth2"
-                android:layout_height="wrap_content"
-                android:text="销售订单号/行:"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/xsddh_hang"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:text="销售订单号/行"
+                android:text="创建时间"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center_vertical"
                 android:duplicateParentState="true"/>
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal"
-        android:showDividers="middle"
-        android:divider="@drawable/linearlayout_divider">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="3"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <CheckBox
+            android:id="@+id/checked"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="需求数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/xqsl"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="需求数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="已分配数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/yfpsl"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="已分配数量"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="配送对象"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-            <TextView
-                android:id="@+id/client"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="配送对象"
-                android:textSize="@dimen/text2"
-                android:textColor="@color/fontcolor1"
-                android:textCursorDrawable="@null"
-                android:gravity="center"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:button="@null"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+            android:theme="@style/MyCheckBox2"
+            android:gravity="center"
+            android:layout_marginRight="5dp"
+            />
     </LinearLayout>
 </com.example.kymanage.definedClass.CheckableLayout>

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -42,6 +43,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
     private TextView fldh;
     private TextView flry;
     private TextView flsj;
+    private TextView flzt;
 
     private ScanIssueNoteDetailPresenter presenter1;
 
@@ -79,6 +81,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
         fldh=findViewById(R.id.fldh);
         flry=findViewById(R.id.flry);
         flsj=findViewById(R.id.flsj);
+        flzt=findViewById(R.id.flzt);
 
 
         listview1=findViewById(R.id.listview1);
@@ -107,19 +110,7 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                //确保扫描完毕scanString被赋值后才被解析
-                Thread scanThread=new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        scan();
-                    }
-                });
-                scanThread.start();
-                try {
-                    scanThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                scan();
 
 //                scanString="{\"no\":\"200723094521873\"}";
 //                JSONObject lableObject= null;
@@ -242,7 +233,16 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 
     @Override
     public void onDataSuccessScan(ScanIssueNoteDetailRep data) {
+        System.out.println("服务器响应成功");
         LoadingBar.dialog(KFFL2Activity.this).setFactoryFromResource(R.layout.layout_custom3).cancel();
+        flzt.setText(data.getMstatus());
+        if(data.getMstatus()!=null){
+            if(data.getMstatus().equals("全部发料")){
+                flzt.setTextColor(Color.GREEN);
+            }else {
+                flzt.setTextColor(Color.RED);
+            }
+        }
         list2=data.getData();
         List<ScanIssueNoteDetailRepBean> list = data.getData();
         adapter=new KFFLFKAdapter(this, R.layout.kfflfkitem,list);
@@ -254,7 +254,9 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(KFFL2Activity.this).setFactoryFromResource(R.layout.layout_custom3).cancel();
+        System.out.println("服务器响应失败");
+        Toast.makeText(this, "服务器响应失败,请稍后重试", Toast.LENGTH_LONG).show();
     }
 
     //接收类

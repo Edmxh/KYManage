@@ -10,17 +10,15 @@
     >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="序                 号:"
                 android:textSize="@dimen/text2"
@@ -40,13 +38,12 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
             >
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="match_parent"
                 android:text="物   料   编   码:"
                 android:textSize="@dimen/text2"
@@ -66,12 +63,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="物   料   凭   证:"
                 android:textSize="@dimen/text2"
@@ -91,12 +87,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="过   账   日   期:"
                 android:textSize="@dimen/text2"
@@ -116,12 +111,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="凭   证   日   期:"
                 android:textSize="@dimen/text2"
@@ -141,12 +135,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="生 产 订 单  号:"
                 android:textSize="@dimen/text2"
@@ -166,12 +159,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="销售订单号/行:"
                 android:textSize="@dimen/text2"
@@ -191,12 +183,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="供   货   工   厂:"
                 android:textSize="@dimen/text2"
@@ -216,12 +207,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:layout_width="90dp"
+                android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
                 android:text="供   货   库   房:"
                 android:textSize="@dimen/text2"
@@ -243,8 +233,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:showDividers="middle"
         android:divider="@drawable/linearlayout_divider">

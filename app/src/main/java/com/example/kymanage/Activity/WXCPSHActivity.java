@@ -7,18 +7,16 @@ import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Base64;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,16 +27,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.WXBCPJGRKAdapter1;
 import com.example.kymanage.Adapter.WXBCPJGRKAdapter2;
-import com.example.kymanage.Adapter.WXBCPSHAdapter;
 import com.example.kymanage.Adapter.WXCPSHAdapter;
-import com.example.kymanage.Beans.DemoBeans.DemoBean1;
-import com.example.kymanage.Beans.General.SwitchBean;
 import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRep;
 import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRepBean;
 import com.example.kymanage.Beans.GetOutsourceFinProLableJS.GetOutsourceFinProLableJSRep;
@@ -47,17 +39,14 @@ import com.example.kymanage.Beans.GetOutsourceFinProLableJS.GetOutsourceFinProLa
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSRep;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSReps;
 import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSRep;
-import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReqBean1;
-import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReqBean2;
-import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReqBean3;
+import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.AUFNRBean;
+import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReq;
+import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.UPAUFNRBean;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
 import com.example.kymanage.Beans.PreMaterialProductOrderJS.PreMaterialProductOrderJSReqBean;
 import com.example.kymanage.Bitmap.CreateBitmap;
-import com.example.kymanage.Fragment.SelfTabFragment;
-import com.example.kymanage.Fragment.UpStreamFragment;
 import com.example.kymanage.R;
-import com.example.kymanage.definedClass.CheckableLayout;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
@@ -69,9 +58,7 @@ import com.example.kymanage.presenter.Presenters.WXPage2.GetOutsourceFinProLable
 import com.example.kymanage.presenter.Presenters.WXPage2.OutsourceFinishedProductReceivingJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage2.PreMaterialProductOrderJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Dialog1.GetOutStorageMaterialOrderJSPresenter;
-import com.example.kymanage.utils.Base64Tool;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,7 +66,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurchaseOrderInfoJSReps>, BaseView1<GetOutStorageMaterialOrderJSRep>, BaseView2<OutsourceFinishedProductReceivingJSRep>, BaseView3<GetOutsourceFinProLableJSRep>, BaseView4<PreMaterialProductOrderReps>, WXCPSHAdapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
+public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurchaseOrderInfoJSReps>, BaseView1<PreMaterialProductOrderReps>, BaseView2<OutsourceFinishedProductReceivingJSRep>, BaseView3<GetOutsourceFinProLableJSRep>, BaseView4<PreMaterialProductOrderReps> {
 
     //震动
     private Vibrator vibrator;
@@ -88,8 +75,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
 //    private ImageView record;
     //表格
     private ListView listview1;
-    private GetOutStorageMaterialOrderJSPresenter presenter4;
-    private WXBCPJGRKAdapter1 adapter1;
+    private CGSHReceiveDetailPresenter presenter4;
+    private WXCPSHAdapter adapter1;
     private ListView listview2;
     private WXBCPJGRKAdapter2 adapter2;
     //scan
@@ -107,7 +94,6 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     private String username;
     //收货
     private OutsourceFinishedProductReceivingJSPresenter presenter2;
-    private List<OutsourceFinishedProductReceivingJSReqBean3> beans3;
 
     //选择上游生产订单物料编码
     private List<String> materialList;
@@ -127,7 +113,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
 
     //扫码获取采购订单信息
     private GetPurchaseOrderInfoJSPresenter presenter1;
-    private List<GetOutStorageMaterialOrderJSRepBean> productOrderList1;
+    private List<PreMaterialProductOrderRep> productOrderList1;
 
 
     /**
@@ -220,53 +206,21 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         presenter3.setView(this);
 
         //获取本事业部生产订单
-        presenter4=new GetOutStorageMaterialOrderJSPresenter();
+        presenter4=new CGSHReceiveDetailPresenter();
         presenter4.setView(this);
 
         //获取上游事业部生产订单
         presenter5=new PreMaterialProductOrderJSPresenter();
         presenter5.setView(this);
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("返回执行码是："+ requestCode);
-        switch (requestCode) {  //根据请求码可处理不同活动返回的数据
-            case REQUEST_CODE_1: //返回的请求码
-//                操作
-                boolean confirm = data.getBooleanExtra("confirm", false);
-                int index=data.getIntExtra("index",0);
-                float sl =data.getFloatExtra("allNum",0);
-                OutsourceFinishedProductReceivingJSReqBean2 inProduct  = (OutsourceFinishedProductReceivingJSReqBean2) data.getSerializableExtra("inProduct");
-                if(confirm){
-                    beans3.get(index).setInProduct(inProduct);
-                    EditText et=listview1.getChildAt(index - listview1.getFirstVisiblePosition()).findViewById(R.id.dhsl);
-                    et.setText(""+sl);
-                    if(inProduct.getPMATNR()!=null){
-                        materialList.set(index,inProduct.getPMATNR());
-                    }
-                }
-                break;
-            case REQUEST_CODE_2: //返回的请求码
-//                操作
-                boolean confirm2 = data.getBooleanExtra("confirm", false);
-                int index2=data.getIntExtra("index",0);
-                List<OutsourceFinishedProductReceivingJSReqBean1> outProduct  = (List<OutsourceFinishedProductReceivingJSReqBean1>) data.getSerializableExtra("outProduct");
-                if(confirm2){
-                    beans3.get(index2).setOutProduct(outProduct);
-                }
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void initData() {
-        productOrderList1=new ArrayList<GetOutStorageMaterialOrderJSRepBean>();
+        productOrderList1=new ArrayList<PreMaterialProductOrderRep>();
         productOrderList2=new ArrayList<PreMaterialProductOrderRep>();
         selectedRep=new GetPurchaseOrderInfoJSRep();
         printList=new ArrayList<GetOutsourceFinProLableJSReqBean>();
         materialList=new ArrayList<String>();
-        beans3=new ArrayList<OutsourceFinishedProductReceivingJSReqBean3>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
         data1=new ArrayList<GetPurchaseOrderInfoJSRep>();
@@ -302,38 +256,6 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-//                scanString="{ \"no\": \"10000316\", \"line\": \"35\", \"code\": \"TEo1NTQwMDE4NDI2\", \"gc\": \"2010\", \"sl\": \"10\" }";
-//                JSONObject lableObject= null;
-//                try {
-//                    lableObject = JSONObject.parseObject(scanString);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(WXCPSHActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
-//                }
-//                if(lableObject!=null) {
-//
-//                    String bm= null;
-//                    String decodestr = null;
-//                    try {
-//                        marketorderno=lableObject.getString("no");
-//                        marketorderrow=lableObject.getString("line");
-//                        bm = lableObject.getString("code");
-//                        factory=lableObject.getString("gc");
-//                        decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-////
-//                    if(marketorderno!=null&&marketorderrow!=null&&bm!=null){
-//                        presenter1.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr);
-//                    }
-////                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
-//                    scanString="";
-//                }else {
-//                    Log.i("token","扫描结果为空");
-//                    Toast.makeText(WXCPSHActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
-//                }
             }
         });
         menupoint.setOnClickListener(new View.OnClickListener() {
@@ -368,9 +290,62 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-
+                if((listview1.getVisibility()==View.GONE&&listview2.getVisibility()==View.VISIBLE)||factory.equals("2090")){
+                    receive();
+                }else {
+                    Toast.makeText(WXCPSHActivity.this, "请确认上游订单", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    public void receive(){
+        List<AUFNRBean> AUFNRs = new ArrayList<AUFNRBean>();
+        List<UPAUFNRBean> UPAUFNRs = new ArrayList<UPAUFNRBean>();
+        float allnum1=0;
+        float allnum2=0;
+        for (int i = 0; i < productOrderList1.size(); i++) {
+            PreMaterialProductOrderRep currBean1 = productOrderList1.get(i);
+            View itmeview=listview1.getAdapter().getView(i,null,null);
+            EditText et=itmeview.findViewById(R.id.fpsl);
+            CheckBox cb= itmeview.findViewById(R.id.checked);
+            if(cb.isChecked()){
+                String numstr=et.getText().toString();
+                float num = Float.parseFloat("0"+numstr);
+                allnum1+=num;
+//                System.out.println("num1=="+num);
+                AUFNRBean AUFNR=new AUFNRBean(currBean1.getProductOrderNO(), currBean1.getRSNUM(), currBean1.getRSPOS(), currBean1.getProOrderMaterialCode(), currBean1.getProOrderMaterialDesc(), currBean1.getProOrderMaterialUnit(), currBean1.getRSART(), currBean1.getMCODE(), currBean1.getStorage(), currBean1.getDemandNum(), num, currBean1.getDispatchNum());
+                AUFNRs.add(AUFNR);
+            }
+        }
+
+        for (int i = 0; i < productOrderList2.size(); i++) {
+            PreMaterialProductOrderRep currBean2 = productOrderList2.get(i);
+            View itmeview=listview2.getAdapter().getView(i,null,null);
+            EditText et=itmeview.findViewById(R.id.fpsl);
+            CheckBox cb= itmeview.findViewById(R.id.checked);
+            if(cb.isChecked()){
+                String numstr=et.getText().toString();
+                float num = Float.parseFloat("0"+numstr);
+                allnum2+=num;
+//                System.out.println("num2=="+num);
+                UPAUFNRBean UPAUFNR=new UPAUFNRBean(currBean2.getProductOrderNO(), currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getRSART(), currBean2.getMCODE(), currBean2.getStorage(), currBean2.getDemandNum(), num, currBean2.getDispatchNum());
+                UPAUFNRs.add(UPAUFNR);
+            }
+        }
+        String allnumStr=dhsl.getText().toString();
+        float allnum = Float.parseFloat("0"+allnumStr);
+        float mqty=allnum-allnum2>0?(allnum-allnum2):0;
+        //若没有本事业部生产订单，则用采购订单信息去获取上游生产订单
+        if(productOrderList1.size()==0){
+            allnum1=allnum;
+        }
+        if(allnum2<=allnum1&&allnum1<=allnum){
+            OutsourceFinishedProductReceivingJSReq req=new OutsourceFinishedProductReceivingJSReq(getCurrentdate(), getCurrentdate(), username, selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getEBELN(), selectedRep.getEBELP(), factory, selectedRep.getWERKS(), selectedRep.getLGFSB(), selectedRep.getMATNR(), selectedRep.getTXZ01(), selectedRep.getMaterialType(),selectedRep.getMEINS(), selectedRep.getMENGE(), selectedRep.getInStorage(), allnum, selectedRep.getCGTXT(), selectedRep.getKINDS(),  AUFNRs, UPAUFNRs);
+            presenter2.OutsourceFinishedProductReceivingJS(req);
+        } else {
+            Toast.makeText(this, "分配数量有误", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onPopupButtonClick(View button)
@@ -388,10 +363,10 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.exit:
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
+//                            case R.id.exit:
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
                             case R.id.record:
                                 // 隐藏该对话框
                                 Intent intent = new Intent(WXCPSHActivity.this, WXCPSHRecordActivity.class);
@@ -434,11 +409,6 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
             for (GetPurchaseOrderInfoJSRep data2 : currentDatas) {
                 data2.setMarketorderno(marketorderno);
                 data2.setMarketorderrow(marketorderrow);
-
-                OutsourceFinishedProductReceivingJSReqBean3 bean3=new OutsourceFinishedProductReceivingJSReqBean3( data2.getWERKS(), data2.getLGPRO(), data2.getTXZ01(), data2.getMATNR(), data2.getMaterialType(), data2.getEBELN(), data2.getEBELP(), data2.getKINDS(), data2.getWESBS(), data2.getCGTXT(), data2.getMEINS(), null, null);
-                beans3.add(bean3);
-
-                materialList.add(data2.getMATNR());
             }
 
             data1.clear();
@@ -480,7 +450,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                     String num3str=""+selectedRep.getWESBS();
                     dhsl.setText(num3str);
                     //presenter3.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
-                    presenter4.GetOutStorageMaterialOrderJS(selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getMarketorderno(),selectedRep.getWERKS(),selectedRep.getWESBS());
+                    //ondatasuccess1
+                    presenter4.CGSHReceiveDetail(selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getMarketorderno(),selectedRep.getWERKS(),selectedRep.getWESBS());
                     radiogroup1.check(R.id.ben);
                 }
                 @Override
@@ -501,15 +472,10 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     @Override
     public void onDataSuccess2(OutsourceFinishedProductReceivingJSRep data) {
         Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+        printList.clear();
         try {
-            GetOutsourceFinProLableJSReqBean printBean=new GetOutsourceFinProLableJSReqBean(data.getData().getStorageId(),data.getData().getOrderType(),data.getData().getAdvanceStorageId());
+            GetOutsourceFinProLableJSReqBean printBean=new GetOutsourceFinProLableJSReqBean(data.getData().getStorageId(),data.getData().getOrderType(),data.getData().getAdvanceStorageId(),data.getData().getFactory());
             printList.add(printBean);
-
-//            if(receiveIndex!=-1){
-//                data1.remove(receiveIndex);
-//                adapter1.notifyDataSetChanged();
-//                receiveIndex=-1;
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -532,9 +498,9 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
 
     //获取本事业部生产订单
     @Override
-    public void onDataSuccess1(GetOutStorageMaterialOrderJSRep data) {
+    public void onDataSuccess1(PreMaterialProductOrderReps data) {
         productOrderList1 = data.getData();
-        adapter1=new WXBCPJGRKAdapter1(WXCPSHActivity.this, R.layout.wxcpshitem1, productOrderList1);
+        adapter1=new WXCPSHAdapter(WXCPSHActivity.this, R.layout.wxcpshitem1, productOrderList1);
         listview1.setAdapter(adapter1);
     }
 
@@ -562,80 +528,6 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         intentFilter.addAction(m_Broadcastname);
 //        Toast.makeText(KFCGSHRKActivity.this, "扫描注册初始化", Toast.LENGTH_SHORT).show();
         registerReceiver(receiver, intentFilter);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.e("整体item----->", i + "");
-
-    }
-
-    @Override
-    public void itemClick(View v) {
-        int position;
-        position = (Integer) v.getTag();
-        switch (v.getId()) {
-//            case R.id.receive1:
-//                Log.e("内部receive1>>", position + "");
-//                vibrator.vibrate(30);
-//                GetPurchaseOrderInfoJSRep info = data1.get(position);
-//                Intent intent=new Intent(WXCPSHActivity.this,WXCPSHDialog1Activity.class);
-//                intent.putExtra("I_INKDPOS",info.getMarketorderrow());
-//                intent.putExtra("I_INMATNR",info.getMATNR());
-//                intent.putExtra("I_INKDAUF",info.getMarketorderno());
-//                EditText et=listview1.getChildAt(position - listview1.getFirstVisiblePosition()).findViewById(R.id.dhsl);
-//                String recenumstr=et.getText().toString();
-//                float num=Float.parseFloat(("0"+recenumstr));
-//                intent.putExtra("dhsl",num);
-//                intent.putExtra("type",info.getMaterialType());
-//                intent.putExtra("index",position);
-//                intent.putExtra("username",username);
-//                startActivityForResult(intent,REQUEST_CODE_1);
-//                break;
-//            case R.id.receive2:
-//                Log.e("内部receive2>>", position + "");
-//                vibrator.vibrate(30);
-//                GetPurchaseOrderInfoJSRep info2 = data1.get(position);
-//                Intent intent2=new Intent(WXCPSHActivity.this,WXCPSHDialog2Activity.class);
-//                intent2.putExtra("I_INKDPOS",info2.getMarketorderrow());
-//                //!!!注意
-//                intent2.putExtra("I_INMATNR",materialList.get(position));
-//                intent2.putExtra("I_INKDAUF",info2.getMarketorderno());
-//                EditText et2=listview1.getChildAt(position - listview1.getFirstVisiblePosition()).findViewById(R.id.dhsl);
-//                String recenumstr2=et2.getText().toString();
-//                float num2=Float.parseFloat(("0"+recenumstr2));
-//                intent2.putExtra("dhsl",num2);
-//                intent2.putExtra("type",info2.getMaterialType());
-//                intent2.putExtra("index",position);
-//                intent2.putExtra("username",username);
-//                startActivityForResult(intent2,REQUEST_CODE_2);
-//                break;
-//            case R.id.receive3:
-//                Log.e("内部receive3>>", position + "");
-//                vibrator.vibrate(30);
-//                if (false){
-//                    //选中的需求仓库
-//                    View itme=listview1.getChildAt(position - listview1.getFirstVisiblePosition());
-//                    Spinner sp= itme.findViewById(R.id.spinner1);
-//                    int selectedItemPosition = sp.getSelectedItemPosition();
-////                System.out.println("选中的仓库index:"+selectedItemPosition);
-//                    String storage= data1.get(position).getStorage().get(selectedItemPosition).getId();
-//                    beans3.get(position).setDemandStorage(storage);
-//                    //数量
-//                    EditText et3=listview1.getChildAt(position - listview1.getFirstVisiblePosition()).findViewById(R.id.dhsl);
-//                    String recenumstr3=et3.getText().toString();
-//                    float num3=Float.parseFloat(("0"+recenumstr3));
-//                    beans3.get(position).setRecNum(num3);
-//                    presenter2.OutsourceFinishedProductReceivingJS(getCurrentdate(),getCurrentdate(),username,beans3.get(position));
-//
-//                    receiveIndex=position;
-//                }else {
-//                    Toast.makeText(this, "请先选择生产订单", Toast.LENGTH_SHORT).show();
-//                }
-//                break;
-            default:
-                break;
-        }
     }
 
     //接收类
@@ -751,29 +643,34 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         listview1.setVisibility(View.GONE);
         listview2.setVisibility(View.VISIBLE);
         List<PreMaterialProductOrderJSReqBean> materialCodeArr=new ArrayList<PreMaterialProductOrderJSReqBean>();
-        for (int i = 0; i < productOrderList1.size(); i++) {
-            String code=productOrderList1.get(i).getMATNR();
-            float num0=productOrderList1.get(i).getINQTY();
-            boolean dup=false;
-            int ind=0;
-            for (int j = 0; j < materialCodeArr.size(); j++) {
-                if(materialCodeArr.get(j).getMaterialCode().equals(code)){
-                    ind=j;
-                    dup=true;
-                    break;
+        String allnumStr=dhsl.getText().toString();
+        float allnum = Float.parseFloat("0"+allnumStr);
+        if(productOrderList1.size()==0){
+            PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(selectedRep.getMATNR(),allnum);
+            materialCodeArr.add(bean);
+        }else {
+            for (int i = 0; i < productOrderList1.size(); i++) {
+                String code=productOrderList1.get(i).getMATNR();
+                float num0=productOrderList1.get(i).getCurrentNum();
+                boolean dup=false;
+                int ind=0;
+                for (int j = 0; j < materialCodeArr.size(); j++) {
+                    if(materialCodeArr.get(j).getMaterialCode().equals(code)){
+                        ind=j;
+                        dup=true;
+                        break;
+                    }
+                }
+                //物料未重复，则传参添加；物料重复，则只增加数量
+                if(dup==false){
+                    PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
+                    materialCodeArr.add(bean);
+                }else {
+                    float num00=materialCodeArr.get(ind).getMatnrCurrentNum()+num0;
+                    materialCodeArr.get(ind).setMatnrCurrentNum(num00);
                 }
             }
-            //物料未重复，则传参添加；物料重复，则只增加数量
-            if(dup==false){
-                PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
-                materialCodeArr.add(bean);
-            }else {
-                float num00=materialCodeArr.get(ind).getMatnrCurrentNum()+num0;
-                materialCodeArr.get(ind).setMatnrCurrentNum(num00);
-            }
         }
-        presenter5.PreMaterialProductOrderJS(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),materialCodeArr,selectedRep.getWERKS());
+        presenter5.PreMaterialProductOrderJS(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),materialCodeArr,factory);
     }
-
-
 }

@@ -1,31 +1,33 @@
 package com.example.kymanage.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.PrintCNPSDAdapter;
+import com.example.kymanage.Beans.General.CNPSDDisplayBean;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
-import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRepBean;
+import com.example.kymanage.Beans.GetCMInFactoryDeliverJS.GetCMInFactoryDeliverJSRep;
+import com.example.kymanage.Beans.GetCMInFactoryDeliverJS.GetCMInFactoryDeliverJSRepBean2;
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
-import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
+import com.example.kymanage.presenter.InterfaceView.BaseView1;
+import com.example.kymanage.presenter.InterfaceView.BaseView2;
+import com.example.kymanage.presenter.Presenters.Print1.GetCMInFactoryDeliverJSPresenter;
 import com.example.kymanage.presenter.Presenters.Print1.GetCMInFactoryDeliverPresenter;
 import com.example.kymanage.utils.mPrintUtil;
 
@@ -36,7 +38,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<GetCMInFactoryDeliverRep> {
+public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMInFactoryDeliverRep>, BaseView2<GetCMInFactoryDeliverJSRep> {
 
     //username
     private String username;
@@ -46,27 +48,27 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
     private MyCodeReceiver receiver = new MyCodeReceiver();
     private String scanString;
     private GetCMInFactoryDeliverPresenter presenter1;
-    private List<String> DispatchListNOList;
+    private GetCMInFactoryDeliverJSPresenter presenter2;
 
     //表
     private ListView listView1;
+    private List<CNPSDDisplayBean> listBeans;
     private PrintCNPSDAdapter adapter;
-
-    //print
-    private ImageView print;
     //打印类
     private PrintHelper printHelper=null;
     //标签生成器
     private CreateBitmap cb;
     //自定义字体
     private Typeface tf;
-    //打印内容
-    private GetCMInFactoryDeliverRep printData;
 
     //震动
     private Vibrator vibrator;
 
     private com.example.kymanage.utils.mPrintUtil mPrintUtil=new mPrintUtil();
+
+    //缩略菜单
+    private ImageView menupoint;
+    PopupMenu popup = null;
 
     @Override
     public int initLayoutId() {
@@ -78,21 +80,26 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         //按钮
         scan=findViewById(R.id.scan);
-        print=findViewById(R.id.print);
+        menupoint=findViewById(R.id.menupoint);
 //        record=findViewById(R.id.record);
         //表格
         listView1=findViewById(R.id.listview1);
 
         presenter1=new GetCMInFactoryDeliverPresenter();
         presenter1.setView(this);
+
+        presenter2=new GetCMInFactoryDeliverJSPresenter();
+        presenter2.setView(this);
     }
 
     @Override
     public void initData() {
-        printData=new GetCMInFactoryDeliverRep();
+        listBeans=new ArrayList<CNPSDDisplayBean>();
+
+
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
-        DispatchListNOList=new ArrayList<String>();
+
 
         cb=new CreateBitmap();
         //初始化打印类
@@ -162,29 +169,87 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
             }
         });
 
-        print.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                try {
-//                    Bitmap bm=cb.createImage8(printData,tf);
-//                    int picHeight = 300+105*(printData.getData().size());
-//                    printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-                    mPrintUtil.printCNBill(printData,printHelper);
-                    printHelper.printBlankLine(80);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                onPopupButtonClick(menupoint);
             }
         });
     }
 
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.wxcnpsmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+//                            case R.id.exit:
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
+                            case R.id.record:
+                                // 隐藏该对话框
+                                Intent intent = new Intent(PrintCNPSDActivity.this, PrintCNPSDRecord1Activity.class);
+                                intent.putExtra("username",username);
+                                startActivity(intent);
+                                break;
+                            case R.id.print:
+                                // 隐藏该对话框
+                                vibrator.vibrate(30);
+                                List<String> DispatchListNOList=new ArrayList<String>();
+                                for (int i = 0; i < listBeans.size(); i++) {
+                                    View itmeview=listView1.getAdapter().getView(i,null,null);
+                                    CheckBox cb= itmeview.findViewById(R.id.checked);
+                                    if(cb.isChecked()){
+                                        DispatchListNOList.add(listBeans.get(i).getDispatchno());
+                                    }
+                                }
+                                if(DispatchListNOList.size()>0){
+                                    presenter1.GetCMInFactoryDeliver(DispatchListNOList,username,getCurrentdate());
+                                }else {
+                                    Toast.makeText(PrintCNPSDActivity.this, "未选择派工单行", Toast.LENGTH_SHORT).show();
+                                }
+
+                                break;
+                            default:
+                        }
+                        return true;
+                    }
+                });
+        popup.show();
+    }
+
     @Override
-    public void onDataSuccessScan(GetCMInFactoryDeliverRep data) {
-        System.out.println(data.getDeliverID());
-        printData=data;
+    public void onDataSuccess1(GetCMInFactoryDeliverRep data) {
+        presenter2.GetCMInFactoryDeliverJS(data.getDeliverNO());
+    }
+
+    @Override
+    public void onDataSuccess2(GetCMInFactoryDeliverJSRep data) {
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        adapter=new PrintCNPSDAdapter(this, R.layout.wxcnpsditem,data.getData());
+        for (GetCMInFactoryDeliverJSRepBean2 datum : data.getData()) {
+            mPrintUtil.printCNBill(datum,printHelper);
+            printHelper.printBlankLine(80);
+        }
+
+        for (int i = 0; i < listBeans.size(); i++) {
+            View itmeview=listView1.getAdapter().getView(i,null,null);
+            CheckBox cb= itmeview.findViewById(R.id.checked);
+            if(cb.isChecked()){
+                listBeans.remove(i);
+            }
+        }
+        adapter=new PrintCNPSDAdapter(this, R.layout.wxcnpsditem,listBeans);
         listView1.setAdapter(adapter);
     }
 
@@ -207,33 +272,35 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
                     JSONObject lableObject= null;
                     try {
                         lableObject = JSONObject.parseObject(scanString);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(PrintCNPSDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
-                    }
-                    if(lableObject!=null) {
-                       String DispatchListNO=lableObject.getString("dp");
-                        //判断是否重复扫码
-                        boolean repeat=false;
-                        for (String no : DispatchListNOList) {
-                            if(DispatchListNO.equals(no)){
-                                repeat=true;
+                        if(lableObject!=null) {
+                           String DispatchListNO=lableObject.getString("dp");
+                           String user=lableObject.getString("user");
+                           String createDate=lableObject.getString("date");
+                            //判断是否重复扫码
+                            boolean repeat=false;
+                            for (CNPSDDisplayBean listBean : listBeans) {
+                                if(DispatchListNO.equals(listBean.getDispatchno())){
+                                    repeat=true;
+                                }
                             }
-                        }
-                        if(repeat){
-//                            System.out.println("请勿重复扫码");
-                            Toast.makeText(PrintCNPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
+                            if(repeat){
+    //                            System.out.println("请勿重复扫码");
+                                Toast.makeText(PrintCNPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
+                            }else {
+                                CNPSDDisplayBean listBean=new CNPSDDisplayBean(DispatchListNO,user,createDate);
+                                listBeans.add(listBean);
+                                adapter=new PrintCNPSDAdapter(getApplicationContext(), R.layout.wxcnpsditem,listBeans);
+                                listView1.setAdapter(adapter);
+                            }
+
+                            scanString="";
                         }else {
-                            if(DispatchListNO!=null){
-                                DispatchListNOList.add(DispatchListNO);
-                                presenter1.GetCMInFactoryDeliver(DispatchListNOList,username,getCurrentdate());
-                            }
+                            Log.i("token","扫描结果为空");
+                            Toast.makeText(PrintCNPSDActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
                         }
-//                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
-                        scanString="";
-                    }else {
-                        Log.i("token","扫描结果为空");
-                        Toast.makeText(PrintCNPSDActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(PrintCNPSDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
                 }
             }
@@ -268,7 +335,7 @@ public class PrintCNPSDActivity extends BaseActivity implements ScanBaseView<Get
     //获取当前日期
     private String getCurrentdate(){
         Date date0 = new Date();
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
     }

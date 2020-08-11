@@ -13,24 +13,30 @@ import java.util.List;
 public class GetOutsourceFinProLableJSRepBean {
 
     /**
+     * FType : 外协
      * Company : TKAS
-     * MarketOrderNO : 0010000208
+     * MarketOrderNO : 10000208
      * MCode :
      * ProOMaterialNO : ZJ9310000007
      * Factory : 2010
-     * PrintTime : 2020-06-10 14:54
+     * PrintTime : 2020-08-07 14:54
      * Remark :
-     * MaterialDesc : 拖链导槽|Q235A
-     * Area : A11
+     * MaterialDesc : 安装座|Q235A
+     * Area : D43
      * PrintFactory : CM
      * ProOMaterialDesc : 集中控制系统
-     * Qty : 4.0
+     * Qty : 1.0
      * ProductOrderNO : 000010048077
      * MaterialUnit : EA
-     * MaterialCode : LJ7015001194
-     * MarketOrderRow : 000026
+     * id : 8863.0
+     * MaterialCode : LJ1510000078
+     * MarketOrderRow : 26
+     * ClientNO : 1
+     * ClientShortName :s
+     *
      */
 
+    private String FType;
     private String Company;
     private String MarketOrderNO;
     private String MCode;
@@ -45,15 +51,11 @@ public class GetOutsourceFinProLableJSRepBean {
     private float Qty;
     private String ProductOrderNO;
     private String MaterialUnit;
+    private long id;
     private String MaterialCode;
     private String MarketOrderRow;
-    private String FType;
-    private String allocatedID;
-    private String ClientNO ;
-    private String ClientShortName ;
-
-    private String type;
-    private long id;
+    private String ClientNO;
+    private String ClientShortName;
 
     public static GetOutsourceFinProLableJSRepBean objectFromData(String str) {
 
@@ -97,6 +99,14 @@ public class GetOutsourceFinProLableJSRepBean {
         return new ArrayList();
 
 
+    }
+
+    public String getFType() {
+        return FType;
+    }
+
+    public void setFType(String FType) {
+        this.FType = FType;
     }
 
     public String getCompany() {
@@ -211,6 +221,14 @@ public class GetOutsourceFinProLableJSRepBean {
         this.MaterialUnit = MaterialUnit;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getMaterialCode() {
         return MaterialCode;
     }
@@ -227,22 +245,6 @@ public class GetOutsourceFinProLableJSRepBean {
         this.MarketOrderRow = MarketOrderRow;
     }
 
-    public String getFType() {
-        return FType;
-    }
-
-    public void setFType(String FType) {
-        this.FType = FType;
-    }
-
-    public String getAllocatedID() {
-        return allocatedID;
-    }
-
-    public void setAllocatedID(String allocatedID) {
-        this.allocatedID = allocatedID;
-    }
-
     public String getClientNO() {
         return ClientNO;
     }
@@ -257,21 +259,5 @@ public class GetOutsourceFinProLableJSRepBean {
 
     public void setClientShortName(String clientShortName) {
         ClientShortName = clientShortName;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

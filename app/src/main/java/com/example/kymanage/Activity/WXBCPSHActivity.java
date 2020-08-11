@@ -25,13 +25,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.kymanage.Adapter.CGDialogAdapter;
 import com.example.kymanage.Adapter.WXBCPSHAdapter;
-import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean2;
+import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRepBean2;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
+import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRepBean3;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSRep;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSReps;
-import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.iddesBean;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingRep;
@@ -41,17 +40,14 @@ import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
-import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetDispatchListJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetPurchaseOrderInfoJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.Semi_FinishedProductReceivingPresenter;
-import com.example.kymanage.utils.Base64Tool;
 import com.example.kymanage.utils.mPrintUtil;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -292,6 +288,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 List<Semi_FinishedProductReceivingReqBean> productOrderReqs=new ArrayList<Semi_FinishedProductReceivingReqBean>();
+                float allnum=0;
                 for (int i = 0; i < productOrderList.size(); i++) {
                     PreMaterialProductOrderRep rep = productOrderList.get(i);
                     View listItem=listview1.getAdapter().getView(i,null,null);
@@ -301,13 +298,19 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                     float issueNum=0;
                     issueNum=Float.parseFloat(("0"+et1.getText().toString()));
                     if(issueNum>0){
+                        allnum+=issueNum;
                         Semi_FinishedProductReceivingReqBean bean=new Semi_FinishedProductReceivingReqBean(rep.getDemandNum(), rep.getKDAUF(), rep.getKDPOS(), rep.getMAKTX(), rep.getMATNR(), rep.getRSART(), rep.getRSNUM(), rep.getRSPOS(), rep.getIssuedNum(), rep.getProductOrderNO(), rep.getProOrderDesc(),rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getFactory(), rep.getStorage(),rep.getMCODE(),issueNum);
                         productOrderReqs.add(bean);
                     }
                 }
                 float recNum=Float.parseFloat(("0"+dhsl.getText().toString()));
-                Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getUpstreamFactory(), recNum,selectedRep.getInStorage(),selectedRep.getMENGE(),selectedRep.getEBELN(), selectedRep.getEBELP(), selectedRep.getMATNR(), selectedRep.getMaterialType(), selectedRep.getWERKS(), selectedRep.getLGPRO(), selectedRep.getTXZ01(), selectedRep.getMEINS(), selectedRep.getCGTXT(), productOrderReqs);
-                presenter4.Semi_FinishedProductReceiving(getCurrentdate(),getCurrentdate(),username,req);
+                if(recNum>0&&recNum>=allnum){
+                    Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getUpstreamFactory(), recNum,selectedRep.getInStorage(),selectedRep.getMENGE(),selectedRep.getEBELN(), selectedRep.getEBELP(), selectedRep.getMATNR(), selectedRep.getMaterialType(), selectedRep.getWERKS(), selectedRep.getLGPRO(), selectedRep.getTXZ01(), selectedRep.getMEINS(), selectedRep.getCGTXT(), productOrderReqs);
+                    presenter4.Semi_FinishedProductReceiving(getCurrentdate(),getCurrentdate(),username,req);
+                }else {
+                    Toast.makeText(WXBCPSHActivity.this, "输入数量错误", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -327,10 +330,10 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.exit:
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
+//                            case R.id.exit:
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
                             case R.id.record:
                                 // 隐藏该对话框
                                 Intent intent = new Intent(WXBCPSHActivity.this, WXBCPSHRecordActivity.class);
@@ -339,7 +342,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                                 break;
                             case R.id.print:
                                 // 隐藏该对话框
-                                presenter2.GetDispatchListJS(AdvanceStorageId,username);
+                                presenter2.GetDispatchListJS(AdvanceStorageId,username,getCurrentdate());
                                 break;
                             default:
                                 // 使用Toast显示用户单击的菜单项
@@ -412,17 +415,22 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
 
     @Override
     public void onDataSuccessPrint(GetDispatchListJSRep data) {
-//        System.out.println("print success");
-        for (GetDispatchListJSBean2 datum : data.getData()) {
-//            Bitmap bm=cb.createImage5(datum,tf);
-//            int picHeight = 410+55*(datum.getData().size());
-//            printHelper.PrintBitmapAtCenter(bm,384,picHeight);
-//            printHelper.printBlankLine(80);
-            mPrintUtil.printPGBill(datum,printHelper);
-            printHelper.printBlankLine(80);
-        }
+        try {
+            for (GetDispatchListJSRepBean2 datum : data.getData().getDispatchListDataArr()) {
+                datum.setUsername(username);
+                datum.setCreateDate(getCurrentdate());
+                mPrintUtil.printPGBill(datum,printHelper);
+                printHelper.printBlankLine(80);
+            }
 
-//        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+            for (GetDispatchListJSRepBean3 label : data.getData().getLableDataArr()) {
+                Bitmap bm=cb.createImage5(label,tf);
+                printHelper.PrintBitmapAtCenter(bm,384,480);
+                printHelper.printBlankLine(80);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -439,6 +447,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
             layout1.setVisibility(View.INVISIBLE);
             productOrderList.clear();
             adapter1.notifyDataSetChanged();
+            AdvanceStorageId.add(data.getStorageId());
         }
     }
 

@@ -95,30 +95,34 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
 
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
-        viewHolder.wlbm.setText(rep.getMaterialCode());
-        viewHolder.wlpz.setText(rep.getMblnr());
+        try {
+            viewHolder.wlbm.setText(rep.getMaterialCode());
+            viewHolder.wlpz.setText(rep.getMblnr());
 
 //        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        String sd1 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getPostingdate()))));
-        viewHolder.gzrq.setText(rep.getPostingdate());
+            viewHolder.gzrq.setText(rep.getPostingdate());
 
 //        String sd2 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getDocumentdate()))));
-        viewHolder.pzrq.setText(rep.getDocumentdate());
+            viewHolder.pzrq.setText(rep.getDocumentdate());
 
-        String newStr0 = rep.getProductOrderNO().replaceAll("^(0+)", "");
-        viewHolder.scddh.setText(newStr0);
+            String newStr0 = rep.getProductOrderNO().replaceAll("^(0+)", "");
+            viewHolder.scddh.setText(newStr0);
 
-        String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
-        String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
-        viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
+            String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+            String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+            viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
 
-        viewHolder.ghgc.setText(rep.getSendFactory());
-        viewHolder.ghkf.setText(rep.getSendStorage());
-        viewHolder.xqgc.setText(rep.getDemandFactory());
-        viewHolder.xqkf.setText(rep.getDemandStorage());
-        String num1str=""+rep.getQty();
-        viewHolder.zcsl.setText(num1str);
-        viewHolder.zt.setText(rep.getStatus());
+            viewHolder.ghgc.setText(rep.getSendFactory());
+            viewHolder.ghkf.setText(rep.getSendStorage());
+            viewHolder.xqgc.setText(rep.getDemandFactory());
+            viewHolder.xqkf.setText(rep.getDemandStorage());
+            String num1str=""+rep.getQty();
+            viewHolder.zcsl.setText(num1str);
+            viewHolder.zt.setText(rep.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        if(select.get(position)){
 //            viewHolder.checked.setChecked(true);
 //        }else{

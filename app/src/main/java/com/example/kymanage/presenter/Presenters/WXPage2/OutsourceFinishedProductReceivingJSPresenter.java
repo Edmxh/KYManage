@@ -1,16 +1,16 @@
 package com.example.kymanage.presenter.Presenters.WXPage2;
 
 
-import com.example.kymanage.Beans.General.CodeMessageBean;
+import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.AUFNRBean;
 import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSRep;
-import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReqBean2;
-import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReqBean3;
-import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingRep;
-import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingReq;
+import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.OutsourceFinishedProductReceivingJSReq;
+import com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS.UPAUFNRBean;
 import com.example.kymanage.model.AppModel;
 import com.example.kymanage.net.HttpDataListener;
 import com.example.kymanage.presenter.BasePresenter;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
+
+import java.util.List;
 
 public class OutsourceFinishedProductReceivingJSPresenter extends BasePresenter<BaseView2<OutsourceFinishedProductReceivingJSRep>> {
 
@@ -21,8 +21,8 @@ public class OutsourceFinishedProductReceivingJSPresenter extends BasePresenter<
         appModel = new AppModel();
     }
 
-    public void OutsourceFinishedProductReceivingJS(String postingDate, String documentDate, String user, OutsourceFinishedProductReceivingJSReqBean3 detail){
-        appModel.OutsourceFinishedProductReceivingJS(postingDate,documentDate,user,detail,new HttpDataListener<OutsourceFinishedProductReceivingJSRep>() {
+    public void OutsourceFinishedProductReceivingJS(OutsourceFinishedProductReceivingJSReq data){
+        appModel.OutsourceFinishedProductReceivingJS(data,new HttpDataListener<OutsourceFinishedProductReceivingJSRep>() {
 
 
             @Override

@@ -32,6 +32,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.Print3.GetDeliveryListInfoJSPresenter;
 import com.example.kymanage.presenter.Presenters.Print3.GetLableStorageInfoJSPresenter;
+import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
     private ImageView print;
     //打印类
     private PrintHelper printHelper=null;
+    private com.example.kymanage.utils.mPrintUtil mPrintUtil;
     //标签生成器
     private CreateBitmap cb;
     //自定义字体
@@ -105,6 +107,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
 
     @Override
     public void initData() {
+        mPrintUtil=new mPrintUtil();
         printReqs=new ArrayList<GetDeliveryListInfoJSReqBean1>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
@@ -228,9 +231,8 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
         List<GetDeliveryListInfoJSRepBean2> data1 = data.getData();
         for (GetDeliveryListInfoJSRepBean2 data2 : data1) {
 
-            Bitmap bm=cb.createImage9(data2,tf);
-            printHelper.PrintBitmapAtCenter(bm,384,200+200*(data2.getData().size()));
-            printHelper.printBlankLine(35);
+            mPrintUtil.printXSFHBill(data2,printHelper);
+            printHelper.printBlankLine(80);
         }
     }
 

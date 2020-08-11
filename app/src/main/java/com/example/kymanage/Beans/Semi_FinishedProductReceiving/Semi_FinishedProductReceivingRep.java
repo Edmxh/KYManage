@@ -3,13 +3,13 @@ package com.example.kymanage.Beans.Semi_FinishedProductReceiving;
 /**
  * {
  *         "code": 1.0,
- *         "AdvanceStorageId":  151
+ *         "storageId":  151
  *         "message": "收货成功"
  * }
  */
 public class Semi_FinishedProductReceivingRep {
     private int code;
-    private long AdvanceStorageId;
+    private long storageId;
     private String message;
 
     public int getCode() {
@@ -20,12 +20,12 @@ public class Semi_FinishedProductReceivingRep {
         this.code = code;
     }
 
-    public long getAdvanceStorageId() {
-        return AdvanceStorageId;
+    public long getStorageId() {
+        return storageId;
     }
 
-    public void setAdvanceStorageId(long advanceStorageId) {
-        AdvanceStorageId = advanceStorageId;
+    public void setStorageId(long storageId) {
+        this.storageId = storageId;
     }
 
     public String getMessage() {

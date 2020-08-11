@@ -9,16 +9,21 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:requestLegacyExternalStorage="true"
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustPan">
-        <activity android:name=".Activity.TestActivity"></activity>
+        <activity android:name=".Activity.WXKFBQDYActivity"></activity>
+        <activity android:name=".Activity.PrintCNPSDRecord2Activity" />
+        <activity
+            android:name=".Activity.PrintCNPSDRecord1Activity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".Activity.TestActivity" />
         <activity
             android:name=".Activity.KFFL2Activity"
             android:windowSoftInputMode="adjustPan" />
@@ -42,9 +47,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.WXCPSHRecordActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".Activity.WXCPSHDialog2Activity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.WXBCPSHRecordActivity"
@@ -72,9 +74,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.WXBCPJGRKDialog1Activity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".Activity.WXCPSHDialog1Activity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.WXCPSHActivity"
@@ -125,10 +124,10 @@
         <activity
             android:name=".Activity.CGDDListActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

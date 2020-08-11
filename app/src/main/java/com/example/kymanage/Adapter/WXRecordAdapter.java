@@ -113,9 +113,9 @@ public class WXRecordAdapter extends ArrayAdapter<GetFinProStorageRecordRep> {
 
         String str="";
         if(rep.getReverseHandler().equals("")){
-            str=rep.getReceiveType();
+            str=rep.getStatus();
         }else {
-            str=rep.getReceiveType()+"("+rep.getReverseHandler()+")";
+            str=rep.getStatus()+"("+rep.getReverseHandler()+")";
         }
         viewHolder.rkzt.setText(str);
         if(select.get(position)){

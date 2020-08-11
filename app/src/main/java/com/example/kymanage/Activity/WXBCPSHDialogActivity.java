@@ -185,7 +185,7 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onDataSuccess2(Semi_FinishedProductReceivingRep data) {
         Toast.makeText(WXBCPSHDialogActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
-        AdvanceStorageId=data.getAdvanceStorageId();
+        AdvanceStorageId=data.getStorageId();
         this.finish();
     }
 

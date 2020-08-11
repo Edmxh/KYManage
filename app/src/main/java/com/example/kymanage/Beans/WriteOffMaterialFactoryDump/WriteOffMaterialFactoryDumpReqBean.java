@@ -9,13 +9,14 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 public class WriteOffMaterialFactoryDumpReqBean {
     private long ID;
+    private String DumpNum;
 
-    public WriteOffMaterialFactoryDumpReqBean() {
-    }
 
-    public WriteOffMaterialFactoryDumpReqBean(long ID) {
+    public WriteOffMaterialFactoryDumpReqBean(long ID, String dumpNum) {
         this.ID = ID;
+        DumpNum = dumpNum;
     }
+
     @JSONField(name = "ID")
     public long getID() {
         return ID;
@@ -23,5 +24,13 @@ public class WriteOffMaterialFactoryDumpReqBean {
     @JSONField(name = "ID")
     public void setID(long ID) {
         this.ID = ID;
+    }
+    @JSONField(name = "DumpNum")
+    public String getDumpNum() {
+        return DumpNum;
+    }
+    @JSONField(name = "DumpNum")
+    public void setDumpNum(String dumpNum) {
+        DumpNum = dumpNum;
     }
 }

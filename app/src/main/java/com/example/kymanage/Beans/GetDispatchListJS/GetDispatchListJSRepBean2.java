@@ -33,7 +33,7 @@ import java.util.List;
  *             "MATNR": "LJ2015000594-TZ2010043020"
  *         }
  */
-public class GetDispatchListJSBean2 {
+public class GetDispatchListJSRepBean2 {
     private List<GetDispatchListJSBean1> data;
     private String MAKTX;
     private String GLTRP;
@@ -52,6 +52,8 @@ public class GetDispatchListJSBean2 {
     private String MATNR;
     private float issueNum;
     private String DispatchListNO;
+    private String username;
+    private String createDate;
 
     public List<GetDispatchListJSBean1> getData() {
         return data;
@@ -195,5 +197,21 @@ public class GetDispatchListJSBean2 {
 
     public void setDispatchListNO(String dispatchListNO) {
         DispatchListNO = dispatchListNO;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 }

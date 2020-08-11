@@ -6,11 +6,12 @@ import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataR
 import com.example.kymanage.model.AppModel;
 import com.example.kymanage.net.HttpDataListener;
 import com.example.kymanage.presenter.BasePresenter;
+import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 
 import java.util.List;
 
-public class GetCMInFactoryDeliverPresenter extends BasePresenter<ScanBaseView<GetCMInFactoryDeliverRep>> {
+public class GetCMInFactoryDeliverPresenter extends BasePresenter<BaseView1<GetCMInFactoryDeliverRep>> {
 
 
     private final AppModel appModel;
@@ -25,7 +26,7 @@ public class GetCMInFactoryDeliverPresenter extends BasePresenter<ScanBaseView<G
 
             @Override
             public void onDataSuccess(GetCMInFactoryDeliverRep data) {
-                getView().onDataSuccessScan(data);
+                getView().onDataSuccess1(data);
             }
 
             @Override

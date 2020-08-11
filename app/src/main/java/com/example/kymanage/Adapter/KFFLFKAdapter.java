@@ -45,6 +45,8 @@ public class KFFLFKAdapter extends ArrayAdapter<ScanIssueNoteDetailRepBean> {
             viewHolder.wlms=view.findViewById(R.id.wlms);
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.flfk=view.findViewById(R.id.flfk);
+            viewHolder.flgc=view.findViewById(R.id.flgc);
+            viewHolder.flck=view.findViewById(R.id.flck);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.flsl=view.findViewById(R.id.flsl);
             viewHolder.dw=view.findViewById(R.id.dw);
@@ -62,6 +64,8 @@ public class KFFLFKAdapter extends ArrayAdapter<ScanIssueNoteDetailRepBean> {
             viewHolder.wlms=view.findViewById(R.id.wlms);
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.flfk=view.findViewById(R.id.flfk);
+            viewHolder.flgc=view.findViewById(R.id.flgc);
+            viewHolder.flck=view.findViewById(R.id.flck);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.flsl=view.findViewById(R.id.flsl);
             viewHolder.dw=view.findViewById(R.id.dw);
@@ -88,6 +92,8 @@ public class KFFLFKAdapter extends ArrayAdapter<ScanIssueNoteDetailRepBean> {
         viewHolder.wlms.setText(rep.getMaterialDesc());
         viewHolder.scddh.setText(rep.getProductOrderNO());
         viewHolder.flfk.setText(rep.getMessa());
+        viewHolder.flgc.setText(rep.getIssueFactory());
+        viewHolder.flck.setText(rep.getIssueStorage());
         viewHolder.xqsl.setText(rep.getDemandQty()+"");
         viewHolder.flsl.setText(rep.getIssueQty()+"");
         viewHolder.dw.setText(rep.getUnit()+"");
@@ -134,6 +140,8 @@ public class KFFLFKAdapter extends ArrayAdapter<ScanIssueNoteDetailRepBean> {
         TextView wlms;
         TextView scddh;
         TextView flfk;
+        TextView flgc;
+        TextView flck;
         TextView xqsl;
         TextView flsl;
         TextView dw;

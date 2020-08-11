@@ -396,22 +396,8 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                     if(label.isSeparateLabel()){
                         int labelNum= (int) label.getNum();
                         for (int i = 0; i <labelNum ; i++) {
+                            label.setNum(1);
                             Bitmap bm=cb.createImage1(label,tf);
-
-                            //确保跳转到下一页了再进行打印
-//                            Thread printThread=new Thread(new Runnable(){
-//                                @Override
-//                                public void run() {
-//                                    printHelper.GoToNextPage();
-//                                }
-//                            });
-//                            printThread.start();
-//                            try {
-//                                Log.i("token","scanThread.join();");
-//                                printThread.join();
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
                             printHelper.PrintBitmapAtCenter(bm,384,480);
                             printHelper.printBlankLine(81);
                         }
@@ -607,11 +593,11 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                                 presenter3.CGSHPrint(printList,username,currentdate);
 
                                 break;
-                            case R.id.exit:
-                                vibrator.vibrate(30);
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
+//                            case R.id.exit:
+//                                vibrator.vibrate(30);
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
                             case R.id.record:
                                 vibrator.vibrate(30);
                                 // 隐藏该对话框

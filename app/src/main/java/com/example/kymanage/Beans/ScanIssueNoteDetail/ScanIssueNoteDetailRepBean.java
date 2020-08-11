@@ -14,13 +14,17 @@ public class ScanIssueNoteDetailRepBean {
 
     /**
      * Status : 待发料
-     * IssueQty : 1.0
-     * MaterialDesc : 红色带灯平头按钮/3SU1102-0AB20-1BA0
-     * DemandQty : 1.0
-     * Messa : E:对于预留 0000245604 0001, 无移动能记帐
-     * ProductOrderNO : 000010117459
+     * IssueQty : 8.0
+     * MaterialDesc : 铜端子/OT10-8
+     * DemandQty : 8.0
+     * Messa : E:对于预留 0000253622 0005, 无移动能记帐
+     * ProductOrderNO : 000010119413
+     * IssueFactory :
+     * IssueStorage :
+     * Handler :
      * Unit : EA
-     * MaterialCode : DQ4601070007
+     * MaterialCode : DQ7001060006
+     * ReverseHandler :
      */
 
     private String Status;
@@ -29,8 +33,12 @@ public class ScanIssueNoteDetailRepBean {
     private float DemandQty;
     private String Messa;
     private String ProductOrderNO;
+    private String IssueFactory;
+    private String IssueStorage;
+    private String Handler;
     private String Unit;
     private String MaterialCode;
+    private String ReverseHandler;
 
     public static ScanIssueNoteDetailRepBean objectFromData(String str) {
 
@@ -124,6 +132,30 @@ public class ScanIssueNoteDetailRepBean {
         this.ProductOrderNO = ProductOrderNO;
     }
 
+    public String getIssueFactory() {
+        return IssueFactory;
+    }
+
+    public void setIssueFactory(String IssueFactory) {
+        this.IssueFactory = IssueFactory;
+    }
+
+    public String getIssueStorage() {
+        return IssueStorage;
+    }
+
+    public void setIssueStorage(String IssueStorage) {
+        this.IssueStorage = IssueStorage;
+    }
+
+    public String getHandler() {
+        return Handler;
+    }
+
+    public void setHandler(String Handler) {
+        this.Handler = Handler;
+    }
+
     public String getUnit() {
         return Unit;
     }
@@ -138,5 +170,13 @@ public class ScanIssueNoteDetailRepBean {
 
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
+    }
+
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String ReverseHandler) {
+        this.ReverseHandler = ReverseHandler;
     }
 }

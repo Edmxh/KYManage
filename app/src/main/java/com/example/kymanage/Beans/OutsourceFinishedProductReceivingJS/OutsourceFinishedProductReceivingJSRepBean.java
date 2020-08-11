@@ -11,6 +11,7 @@ public class OutsourceFinishedProductReceivingJSRepBean {
     private String orderType;
     private long StorageId;
     private long AdvanceStorageId;
+    private String factory;
 
     public String getOrderType() {
         return orderType;
@@ -34,5 +35,13 @@ public class OutsourceFinishedProductReceivingJSRepBean {
 
     public void setAdvanceStorageId(long advanceStorageId) {
         AdvanceStorageId = advanceStorageId;
+    }
+
+    public String getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory;
     }
 }

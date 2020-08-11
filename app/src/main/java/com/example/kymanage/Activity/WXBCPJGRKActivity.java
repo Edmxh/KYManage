@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -291,25 +292,46 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     public void receive(){
         List<InsertFinProStorageRecordReqBean2> ldata = new ArrayList<InsertFinProStorageRecordReqBean2>();
         List<InsertFinProStorageRecordReqBean1> sdata = new ArrayList<InsertFinProStorageRecordReqBean1>();
+        float allnum1=0;
+        float allnum2=0;
         for (int i = 0; i < productOrderList1.size(); i++) {
             GetOutStorageMaterialOrderJSRepBean currBean1 = productOrderList1.get(i);
-            if(currBean1.isChosen()){
-                InsertFinProStorageRecordReqBean2 bean2=new InsertFinProStorageRecordReqBean2(currBean1.getMATNR(), currBean1.getAUFNR(),currBean1.getWERKS(),currBean1.getLGORT(), currBean1.getINQTY(), marketorderno, marketorderrow, currBean1.getMEINS(), currBean1.getMCODE(), currBean1.getMAKTX());
+            View itmeview=listview1.getAdapter().getView(i,null,null);
+            EditText et=itmeview.findViewById(R.id.fpsl);
+            CheckBox cb= itmeview.findViewById(R.id.checked);
+            if(cb.isChecked()){
+                String numstr=et.getText().toString();
+                float num = Float.parseFloat("0"+numstr);
+                allnum1+=num;
+//                System.out.println("num1=="+num);
+                InsertFinProStorageRecordReqBean2 bean2=new InsertFinProStorageRecordReqBean2(currBean1.getMATNR(), currBean1.getAUFNR(),currBean1.getWERKS(),currBean1.getLGORT(), num, marketorderno, marketorderrow, currBean1.getMEINS(), currBean1.getMCODE(), currBean1.getMAKTX());
                 ldata.add(bean2);
             }
         }
 
         for (int i = 0; i < productOrderList2.size(); i++) {
             PreMaterialProductOrderRep currBean2 = productOrderList2.get(i);
-            if(currBean2.isChosen()){
-                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum()+"", currBean2.getDispatchNum()+"", currBean2.getCurrentNum()+"", currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE());
+            View itmeview=listview2.getAdapter().getView(i,null,null);
+            EditText et=itmeview.findViewById(R.id.fpsl);
+            CheckBox cb= itmeview.findViewById(R.id.checked);
+            if(cb.isChecked()){
+                String numstr=et.getText().toString();
+                float num = Float.parseFloat("0"+numstr);
+                allnum2+=num;
+//                System.out.println("num2=="+num);
+                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum()+"", currBean2.getDispatchNum()+"", num+"", currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE());
                 sdata.add(bean1);
             }
         }
         String allnumStr=dhsl.getText().toString();
         float allnum = Float.parseFloat("0"+allnumStr);
-        InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(material.getMATNR(), material.getMAKTX(), material.getMaterialType(), factory, allnum,0, material.getMEINS(), marketorderno, marketorderrow, username, ldata, sdata);
-        presenter2.InsertFinProStorageRecord(req);
+        float mqty=allnum-allnum2>0?(allnum-allnum2):0;
+        InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(material.getMATNR(), material.getMAKTX(), material.getMaterialType(), factory, allnum,mqty, material.getMEINS(), marketorderno, marketorderrow, username, ldata, sdata);
+        if(allnum==allnum1){
+            presenter2.InsertFinProStorageRecord(req);
+        } else {
+            Toast.makeText(this, "分配数量有误", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onPopupButtonClick(View button)
@@ -327,10 +349,10 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.exit:
-                                // 隐藏该对话框
-                                popup.dismiss();
-                                break;
+//                            case R.id.exit:
+//                                // 隐藏该对话框
+//                                popup.dismiss();
+//                                break;
                             case R.id.record:
                                 // 隐藏该对话框
                                 Intent intent = new Intent(WXBCPJGRKActivity.this, WXSHJLActivity.class);
@@ -384,7 +406,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             //presenter3.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
             productOrderList1.clear();
             productOrderList2.clear();
-            presenter4.GetOutStorageMaterialOrderJS(material.getMarketorderrow(),material.getMATNR(),material.getMarketorderno(),material.getWERKS(),material.getNum());
+            presenter4.GetOutStorageMaterialOrderJS(material.getMarketorderrow(),material.getMATNR(),material.getMarketorderno(),"2090",material.getNum());
 
 
         } catch (Exception e) {

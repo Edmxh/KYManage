@@ -7,18 +7,14 @@ import android.content.IntentFilter;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.KFPSDAdapter;
-import com.example.kymanage.Beans.DemoBeans.DemoBean1;
 import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRep;
-import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRepBean;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRepBean1;
 import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordReqBean;
 import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordRep;
 import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordReq;
@@ -45,7 +41,7 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     private String dumpNum ;
     private List<String> dumpNums;
     private GetTransferRecordPresenter presenter1;
-    private List<GetTransferRecordRepBean> datas;
+    private List<GetTransferRecordRepBean1> datas;
 
 
     //转储发料确认
@@ -87,11 +83,11 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     public void initData() {
         reqList=new ArrayList<InsertDumpTransferRecordReqBean>();
         dumpNums=new ArrayList<String>();
-        datas=new ArrayList<GetTransferRecordRepBean>();
+        datas=new ArrayList<GetTransferRecordRepBean1>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
 
-        recordReq=new InsertDumpTransferRecordReq(null,username);
+        recordReq=new InsertDumpTransferRecordReq(null,username,"");
     }
 
     @Override
@@ -164,10 +160,10 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     public void onDataSuccessScan(GetTransferRecordRep data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
         try {
-            for (GetTransferRecordRepBean datum : data.getData()) {
+            for (GetTransferRecordRepBean1 datum : data.getData()) {
                 datas.add(datum);
 
-                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode());
+                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode(),datum.getMjahr(),datum.getMblnr(),"");
                 reqList.add(reqBean);
             }
             adapter=new KFPSDAdapter(KFZCSHAtivity.this, R.layout.kfpsditem,datas);

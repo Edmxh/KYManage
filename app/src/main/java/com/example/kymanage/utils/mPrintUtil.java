@@ -6,14 +6,13 @@ import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssu
 import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRepBean1;
 import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRepBean2;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
-import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRepBean;
+import com.example.kymanage.Beans.GetCMInFactoryDeliverJS.GetCMInFactoryDeliverJSRepBean2;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean1;
+import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean2;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean1;
-import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSBean2;
+import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRepBean2;
 import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRepBean1;
 import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRepBean2;
-import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean1;
-import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailBean2;
-import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
@@ -152,12 +151,12 @@ public class mPrintUtil {
      * @param printHelper
      */
     //派工单------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public void printPGBill(GetDispatchListJSBean2 rep, PrintHelper printHelper){
+    public void printPGBill(GetDispatchListJSRepBean2 rep, PrintHelper printHelper){
         printHelper.PrintLineInit(titleTextSize);
         printHelper.PrintLineStringByType("机加生产派工单",titleTextSize, PrintHelper.PrintType.Centering,false);
         printHelper.PrintLineEnd();
         //画二维码
-        String content="{\"code\":\""+rep.getMATNR()+"\",\"dp\":\""+rep.getDispatchListNO()+"\",\"po\":\""+rep.getAUFNR()+"\",\"no\":\""+rep.getKDAUF()+"\",\"line\":\""+rep.getKDPOS()+"\"}";
+        String content="{\"code\":\""+rep.getMATNR()+"\",\"dp\":\""+rep.getDispatchListNO()+"\",\"po\":\""+rep.getAUFNR()+"\",\"no\":\""+rep.getKDAUF()+"\",\"line\":\""+rep.getKDPOS()+"\",\"user\":\""+rep.getUsername()+"\",\"date\":\""+rep.getCreateDate()+"\"}";
         Bitmap bm=null;
         try {
             bm = BarcodeUtil.encodeAsBitmap(content,
@@ -349,7 +348,7 @@ public class mPrintUtil {
      */
 
     //厂内配送单打印--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public void printCNBill(GetCMInFactoryDeliverRep rep, PrintHelper printHelper){
+    public void printCNBill(GetCMInFactoryDeliverJSRepBean2 rep, PrintHelper printHelper){
         printHelper.PrintLineInit(titleTextSize);
         printHelper.PrintLineStringByType("机加厂内配送单",titleTextSize, PrintHelper.PrintType.Centering,false);
         printHelper.PrintLineEnd();
@@ -366,7 +365,7 @@ public class mPrintUtil {
         printHelper.PrintLineEnd();
         printHelper.printBlankLine(5);
         //
-        String str=rep.getDeliverID()+"    "+rep.getStorageDescription();
+        String str=rep.getDeliverID()+"    "+rep.getIssueStorage();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
@@ -380,12 +379,12 @@ public class mPrintUtil {
 
         //内容行
         for (int i = 0; i < (rep.getData().size()); i++) {
-            GetCMInFactoryDeliverRepBean bean = rep.getData().get(i);
+            GetCMInFactoryDeliverJSRepBean2.GetCMInFactoryDeliverJSRepBean1 bean = rep.getData().get(i);
             printCNBillContent1(bean,printHelper,i);
         }
     }
     //画图1,厂内配送单内容行
-    public void printCNBillContent1(GetCMInFactoryDeliverRepBean bean,PrintHelper printHelper,int i){
+    public void printCNBillContent1(GetCMInFactoryDeliverJSRepBean2.GetCMInFactoryDeliverJSRepBean1 bean, PrintHelper printHelper, int i){
         String str="----------------------------------------------------------------------------------";
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,true);
@@ -406,12 +405,102 @@ public class mPrintUtil {
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
 
-        str=bean.getProductOrderNO()+"    "+bean.getDemandQty()+"/"+bean.getDispatchQty();
+        str=bean.getProductNO()+"    "+bean.getDemandQty()+"/"+bean.getActuallyQty();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
 
         str=bean.getMarketOrderNO()+"/"+bean.getMarketOrderRow()+"    "+bean.getClient();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+    }
+
+
+
+    //销售发货单打印--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    public void printXSFHBill(GetDeliveryListInfoJSRepBean2 rep, PrintHelper printHelper){
+        printHelper.PrintLineInit(titleTextSize);
+        printHelper.PrintLineStringByType("TKAS-CM送货单",titleTextSize, PrintHelper.PrintType.Centering,false);
+        printHelper.PrintLineEnd();
+        //
+        String str="编号："+rep.getVBELN_VL();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        //
+        str="送货时间："+getCurrentdate1();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        //
+        str="送货单位："+rep.getNAME_ORG1();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        //
+        str="确认："+"              "+"   年   月   日";
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        //
+        str="配货："+"              "+"   年   月   日";
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+
+        //内容行
+        for (int i = 0; i < (rep.getData().size()); i++) {
+            GetDeliveryListInfoJSRepBean1 bean = rep.getData().get(i);
+            printXSFHBillContent1(bean,printHelper,i);
+        }
+    }
+
+    private void printXSFHBillContent1(GetDeliveryListInfoJSRepBean1 bean,PrintHelper printHelper, int i){
+        String str="----------------------------------------------------------------------------------";
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,true);
+        printHelper.PrintLineEnd();
+
+        str="序号："+(i+1);
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        str="工作号："+bean.getZZGZBH();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        str="物料编码："+bean.getMATNR();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        str="物料名称："+bean.getARKTX();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        str="发货数量："+bean.getKWMENG();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        str="客户订单号："+bean.getBSTKD();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+
+        String newStr1 = bean.getVBELN().replaceAll("^(0+)", "");
+        String newStr2 = bean.getPOSNR().replaceAll("^(0+)", "");
+        str="SAP订单："+newStr1+"/"+newStr2;
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();

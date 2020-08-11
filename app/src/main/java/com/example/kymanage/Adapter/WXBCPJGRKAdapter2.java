@@ -19,6 +19,7 @@ import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrde
 import com.example.kymanage.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> {
@@ -27,6 +28,7 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
     private List<iddesBean> areadess=new ArrayList<iddesBean>();
     private List<String> dess=new ArrayList<String>();
     private List<PreMaterialProductOrderRep> mList;
+    HashMap<Integer, Boolean> select=new HashMap<>();
     //private DataBean1 DataBean1;
 
     // 适配器的构造函数，把要适配的数据传入这里
@@ -34,9 +36,14 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
         mList=objects==null?new ArrayList<PreMaterialProductOrderRep>():objects;
-        for (int i = 0; i < mList.size(); i++) {
+        initData();
+    }
+    private void initData() {
+        for(int i=0;i<mList.size();i++){
             if(mList.get(i).getCurrentNum()>0){
-                mList.get(i).setChosen(true);
+                select.put(i, true);
+            }else {
+                select.put(i, false);
             }
         }
     }
@@ -54,6 +61,7 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
 
             // 避免每次调用getView()时都要重新获取控件实例
             viewHolder=new ViewHolder();
+            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
             viewHolder.xh=view.findViewById(R.id.xh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
@@ -62,18 +70,21 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
             viewHolder.fpsl=view.findViewById(R.id.fpsl);
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
             viewHolder.checked=view.findViewById(R.id.checked);
             viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                                              boolean isChecked) {
-                    rep.setChosen(isChecked);
+                    select.put(position, isChecked);
                 }
 
             });
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
+            viewHolder.updatePosition(position);
         } else{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
@@ -105,7 +116,7 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
         viewHolder.yfpsl.setText(num2str);
         String num3str=""+rep.getCurrentNum();
         viewHolder.fpsl.setText(num3str);
-        if(rep.isChosen()){
+        if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
             viewHolder.checked.setChecked(false);
@@ -144,17 +155,17 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
 //                setRowBackgroundColor(viewHolder,R.drawable.tablebody1);
 //                break;
 //        }
-//        viewHolder.rksl.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                ((ViewGroup)viewHolder.parent_layout)
-//                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-//                ((ViewGroup) v.getParent())
-//                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-//                return false;
-//            }
-//        });
+        viewHolder.fpsl.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ((ViewGroup)viewHolder.parent_layout)
+                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+                ((ViewGroup) v.getParent())
+                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+                return false;
+            }
+        });
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -168,6 +179,7 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
 
     // 定义一个内部类，用于对控件的实例进行缓存
     class ViewHolder{
+        View parent_layout;
         TextView xh;
         TextView wlbm;
         TextView wlms;

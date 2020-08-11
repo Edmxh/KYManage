@@ -186,20 +186,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                //确保扫描完毕scanString被赋值后才被解析
-                Thread scanThread=new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        scan();
-                    }
-                });
-                scanThread.start();
-                try {
-                    Log.i("token","scanThread.join();");
-                    scanThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                scan();
 
                 //Toast.makeText(AdvancedReceiveActivity.this, scanString, Toast.LENGTH_SHORT).show();
 //                scanString="{\"bm\":\"DQ3008000001\",\"sl\":1.0,\"aid\":2995,\"num\":\"2007222012101587\",\"po\":\"\",\"pono\":\"4100026847\",\"porow\":\"00010\",\"gc\":\"2020\",\"cd\":\"\",\"cs\":0}";
@@ -286,6 +273,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     }
     @Override
     public void onDataSuccessScan(GetPurWayMaterialDataRep data) {
+        System.out.println("105查询完毕");
         Toast.makeText(KFCGSHRKActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
         if(data.getData()!=null){
             req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid);
@@ -320,10 +308,12 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
         LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
         Toast.makeText(KFCGSHRKActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
         try {
-            datas.remove(currentIndex);
-            receiptReqs.remove(currentIndex);
-            currentIndex=-1;
-            adapter.notifyDataSetChanged();
+            if(currentIndex!=-1){
+                datas.remove(currentIndex);
+                receiptReqs.remove(currentIndex);
+                currentIndex=-1;
+                adapter.notifyDataSetChanged();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -331,8 +321,8 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
 
     @Override
     public void onFailed(String msg) {
-        currentIndex=-1;
         LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
+        Toast.makeText(this, "服务器响应失败,请稍后重试", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -479,11 +469,11 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                                 String fac =sharedPreferences.getString("factory", "");
                                 System.out.println("所在部门是"+fac);
                                 if(factory.equals(fac)){
+                                    System.out.println("执行查询105");
                                     presenter1.GetMaterialPropertieInfoJS(aid);
                                 }else {
                                     Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         }
 //                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");

@@ -61,10 +61,14 @@ public class WXCPSHRecordAdapter extends ArrayAdapter<GetOutsoureFinProductDataJ
 //获取控件实例
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.ddh=view.findViewById(R.id.ddh);
+        viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
         viewHolder.ddlx=view.findViewById(R.id.ddlx);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
+        viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.xqgc=view.findViewById(R.id.xqgc);
         viewHolder.xqck=view.findViewById(R.id.xqck);
+        viewHolder.shry=view.findViewById(R.id.shry);
+        viewHolder.shsj=view.findViewById(R.id.shsj);
         viewHolder.gxsj=view.findViewById(R.id.gxsj);
 
         viewHolder.rksl=view.findViewById(R.id.rksl);
@@ -97,18 +101,33 @@ public class WXCPSHRecordAdapter extends ArrayAdapter<GetOutsoureFinProductDataJ
         String newStr1 = rep.getMblnr().replaceAll("^(0+)", "");
         String newStr2 = rep.getMblnrRow().replaceAll("^(0+)", "");
         viewHolder.ddh.setText(rep.getMblnr()+"/"+rep.getMblnrRow());
+
+        String newStr3 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+        String newStr4 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+        viewHolder.xsddh_hang.setText(newStr3+"/"+newStr4);
+
         viewHolder.ddlx.setText(rep.getMaterialType());
         viewHolder.wlbm.setText(rep.getMaterialCode());
+        viewHolder.wlms.setText(rep.getDescription());
         viewHolder.xqgc.setText(rep.getDemandFactory());
         viewHolder.xqck.setText(rep.getDemandStorage());
+        viewHolder.shry.setText(rep.getHandler());
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getUpdateTime()))));
-        viewHolder.gxsj.setText(sd);
+        String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
+        viewHolder.shsj.setText(sd);
+
+        String sd2 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getUpdateTime()))));
+        viewHolder.gxsj.setText(sd2);
 
         String num1str=""+rep.getQty();
         viewHolder.rksl.setText(num1str);
-        viewHolder.rkzt.setText(rep.getStatus());
+        if(rep.getReverseHandler()==null||rep.getReverseHandler().equals("")){
+            viewHolder.rkzt.setText(rep.getStatus());
+        }else {
+            viewHolder.rkzt.setText(rep.getStatus()+"("+rep.getReverseHandler()+")");
+        }
+
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
@@ -139,10 +158,14 @@ public class WXCPSHRecordAdapter extends ArrayAdapter<GetOutsoureFinProductDataJ
     class ViewHolder{
         TextView xh;
         TextView ddh;
+        TextView xsddh_hang;
         TextView ddlx;
         TextView wlbm;
+        TextView wlms;
         TextView xqgc;
         TextView xqck;
+        TextView shry;
+        TextView shsj;
         TextView gxsj;
         TextView rksl;
         TextView rkzt;

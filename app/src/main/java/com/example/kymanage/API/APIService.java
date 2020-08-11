@@ -5,6 +5,7 @@ package com.example.kymanage.API;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
+import com.example.kymanage.Beans.GetCMInFactoryDeliverJS.GetCMInFactoryDeliverJSRep;
 import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
@@ -12,6 +13,8 @@ import com.example.kymanage.Beans.GetDumpRecord.GetDumpRecordRep;
 import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReps;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
+import com.example.kymanage.Beans.GetInFactoryDeliverListDetailJS.GetInFactoryDeliverListDetailJSRep;
+import com.example.kymanage.Beans.GetInFactoryDeliverListJS.GetInFactoryDeliverListJSRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
@@ -226,9 +229,13 @@ public interface APIService {
     @POST(API.WriteOffMaterialFactoryDump)
     Observable<StatusRespBean> WriteOffMaterialFactoryDump(@Body RequestBody issuevouchernumber);
 
-    //##获取厂内配送单
+    //##外协采购半成品发料厂内配送单生成
     @POST(API.GetCMInFactoryDeliver)
     Observable<GetCMInFactoryDeliverRep> GetCMInFactoryDeliver(@Body RequestBody issuevouchernumber);
+
+    //##外协采购半成品配送单打印接口
+    @POST(API.GetCMInFactoryDeliverJS)
+    Observable<GetCMInFactoryDeliverJSRep> GetCMInFactoryDeliverJS(@Body RequestBody issuevouchernumber);
 
     //###获取交货单信息
     @POST(API.GetDeliveryListInfoJS)
@@ -241,6 +248,22 @@ public interface APIService {
     //获取销售发货物料信息及库存地点
     @POST(API.GetLableStorageInfoJS)
     Observable<GetLableStorageInfoJSRep> GetLableStorageInfoJS(@Body RequestBody issuevouchernumber);
+
+    //外协采购半成品配送单记录查询接口
+    @POST(API.GetInFactoryDeliverListJS)
+    Observable<GetInFactoryDeliverListJSRep> GetInFactoryDeliverListJS(@Body RequestBody issuevouchernumber);
+
+    //外协采购半成品配送单详情查询接口
+    @POST(API.GetInFactoryDeliverListDetailJS)
+    Observable<GetInFactoryDeliverListDetailJSRep> GetInFactoryDeliverListDetailJS(@Body RequestBody issuevouchernumber);
+
+    //外协半成品发料配送冲销接口
+    @POST(API.GetOutSemifinProductIssueWriteOffJS)
+    Observable<CodeMessageBean> GetOutSemifinProductIssueWriteOffJS(@Body RequestBody issuevouchernumber);
+
+    //外协半成品发料配送冲销接口
+    @POST(API.InsertFinAProOrderRecord)
+    Observable<CodeMessageBean> InsertFinAProOrderRecord(@Body RequestBody issuevouchernumber);
 
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------
     //物料查询

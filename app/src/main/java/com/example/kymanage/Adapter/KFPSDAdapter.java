@@ -2,33 +2,29 @@ package com.example.kymanage.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.kymanage.Beans.DemoBeans.DemoBean1;
-import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRepBean;
+import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRepBean1;
 import com.example.kymanage.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class KFPSDAdapter extends ArrayAdapter<GetTransferRecordRepBean> {
+public class KFPSDAdapter extends ArrayAdapter<GetTransferRecordRepBean1> {
     private int resourceId;
     //    HashMap<Integer, Boolean> select=new HashMap<>();
-    private List<GetTransferRecordRepBean> mList;
+    private List<GetTransferRecordRepBean1> mList;
     //private DataBean1 DataBean1;
 
     // 适配器的构造函数，把要适配的数据传入这里
-    public KFPSDAdapter(Context context, int textViewResourceId, List<GetTransferRecordRepBean> objects){
+    public KFPSDAdapter(Context context, int textViewResourceId, List<GetTransferRecordRepBean1> objects){
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
-        mList=objects==null?new ArrayList<GetTransferRecordRepBean>():objects;
+        mList=objects==null?new ArrayList<GetTransferRecordRepBean1>():objects;
 //        initData();
     }
     //    private void initData() {
@@ -39,7 +35,7 @@ public class KFPSDAdapter extends ArrayAdapter<GetTransferRecordRepBean> {
     // convertView 参数用于将之前加载好的布局进行缓存
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
-        final GetTransferRecordRepBean rep=getItem(position); //获取当前项的DataBean1实例
+        final GetTransferRecordRepBean1 rep=getItem(position); //获取当前项的DataBean1实例
         // 加个判断，以免ListView每次滚动时都要重新加载布局，以提高运行效率
         View view;
         ViewHolder viewHolder;

@@ -23,6 +23,7 @@ import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrde
 import com.example.kymanage.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJSRepBean> {
@@ -31,6 +32,7 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
     private List<iddesBean> areadess=new ArrayList<iddesBean>();
     private List<String> dess=new ArrayList<String>();
     private List<GetOutStorageMaterialOrderJSRepBean> mList;
+    HashMap<Integer, Boolean> select=new HashMap<>();
     //private DataBean1 DataBean1;
 
     // 适配器的构造函数，把要适配的数据传入这里
@@ -38,9 +40,14 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
         mList=objects==null?new ArrayList<GetOutStorageMaterialOrderJSRepBean>():objects;
-        for (int i = 0; i < mList.size(); i++) {
+        initData();
+    }
+    private void initData() {
+        for(int i=0;i<mList.size();i++){
             if(mList.get(i).getINQTY()>0){
-                mList.get(i).setChosen(true);
+                select.put(i, true);
+            }else {
+                select.put(i, false);
             }
         }
     }
@@ -67,18 +74,21 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
             viewHolder.fpsl=view.findViewById(R.id.fpsl);
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
             viewHolder.checked=view.findViewById(R.id.checked);
             viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                                              boolean isChecked) {
-                    rep.setChosen(isChecked);
+                    select.put(position, isChecked);
                 }
 
             });
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
+            viewHolder.updatePosition(position);
         } else{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
@@ -110,7 +120,7 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
         viewHolder.yfpsl.setText(num2str);
         String num3str=""+rep.getINQTY();
         viewHolder.fpsl.setText(num3str);
-        if(rep.isChosen()){
+        if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
             viewHolder.checked.setChecked(false);

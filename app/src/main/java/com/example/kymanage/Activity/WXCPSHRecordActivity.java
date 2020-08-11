@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -66,6 +67,14 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
     //震动
     private Vibrator vibrator;
 
+    //筛选条件
+    private TextView wlbm;
+    private TextView xsddh;
+    private ImageView query;
+    private Button reset;
+    private CheckBox queryself;
+    private boolean queryall=true;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_wxcpshrecord;
@@ -78,6 +87,13 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
         receive = findViewById(R.id.receive);
         print = findViewById(R.id.print);
         listview1 = findViewById(R.id.listview1);
+
+        //筛选条件
+        wlbm = findViewById(R.id.wlbm);
+        xsddh = findViewById(R.id.xsddh);
+        query = findViewById(R.id.query);
+        reset = findViewById(R.id.reset);
+        queryself = findViewById(R.id.queryself);
 
         presenter1=new GetOutsoureFinProductDataJSPresenter();
         presenter1.setView(this);
@@ -108,7 +124,12 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
 
         date.setText(getCurrentdate());
-        presenter1.GetOutsoureFinProductDataJS(date.getText().toString(),username);
+        if(queryself.isChecked()){
+            queryall=false;
+        }else {
+            queryall=true;
+        }
+        presenter1.GetOutsoureFinProductDataJS(username,date.getText().toString(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
     }
 
     @Override
@@ -118,6 +139,25 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 showdate();
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                date.setText("");
+            }
+        });
+        query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                if(queryself.isChecked()){
+                    queryall=false;
+                }else {
+                    queryall=true;
+                }
+                presenter1.GetOutsoureFinProductDataJS(username,date.getText().toString(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
             }
         });
         receive.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +172,7 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
                         View itmeview=listview1.getAdapter().getView(i,null,null);
                         CheckBox cb= itmeview.findViewById(R.id.checked);
                         if(cb.isChecked()){
-                            OutsoureFinProductWriteOffJSReqBean idreq=new OutsoureFinProductWriteOffJSReqBean(currData.getID(),currData.getOrderType(),currData.getAdvanceStorageId());
+                            OutsoureFinProductWriteOffJSReqBean idreq=new OutsoureFinProductWriteOffJSReqBean(currData.getStorageId(),currData.getOrderType(),currData.getAdvanceStorageId());
                             idslist.add(idreq);
                         }
                     }
@@ -180,7 +220,12 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
 
-                presenter1.GetOutsoureFinProductDataJS((str1+str2+str3),username);
+                if(queryself.isChecked()){
+                    queryall=false;
+                }else {
+                    queryall=true;
+                }
+                presenter1.GetOutsoureFinProductDataJS(username,date.getText().toString(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
 
             }
         }, mYear,mMonth, mDay);//将年月日放入DatePickerDialog中，并将值传给参数
@@ -198,7 +243,7 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
             adapter=new WXCPSHRecordAdapter(WXCPSHRecordActivity.this, R.layout.wxcpshrecorditem,data1);
             listview1.setAdapter(adapter);
             for (GetOutsoureFinProductDataJSRepBean data2 : data1) {
-                GetOutsourceFinProLableJSReqBean printBean=new GetOutsourceFinProLableJSReqBean(data2.getID(),data2.getOrderType(),data2.getAdvanceStorageId());
+                GetOutsourceFinProLableJSReqBean printBean=new GetOutsourceFinProLableJSReqBean(data2.getStorageId(),data2.getOrderType(),data2.getAdvanceStorageId(),data2.getDemandFactory());
                 printList.add(printBean);
             }
         } catch (Exception e) {
@@ -210,7 +255,12 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        presenter1.GetOutsoureFinProductDataJS(date.getText().toString(),username);
+        if(queryself.isChecked()){
+            queryall=false;
+        }else {
+            queryall=true;
+        }
+        presenter1.GetOutsoureFinProductDataJS(username,date.getText().toString(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
     }
 
     @Override

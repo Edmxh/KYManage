@@ -10,29 +10,31 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetTransferRecordRepBean {
+public class GetTransferRecordRepBean1 {
 
     /**
      * Mjahr : 2020
-     * Status : 已入库
+     * Status : 已冲销
      * SendFactory : 2090
-     * Postingdate : 2020-06-17 00:00:00
+     * Postingdate : 2020-08-01
      * MarketOrderNO : 0010000208
      * DemandFactory : 2010
-     * CreateTime : 2020-06-17 09:45:52
-     * PID : 40.0
-     * Documentdate : 2020-06-17 00:00:00
+     * CreateTime : 2020-08-01 15:57:02
+     * PID : 73.0
+     * Documentdate : 2020-08-01
      * Unit : EA
+     * ReverseHandler :
      * DemandStorage : 2100
-     * SID : 216.0
-     * Mblnr : 4900307119
-     * YID : 465.0
-     * SendStorage : 2912
-     * Qty : 1
+     * SID : 281.0
+     * Mblnr : 4900307349
+     * YID : 8354.0
+     * SendStorage : 2906
+     * Qty : 4
+     * UpdateTime : 2020-08-02 18:57:37
      * ProductOrderNO : 000010048077
-     * ID : 24.0
+     * ID : 41.0
      * MarketOrderRow : 000026
-     * MaterialCode : LJ2015000594-TZ2010043020
+     * MaterialCode : LJ5525003029-TZ2010041014
      */
 
     private String Mjahr;
@@ -45,28 +47,30 @@ public class GetTransferRecordRepBean {
     private long PID;
     private String Documentdate;
     private String Unit;
+    private String ReverseHandler;
     private String DemandStorage;
     private long SID;
     private String Mblnr;
     private long YID;
     private String SendStorage;
     private float Qty;
+    private String UpdateTime;
     private String ProductOrderNO;
     private long ID;
     private String MarketOrderRow;
     private String MaterialCode;
 
-    public static GetTransferRecordRepBean objectFromData(String str) {
+    public static GetTransferRecordRepBean1 objectFromData(String str) {
 
-        return new Gson().fromJson(str, GetTransferRecordRepBean.class);
+        return new Gson().fromJson(str, GetTransferRecordRepBean1.class);
     }
 
-    public static GetTransferRecordRepBean objectFromData(String str, String key) {
+    public static GetTransferRecordRepBean1 objectFromData(String str, String key) {
 
         try {
             JSONObject jsonObject = new JSONObject(str);
 
-            return new Gson().fromJson(jsonObject.getString(str), GetTransferRecordRepBean.class);
+            return new Gson().fromJson(jsonObject.getString(str), GetTransferRecordRepBean1.class);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -74,19 +78,19 @@ public class GetTransferRecordRepBean {
         return null;
     }
 
-    public static List<GetTransferRecordRepBean> arrayGetTransferRecordRepBeanFromData(String str) {
+    public static List<GetTransferRecordRepBean1> arrayGetTransferRecordRepBeanFromData(String str) {
 
-        Type listType = new TypeToken<ArrayList<GetTransferRecordRepBean>>() {
+        Type listType = new TypeToken<ArrayList<GetTransferRecordRepBean1>>() {
         }.getType();
 
         return new Gson().fromJson(str, listType);
     }
 
-    public static List<GetTransferRecordRepBean> arrayGetTransferRecordRepBeanFromData(String str, String key) {
+    public static List<GetTransferRecordRepBean1> arrayGetTransferRecordRepBeanFromData(String str, String key) {
 
         try {
             JSONObject jsonObject = new JSONObject(str);
-            Type listType = new TypeToken<ArrayList<GetTransferRecordRepBean>>() {
+            Type listType = new TypeToken<ArrayList<GetTransferRecordRepBean1>>() {
             }.getType();
 
             return new Gson().fromJson(jsonObject.getString(str), listType);
@@ -180,6 +184,14 @@ public class GetTransferRecordRepBean {
         this.Unit = Unit;
     }
 
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String ReverseHandler) {
+        this.ReverseHandler = ReverseHandler;
+    }
+
     public String getDemandStorage() {
         return DemandStorage;
     }
@@ -226,6 +238,14 @@ public class GetTransferRecordRepBean {
 
     public void setQty(float Qty) {
         this.Qty = Qty;
+    }
+
+    public String getUpdateTime() {
+        return UpdateTime;
+    }
+
+    public void setUpdateTime(String UpdateTime) {
+        this.UpdateTime = UpdateTime;
     }
 
     public String getProductOrderNO() {

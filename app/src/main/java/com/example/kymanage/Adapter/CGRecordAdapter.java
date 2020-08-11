@@ -75,7 +75,6 @@ public class CGRecordAdapter extends ArrayAdapter<PurchaseCenterRecordRep> {
                                          boolean isChecked) {
                 select.put(position, isChecked);
             }
-
         });
         // 获取控件实例，并调用set...方法使其显示出来
 //        viewHolder.check.setOnClickListener(new View.OnClickListener() {

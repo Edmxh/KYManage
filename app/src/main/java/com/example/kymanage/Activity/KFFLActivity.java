@@ -520,32 +520,38 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                         Toast.makeText(KFFLActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                     }
                     if(lableObject!=null) {
-                        materialCode = lableObject.getString("bm");
-                        factory=lableObject.getString("gc");
-                        qty=lableObject.getFloat("sl");
-                        labelSquNum=lableObject.getString("num");
-                        pono=lableObject.getString("pono");
-                        porow=lableObject.getString("porow");
-                        //判断是否重复扫码
-                        boolean repeat=false;
-                        for (GetStockInformationDataJSBean data : datas) {
-                            if(materialCode.equals(data.getMaterialCode())){
-                                repeat=true;
-                            }
-                        }
-                        if(repeat){
-                            Toast.makeText(KFFLActivity.this, "该物料已存在", Toast.LENGTH_SHORT).show();
-                        }else {
-                            SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
-                                    Activity.MODE_PRIVATE);
-// 使用getString方法获得value，注意第2个参数是value的默认值
-                            String fac =sharedPreferences.getString("factory", "");
-                            if(factory.equals(fac)){
-                                presenter1.GetStockInformationDataJS(materialCode,factory);
-                            }else {
-                                Toast.makeText(context, "该物料属于"+factory, Toast.LENGTH_SHORT).show();
-                            }
 
+                        try {
+                            materialCode = lableObject.getString("bm");
+                            factory=lableObject.getString("gc");
+                            qty=lableObject.getFloat("sl");
+                            labelSquNum=lableObject.getString("num");
+                            pono=lableObject.getString("pono");
+                            porow=lableObject.getString("porow");
+
+                            //判断是否重复扫码
+                            boolean repeat=false;
+                            for (GetStockInformationDataJSBean data : datas) {
+                                if(materialCode.equals(data.getMaterialCode())){
+                                    repeat=true;
+                                }
+                            }
+                            if(repeat){
+                                Toast.makeText(KFFLActivity.this, "该物料已存在", Toast.LENGTH_SHORT).show();
+                            }else {
+                                SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+                                        Activity.MODE_PRIVATE);
+    // 使用getString方法获得value，注意第2个参数是value的默认值
+                                String fac =sharedPreferences.getString("factory", "");
+                                if(factory.equals(fac)){
+                                    presenter1.GetStockInformationDataJS(materialCode,factory);
+                                }else {
+                                    Toast.makeText(context, "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 //                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
                         scanString="";

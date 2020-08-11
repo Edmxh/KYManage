@@ -113,64 +113,23 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
                     string_name = name.getText().toString();
                     string_password = password.getText().toString();
                     System.out.println("login2");
-                    Thread threadconn=new Thread(new Runnable(){
-                        @Override
-                        public void run() {
-                            URL url = null;
-                            try {
-                                url = new URL("http://" + "10.254.100.81" + "/ThingX" + "/Home/");
-                                //url = new URL("http://" + "192.168.43.126" + "/Thingworx" + "/Home/");
-                            } catch (MalformedURLException e) {
-                                e.printStackTrace();
-                            }
-//                        String authorization = "Mobile "
-//                                + Base64.base64Encode("xmao" + ":" + "xmao");
-                            String authorization = "Mobile "
-                                    + Base64.base64Encode(string_name + ":" + string_password);
-                            System.out.println(authorization);
-                            HttpURLConnection conn = null;
-                            try {
-                                conn = (HttpURLConnection) url.openConnection();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-//                        conn.setRequestProperty("accept", "*/*");
-//                        conn.setRequestProperty("connection", "Keep-Alive");
-//                        conn.setRequestProperty("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4115.5 Safari/537.36");
-                            conn.setRequestProperty("Authorization", authorization);
-                            //conn.setRequestProperty("Content-type", "text");
-                            //conn.setRequestProperty("Content-type", "application/json");
-                            //conn.setRequestProperty("Accept", "application/json");
-                            conn.setDoOutput(true);
-                            code = 0;
-                            try {
-                                conn.connect();
-                                code = conn.getResponseCode();
+                    URL url = null;
+                    url = new URL("http://" + "10.254.100.81" + "/ThingX" + "/Home/");
+                    String authorization = "Mobile "
+                            + Base64.base64Encode(string_name + ":" + string_password);
+                    HttpURLConnection conn = null;
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestProperty("Authorization", authorization);
+                    conn.setDoOutput(true);
+                    code = 0;
+                    conn.connect();
+                    code = conn.getResponseCode();
 //                            System.out.println("---"+code);
-                                code2=code;
-                                //System.out.println(1);
-                                if (code == 403) {
-                                    token = conn.getHeaderField("twx-mobile-token");
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            //System.out.println(code);
-                            //System.out.println(token);
-
-                        }
-                    });
-                    threadconn.start();
-                    try {
-                        threadconn.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    code2=code;
+                    //System.out.println(1);
+                    if (code == 403) {
+                        token = conn.getHeaderField("twx-mobile-token");
                     }
-                    //Toast.makeText(MainActivity.this,"completed",Toast.LENGTH_SHORT).show();
-                    //System.out.println(code2);
-                    //System.out.println(code);
-                    //System.out.println(2);
-//                System.out.println(code2);
                     if(code2==403) {
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putString("USER_NAME", string_name);
@@ -215,6 +174,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
                 SharedPreferences preferences = MainActivity.this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("factory", data.getFactory());
+                editor.putString("username", string_name);
                 editor.commit();
                 //remember.setChecked(false);
             }

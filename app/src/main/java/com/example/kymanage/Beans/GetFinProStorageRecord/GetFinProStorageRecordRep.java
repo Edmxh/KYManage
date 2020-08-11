@@ -29,6 +29,7 @@ public class GetFinProStorageRecordRep {
      * ID : 5.0
      * MaterialCode : LJ6025011857
      * MarketOrderRow : 000020
+     * Status:"11"
      */
 
     private String MarketOrderNO;
@@ -46,6 +47,7 @@ public class GetFinProStorageRecordRep {
     private long ID;
     private String MaterialCode;
     private String MarketOrderRow;
+    private String Status;
 
     public static GetFinProStorageRecordRep objectFromData(String str) {
 
@@ -209,5 +211,13 @@ public class GetFinProStorageRecordRep {
 
     public void setMarketOrderRow(String MarketOrderRow) {
         this.MarketOrderRow = MarketOrderRow;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
     }
 }

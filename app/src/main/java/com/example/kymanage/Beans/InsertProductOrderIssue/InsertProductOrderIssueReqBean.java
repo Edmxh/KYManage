@@ -43,6 +43,7 @@ public class InsertProductOrderIssueReqBean {
     private String bktxt;
     private String kdauf;
     private String kdpos;
+    private String rsart;
     private String batch;
     private float qty;
     private String sertb;
@@ -69,10 +70,9 @@ public class InsertProductOrderIssueReqBean {
     public InsertProductOrderIssueReqBean() {
     }
 
-    public InsertProductOrderIssueReqBean(String ordernum, String rowno, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl, String loggr, String lgpbe, String lgobe) {
+    public InsertProductOrderIssueReqBean(String ordernum, String rowno, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String rsart, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl, String loggr, String lgpbe, String lgobe) {
         this.ordernum = ordernum;
         this.rowno = rowno;
-//        this.uname = uname;
         this.hetxt = hetxt;
         this.matnr = matnr;
         this.mdesc = mdesc;
@@ -84,6 +84,7 @@ public class InsertProductOrderIssueReqBean {
         this.bktxt = bktxt;
         this.kdauf = kdauf;
         this.kdpos = kdpos;
+        this.rsart = rsart;
         this.batch = batch;
         this.qty = qty;
         this.sertb = sertb;
@@ -206,6 +207,14 @@ public class InsertProductOrderIssueReqBean {
 
     public void setKdpos(String kdpos) {
         this.kdpos = kdpos;
+    }
+
+    public String getRsart() {
+        return rsart;
+    }
+
+    public void setRsart(String rsart) {
+        this.rsart = rsart;
     }
 
     public String getBatch() {

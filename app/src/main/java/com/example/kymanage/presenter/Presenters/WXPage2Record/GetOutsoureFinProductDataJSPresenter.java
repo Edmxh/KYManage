@@ -17,8 +17,8 @@ public class GetOutsoureFinProductDataJSPresenter extends BasePresenter<BaseView
         appModel = new AppModel();
     }
 
-    public void GetOutsoureFinProductDataJS(String documentDate, String user){
-        appModel.GetOutsoureFinProductDataJS(documentDate,user,new HttpDataListener<GetOutsoureFinProductDataJSRep>() {
+    public void GetOutsoureFinProductDataJS(String user, String documentDate,String MarketOrderNO,String MaterialDesc,String PurchaseOrderRow,boolean checked,String MarketOrderRow,String MaterialCode,String PurchaseOrderNO){
+        appModel.GetOutsoureFinProductDataJS(user,documentDate,MarketOrderNO,MaterialDesc,PurchaseOrderRow,checked,MarketOrderRow,MaterialCode,PurchaseOrderNO,new HttpDataListener<GetOutsoureFinProductDataJSRep>() {
 
 
             @Override

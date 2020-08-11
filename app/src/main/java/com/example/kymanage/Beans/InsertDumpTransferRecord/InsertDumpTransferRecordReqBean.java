@@ -53,10 +53,15 @@ public class InsertDumpTransferRecordReqBean {
     private String MarketOrderRow;
     private String MaterialCode;
 
+    //+
+    private String Mjahr;
+    private String Mblnr;
+    private String RecordType;
+
     public InsertDumpTransferRecordReqBean() {
     }
 
-    public InsertDumpTransferRecordReqBean(String status, String sendFactory, String postingdate, String marketOrderNO, String demandFactory, String createTime, long PID, String documentdate, String unit, String demandStorage, long SID, long YID, String sendStorage, float qty, String productOrderNO, long ID, String marketOrderRow, String materialCode) {
+    public InsertDumpTransferRecordReqBean(String status, String sendFactory, String postingdate, String marketOrderNO, String demandFactory, String createTime, long PID, String documentdate, String unit, String demandStorage, long SID, long YID, String sendStorage, float qty, String productOrderNO, long ID, String marketOrderRow, String materialCode, String mjahr, String mblnr, String recordType) {
         Status = status;
         SendFactory = sendFactory;
         Postingdate = postingdate;
@@ -75,6 +80,9 @@ public class InsertDumpTransferRecordReqBean {
         this.ID = ID;
         MarketOrderRow = marketOrderRow;
         MaterialCode = materialCode;
+        Mjahr = mjahr;
+        Mblnr = mblnr;
+        RecordType = recordType;
     }
 
     public static InsertDumpTransferRecordReqBean objectFromData(String str) {
@@ -263,5 +271,29 @@ public class InsertDumpTransferRecordReqBean {
     @JSONField(name = "MaterialCode")
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
+    }
+    @JSONField(name = "Mjahr")
+    public String getMjahr() {
+        return Mjahr;
+    }
+    @JSONField(name = "Mjahr")
+    public void setMjahr(String mjahr) {
+        Mjahr = mjahr;
+    }
+    @JSONField(name = "Mblnr")
+    public String getMblnr() {
+        return Mblnr;
+    }
+    @JSONField(name = "Mblnr")
+    public void setMblnr(String mblnr) {
+        Mblnr = mblnr;
+    }
+    @JSONField(name = "RecordType")
+    public String getRecordType() {
+        return RecordType;
+    }
+    @JSONField(name = "RecordType")
+    public void setRecordType(String recordType) {
+        RecordType = recordType;
     }
 }
