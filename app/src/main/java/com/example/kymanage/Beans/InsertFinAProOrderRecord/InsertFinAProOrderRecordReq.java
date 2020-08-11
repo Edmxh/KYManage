@@ -23,7 +23,7 @@ public class InsertFinAProOrderRecordReq {
      * FID : 163
      * sdata : [{"DemandQty":120,"AlreadyQty":90,"AllocatedQty":2,"Factory":"2010","MaterialCode":"LJ5525003029","ProductOrderNO":"000010048077","MaterialDesc":"板","MarketOrderNO":"0010000208","MarketOrderRow":"000013","Storage":"2100","ProductOrderReservedNO":"0000095024","ProductOrderReservedRowNO":"0005","ProductOrderDesc":"","ProOMaterialNO":"ZJ9310000007","ProOMaterialDesc":"集中控制系统","ProOMaterialUnit":"EA","Unit":"EA","RecordType":"1","MCode":"001"}]
      */
-
+    //
     private String MaterialCode;
     private String MaterialType;
     private String MaterialDesc;
