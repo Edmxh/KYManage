@@ -111,7 +111,7 @@ public class KFPSDAdapter extends ArrayAdapter<GetTransferRecordRepBean1> {
         viewHolder.xqkf.setText(rep.getDemandStorage());
         String num1str=""+rep.getQty();
         viewHolder.zcsl.setText(num1str);
-        viewHolder.zt.setText(rep.getStatus());
+        viewHolder.zt.setText(rep.getStatus()+"-"+rep.getWStatus());
 //        if(select.get(position)){
 //            viewHolder.checked.setChecked(true);
 //        }else{

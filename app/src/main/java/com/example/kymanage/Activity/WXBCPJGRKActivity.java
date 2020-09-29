@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.WXBCPJGRKAdapter1;
 import com.example.kymanage.Adapter.WXBCPJGRKAdapter2;
 import com.example.kymanage.Beans.GetFinProStorageRecordNote.GetFinProStorageRecordNoteRep;
@@ -56,8 +57,10 @@ import com.example.kymanage.presenter.Presenters.WXPage3.GetMaterialMasterDataJS
 import com.example.kymanage.presenter.Presenters.WXPage3.InsertFinProStorageRecordPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Dialog1.GetOutStorageMaterialOrderJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.GetFinProStorageRecordNotePresenter;
+import com.example.kymanage.utils.DialogUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import Printer.PrintHelper;
@@ -70,8 +73,8 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 //扫描相关
     private String m_Broadcastname = "com.barcode.sendBroadcast";
     private MyCodeReceiver receiver = new MyCodeReceiver();
-    private GetMaterialMasterDataJSPresenter presenter1;
-    private List<GetPurchaseOrderInfoJSRep> data1;
+//    private GetMaterialMasterDataJSPresenter presenter1;
+//    private List<GetPurchaseOrderInfoJSRep> data1;
     private String scanString;
     private String marketorderno;
     private String marketorderrow;
@@ -105,15 +108,15 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     private ImageView menupoint;
     PopupMenu popup = null;
 
-    //采购订单号行筛选
+    //上方物料信息
     private View layout1;
-    private GetMaterialMasterDataInfo material;
     private TextView wlbm;
-    private TextView wlms;
+    private TextView xsddh_hang;
     private TextView gc;
-    private TextView dw;
-    private EditText dhsl;
+    private TextView dhsl;
+//    private EditText xlh;
     private View ll_scdd;
+//    private Button scanxlh;
 
     //收货
     private Button receive;
@@ -136,6 +139,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     private ListView listview2;
 
     //全局变量
+    private boolean autoReceive=false;
 
 
     @Override
@@ -148,6 +152,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         //按钮
         scan=findViewById(R.id.scan);
+//        scanxlh=findViewById(R.id.scanxlh);
 
         receive=findViewById(R.id.receive);
 
@@ -165,10 +170,10 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 
 
         wlbm=findViewById(R.id.wlbm);
-        wlms=findViewById(R.id.wlms);
+        xsddh_hang=findViewById(R.id.xsddh_hang);
         gc=findViewById(R.id.gc);
-        dw=findViewById(R.id.dw);
         dhsl=findViewById(R.id.dhsl);
+//        xlh=findViewById(R.id.xlh);
 
 //        print=findViewById(R.id.print);
 //        record=findViewById(R.id.record);
@@ -177,9 +182,9 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         listview1=findViewById(R.id.listview1);
         listview2=findViewById(R.id.listview2);
 
-        //获取采购订单
-        presenter1=new GetMaterialMasterDataJSPresenter();
-        presenter1.setView(this);
+//        //获取物料主数据
+//        presenter1=new GetMaterialMasterDataJSPresenter();
+//        presenter1.setView(this);
 
         //101入库
         presenter2 = new InsertFinProStorageRecordPresenter();
@@ -199,14 +204,16 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 
     @Override
     public void initData() {
-        //物料
-        material=new GetMaterialMasterDataInfo();
-        //扫描请求接口返回
-        data1=new ArrayList<GetPurchaseOrderInfoJSRep>();
+//        //物料
+//        material=new GetMaterialMasterDataInfo();
+//        //扫描请求接口返回
+//        data1=new ArrayList<GetPurchaseOrderInfoJSRep>();
         //本事业部生产订单接口返回
         productOrderList1=new ArrayList<GetOutStorageMaterialOrderJSRepBean>();
         //上游事业部生产订单接口返回
         productOrderList2=new ArrayList<PreMaterialProductOrderRep>();
+
+        adapter2=new WXBCPJGRKAdapter2(WXBCPJGRKActivity.this, R.layout.wxbcprkitem2, productOrderList2);
 
         reqs = new ArrayList<InsertFinProStorageRecordReq>();
         idlist = new ArrayList<GetFinProStorageRecordNoteReqBean>();
@@ -247,6 +254,13 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                 }
             }
         });
+//        scanxlh.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//                scan();
+//            }
+//        });
         menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,10 +279,11 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                 RadioButton choise = (RadioButton) findViewById(id);
                 // 获取这个RadioButton的text内容
                 String output = choise.getText().toString();
-                if(output.equals("本")){
+                if(output.equals("本事业部")){
 //                    System.out.println("选择了本事业部生产订单");
                     switchContent1();
                 }else {
+                    autoReceive=false;
                     switchContent2();
                 }
 //                Toast.makeText(WXCPSHActivity.this, "你选择了：" + output, Toast.LENGTH_SHORT).show();
@@ -279,12 +294,10 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-//                System.out.println("factory=="+factory);
-                if((listview1.getVisibility()==View.GONE&&listview2.getVisibility()==View.VISIBLE)||factory.equals("2090")){
-                    receive();
-                }else {
-                    Toast.makeText(WXBCPJGRKActivity.this, "请确认上游订单", Toast.LENGTH_SHORT).show();
-                }
+                autoReceive=true;
+
+                autoLoadContent2();
+
             }
         });
     }
@@ -292,6 +305,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     public void receive(){
         List<InsertFinProStorageRecordReqBean2> ldata = new ArrayList<InsertFinProStorageRecordReqBean2>();
         List<InsertFinProStorageRecordReqBean1> sdata = new ArrayList<InsertFinProStorageRecordReqBean1>();
+        boolean rece=true;
         float allnum1=0;
         float allnum2=0;
         for (int i = 0; i < productOrderList1.size(); i++) {
@@ -302,35 +316,74 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             if(cb.isChecked()){
                 String numstr=et.getText().toString();
                 float num = Float.parseFloat("0"+numstr);
-                allnum1+=num;
+                if(num>0){
+                    allnum1+=num;
 //                System.out.println("num1=="+num);
-                InsertFinProStorageRecordReqBean2 bean2=new InsertFinProStorageRecordReqBean2(currBean1.getMATNR(), currBean1.getAUFNR(),currBean1.getWERKS(),currBean1.getLGORT(), num, marketorderno, marketorderrow, currBean1.getMEINS(), currBean1.getMCODE(), currBean1.getMAKTX());
-                ldata.add(bean2);
+                    InsertFinProStorageRecordReqBean2 bean2=new InsertFinProStorageRecordReqBean2(currBean1.getMATNR(), currBean1.getAUFNR(),currBean1.getWERKS(),currBean1.getLGORT(), num, marketorderno, marketorderrow, currBean1.getMEINS(), currBean1.getMCODE(), currBean1.getMAKTX());
+                    ldata.add(bean2);
+                }
+
             }
         }
 
         for (int i = 0; i < productOrderList2.size(); i++) {
             PreMaterialProductOrderRep currBean2 = productOrderList2.get(i);
-            View itmeview=listview2.getAdapter().getView(i,null,null);
-            EditText et=itmeview.findViewById(R.id.fpsl);
-            CheckBox cb= itmeview.findViewById(R.id.checked);
-            if(cb.isChecked()){
-                String numstr=et.getText().toString();
-                float num = Float.parseFloat("0"+numstr);
+            float num = currBean2.getCurrentNum();
+            if(num>0){
                 allnum2+=num;
-//                System.out.println("num2=="+num);
-                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum()+"", currBean2.getDispatchNum()+"", num+"", currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE());
+                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum()+"", currBean2.getDispatchNum()+"", num+"", currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE(),currBean2.getMATNR(),currBean2.getMAKTX(),currBean2.getRSART());
                 sdata.add(bean1);
             }
+
+
         }
-        String allnumStr=dhsl.getText().toString();
-        float allnum = Float.parseFloat("0"+allnumStr);
-        float mqty=allnum-allnum2>0?(allnum-allnum2):0;
-        InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(material.getMATNR(), material.getMAKTX(), material.getMaterialType(), factory, allnum,mqty, material.getMEINS(), marketorderno, marketorderrow, username, ldata, sdata);
-        if(allnum==allnum1){
-            presenter2.InsertFinProStorageRecord(req);
+        float allnum = Float.parseFloat("0"+dhsl.getText().toString());
+        float mqty=allnum1-allnum2>0?(allnum1-allnum2):0;
+
+        //序列号长度不能超过10
+//        String xlhStr = xlh.getText().toString();
+//        String[] xlhSplit = xlhStr.split(",");
+//        boolean legalxlh=true;
+//        for (String s : xlhSplit) {
+//            if (s.length()>10){
+//                legalxlh=false;
+//                break;
+//            }
+//        }
+
+//        if(productOrderList1.size()==0){
+//            rece=false;
+//        }else {
+//            //若有本事业部生产订单,循环本事业部生产订单，确保对应的上游事业部生产订单分配数量都小于本事业部生产订单分配数量
+//            for (InsertFinProStorageRecordReqBean2 aufnrBean : ldata) {
+//                String pmatnr = aufnrBean.getMaterialCode();
+//                float qty1 = aufnrBean.getQty();//本事业部订单分配数量
+//                float qty2=0;//上游订单分配数量
+//                for (InsertFinProStorageRecordReqBean1 upaufnr : sdata) {
+//                    //物料编码相同，则可本事业部生产订单与上游事业部生产订单对应起来
+//                    if(upaufnr.getMaterialCode().equals(pmatnr)){
+//                        qty2+=Float.parseFloat("0"+upaufnr.getAllocatedQty());;
+//                    }
+//                }
+//                if(qty2>qty1){
+//                    rece=false;
+//                    break;
+//                }
+//            }
+//        }
+
+        //序列号数量=入库数量
+//        System.out.println(rece);
+        if(allnum1<=allnum){
+            try {
+                LoadingBar.dialog(WXBCPJGRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).show();
+                InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(ldata.get(0).getMaterialCode(), ldata.get(0).getMaterialDesc(), "独立", factory, allnum1,mqty, ldata.get(0).getUnit(), marketorderno, marketorderrow, username, "", ldata, sdata);
+                presenter2.InsertFinProStorageRecord(req);
+            } catch (Exception e) {
+                DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,"收货发生错误");
+            }
         } else {
-            Toast.makeText(this, "分配数量有误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "分配数量超出图纸数量", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -342,35 +395,26 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         getMenuInflater().inflate(R.menu.wxmenu, popup.getMenu());
         // 为popup菜单的菜单项单击事件绑定事件监听器
         popup.setOnMenuItemClickListener(
-                new PopupMenu.OnMenuItemClickListener()
-                {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item)
+                item -> {
+                    switch (item.getItemId())
                     {
-                        switch (item.getItemId())
-                        {
 //                            case R.id.exit:
 //                                // 隐藏该对话框
 //                                popup.dismiss();
 //                                break;
-                            case R.id.record:
-                                // 隐藏该对话框
-                                Intent intent = new Intent(WXBCPJGRKActivity.this, WXSHJLActivity.class);
-                                intent.putExtra("username", username);
-                                startActivity(intent);
-                                break;
-                            case R.id.print:
-                                // 隐藏该对话框
-                                presenter3.GetFinProStorageRecordNote(idlist);
-                                break;
-                            default:
-                                // 使用Toast显示用户单击的菜单项
-                                Toast.makeText(WXBCPJGRKActivity.this,
-                                        "您单击了【" + item.getTitle() + "】菜单项"
-                                        , Toast.LENGTH_SHORT).show();
-                        }
-                        return true;
+                        case R.id.record:
+                            // 隐藏该对话框
+                            Intent intent = new Intent(WXBCPJGRKActivity.this, WXSHJLActivity.class);
+                            intent.putExtra("username", username);
+                            startActivity(intent);
+                            break;
+                        default:
+                            // 使用Toast显示用户单击的菜单项
+                            Toast.makeText(WXBCPJGRKActivity.this,
+                                    "您单击了【" + item.getTitle() + "】菜单项"
+                                    , Toast.LENGTH_SHORT).show();
                     }
+                    return true;
                 });
         popup.show();
     }
@@ -392,21 +436,21 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         }
         try {
-            material = data.getMaterial();
-            material.setMarketorderno(marketorderno);
-            material.setMarketorderrow(marketorderrow);
-            material.setNum(num);
-
-            wlbm.setText(material.getMATNR());
-            wlms.setText(material.getMAKTX());
-            gc.setText(material.getWERKS());
-            dw.setText(material.getMEINS());
-            String num3str=""+material.getNum();
-            dhsl.setText(num3str);
+//            material = data.getMaterial();
+//            material.setMarketorderno(marketorderno);
+//            material.setMarketorderrow(marketorderrow);
+//            material.setNum(num);
+//
+//            wlbm.setText(material.getMATNR());
+//            wlms.setText(material.getMAKTX());
+//            gc.setText(material.getWERKS());
+//            dw.setText(material.getMEINS());
+//            String num3str=""+material.getNum();
+//            dhsl.setText(num3str);
             //presenter3.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
             productOrderList1.clear();
             productOrderList2.clear();
-            presenter4.GetOutStorageMaterialOrderJS(material.getMarketorderrow(),material.getMATNR(),material.getMarketorderno(),"2090",material.getNum());
+//            presenter4.GetOutStorageMaterialOrderJS(material.getMarketorderrow(),material.getMATNR(),material.getMarketorderno(),"2090",material.getNum());
 
 
         } catch (Exception e) {
@@ -414,18 +458,56 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         }
     }
 
-    @Override
-    public void onDataSuccess2(InsertFinProStorageRecordRep data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+    public void ScanSuccess(String materialCode){
+        //扫码成功显示
+        layout1.setVisibility(View.VISIBLE);
+        layout2.setVisibility(View.VISIBLE);
+        ll_scdd.setVisibility(View.VISIBLE);
+        if(factory.equals("2090")){
+            rb2.setVisibility(View.INVISIBLE);
+        }else {
+            rb2.setVisibility(View.VISIBLE);
+        }
         try {
-            GetFinProStorageRecordNoteReqBean idreq = new GetFinProStorageRecordNoteReqBean((data.getData()));
-            idlist.add(idreq);
+            wlbm.setText(materialCode);
+            xsddh_hang.setText(marketorderno+"/"+marketorderrow);
+            gc.setText(factory);
+            String num3str=""+num;
+            dhsl.setText(num3str);
+//            presenter3.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
+            productOrderList1.clear();
+            productOrderList2.clear();
+            presenter4.GetOutStorageMaterialOrderJS(marketorderrow,materialCode,marketorderno,"2090",num);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        layout1.setVisibility(View.INVISIBLE);
-        layout2.setVisibility(View.INVISIBLE);
-        ll_scdd.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onDataSuccess2(InsertFinProStorageRecordRep data) {
+        LoadingBar.dialog(WXBCPJGRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
+        if(data.getStatus().getCode()==1){
+            Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+            try {
+                GetFinProStorageRecordNoteReqBean idreq = new GetFinProStorageRecordNoteReqBean((data.getData()));
+                idlist.add(idreq);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            layout1.setVisibility(View.INVISIBLE);
+            layout2.setVisibility(View.INVISIBLE);
+            productOrderList1.clear();
+            productOrderList2.clear();
+            adapter1.notifyDataSetChanged();
+            adapter2.notifyDataSetChanged();
+            ll_scdd.setVisibility(View.INVISIBLE);
+            //收货完成直接自动打印标签
+            presenter3.GetFinProStorageRecordNote(idlist);
+        }else {
+            System.out.println("error");
+            DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,data.getStatus().getMessage());
+        }
+
     }
 
     @Override
@@ -459,11 +541,14 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         productOrderList2 = data.getData();
         adapter2=new WXBCPJGRKAdapter2(WXBCPJGRKActivity.this, R.layout.wxbcprkitem2, productOrderList2);
         listview2.setAdapter(adapter2);
+        if(autoReceive){
+            receive();
+        }
     }
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(WXBCPJGRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
     }
 
     public void switchContent1() {
@@ -472,24 +557,24 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     }
 
     public void switchContent2() {
-        listview1.setVisibility(View.GONE);
-        listview2.setVisibility(View.VISIBLE);
+
         List<PreMaterialProductOrderJSReqBean> materialCodeArr=new ArrayList<PreMaterialProductOrderJSReqBean>();
         for (int i = 0; i < productOrderList1.size(); i++) {
             String code=productOrderList1.get(i).getMATNR();
 
             View itmeview=listview1.getAdapter().getView(i,null,null);
+            CheckBox cb=itmeview.findViewById(R.id.checked);
             EditText et=itmeview.findViewById(R.id.fpsl);
             String recenumstr=et.getText().toString();
             float num0=Float.parseFloat(("0"+recenumstr));
 //            float num0=productOrderList1.get(i).getCurrentNum();
-            //分配数量为0直接跳过
-            if(num0!=0){
+            //分配数量为0或者未选中则直接跳过
+            if(num0!=0&&cb.isChecked()){
                 boolean dup=false;
-                int ind=0;
+                int index=0;
                 for (int j = 0; j < materialCodeArr.size(); j++) {
                     if(materialCodeArr.get(j).getMaterialCode().equals(code)){
-                        ind=j;
+                        index=j;
                         dup=true;
                         break;
                     }
@@ -499,13 +584,59 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                     PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
                     materialCodeArr.add(bean);
                 }else {
-                    float num00=materialCodeArr.get(ind).getMatnrCurrentNum()+num0;
-                    materialCodeArr.get(ind).setMatnrCurrentNum(num00);
+                    float num00=materialCodeArr.get(index).getMatnrCurrentNum()+num0;
+                    materialCodeArr.get(index).setMatnrCurrentNum(num00);
                 }
             }
 
         }
-        presenter5.PreMaterialProductOrderJS(material.getMarketorderno(),material.getMarketorderrow(),materialCodeArr,material.getWERKS());
+        //销售订单号为空则不查上游订单
+        if(!marketorderno.equals("")){
+            presenter5.PreMaterialProductOrderJS(marketorderno,marketorderrow,materialCodeArr,gc.getText().toString());
+        }
+
+        listview1.setVisibility(View.GONE);
+        listview2.setVisibility(View.VISIBLE);
+    }
+
+
+    public void autoLoadContent2() {
+        List<PreMaterialProductOrderJSReqBean> materialCodeArr=new ArrayList<PreMaterialProductOrderJSReqBean>();
+        for (int i = 0; i < productOrderList1.size(); i++) {
+            String code=productOrderList1.get(i).getMATNR();
+
+            View itmeview=listview1.getAdapter().getView(i,null,null);
+            CheckBox cb=itmeview.findViewById(R.id.checked);
+            EditText et=itmeview.findViewById(R.id.fpsl);
+            String recenumstr=et.getText().toString();
+            float num0=Float.parseFloat(("0"+recenumstr));
+//            float num0=productOrderList1.get(i).getCurrentNum();
+            //分配数量为0或者未选中则直接跳过
+            if(num0!=0&&cb.isChecked()){
+                boolean dup=false;
+                int index=0;
+                for (int j = 0; j < materialCodeArr.size(); j++) {
+                    if(materialCodeArr.get(j).getMaterialCode().equals(code)){
+                        index=j;
+                        dup=true;
+                        break;
+                    }
+                }
+                //物料未重复，则传参添加；物料重复，则只增加数量
+                if(dup==false){
+                    PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
+                    materialCodeArr.add(bean);
+                }else {
+                    float num00=materialCodeArr.get(index).getMatnrCurrentNum()+num0;
+                    materialCodeArr.get(index).setMatnrCurrentNum(num00);
+                }
+            }
+
+        }
+        //销售订单号为空则不查上游订单
+        if(!marketorderno.equals("")){
+            presenter5.PreMaterialProductOrderJS(marketorderno,marketorderrow,materialCodeArr,gc.getText().toString());
+        }
     }
 
     //扫描操作
@@ -534,7 +665,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(m_Broadcastname)) {
                 String str = intent.getStringExtra("BARCODE");
-                if (!"".equals(str)) {
+                if (str.contains("{")) {
                     //tv.setText(str);
                     scanString=str;
                     JSONObject lableObject= null;
@@ -545,7 +676,6 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                         Toast.makeText(WXBCPJGRKActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                     }
                     if(lableObject!=null) {
-
                         String bm= null;
                         factory="";
                         String decodestr = null;
@@ -559,17 +689,31 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                             decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Toast.makeText(WXBCPJGRKActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                         }
 //
                         if(marketorderno!=null&&marketorderrow!=null&&bm!=null){
-                            presenter1.GetMaterialMasterDataJS(decodestr,factory);
+                            ScanSuccess(decodestr);
+                        }else {
+                            DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,"外协图纸内容有误");
                         }
                         scanString="";
-                    }else {
-                        Log.i("token","扫描结果为空");
-                        Toast.makeText(WXBCPJGRKActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
                     }
-
+                }else if(!str.equals("")){
+//                    String xlhStr = xlh.getText().toString();
+//                    //输入框内容为空，则直接增加；若不为空，判断序列号是否存在，不存在则用“，”隔开并增加
+//                    if (xlhStr.equals("")) {
+//                        System.out.println("直接增加"+str);
+//                        xlhStr = str;
+//                        xlh.setText(xlhStr);
+//                    } else {
+//                        String[] split = xlhStr.split(",");
+//                        if (Arrays.asList(split).contains(str)) {
+//                        } else {
+//                            xlhStr = xlhStr + "," + str;
+//                            xlh.setText(xlhStr);
+//                        }
+//                    }
 
                 }
 

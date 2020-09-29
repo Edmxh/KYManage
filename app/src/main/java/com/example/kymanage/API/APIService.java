@@ -6,9 +6,11 @@ import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GenerateStorageLssueRecord.GenerateStorageLssueRecordRep;
 import com.example.kymanage.Beans.GetCMInFactoryDeliver.GetCMInFactoryDeliverRep;
 import com.example.kymanage.Beans.GetCMInFactoryDeliverJS.GetCMInFactoryDeliverJSRep;
+import com.example.kymanage.Beans.GetDeliveryListDataJS.GetDeliveryListDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRep;
+import com.example.kymanage.Beans.GetDistributorDumpRecordData.GetDistributorDumpRecordDataRep;
 import com.example.kymanage.Beans.GetDumpRecord.GetDumpRecordRep;
 import com.example.kymanage.Beans.GetDumpRecordNode.GetDumpRecordNodeRep;
 import com.example.kymanage.Beans.GetFinProStorageRecord.GetFinProStorageRecordReps;
@@ -23,8 +25,12 @@ import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataR
 import com.example.kymanage.Beans.GetMaterialStorage.GetMaterialStorageRep;
 import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRep;
 import com.example.kymanage.Beans.GetOutsourceFinProLableJS.GetOutsourceFinProLableJSRep;
+import com.example.kymanage.Beans.GetOutsourcingExceptionTypeJS.GetOutsourcingExceptionTypeJSRep;
+import com.example.kymanage.Beans.GetOutsoureExceptionRecordJS.GetOutsoureExceptionRecordJSRep;
 import com.example.kymanage.Beans.GetOutsoureFinProductDataJS.GetOutsoureFinProductDataJSRep;
 import com.example.kymanage.Beans.GetMaterialPropertieInfoJS.GetPurWayMaterialDataRep;
+import com.example.kymanage.Beans.GetPreRecMaterialCodeInfoJS.GetPreRecMaterialCodeInfoJSRep;
+import com.example.kymanage.Beans.GetPreRecMaterialCodeInfoJS.GetPreRecMaterialCodeInfoJSRepBean;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSReps;
 import com.example.kymanage.Beans.GetRecevingDetail.GetRecevingDetailreps;
 import com.example.kymanage.Beans.GetSapStorageInfoByFactoryJS.GetSapStorageInfoByFactoryJSBean;
@@ -32,6 +38,7 @@ import com.example.kymanage.Beans.GetParchaseCenterLable.GetParchaseCenterLableR
 import com.example.kymanage.Beans.GetStockInformationDataJS.GetStockInformationDataJSRep;
 import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRep;
 import com.example.kymanage.Beans.InsertDumpTransferRecord.InsertDumpTransferRecordRep;
+import com.example.kymanage.Beans.InsertFinAProOrderRecord.InsertFinAProOrderRecordRep;
 import com.example.kymanage.Beans.InsertFinProStorageRecord.InsertFinProStorageRecordRep;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
 import com.example.kymanage.Beans.InsertStorageLableRecord.InsertStorageLableRecordReps;
@@ -44,6 +51,7 @@ import com.example.kymanage.Beans.PurchaseCenterRecord.PurchaseCenterRecordReps;
 import com.example.kymanage.Beans.General.StatusRespBean;
 import com.example.kymanage.Beans.ScanIssueNoteDetail.ScanIssueNoteDetailRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedProductReceivingRep;
+import com.example.kymanage.Beans.Semi_FinishedProductReceivingLable.Semi_FinishedProductReceivingLableRep;
 import com.example.kymanage.Beans.Semi_FinishedProductReceivingRecordJS.Semi_FinishedProductReceivingRecordJSRep;
 import com.example.kymanage.Beans.UpdateApp.UpdateAppRep;
 import com.example.kymanage.Beans.WarehouseReceiptRecord.WarehouseReceiptRecordReps;
@@ -80,6 +88,15 @@ public interface APIService {
     Observable<PreMaterialProductOrderReps> PreMaterialProductOrderJS(@Body RequestBody noandrow);
 
     //采购
+    //获取预收货物料信息
+    @POST(API.GetPreRecMaterialCodeInfoJS)
+    Observable<GetPreRecMaterialCodeInfoJSRep> GetPreRecMaterialCodeInfoJS(@Body RequestBody noandrow);
+
+    //103收货
+    @POST(API.AdvanceRec103JS)
+    Observable<CodeMessageBean> AdvanceRec103JS(@Body RequestBody noandrow);
+
+
     //采购查询列表
     @POST(API.GetRecevingDetail)
     Observable<GetRecevingDetailreps> GetRecevingDetail(@Body RequestBody noandrow);
@@ -98,7 +115,7 @@ public interface APIService {
     Observable<GetSapStorageInfoByFactoryJSBean> GetSapStorageInfoByFactoryJS(@Body RequestBody changeinfo);
 
     //库房---------------------------------------------------------------------------
-    //获取库房收货物料信息接口
+    //获取物料属性信息接口
     @POST(API.GetMaterialPropertieInfoJS)
     Observable<GetPurWayMaterialDataRep> GetMaterialPropertieInfoJS(@Body RequestBody material);
     //库房收货及发料接口
@@ -189,6 +206,10 @@ public interface APIService {
     @POST(API.GetDispatchListJS)
     Observable<GetDispatchListJSRep> GetDispatchListJS(@Body RequestBody issuevouchernumber);
 
+    //外协半成品费用入库类型2标签打印接口
+    @POST(API.Semi_FinishedProductReceivingLable)
+    Observable<Semi_FinishedProductReceivingLableRep> Semi_FinishedProductReceivingLable(@Body RequestBody issuevouchernumber);
+
     //外协采购半成品收货记录接口
     @POST(API.Semi_FinishedProductReceivingRecordJS)
     Observable<Semi_FinishedProductReceivingRecordJSRep> Semi_FinishedProductReceivingRecordJS(@Body RequestBody issuevouchernumber);
@@ -206,8 +227,8 @@ public interface APIService {
     Observable<CodeMessageBean> OutsoureFinProductWriteOffJS(@Body RequestBody issuevouchernumber);
 
     //##外协采购成品标签打印接口
-    @POST(API.GetOutsourceFinProLableJS)
-    Observable<GetOutsourceFinProLableJSRep> GetOutsourceFinProLableJS(@Body RequestBody issuevouchernumber);
+    @POST(API.GetOutsourceFinProLableDataJS)
+    Observable<GetOutsourceFinProLableJSRep> GetOutsourceFinProLableDataJS(@Body RequestBody issuevouchernumber);
 
     //#301转储接口
     @POST(API.MaterialFactoryDump)
@@ -229,6 +250,10 @@ public interface APIService {
     @POST(API.WriteOffMaterialFactoryDump)
     Observable<StatusRespBean> WriteOffMaterialFactoryDump(@Body RequestBody issuevouchernumber);
 
+    //301转储子记录冲销
+    @POST(API.WriteOffMaterialFactoryCDump)
+    Observable<StatusRespBean> WriteOffMaterialFactoryCDump(@Body RequestBody issuevouchernumber);
+
     //##外协采购半成品发料厂内配送单生成
     @POST(API.GetCMInFactoryDeliver)
     Observable<GetCMInFactoryDeliverRep> GetCMInFactoryDeliver(@Body RequestBody issuevouchernumber);
@@ -241,7 +266,11 @@ public interface APIService {
     @POST(API.GetDeliveryListInfoJS)
     Observable<GetDeliveryListInfoJSRepBean3> GetDeliveryListInfoJS(@Body RequestBody issuevouchernumber);
 
-    //###获取交货记录
+    //销售交货单查询
+    @POST(API.GetDeliveryListDataJS)
+    Observable<GetDeliveryListDataJSRep> GetDeliveryListDataJS(@Body RequestBody issuevouchernumber);
+
+    //销售发货单详情查询
     @POST(API.GetDeliveryListDetailDataJS)
     Observable<GetDeliveryListDetailDataJSRep> GetDeliveryListDetailDataJS(@Body RequestBody issuevouchernumber);
 
@@ -261,9 +290,29 @@ public interface APIService {
     @POST(API.GetOutSemifinProductIssueWriteOffJS)
     Observable<CodeMessageBean> GetOutSemifinProductIssueWriteOffJS(@Body RequestBody issuevouchernumber);
 
-    //外协半成品发料配送冲销接口
+    //厂内配送单单条冲销
+    @POST(API.OutSemifinProductIssueWriteOffJS)
+    Observable<CodeMessageBean> OutSemifinProductIssueWriteOffJS(@Body RequestBody issuevouchernumber);
+
+    //外协标签打印接口
     @POST(API.InsertFinAProOrderRecord)
-    Observable<CodeMessageBean> InsertFinAProOrderRecord(@Body RequestBody issuevouchernumber);
+    Observable<InsertFinAProOrderRecordRep> InsertFinAProOrderRecord(@Body RequestBody issuevouchernumber);
+
+    //获取外协异常登记原因接口
+    @POST(API.GetOutsourcingExceptionTypeJS)
+    Observable<GetOutsourcingExceptionTypeJSRep> GetOutsourcingExceptionTypeJS(@Body RequestBody issuevouchernumber);
+
+    //外协收货后冲销接口
+    @POST(API.OutsourcingExceptionJS)
+    Observable<CodeMessageBean> OutsourcingExceptionJS(@Body RequestBody issuevouchernumber);
+
+    //异常收货记录查询
+    @POST(API.GetOutsoureExceptionRecordJS)
+    Observable<GetOutsoureExceptionRecordJSRep> GetOutsoureExceptionRecordJS(@Body RequestBody issuevouchernumber);
+
+    //获取301转储配送记录
+    @POST(API.GetDistributorDumpRecordData)
+    Observable<GetDistributorDumpRecordDataRep> GetDistributorDumpRecordData(@Body RequestBody issuevouchernumber);
 
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------
     //物料查询

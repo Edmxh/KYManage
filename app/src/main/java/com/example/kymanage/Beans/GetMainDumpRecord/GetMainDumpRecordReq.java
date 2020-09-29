@@ -9,14 +9,20 @@ public class GetMainDumpRecordReq {
     private String CurrentDate;
     private String Handler;
     private String DumpNum;
+    private String MarketOrderNO;
+    private String MaterialCode;
+    private String Factory;
 
     public GetMainDumpRecordReq() {
     }
 
-    public GetMainDumpRecordReq(String currentDate, String handler, String dumpNum) {
+    public GetMainDumpRecordReq(String currentDate, String handler, String dumpNum, String marketOrderNO, String materialCode, String factory) {
         CurrentDate = currentDate;
         Handler = handler;
         DumpNum = dumpNum;
+        MarketOrderNO = marketOrderNO;
+        MaterialCode = materialCode;
+        Factory = factory;
     }
 
     @JSONField(name = "CurrentDate")
@@ -42,5 +48,29 @@ public class GetMainDumpRecordReq {
     @JSONField(name = "DumpNum")
     public void setDumpNum(String dumpNum) {
         DumpNum = dumpNum;
+    }
+    @JSONField(name = "MarketOrderNO")
+    public String getMarketOrderNO() {
+        return MarketOrderNO;
+    }
+    @JSONField(name = "MarketOrderNO")
+    public void setMarketOrderNO(String marketOrderNO) {
+        MarketOrderNO = marketOrderNO;
+    }
+    @JSONField(name = "MaterialCode")
+    public String getMaterialCode() {
+        return MaterialCode;
+    }
+    @JSONField(name = "MaterialCode")
+    public void setMaterialCode(String materialCode) {
+        MaterialCode = materialCode;
+    }
+    @JSONField(name = "Factory")
+    public String getFactory() {
+        return Factory;
+    }
+    @JSONField(name = "Factory")
+    public void setFactory(String factory) {
+        Factory = factory;
     }
 }

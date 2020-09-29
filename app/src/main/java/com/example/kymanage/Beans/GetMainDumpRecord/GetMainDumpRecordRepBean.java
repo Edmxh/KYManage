@@ -11,8 +11,11 @@ package com.example.kymanage.Beans.GetMainDumpRecord;
 public class GetMainDumpRecordRepBean {
     private String DumpNum;
     private String CreateTime;
+    private String UpdateTime;
     private String Handler;
+    private String ReverseHandler;
     private String Status;
+    private String MarketOrderNO;
     private long ID;
 
     public String getDumpNum() {
@@ -39,6 +42,14 @@ public class GetMainDumpRecordRepBean {
         Handler = handler;
     }
 
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String reverseHandler) {
+        ReverseHandler = reverseHandler;
+    }
+
     public String getStatus() {
         return Status;
     }
@@ -53,5 +64,21 @@ public class GetMainDumpRecordRepBean {
 
     public void setID(long ID) {
         this.ID = ID;
+    }
+
+    public String getUpdateTime() {
+        return UpdateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        UpdateTime = updateTime;
+    }
+
+    public String getMarketOrderNO() {
+        return MarketOrderNO;
+    }
+
+    public void setMarketOrderNO(String marketOrderNO) {
+        MarketOrderNO = marketOrderNO;
     }
 }

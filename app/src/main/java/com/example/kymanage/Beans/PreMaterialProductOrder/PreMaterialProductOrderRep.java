@@ -76,6 +76,12 @@ public class PreMaterialProductOrderRep {
 
     private boolean chosen;
 
+    private String SERNP;
+
+    private String seriesno;
+    private String SOBKZ;
+
+
 
 
 
@@ -365,5 +371,29 @@ public class PreMaterialProductOrderRep {
 
     public void setChosen(boolean chosen) {
         this.chosen = chosen;
+    }
+
+    public String getSERNP() {
+        return SERNP;
+    }
+
+    public void setSERNP(String SERNP) {
+        this.SERNP = SERNP;
+    }
+
+    public String getSeriesno() {
+        return seriesno;
+    }
+
+    public void setSeriesno(String seriesno) {
+        this.seriesno = seriesno;
+    }
+
+    public String getSOBKZ() {
+        return SOBKZ;
+    }
+
+    public void setSOBKZ(String SOBKZ) {
+        this.SOBKZ = SOBKZ;
     }
 }

@@ -20,8 +20,8 @@ public class GetOutSemifinProductIssueWriteOffJSPresenter extends BasePresenter<
         appModel = new AppModel();
     }
 
-    public void GetOutSemifinProductIssueWriteOffJS(List<String> DeliverIDArr, String user, String documentDate){
-        appModel.GetOutSemifinProductIssueWriteOffJS(DeliverIDArr,user,documentDate,new HttpDataListener<CodeMessageBean>() {
+    public void GetOutSemifinProductIssueWriteOffJS(List<String> DeliverIDArr, String user){
+        appModel.GetOutSemifinProductIssueWriteOffJS(DeliverIDArr,user,new HttpDataListener<CodeMessageBean>() {
 
 
             @Override

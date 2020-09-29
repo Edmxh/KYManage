@@ -64,6 +64,8 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 
     private List<ScanIssueNoteDetailRepBean> list2;
 
+    private boolean finish261=true;
+
 
 
     @Override
@@ -234,6 +236,8 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
     @Override
     public void onDataSuccessScan(ScanIssueNoteDetailRep data) {
         System.out.println("服务器响应成功");
+        //收到响应后解除扫码发料的限制
+        finish261=true;
         LoadingBar.dialog(KFFL2Activity.this).setFactoryFromResource(R.layout.layout_custom3).cancel();
         flzt.setText(data.getMstatus());
         if(data.getMstatus()!=null){
@@ -297,7 +301,14 @@ public class KFFL2Activity extends BaseActivity implements ScanBaseView<ScanIssu
 //                        GetMaterialStorageReq req2=new GetMaterialStorageReq("2010", "DQ4402000001");
 //                        presenter2.GetMaterialStorage(req2);
                         ScanIssueNoteDetailReqBean bean=new ScanIssueNoteDetailReqBean(flnum,username);
-                        presenter1.ScanIssueNoteDetail(bean);
+                        //控制未收到上一次扫码发料返回结果前禁止扫码
+                        if(finish261){
+                            finish261=false;
+                            presenter1.ScanIssueNoteDetail(bean);
+                        }else {
+                            Toast.makeText(KFFL2Activity.this, "请稍等...", Toast.LENGTH_SHORT).show();
+                        }
+
                         scanString="";
                     }else {
                         Toast.makeText(KFFL2Activity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();

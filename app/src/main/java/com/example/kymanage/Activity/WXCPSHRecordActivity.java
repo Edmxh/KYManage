@@ -1,7 +1,11 @@
 package com.example.kymanage.Activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -29,9 +33,14 @@ import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
+import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.Presenters.WXPage2.GetOutsourceFinProLableJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage2Record.OutsoureFinProductWriteOffJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage2Record.GetOutsoureFinProductDataJSPresenter;
+import com.example.kymanage.utils.DialogUtil;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +50,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetOutsoureFinProductDataJSRep>, BaseView2<CodeMessageBean>, BaseView3<GetOutsourceFinProLableJSRep> {
+public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetOutsoureFinProductDataJSRep>, BaseView2<CodeMessageBean>, PrintBaseView<GetOutsourceFinProLableJSRep> {
     //选择日期
     private TextView date;
     private List<GetOutsoureFinProductDataJSRepBean> data1;
@@ -108,8 +117,9 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
     @Override
     public void initData() {
         printList=new ArrayList<GetOutsourceFinProLableJSReqBean>();
-        Intent intent=getIntent();
-        username=intent.getStringExtra("username");
+        SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+                Activity.MODE_PRIVATE);
+        username =sharedPreferences.getString("username", "");
 //        System.out.println("username:"+username);
 
         data1=new ArrayList<GetOutsoureFinProductDataJSRepBean>();
@@ -164,23 +174,9 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<OutsoureFinProductWriteOffJSReqBean> idslist=new ArrayList<OutsoureFinProductWriteOffJSReqBean>();
-                if(data1!=null){
-                    for (int i = 0; i < data1.size(); i++) {
-//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
-                        GetOutsoureFinProductDataJSRepBean currData = data1.get(i);
-                        View itmeview=listview1.getAdapter().getView(i,null,null);
-                        CheckBox cb= itmeview.findViewById(R.id.checked);
-                        if(cb.isChecked()){
-                            OutsoureFinProductWriteOffJSReqBean idreq=new OutsoureFinProductWriteOffJSReqBean(currData.getStorageId(),currData.getOrderType(),currData.getAdvanceStorageId());
-                            idslist.add(idreq);
-                        }
-                    }
-                }
-//                WriteOffProStorageRecordReq req=new WriteOffProStorageRecordReq(username,idlist);
-//                System.out.println("冲销选中数:"+idlist.size());
-                presenter2.OutsoureFinProductWriteOffJS(username,getCurrentdate(),idslist);
-                //Toast.makeText(CGRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
+                confirmDeleteDialog(WXCPSHRecordActivity.this);
+
+
             }
         });
 
@@ -189,15 +185,24 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 try {
-                    List<GetOutsourceFinProLableJSReqBean> checkedPrintList=new ArrayList<GetOutsourceFinProLableJSReqBean>();
+                    List<Integer> checkedPrintLists=new ArrayList<Integer>();
                     for (int i = 0; i < data1.size(); i++) {
                         View itmeview=listview1.getAdapter().getView(i,null,null);
                         CheckBox cb= itmeview.findViewById(R.id.checked);
-                        if(cb.isChecked()){
-                            checkedPrintList.add(printList.get(i));
+                        if(cb.isChecked()&&(data1.get(i).getStatus().equals("105")||data1.get(i).getStatus().equals("101"))){
+                            String[] split = data1.get(i).getAllocatedId().split(",");
+                            for (String s : split) {
+                                int i1 = Integer.parseInt(s);
+                                checkedPrintLists.add(i1);
+                            }
                         }
                     }
-                    presenter3.GetOutsourceFinProLableJS(username,getCurrentdate2(),checkedPrintList);
+                    if(checkedPrintLists.size()>0){
+                        presenter3.GetOutsourceFinProLableJS(checkedPrintLists);
+                    }else {
+                        DialogUtil.errorMessageDialog(WXCPSHRecordActivity.this,"未选中要打印的记录行或选中的记录已被冲销");
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -243,34 +248,44 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
             adapter=new WXCPSHRecordAdapter(WXCPSHRecordActivity.this, R.layout.wxcpshrecorditem,data1);
             listview1.setAdapter(adapter);
             for (GetOutsoureFinProductDataJSRepBean data2 : data1) {
-                GetOutsourceFinProLableJSReqBean printBean=new GetOutsourceFinProLableJSReqBean(data2.getStorageId(),data2.getOrderType(),data2.getAdvanceStorageId(),data2.getDemandFactory());
+                GetOutsourceFinProLableJSReqBean printBean=new GetOutsourceFinProLableJSReqBean(data2.getStorageId(),data2.getOrderType(),data2.getAdvanceStorageId(),data2.getFactory());
                 printList.add(printBean);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+        if(data.getCode()==1){
+            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+        }else {
+            DialogUtil.errorMessageDialog(WXCPSHRecordActivity.this,data.getMessage());
+        }
+
     }
 
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
-        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        if(queryself.isChecked()){
-            queryall=false;
+        if(data.getCode()==1){
+            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            if(queryself.isChecked()){
+                queryall=false;
+            }else {
+                queryall=true;
+            }
+            presenter1.GetOutsoureFinProductDataJS(username,date.getText().toString(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
         }else {
-            queryall=true;
+            DialogUtil.errorMessageDialog(WXCPSHRecordActivity.this,data.getMessage());
         }
-        presenter1.GetOutsoureFinProductDataJS(username,date.getText().toString(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
+
     }
 
     @Override
-    public void onDataSuccess3(GetOutsourceFinProLableJSRep data) {
+    public void onDataSuccessPrint(GetOutsourceFinProLableJSRep data) {
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         try {
             List<GetOutsourceFinProLableJSRepBean> beans = data.getData();
             for (GetOutsourceFinProLableJSRepBean bean : beans) {
                 Bitmap bm=cb.createImage7(bean,tf);
-                printHelper.PrintBitmapAtCenter(bm,384,480);
+                printHelper.PrintBitmapAtCenter(bm,384,530);
                 printHelper.printBlankLine(80);
             }
         } catch (Exception e) {
@@ -295,7 +310,7 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
     public void   initPrinter(){
         printHelper=new PrintHelper();
         printHelper.Open(WXCPSHRecordActivity.this);
-        Toast.makeText(WXCPSHRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(WXCPSHRecordActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
     }
 
     //获取当前日期
@@ -325,5 +340,42 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
                 return true;
         }
         return super.onKeyDown (keyCode, event);
+    }
+
+    //冲销确认
+    private void confirmDeleteDialog(Context context) {
+        new QMUIDialog.MessageDialogBuilder(context)
+                .setTitle("请确认")
+                .setMessage("确定要冲销吗？")
+                .setSkinManager(QMUISkinManager.defaultInstance(context))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "冲销", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        List<OutsoureFinProductWriteOffJSReqBean> idslist=new ArrayList<OutsoureFinProductWriteOffJSReqBean>();
+                        if(data1!=null){
+                            for (int i = 0; i < data1.size(); i++) {
+//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
+                                GetOutsoureFinProductDataJSRepBean currData = data1.get(i);
+                                View itmeview=listview1.getAdapter().getView(i,null,null);
+                                CheckBox cb= itmeview.findViewById(R.id.checked);
+                                if(cb.isChecked()){
+                                    OutsoureFinProductWriteOffJSReqBean idreq=new OutsoureFinProductWriteOffJSReqBean(currData.getOrderType(), currData.getAdvanceStorageId(), currData.getStorageId(),currData.getAllocatedId());
+                                    idslist.add(idreq);
+                                }
+                            }
+                        }
+                        if(idslist.size()>0){
+                            presenter2.OutsoureFinProductWriteOffJS(username,getCurrentdate(),idslist);
+                        }
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 }

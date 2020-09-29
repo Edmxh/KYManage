@@ -61,6 +61,7 @@ public class GetFinProStorageRecordNoteRepBean {
     private String ProOMaterialUnit;
     private String MarketOrderRow;
     private String MaterialCode;
+    private String facName;
 
     public static GetFinProStorageRecordNoteRepBean objectFromData(String str) {
 
@@ -288,5 +289,13 @@ public class GetFinProStorageRecordNoteRepBean {
 
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
+    }
+
+    public String getFacName() {
+        return facName;
+    }
+
+    public void setFacName(String facName) {
+        this.facName = facName;
     }
 }

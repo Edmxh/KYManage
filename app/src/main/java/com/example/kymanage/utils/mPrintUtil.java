@@ -27,15 +27,9 @@ public class mPrintUtil {
     int picWidth = 384;//生成图片的宽度
     int QRx = 96;//二维码坐标
     int titleTextSize=34;//统一标题字号
-    int text2 = 20;//发料单用
+    int text2 = 24;//发料单用
+    int text3 = 20;//发料单用
 
-
-    int text1 = 30;
-
-    int text3 = 26;
-    int text4 = 24;
-    int text5 = 22;//
-    int text6 = 20;//
 
     /**
      * 发料单
@@ -152,6 +146,13 @@ public class mPrintUtil {
      */
     //派工单------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public void printPGBill(GetDispatchListJSRepBean2 rep, PrintHelper printHelper){
+
+        printHelper.printBlankLine(80);
+        printHelper.PrintLineEnd();
+        printHelper.PrintLineInit(titleTextSize);
+        printHelper.PrintLineStringByType(rep.getUPFAC(),titleTextSize, PrintHelper.PrintType.Left,true);
+        printHelper.PrintLineEnd();
+
         printHelper.PrintLineInit(titleTextSize);
         printHelper.PrintLineStringByType("机加生产派工单",titleTextSize, PrintHelper.PrintType.Centering,false);
         printHelper.PrintLineEnd();
@@ -167,8 +168,13 @@ public class mPrintUtil {
         printHelper.PrintBitmapAtCenter(bm,picWidth,picWidth-QRx*2);
         printHelper.PrintLineEnd();
         printHelper.printBlankLine(5);
+        //派工单号
+        String str=rep.getDispatchListNO()+"    "+rep.getIssueNum()+" "+rep.getMEINS();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,true);
+        printHelper.PrintLineEnd();
         //物料编码   数量    单位
-        String str=rep.getMATNR()+"    "+rep.getIssueNum()+" "+rep.getMEINS();
+        str=rep.getMATNR();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
@@ -201,15 +207,22 @@ public class mPrintUtil {
             printPGBillContent1(bean1,printHelper);
         }
 
-        //底部
+        //底部条形码
         Bitmap bm1=null;
         try {
             bm1=BarcodeUtil.create1dBarcode(rep.getAUFNR(),BarcodeFormat.CODE_128,300,45);
         } catch (WriterException e) {
             e.printStackTrace();
         }
-        printHelper.PrintBitmapAtCenter(bm1,picWidth,picWidth-QRx*2);
+        printHelper.PrintBitmapAtCenter(bm1,picWidth,50);
         printHelper.PrintLineEnd();
+        //生产订单号
+        str=rep.getAUFNR();
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,false);
+        printHelper.PrintLineEnd();
+
+
         printHelper.printBlankLine(5);
     }
     //获取当前日期
@@ -245,6 +258,14 @@ public class mPrintUtil {
 
     //跨工厂配送单打印--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public void printKGCBill(GetDumpRecordNodeRepBean2 rep, PrintHelper printHelper){
+
+
+        printHelper.printBlankLine(80);
+        printHelper.PrintLineEnd();
+        printHelper.PrintLineInit(titleTextSize);
+        printHelper.PrintLineStringByType(rep.getFacName(),titleTextSize, PrintHelper.PrintType.Left,true);
+        printHelper.PrintLineEnd();
+
         printHelper.PrintLineInit(titleTextSize);
         printHelper.PrintLineStringByType("机加厂外配送单",titleTextSize, PrintHelper.PrintType.Centering,false);
         printHelper.PrintLineEnd();
@@ -273,7 +294,7 @@ public class mPrintUtil {
         printHelper.PrintLineEnd();
 
         //总计数量
-        str="总计数量:"+rep.getSumCount();
+        str="总计:"+rep.getData().size()+"种/共"+rep.getSumCount()+"个";
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
@@ -329,15 +350,45 @@ public class mPrintUtil {
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,true);
         printHelper.PrintLineEnd();
 
-        str=(i+1)+"             "+bean.getMaterialCode();
+        str=(i+1)+"   "+bean.getMaterialCode();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
 
-        str=bean.getMaterialDesc()+"             "+bean.getQty()+"/"+bean.getTQty();
+        String des1="";
+        String des2="";
+        String des3="";
+        if(bean.getMaterialDesc().length()>=15&&bean.getMaterialDesc().length()<=30){
+            des1=bean.getMaterialDesc().substring(0,15);
+            des2=bean.getMaterialDesc().substring(15,bean.getMaterialDesc().length());
+        }else if(bean.getMaterialDesc().length()<15) {
+            des1=bean.getMaterialDesc();
+        }else {
+            des1=bean.getMaterialDesc().substring(0,15);
+            des2=bean.getMaterialDesc().substring(15,30);
+            des3=bean.getMaterialDesc().substring(30,bean.getMaterialDesc().length());
+        }
+
+        String demand=""+bean.getTQty();
+        if(bean.getTQty()==0){
+            demand="-";
+        }
+        str=des1+"     "+demand+"/"+bean.getQty();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
+        if(!des2.equals("")){
+            str=des2;
+            printHelper.PrintLineInit(text2);
+            printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+            printHelper.PrintLineEnd();
+        }
+        if(!des3.equals("")){
+            str=des3;
+            printHelper.PrintLineInit(text2);
+            printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+            printHelper.PrintLineEnd();
+        }
     }
 
 
@@ -405,12 +456,16 @@ public class mPrintUtil {
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
 
-        str=bean.getProductNO()+"    "+bean.getDemandQty()+"/"+bean.getActuallyQty();
+        String newStr1 = bean.getMarketOrderNO().replaceAll("^(0+)", "");
+        String newStr2 = bean.getMarketOrderRow().replaceAll("^(0+)", "");
+
+        str=newStr1+"/"+newStr2+"    "+bean.getClient();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
 
-        str=bean.getMarketOrderNO()+"/"+bean.getMarketOrderRow()+"    "+bean.getClient();
+        String newStr3 = bean.getProductNO().replaceAll("^(0+)", "");
+        str=newStr3+"    "+bean.getDemandQty()+"/"+bean.getActuallyQty();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
@@ -501,6 +556,11 @@ public class mPrintUtil {
         String newStr1 = bean.getVBELN().replaceAll("^(0+)", "");
         String newStr2 = bean.getPOSNR().replaceAll("^(0+)", "");
         str="SAP订单："+newStr1+"/"+newStr2;
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+
+        str="状态描述："+bean.getSTATUS();
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();

@@ -21,7 +21,7 @@ public class Semi_FinishedProductReceivingwriteoffJSPresenter extends BasePresen
         appModel = new AppModel();
     }
 
-    public void Semi_FinishedProductReceivingwriteoffJS(String user, String CurrentDate, List<Semi_FinishedProductReceivingwriteoffJSReqBean> data){
+    public void Semi_FinishedProductReceivingwriteoffJS(String user, String CurrentDate, List<Long> data){
         appModel.Semi_FinishedProductReceivingwriteoffJS(user,CurrentDate,data,new HttpDataListener<CodeMessageBean>() {
 
 

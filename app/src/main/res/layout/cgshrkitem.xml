@@ -5,7 +5,7 @@
     android:id="@+id/parent_layout"
     android:descendantFocusability="blocksDescendants"
     android:background="@drawable/tablebody4"
-    android:showDividers="middle"
+    android:showDividers="none"
     android:divider="@drawable/linearlayout_divider"
     >
     <LinearLayout
@@ -183,6 +183,43 @@
                 android:textColor="@color/fontcolor1"
                 android:gravity="center_vertical"
                 android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/xlhlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="序 列 号:"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <EditText
+                android:id="@+id/xlh"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                style="@style/LoginInputBoxStyle"
+                android:textCursorDrawable="@null"
+                android:gravity="center"
+                android:duplicateParentState="true"
+                android:layout_marginRight="5dp"/>
+            <Button
+                android:id="@+id/scan"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:text="扫码"
+                android:textSize="@dimen/text22"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/buttonstyle4"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

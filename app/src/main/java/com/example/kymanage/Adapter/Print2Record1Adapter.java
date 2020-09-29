@@ -67,8 +67,11 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
         // 获取控件实例
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.zcdh=view.findViewById(R.id.zcdh);
+        viewHolder.xsddh=view.findViewById(R.id.xsddh);
         viewHolder.cjsj=view.findViewById(R.id.cjsj);
+        viewHolder.gxsj=view.findViewById(R.id.gxsj);
         viewHolder.zcr=view.findViewById(R.id.zcr);
+        viewHolder.cxr=view.findViewById(R.id.cxr);
         viewHolder.zt=view.findViewById(R.id.zt);
         viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
         viewHolder.detail=view.findViewById(R.id.detail);
@@ -99,8 +102,11 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
         viewHolder.zcdh.setText(rep.getDumpNum());
+        viewHolder.xsddh.setText(rep.getMarketOrderNO());
         viewHolder.cjsj.setText(rep.getCreateTime());
+        viewHolder.gxsj.setText(rep.getUpdateTime());
         viewHolder.zcr.setText(rep.getHandler());
+        viewHolder.cxr.setText(rep.getReverseHandler());
         viewHolder.zt.setText(rep.getStatus());
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
@@ -185,8 +191,11 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
     class ViewHolder{
         TextView xh;
         TextView zcdh;
+        TextView xsddh;
         TextView cjsj;
+        TextView gxsj;
         TextView zcr;
+        TextView cxr;
         TextView zt;
         Button detail;
         CheckBox checked;

@@ -21,8 +21,12 @@ public class GetInFactoryDeliverListJSRepBean {
 
     private String DeliverID;
     private String CreateTime;
+    private String UpdateTime;
     private String CreateUser;
     private String IssueStorage;
+    private String Status;
+    private int Sign;
+    private String ReverseHandler;
 
     public static GetInFactoryDeliverListJSRepBean objectFromData(String str) {
 
@@ -84,6 +88,14 @@ public class GetInFactoryDeliverListJSRepBean {
         this.CreateTime = CreateTime;
     }
 
+    public String getUpdateTime() {
+        return UpdateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        UpdateTime = updateTime;
+    }
+
     public String getCreateUser() {
         return CreateUser;
     }
@@ -98,5 +110,29 @@ public class GetInFactoryDeliverListJSRepBean {
 
     public void setIssueStorage(String IssueStorage) {
         this.IssueStorage = IssueStorage;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    public int getSign() {
+        return Sign;
+    }
+
+    public void setSign(int sign) {
+        Sign = sign;
+    }
+
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String reverseHandler) {
+        ReverseHandler = reverseHandler;
     }
 }

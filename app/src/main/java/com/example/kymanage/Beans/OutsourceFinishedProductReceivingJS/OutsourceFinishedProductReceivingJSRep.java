@@ -1,5 +1,6 @@
 package com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ public class OutsourceFinishedProductReceivingJSRep {
     private int code;
     private String message;
     private OutsourceFinishedProductReceivingJSRepBean data;
+    private ArrayList<Integer> allocatedId;
 
     public int getCode() {
         return code;
@@ -36,5 +38,13 @@ public class OutsourceFinishedProductReceivingJSRep {
 
     public void setData(OutsourceFinishedProductReceivingJSRepBean data) {
         this.data = data;
+    }
+
+    public ArrayList<Integer> getAllocatedId() {
+        return allocatedId;
+    }
+
+    public void setAllocatedId(ArrayList<Integer> allocatedId) {
+        this.allocatedId = allocatedId;
     }
 }

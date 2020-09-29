@@ -1,12 +1,9 @@
 package com.example.kymanage.Activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
-import android.net.Uri;
-import android.os.Environment;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +18,11 @@ import android.widget.Toast;
 import com.allenliu.versionchecklib.v2.AllenVersionChecker;
 import com.allenliu.versionchecklib.v2.builder.DownloadBuilder;
 import com.allenliu.versionchecklib.v2.builder.UIData;
-import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Beans.UpdateApp.UpdateAppRep;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.Presenters.mainPage.UpdateAppPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -128,6 +124,7 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
         //功能名对应图标
         iconmap=new HashMap<String,Integer>();
         iconmap.put("采购收货", R.drawable.icon_cgsh);
+        iconmap.put("扫码收货", R.drawable.icon_kfcg);
         iconmap.put("采购入库", R.drawable.icon_kfcg);
         iconmap.put("转储收货", R.drawable.icon_pssh);
         iconmap.put("库房发料", R.drawable.icon_kffl);
@@ -138,6 +135,8 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
         iconmap.put("厂内配送", R.drawable.icon_printcnpsd);
         iconmap.put("跨工厂配送", R.drawable.icon_printkgcpsd);
         iconmap.put("销售发货", R.drawable.icon_printxsfhd);
+        iconmap.put("库房标签打印", R.drawable.icon_printxsfhd);
+        iconmap.put("异常收货", R.drawable.icon_printxsfhd);
         iconmap.put("物料查询", R.drawable.wlcx);
 
         drawGridview(Authority1str,mGridView1);
@@ -193,10 +192,10 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
         if(length2>4){
 //            System.out.println("功能数量超出");
 //            lp.width=400;
-            lp.height=350;
+            lp.height=450;
             wxgl_layout.setLayoutParams(lp);
         }else {
-            lp.height=200;
+            lp.height=195;
             wxgl_layout.setLayoutParams(lp);
         }
 
@@ -213,22 +212,24 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
     public void initData() {
         FunctionActivity=new HashMap<String,Class<?>>();
         FunctionActivity.put("采购收货",CGDDListActivity.class);
+        FunctionActivity.put("扫码收货",CGScanReceiveActivity.class);
         FunctionActivity.put("采购入库", KFCGSHRKActivity.class);
         FunctionActivity.put("转储收货", KFZCSHAtivity.class);
         FunctionActivity.put("库房发料", KFFLActivity.class);
         FunctionActivity.put("出库发料", KFFL2Activity.class);
-        FunctionActivity.put("半成品收货", WXBCPSHActivity.class);
-        FunctionActivity.put("成品收货", WXCPSHActivity.class);
+        FunctionActivity.put("半成品收货", WXBCPSHNActivity.class);
+        FunctionActivity.put("成品收货", WXCPSHNActivity.class);
         FunctionActivity.put("加工成品入库", WXBCPJGRKActivity.class);
         FunctionActivity.put("厂内配送", PrintCNPSDActivity.class);
         FunctionActivity.put("跨工厂配送", PrintKGCPSDActivity.class);
         FunctionActivity.put("销售发货", PrintXSFHDActivity.class);
+        FunctionActivity.put("库房标签打印", WXKFBQDYActivity.class);
+        FunctionActivity.put("异常收货", WXExceptionReceiveActivity.class);
         FunctionActivity.put("物料查询", WLQueryActivity.class);
         //FunctionActivity.put("标签查询",QueryLabelActivity.class);
         //FunctionActivity.put("物料状态查询",LabelStatusActivity.class);
         //FunctionActivity.put("返回发料单",GetIssueNoteDetailActivity.class);
-
-
+//        DialogUtil.errorMessageDialog(this,"测试错误提示");
     }
 
     @Override
@@ -353,7 +354,7 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
 //                Toast.makeText (CGDDListActivity.this, "下下下", Toast.LENGTH_SHORT).show ();
                 // 音量增大时应该执行的功能代码
 //                printHelper.Unreeling((byte) 0x1f);
-                printHelper.Step((byte) 0x1f);
+                printHelper.Step((byte) 0x1f);//走纸，防卡纸
                 return true;
         }
         return super.onKeyDown (keyCode, event);

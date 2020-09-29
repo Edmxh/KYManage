@@ -185,6 +185,7 @@ public class CGDDDialogActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.cancel:
                 vibrator.vibrate(30);
+                isReceive=false;
                 CGDDDialogActivity.this.finish();
                 break;
         }

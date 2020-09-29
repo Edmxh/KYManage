@@ -1,25 +1,19 @@
 package com.example.kymanage.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.Print3Adapter;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean2;
@@ -32,6 +26,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.Print3.GetDeliveryListInfoJSPresenter;
 import com.example.kymanage.presenter.Presenters.Print3.GetLableStorageInfoJSPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
@@ -204,7 +199,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                Intent intent = new Intent(PrintXSFHDActivity.this, XSFHRecordActivity.class);
+                Intent intent = new Intent(PrintXSFHDActivity.this, XSFHRecord1Activity.class);
                 intent.putExtra("username",username);
 //                System.out.println("外协二级菜单发："+username);
                 startActivity(intent);
@@ -215,7 +210,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
     @Override
     public void onDataSuccessScan(GetLableStorageInfoJSRep data) {
         try {
-            GetDeliveryListInfoJSReqBean1 req=new GetDeliveryListInfoJSReqBean1(code, no, line, num, data.getStorage());
+            GetDeliveryListInfoJSReqBean1 req=new GetDeliveryListInfoJSReqBean1(code, no, line, num, data.getSendStorage());
             printReqs.add(req);
             adapter=new Print3Adapter(this, R.layout.print3item,printReqs);
             listView1.setAdapter(adapter);
@@ -226,14 +221,22 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
 
     @Override
     public void onDataSuccess1(GetDeliveryListInfoJSRepBean3 data) {
-        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+        if(data.getCode()==0){
+//            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
 
-        List<GetDeliveryListInfoJSRepBean2> data1 = data.getData();
-        for (GetDeliveryListInfoJSRepBean2 data2 : data1) {
+            List<GetDeliveryListInfoJSRepBean2> data1 = data.getData();
+            for (GetDeliveryListInfoJSRepBean2 data2 : data1) {
+                mPrintUtil.printXSFHBill(data2,printHelper);
+                printHelper.printBlankLine(80);
+            }
+            //销售发货成功后清空页面
+            printReqs.clear();
+            adapter.notifyDataSetChanged();
 
-            mPrintUtil.printXSFHBill(data2,printHelper);
-            printHelper.printBlankLine(80);
+        }else {
+            DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,data.getMessage());
         }
+
     }
 
     @Override
@@ -291,7 +294,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
                             System.out.println("请勿重复扫码");
                             Toast.makeText(PrintXSFHDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
                         }else {
-                            presenter1.GetLableStorageInfoJS(code,id,type,"2090");
+                            presenter1.GetLableStorageInfoJS(id);
                         }
                         scanString="";
                     }else {

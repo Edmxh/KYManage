@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
@@ -24,6 +26,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.KFPage2.GetTransferRecordPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage2.InsertDumpTransferRecordPresenter;
+import com.example.kymanage.utils.DialogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,15 +40,21 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     private String m_Broadcastname="com.barcode.sendBroadcast";
     private MyCodeReceiver receiver = new MyCodeReceiver();
     private String scanString;
+    private TextView scdd;
+    private TextView cjsj;
+    private TextView gxsj;
+    private TextView zczt;
     //扫描获取的数据
     private String dumpNum ;
-    private List<String> dumpNums;
     private GetTransferRecordPresenter presenter1;
     private List<GetTransferRecordRepBean1> datas;
 
 
+
+    //缩略菜单
+    private ImageView menupoint;
+    PopupMenu popup = null;
     //转储发料确认
-    private ImageView receive;
     private InsertDumpTransferRecordPresenter presenter2;
     private InsertDumpTransferRecordReq recordReq;
     private List<InsertDumpTransferRecordReqBean> reqList;
@@ -67,8 +76,12 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     public void initview() {
         vibrator=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         scan=findViewById(R.id.scan);
-        receive=findViewById(R.id.receive);
+        menupoint=findViewById(R.id.menupoint);
         listview1=findViewById(R.id.listview1);
+        scdd=findViewById(R.id.scdd);
+        cjsj=findViewById(R.id.cjsj);
+        gxsj=findViewById(R.id.gxsj);
+        zczt=findViewById(R.id.zczt);
 
         presenter1=new GetTransferRecordPresenter();
         presenter1.setView(this);
@@ -82,7 +95,6 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     @Override
     public void initData() {
         reqList=new ArrayList<InsertDumpTransferRecordReqBean>();
-        dumpNums=new ArrayList<String>();
         datas=new ArrayList<GetTransferRecordRepBean1>();
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
@@ -111,64 +123,71 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
                     e.printStackTrace();
                 }
 
-                //模拟扫码
-//                scanString="{\"code\":\"202006220837072\"}";
-//                JSONObject lableObject= null;
-//                try {
-//                    lableObject = JSONObject.parseObject(scanString);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(KFZCSHAtivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
-//                }
-//                if(lableObject!=null) {
-//                    dumpNum=lableObject.getString("code");
-//                    //判断是否重复扫码
-//                    boolean repeat=false;
-//                    for (int i = 0; i < dumpNums.size(); i++) {
-//                        if(dumpNum.equals(dumpNums.get(i))){
-//                            repeat=true;
-//                        }
-//                    }
-//                    if(repeat){
-//                        System.out.println("请勿重复扫码");
-//                        Toast.makeText(KFZCSHAtivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
-//                    }else {
-//                        GetTransferRecordReqBean bean=new GetTransferRecordReqBean(dumpNum);
-//                        presenter1.GetTransferRecord(bean);
-//                    }
-//                    scanString="";
-//                }else {
-//                    Log.i("token","扫描结果为空");
-//                    Toast.makeText(KFZCSHAtivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
-//                }
+            }
+        });
+        menupoint.setOnClickListener(v -> {
+            vibrator.vibrate(30);
+            onPopupButtonClick(menupoint);
+        });
+    }
 
-            }
-        });
-        receive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                if(reqList.size()>0){
-                    recordReq.setData(reqList);
-                    presenter2.InsertDumpTransferRecord(recordReq);
-                }
-            }
-        });
+    //缩略菜单
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.kfzcshmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                item -> {
+                    switch (item.getItemId())
+                    {
+                        case R.id.record:
+                            // 隐藏该对话框
+                            Intent intent = new Intent(KFZCSHAtivity.this,KFZCSHRecordActivity.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.receive:
+                            vibrator.vibrate(30);
+                            if(reqList.size()>0){
+                                recordReq.setData(reqList);
+                                recordReq.setDumpNum(dumpNum);
+                                presenter2.InsertDumpTransferRecord(recordReq);
+                            }
+                            break;
+                        default:
+                            // 使用Toast显示用户单击的菜单项
+                    }
+                    return true;
+                });
+        popup.show();
     }
 
     @Override
     public void onDataSuccessScan(GetTransferRecordRep data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
         try {
+            datas.clear();
             for (GetTransferRecordRepBean1 datum : data.getData()) {
                 datas.add(datum);
-
-                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode(),datum.getMjahr(),datum.getMblnr(),"");
+                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(),datum.getWStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode(),datum.getMjahr(),datum.getMblnr(),"");
                 reqList.add(reqBean);
             }
             adapter=new KFPSDAdapter(KFZCSHAtivity.this, R.layout.kfpsditem,datas);
             listview1.setAdapter(adapter);
-            dumpNums.add(dumpNum);
+
+            scdd.setText(data.getMdata().getProductOrderNO());
+            cjsj.setText(data.getMdata().getCreateTime());
+            gxsj.setText(data.getMdata().getUpdateTime());
+            String ztStr;
+            if(data.getMdata().getReverseHandler().equals("")){
+                ztStr=data.getMdata().getStatus();
+            }else {
+                ztStr=data.getMdata().getStatus()+"("+data.getMdata().getReverseHandler()+")";
+            }
+            zczt.setText(ztStr);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -176,9 +195,19 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
 
     @Override
     public void onDataSuccess1(InsertDumpTransferRecordRep data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        datas.clear();
-        adapter.notifyDataSetChanged();
+        if(data.getStatus().getCode()==1){
+            Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+            datas.clear();
+            adapter.notifyDataSetChanged();
+
+            scdd.setText("");
+            cjsj.setText("");
+            gxsj.setText("");
+            zczt.setText("");
+        }else {
+            DialogUtil.errorMessageDialog(KFZCSHAtivity.this,data.getStatus().getMessage());
+        }
+
     }
 
     @Override
@@ -206,20 +235,9 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
                     }
                     if(lableObject!=null) {
                         dumpNum=lableObject.getString("code");
-                        //判断是否重复扫码
-                        boolean repeat=false;
-                        for (int i = 0; i < dumpNums.size(); i++) {
-                            if(dumpNum.equals(dumpNums.get(i))){
-                                repeat=true;
-                            }
-                        }
-                        if(repeat){
-                            System.out.println("请勿重复扫码");
-                            Toast.makeText(KFZCSHAtivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
-                        }else {
-                            GetTransferRecordReqBean bean=new GetTransferRecordReqBean(dumpNum);
-                            presenter1.GetTransferRecord(bean);
-                        }
+                        GetTransferRecordReqBean bean=new GetTransferRecordReqBean(dumpNum);
+                        presenter1.GetTransferRecord(bean);
+
                         scanString="";
                     }else {
                         Log.i("token","扫描结果为空");

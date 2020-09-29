@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.kymanage.Beans.GetDumpRecord.GetDumpRecordRepBean;
@@ -12,11 +14,12 @@ import com.example.kymanage.Beans.GetInFactoryDeliverListDetailJS.GetInFactoryDe
 import com.example.kymanage.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Print1Record2Adapter extends ArrayAdapter<GetInFactoryDeliverListDetailJSRep.GetInFactoryDeliverListDetailJSRepBean> {
     private int resourceId;
-//    HashMap<Integer, Boolean> select=new HashMap<>();
+    HashMap<Integer, Boolean> select=new HashMap<>();
     private List<GetInFactoryDeliverListDetailJSRep.GetInFactoryDeliverListDetailJSRepBean> mList;
     //private DataBean1 DataBean1;
 
@@ -25,13 +28,13 @@ public class Print1Record2Adapter extends ArrayAdapter<GetInFactoryDeliverListDe
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
         mList=objects==null?new ArrayList<GetInFactoryDeliverListDetailJSRep.GetInFactoryDeliverListDetailJSRepBean>():objects;
-//        initData();
+        initData();
     }
-//    private void initData() {
-//        for(int i=0;i<mList.size();i++){
-//            select.put(i, false);
-//        }
-//    }
+    private void initData() {
+        for(int i=0;i<mList.size();i++){
+            select.put(i, false);
+        }
+    }
     // convertView 参数用于将之前加载好的布局进行缓存
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
@@ -59,19 +62,23 @@ public class Print1Record2Adapter extends ArrayAdapter<GetInFactoryDeliverListDe
         viewHolder.scdd=view.findViewById(R.id.scdd);
         viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
         viewHolder.psdx=view.findViewById(R.id.psdx);
+        viewHolder.czr=view.findViewById(R.id.czr);
+        viewHolder.cjsj=view.findViewById(R.id.cjsj);
+        viewHolder.gxsj=view.findViewById(R.id.gxsj);
+        viewHolder.zt=view.findViewById(R.id.zt);
         viewHolder.xqsl=view.findViewById(R.id.xqsl);
         viewHolder.gzsl=view.findViewById(R.id.gzsl);
         viewHolder.dw=view.findViewById(R.id.dw);
-//        viewHolder.checked=view.findViewById(R.id.checked);
-//        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-//
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView,
-//                                         boolean isChecked) {
-//                select.put(position, isChecked);
-//            }
-//
-//        });
+        viewHolder.checked=view.findViewById(R.id.checked);
+        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                select.put(position, isChecked);
+            }
+
+        });
         // 获取控件实例，并调用set...方法使其显示出来
 //        viewHolder.check.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -101,14 +108,23 @@ public class Print1Record2Adapter extends ArrayAdapter<GetInFactoryDeliverListDe
         viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
 
         viewHolder.psdx.setText(rep.getClient());
+        viewHolder.czr.setText(rep.getHandler());
+        viewHolder.cjsj.setText(rep.getCreateTime());
+        viewHolder.gxsj.setText(rep.getUpdateTime());
+        if(rep.getReverseHandler()==null||rep.getReverseHandler().equals("")){
+            viewHolder.zt.setText(rep.getStatus());
+        }else {
+            viewHolder.zt.setText(rep.getStatus()+"("+rep.getReverseHandler()+")");
+        }
+
         viewHolder.xqsl.setText(rep.getDemandQty()+"");
         viewHolder.gzsl.setText(rep.getActuallyQty()+"");
         viewHolder.dw.setText(rep.getMaterialUnit());
-//        if(select.get(position)){
-//            viewHolder.checked.setChecked(true);
-//        }else{
-//            viewHolder.checked.setChecked(false);
-//        }
+        if(select.get(position)){
+            viewHolder.checked.setChecked(true);
+        }else{
+            viewHolder.checked.setChecked(false);
+        }
 //        switch (position%2){
 //            default:
 //                break;
@@ -157,10 +173,14 @@ public class Print1Record2Adapter extends ArrayAdapter<GetInFactoryDeliverListDe
         TextView scdd;
         TextView xsddh_hang;
         TextView psdx;
+        TextView czr;
+        TextView cjsj;
+        TextView gxsj;
+        TextView zt;
         TextView xqsl;
         TextView gzsl;
         TextView dw;
-//        CheckBox checked;
+        CheckBox checked;
     }
 
     public interface DetailViewHolderListener {

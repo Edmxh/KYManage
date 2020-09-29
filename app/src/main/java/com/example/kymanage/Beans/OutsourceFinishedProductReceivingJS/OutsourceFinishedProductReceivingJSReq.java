@@ -13,28 +13,6 @@ import java.util.List;
 
 public class OutsourceFinishedProductReceivingJSReq {
 
-    /**
-     * postingDate : 2020-06-15
-     * documentDate : 2020-06-15
-     * user : pliu
-     * KDAUF : 10000208
-     * KDPOS : 26
-     * orderNum : 4800000036
-     * orderRow : 00010
-     * upstreamFactory : 2010
-     * demandFactory : 2090
-     * demandStorage : 2906
-     * materialCode : LJ7015001194
-     * materialDesc : 拖链导槽|Q235A
-     * materialType : 独立
-     * materialUnit : EA
-     * MENGE : 1000
-     * inStorage : 195.0
-     * recNum : 2
-     * remark : 外协成品收货物料测试备注
-     * KINDS : 10
-     */
-
     private String postingDate;
     private String documentDate;
     private String user;
@@ -54,11 +32,16 @@ public class OutsourceFinishedProductReceivingJSReq {
     private float recNum;
     private String remark;
     private String KINDS;
+    //9.5
+    private String aufnr;
+    private String pmatn;
+    private String mcode;
+    private String maktx;
 
     private List<AUFNRBean> AUFNR;
     private List<UPAUFNRBean> UPAUFNR;
 
-    public OutsourceFinishedProductReceivingJSReq(String postingDate, String documentDate, String user, String KDAUF, String KDPOS, String orderNum, String orderRow, String upstreamFactory, String demandFactory, String demandStorage, String materialCode, String materialDesc, String materialType, String materialUnit, float MENGE, float inStorage, float recNum, String remark, String KINDS, List<AUFNRBean> AUFNR, List<UPAUFNRBean> UPAUFNR) {
+    public OutsourceFinishedProductReceivingJSReq(String postingDate, String documentDate, String user, String KDAUF, String KDPOS, String orderNum, String orderRow, String upstreamFactory, String demandFactory, String demandStorage, String materialCode, String materialDesc, String materialType, String materialUnit, float MENGE, float inStorage, float recNum, String remark, String KINDS, String aufnr, String pmatn, String mcode, String maktx, List<AUFNRBean> AUFNR, List<UPAUFNRBean> UPAUFNR) {
         this.postingDate = postingDate;
         this.documentDate = documentDate;
         this.user = user;
@@ -78,6 +61,10 @@ public class OutsourceFinishedProductReceivingJSReq {
         this.recNum = recNum;
         this.remark = remark;
         this.KINDS = KINDS;
+        this.aufnr = aufnr;
+        this.pmatn = pmatn;
+        this.mcode = mcode;
+        this.maktx = maktx;
         this.AUFNR = AUFNR;
         this.UPAUFNR = UPAUFNR;
     }
@@ -278,6 +265,39 @@ public class OutsourceFinishedProductReceivingJSReq {
     public void setKINDS(String KINDS) {
         this.KINDS = KINDS;
     }
+
+    public String getAufnr() {
+        return aufnr;
+    }
+
+    public void setAufnr(String aufnr) {
+        this.aufnr = aufnr;
+    }
+
+    public String getPmatn() {
+        return pmatn;
+    }
+
+    public void setPmatn(String pmatn) {
+        this.pmatn = pmatn;
+    }
+
+    public String getMcode() {
+        return mcode;
+    }
+
+    public void setMcode(String mcode) {
+        this.mcode = mcode;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
     @JSONField(name = "AUFNR")
     public List<AUFNRBean> getAUFNR() {
         return AUFNR;

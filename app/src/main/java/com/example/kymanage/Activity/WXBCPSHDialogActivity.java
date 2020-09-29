@@ -1,6 +1,8 @@
 package com.example.kymanage.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kymanage.Adapter.CGDialogAdapter;
+import com.example.kymanage.Adapter.WXBCPSHDialogAdapter;
 import com.example.kymanage.Beans.GetPurchaseOrderInfoJS.GetPurchaseOrderInfoJSRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderRep;
 import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrderReps;
@@ -24,6 +27,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.Semi_FinishedProductReceivingPresenter;
+import com.example.kymanage.utils.DialogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,18 +50,18 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
     //传递的list
     private List<PreMaterialProductOrderRep> datas;
     private String materialCode;
+    private String pmaterialCode;
+    private String kinds;
     private String factoryNO;
     private String marketorderno;
     private String marketorderrow;
     private float dhsl;
-    private int index;
     private String username;
-    private String demandStorage;
-    private GetPurchaseOrderInfoJSRep checkedData;
+    private Semi_FinishedProductReceivingReq receiveReq;
     //返回的AdvanceStorageId
     private long AdvanceStorageId;
     //adapter
-    private CGDialogAdapter adapter;
+    private WXBCPSHDialogAdapter adapter;
     //获取数据
     private CGSHReceiveDetailPresenter presenter1;
     //收货
@@ -96,17 +100,25 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initData() {
+        //username
+        SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+                Activity.MODE_PRIVATE);
+        username =sharedPreferences.getString("username", "");
         Intent intent =getIntent();
         materialCode=intent.getStringExtra("materialCode");
+        pmaterialCode=intent.getStringExtra("pmaterialCode");
+        kinds=intent.getStringExtra("kinds");
         factoryNO=intent.getStringExtra("factoryNO");
         marketorderno=intent.getStringExtra("marketorderno");
         marketorderrow=intent.getStringExtra("marketorderrow");
         dhsl=intent.getFloatExtra("dhsl",0);
-        index=intent.getIntExtra("index",0);
-        username=intent.getStringExtra("username");
-        demandStorage=intent.getStringExtra("demandStorage");
-        checkedData = (GetPurchaseOrderInfoJSRep)intent.getSerializableExtra("checkedData");
-        presenter1.CGSHReceiveDetail(marketorderno,marketorderrow,materialCode,factoryNO,dhsl);
+        receiveReq = (Semi_FinishedProductReceivingReq)intent.getSerializableExtra("receiveReq");
+        if(kinds.equals("20")){
+            presenter1.CGSHReceiveDetail(marketorderno,marketorderrow,materialCode,"2090",dhsl);
+        }else {
+            presenter1.CGSHReceiveDetail(marketorderno,marketorderrow,pmaterialCode,"2090",dhsl);
+        }
+
 //        presenter1.CGSHReceiveDetail("DQ5095000031","2010",2);
     }
 
@@ -134,21 +146,21 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
                         }else {
                             issueNum=Float.parseFloat(("0"+et1.getText().toString()));
                         }
-                        receinum+=issueNum;
-//                        Semi_FinishedProductReceivingReqBean bean=new Semi_FinishedProductReceivingReqBean(orderNo,issueNum,rep.getKDAUF(), rep.getKDPOS(), rep.getRSNUM(), rep.getRSPOS(), rep.getMATNR(), rep.getMAKTX(), rep.getDemandNum(),rep.getRSART(),rep.getProOrderDesc(),rep.getProOrderMaterialDesc(),rep.getProOrderMaterialCode(),rep.getProOrderMaterialUnit());
-//                        productOrder.add(bean);
+                        if(issueNum>0){
+                            receinum+=issueNum;
+                            Semi_FinishedProductReceivingReqBean bean=new Semi_FinishedProductReceivingReqBean(rep.getDemandNum(), rep.getKDAUF(), rep.getKDPOS(), rep.getMAKTX(), rep.getMATNR(), rep.getRSART(), rep.getRSNUM(), rep.getRSPOS(), rep.getDispatchNum(), rep.getProductOrderNO(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getFactory(), rep.getStorage(), rep.getMCODE(), issueNum);
+                            productOrder.add(bean);
+                        }
+
                     }
                 }
-
-//                presenter2.CG103SHReceive("2020-01-01",getCurrentdate(),username,receinum,checkedData.getOrderNum(),checkedData.getRow(),checkedData.getCode(),checkedData.getMaterialType(),checkedData.getFactory(),checkedData.getDescription(),checkedData.getUnit(),checkedData.getRemark(),productOrder);
-                List<Semi_FinishedProductReceivingReq> detail=new ArrayList<Semi_FinishedProductReceivingReq>();
-//                Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(receinum,checkedData.getEBELN(),checkedData.getEBELP(),checkedData.getMATNR(),checkedData.getMaterialType(),checkedData.getWERKS(),demandStorage,checkedData.getTXZ01(),checkedData.getMEINS(),checkedData.getCGTXT(),productOrder);
-//                detail.add(req);
-//                presenter2.Semi_FinishedProductReceiving(getCurrentdate(),getCurrentdate(),username,req);
+                receiveReq.setProductOrder(productOrder);
+                presenter2.Semi_FinishedProductReceiving(receiveReq);
 //                Toast.makeText(WXBCPSHDialogActivity.this,"外协103预入库成功",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.cancel:
-                WXBCPSHDialogActivity.this.finish();
+                isReceive=false;
+                finish();
                 break;
         }
     }
@@ -158,7 +170,6 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
         float receinum=0;
 
         Intent data = new Intent();
-        data.putExtra("index",index);
         data.putExtra("allNum",receinum);
         data.putExtra("isReceive",isReceive);
         data.putExtra("AdvanceStorageId",AdvanceStorageId);
@@ -175,7 +186,7 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
         datas=data.getData();
 //        System.out.println("总数量:"+dhsl);
         if(datas!=null){
-            adapter=new CGDialogAdapter(WXBCPSHDialogActivity.this, R.layout.cgdddialogitem,datas);
+            adapter=new WXBCPSHDialogAdapter(WXBCPSHDialogActivity.this, R.layout.wxbcpshdialogitem,datas);
             listview1.setAdapter(adapter);
         }
         Toast.makeText(WXBCPSHDialogActivity.this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
@@ -184,9 +195,14 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onDataSuccess2(Semi_FinishedProductReceivingRep data) {
-        Toast.makeText(WXBCPSHDialogActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
-        AdvanceStorageId=data.getStorageId();
-        this.finish();
+        if(data.getCode()==1){
+            Toast.makeText(WXBCPSHDialogActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
+            AdvanceStorageId=data.getAdvanceStorageId();
+            this.finish();
+        }else {
+            DialogUtil.errorMessageDialog(WXBCPSHDialogActivity.this,data.getMessage());
+        }
+
     }
 
     @Override

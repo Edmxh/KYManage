@@ -42,6 +42,7 @@ import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.Presenters.CGPage1.CG103SHReceivePresenter;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHPrintPresenter;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHQueryPresenter;
+import com.example.kymanage.utils.DialogUtil;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -95,6 +96,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     //扫描相关
     private ImageView scan;
     private String m_Broadcastname="com.barcode.sendBroadcast";
+//    private String m_Broadcastname2="com.barcode.sendBroadcast2";
     private MyCodeReceiver receiver = new MyCodeReceiver();
     //扫到的string
     private String scanString;
@@ -227,20 +229,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                //确保扫描完毕scanString被赋值后才被解析
-                Thread scanThread=new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        scan();
-                    }
-                });
-
-                scanThread.start();
-                try {
-                    scanThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                scan();
 
             }
         });
@@ -359,39 +348,45 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 
     @Override
     public void onDataSuccess1(GetRecevingDetailreps data) {
-        list=data.getData();
-//        System.out.println(data.getStatus().getMessage());
-        //System.out.println(list.get(0).toString());
-        adapter=new CGListAdapter(CGDDListActivity.this,R.layout.cgddlistitem,list);
-        adapter.setOnInnerItemOnClickListener(this);
-        // 将适配器上的数据传递给listView
-        cglistview.setAdapter(adapter);
-        cglistview.setOnItemClickListener(this);
-
-        Toast.makeText(CGDDListActivity.this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-//        datas1=data.getData();
-    }
-
-    @Override
-    public void onDataSuccess2(MaterialFlow103RepStatus data) {
-        try {
-            printList.clear();
-            Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-            for (Long aLong : data.getData()) {
-                printList.add(aLong);
-            }
-            LoadingBar.dialog(CGDDListActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
-            queryList();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(data.getStatus().getCode()==1){
+            list=data.getData();
+            adapter=new CGListAdapter(CGDDListActivity.this,R.layout.cgddlistitem,list);
+            adapter.setOnInnerItemOnClickListener(this);
+            // 将适配器上的数据传递给listView
+            cglistview.setAdapter(adapter);
+            cglistview.setOnItemClickListener(this);
+            Toast.makeText(CGDDListActivity.this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        }else {
+            DialogUtil.errorMessageDialog(CGDDListActivity.this,data.getStatus().getMessage());
         }
     }
 
     @Override
+    public void onDataSuccess2(MaterialFlow103RepStatus data) {
+        if(data.getCode()==1){
+            try {
+                printList.clear();
+                Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+                for (Long aLong : data.getData()) {
+                    printList.add(aLong);
+                }
+                LoadingBar.dialog(CGDDListActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
+                queryList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            DialogUtil.errorMessageDialog(CGDDListActivity.this,data.getMessage());
+        }
+
+    }
+
+    @Override
     public void onDataSuccessPrint(GetParchaseCenterLableReps data) {
-        List<GetParchaseCenterLableRep> labels=data.getData();
-        Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        if(labels!=null){
+        if(data.getCode()==1){
+            List<GetParchaseCenterLableRep> labels=data.getData();
+            Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            if(labels!=null){
                 for (GetParchaseCenterLableRep label : labels) {
                     if(label.isSeparateLabel()){
                         int labelNum= (int) label.getNum();
@@ -403,20 +398,6 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                         }
                     }else {
                         Bitmap bm=cb.createImage1(label,tf);
-                        //确保跳转到下一页了再进行打印
-//                        Thread printThread=new Thread(new Runnable(){
-//                            @Override
-//                            public void run() {
-//                                printHelper.GoToNextPage();
-//                            }
-//                        });
-//                        printThread.start();
-//                        try {
-//                            Log.i("token","scanThread.join();");
-//                            printThread.join();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
                         printHelper.PrintBitmapAtCenter(bm,384,480);
                         printHelper.printBlankLine(81);
                     }
@@ -424,9 +405,13 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 //                printHelper.printBlankLine(40);
                 System.out.println("打印标签的数量为"+data.getData().size());
 //                Toast.makeText(CGDDListActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
+            }else {
+                System.out.println("未打印标签");
+            }
         }else {
-            System.out.println("未打印标签");
+            DialogUtil.errorMessageDialog(CGDDListActivity.this,data.getMessage());
         }
+
     }
 
     @Override
@@ -522,6 +507,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     public void registerBroadcast() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(m_Broadcastname);
+//        intentFilter.addAction(m_Broadcastname2);
 //        Toast.makeText(KFFLActivity.this, "扫描注册初始化", Toast.LENGTH_SHORT).show();
         registerReceiver(receiver, intentFilter);
     }

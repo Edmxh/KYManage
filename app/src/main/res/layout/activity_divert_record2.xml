@@ -21,14 +21,28 @@
 <!--            android:src="@drawable/cx"-->
 <!--            android:layout_height="wrap_content"-->
 <!--            android:layout_marginLeft="10dp"/>-->
+        <ImageView
+            android:id="@+id/receive"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cx"
+            android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:layout_height="match_parent"
             android:text="转储详情"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:textSize="@dimen/text22"/>
+        <ImageView
+            android:id="@+id/menupoint"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:src="@null"
+            android:layout_marginLeft="10dp"/>
 <!--        <ImageView-->
 <!--            android:id="@+id/print"-->
 <!--            android:layout_width="0dp"-->

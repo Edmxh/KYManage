@@ -24,6 +24,8 @@ import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueNoteDetail.KFLabelBean;
 import com.example.kymanage.Beans.GetOutsourceFinProLableJS.GetOutsourceFinProLableJSRepBean;
 import com.example.kymanage.Beans.GetParchaseCenterLable.GetParchaseCenterLableRep;
+import com.example.kymanage.Beans.InsertFinAProOrderRecord.InsertFinAProOrderRecordRep;
+import com.example.kymanage.Beans.Semi_FinishedProductReceivingLable.Semi_FinishedProductReceivingLableRep;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
@@ -695,13 +697,14 @@ public class CreateBitmap{
 //        top+=text3+lineSpacing;
 //        canvas.drawText(str7,0,top,paint);
 
-//        String str13=""+rep.getmCode();
-//        paint.setTextSize(text3);
-//        canvas.drawText(str13,QRx,top,paint);
+        String str13="备注：超量入库";
+        paint.setTextSize(text3);
+        top+=text2+lineSpacing;
+        canvas.drawText(str13,QRx,top,paint);
 
         //String str9="--------------------------------------------------------------------------------------------------------------------------";
         paint.setFakeBoldText(true);
-        top+=lineSpacing;
+        top+=lineSpacing+30;
         canvas.drawLine (0,top,picWidth,top,paint);
 
         String str10="TKAS"+"             "+getCurrentdate()+" "+"CM";
@@ -751,6 +754,385 @@ public class CreateBitmap{
 
     //画图6,外协101标签
     public Bitmap createImage6(GetFinProStorageRecordNoteRepBean rep, Typeface tf) {
+        String str11=getSeriesNumber();
+        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getAllocatedQty()+",\"po\":\""+rep.getProductOrderNO()+"\",\"num\":\""+str11+"\",\"no\":\""+rep.getMarketOrderNO()+"\",\"line\":\""+rep.getMarketOrderRow()+"\",\"fid\":"+rep.getID()+",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getArea()+"\",\"cs\":\""+""+"\"}";
+        System.out.println("content:"+content);
+        int picWidth = 480;//生成图片的宽度
+        int picHeight = 380;//生成图片的高度
+        int QRx = 250;//二维码x坐标
+        int titleTextSize=34;
+        int text1 = 32;
+        int text2 = 30;
+        int text3 = 28;
+        int text4 = 26;
+        int text5 = 24;//
+        int text6 = 22;//
+        int text7 = 15;//
+        int text8 = 18;//
+        int lineSpacing = 10;//行间距
+
+        //生成的图片
+        Bitmap result = Bitmap.createBitmap(picWidth,picHeight,Bitmap.Config.ARGB_8888);
+
+
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setSubpixelText(true);
+        paint.setDither(true);
+        //从asset 读取字体
+//        AssetManager mgr= getAssets();
+        //根据路径得到Typeface
+//        Typeface tf = Typeface.createFromFile("D:\\MyFile\\temp\\KYManage\\app\\src\\main\\assets\\fonts\\simfang.ttf");//仿宋
+        paint.setTypeface(tf);
+        Canvas canvas = new Canvas(result);
+        //先画一整块白色矩形块
+        canvas.drawRect(0,0,picWidth,picHeight,paint);
+
+
+        //画文字
+        String str1=rep.getMaterialDesc();
+//        titleTextSize=(QRx)/(str1.length());
+//
+        paint.setColor(Color.BLACK);
+//        paint.setTextSize(titleTextSize);
+        int top=15;
+//        canvas.drawText(str1,0,top,paint);
+        TextPaint textPaint = new TextPaint();
+        textPaint.setColor(Color.BLACK);
+        if(str1.length()<30){
+            textPaint.setTextSize(text2);
+        }else if(str1.length()>=30&&str1.length()<=40) {
+            textPaint.setTextSize(text4);
+        }else {
+            textPaint.setTextSize(text6);
+        }
+        textPaint.setTypeface(tf);
+        StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
+
+//从 (20,80)的位置开始绘制
+        canvas.translate(0,top);
+        layout.draw(canvas);
+
+        String str3=rep.getMaterialCode();
+        paint.setFakeBoldText(true);
+        if(str3.length()>16){
+            paint.setTextSize(text8);
+        }else {
+            paint.setTextSize(text3);
+        }
+        top+=titleTextSize*2+30;
+        canvas.drawText(str3,0,top,paint);
+        paint.setFakeBoldText(false);
+
+        String str4="单位:"+rep.getProOMaterialUnit()+" "+"数量:"+(rep.getAllocatedQty());
+        paint.setTextSize(text5);
+        top+=text1+lineSpacing;
+        canvas.drawText(str4,0,top,paint);
+
+        //标签类型 "内部配送（事业部场地）|销售发货（客户）|未知类型（写个2090+）
+        String str5="";
+        if(rep.getNoteType().equals("内部配送")){
+            str5=rep.getFactory()+"  "+rep.getArea();
+        }else if(rep.getNoteType().equals("销售发货")){
+            str5=rep.getClientShortName()+"  "+rep.getClientNO();
+        }else {
+            str5="2090"+"  "+rep.getSendStorage();
+        }
+
+
+        paint.setTextSize(text5);
+        top+=text1+lineSpacing;
+        canvas.drawText(str5,0,top,paint);
+
+        String str6="";
+        if(rep.getMarketOrderNO()==null||rep.getMarketOrderRow()==null||rep.getProductOrderNO()==null){
+            str6="";
+        }else {
+            String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+            String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+            String newStr3 = rep.getProductOrderNO().replaceAll("^(0+)", "");
+            str6=newStr1+"/"+newStr2+" "+newStr3;
+        }
+        paint.setTextSize(text6);
+        top+=text2+lineSpacing;
+        canvas.drawText(str6,0,top,paint);
+
+        String str7="";
+        if(rep.getProOMaterialNO()==null){
+            str7="";
+        }else {
+            str7=""+rep.getProOMaterialNO();
+        }
+        paint.setTextSize(text3);
+        top+=text3+lineSpacing;
+        canvas.drawText(str7,0,top,paint);
+
+        String str8="";
+        if(rep.getProOMaterialDesc()==null){
+            str8="";
+        }else {
+            str8=""+rep.getProOMaterialDesc();
+        }
+        paint.setTextSize(text3);
+        top+=text3+lineSpacing;
+        canvas.drawText(str8,0,top,paint);
+        String str13="";
+        paint.setTextSize(text3);
+        canvas.drawText(str13,QRx,top,paint);
+
+        //String str9="--------------------------------------------------------------------------------------------------------------------------";
+        paint.setFakeBoldText(true);
+        top+=lineSpacing;
+        canvas.drawLine (0,top,picWidth,top,paint);
+
+        String str10="TKAS"+"-"+rep.getFacName()+"      "+rep.getCreateDate()+" "+"CM";
+        paint.setTextSize(text4);
+        paint.setFakeBoldText(false);
+        top+=text4;
+        canvas.drawText(str10,0,top,paint);
+        //画二维码
+        Bitmap bm=null;
+        try {
+            bm = BarcodeUtil.encodeAsBitmap(content,
+                    BarcodeFormat.QR_CODE,picWidth-QRx-20, picWidth-QRx-20);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        canvas.drawBitmap(bm,QRx,0,paint);
+
+        int y1=picWidth-QRx+10;
+
+        str11=getSeriesNumber();
+        paint.setTextSize(text5);
+        canvas.drawText(str11,QRx,y1,paint);
+        String str12="备注:";
+        if(rep.getNoteType().equals("未知类型")||rep.getNoteType().equals("超量入库")){
+            str12="备注:"+rep.getNoteType();
+        }else {
+            str12="备注:";
+        }
+        paint.setTextSize(text4);
+        y1+=text5+lineSpacing;
+        canvas.drawText(str12,QRx,y1,paint);
+
+        canvas.save();
+        canvas.restore();
+
+        //转向
+        Bitmap adjustresult = adjustPhotoRotation(result,90);
+
+        return adjustresult;
+    }
+
+
+    //画图7,外协成品收货标签
+    public Bitmap createImage7(GetOutsourceFinProLableJSRepBean rep, Typeface tf) {
+        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getQty()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"no\":\""+rep.getMarketOrderNO()+"\",\"line\":\""+rep.getMarketOrderRow()+"\",\"type\":\""+rep.getFType()+"\",\"fid\":"+rep.getId()+",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getArea()+"\"}";
+        System.out.println(content);
+        int picWidth = 530;//生成图片的宽度
+        int picHeight = 380;//生成图片的高度
+        int QRx = 300;//二维码x坐标
+        int titleTextSize=34;
+        int text1 = 32;
+        int text2 = 30;
+        int text3 = 28;
+        int text4 = 26;
+        int text5 = 24;//
+        int text6 = 22;//
+        int text7 = 20;//
+        int text8 = 18;//
+        int lineSpacing = 10;//行间距
+
+        //生成的图片
+        Bitmap result = Bitmap.createBitmap(picWidth,picHeight,Bitmap.Config.ARGB_8888);
+
+
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setSubpixelText(true);
+        paint.setDither(true);
+        //从asset 读取字体
+//        AssetManager mgr= getAssets();
+        //根据路径得到Typeface
+//        Typeface tf = Typeface.createFromFile("D:\\MyFile\\temp\\KYManage\\app\\src\\main\\assets\\fonts\\simfang.ttf");//仿宋
+        paint.setTypeface(tf);
+        Canvas canvas = new Canvas(result);
+        //先画一整块白色矩形块
+        canvas.drawRect(0,0,picWidth,picHeight,paint);
+
+
+        //画文字
+        String str1=rep.getMaterialDesc();
+//        titleTextSize=(QRx)/(str1.length());
+//
+        paint.setColor(Color.BLACK);
+//        paint.setTextSize(titleTextSize);
+        int top=15;
+//        canvas.drawText(str1,0,top,paint);
+        TextPaint textPaint = new TextPaint();
+        textPaint.setColor(Color.BLACK);
+        if(str1.length()<30){
+            textPaint.setTextSize(text2);
+        }else if(str1.length()>=30&&str1.length()<=40) {
+            textPaint.setTextSize(text4);
+        }else {
+            textPaint.setTextSize(text6);
+        }
+        textPaint.setTypeface(tf);
+        StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
+
+//从 (20,80)的位置开始绘制
+        canvas.translate(0,top);
+        layout.draw(canvas);
+
+
+
+        String str3=rep.getMaterialCode();
+        textPaint.setFakeBoldText(true);
+        textPaint.setTextSize(text2);
+
+        top+=titleTextSize+30;
+        StaticLayout layout2 = new StaticLayout(str3,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
+        canvas.translate(0,top);
+        layout2.draw(canvas);
+        paint.setFakeBoldText(false);
+
+        String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(rep.getQty());
+        paint.setTextSize(text2);
+        top+=text1+lineSpacing;
+        canvas.drawText(str4,0,top,paint);
+
+        if(!rep.getFactory().equals("2090")){
+            String str5=rep.getFactory()+"    "+rep.getArea();
+            paint.setTextSize(text2);
+            top+=text1+lineSpacing;
+            canvas.drawText(str5,0,top,paint);
+
+            String str6="";
+            if(rep.getMarketOrderNO()==null||rep.getMarketOrderRow()==null||rep.getProductOrderNO()==null){
+                str6="";
+            }else {
+                String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+                String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+                String newStr3 = rep.getProductOrderNO().replaceAll("^(0+)", "");
+                str6=newStr1+"/"+newStr2+"   "+newStr3;
+            }
+            paint.setTextSize(text5);
+            top+=text2+lineSpacing;
+            canvas.drawText(str6,0,top,paint);
+
+            String str7="";
+            if(rep.getProOMaterialNO()==null){
+                str7="";
+            }else {
+                str7=""+rep.getProOMaterialNO();
+            }
+            paint.setTextSize(text3);
+            top+=text3+lineSpacing;
+            canvas.drawText(str7,0,top,paint);
+
+            String str8="";
+            if(rep.getProOMaterialDesc()==null){
+                str8="";
+            }else {
+                str8=""+rep.getProOMaterialDesc();
+            }
+            paint.setTextSize(text3);
+            top+=text3+lineSpacing;
+            canvas.drawText(str8,0,top,paint);
+        }else{
+            String newStr3 = rep.getClientNO().replaceAll("^(0+)", "");
+
+            String str5=newStr3+"  "+rep.getClientShortName();
+            paint.setTextSize(text4);
+            top+=text1+lineSpacing;
+            canvas.drawText(str5,0,top,paint);
+
+            String str6="";
+            if(rep.getMarketOrderNO()==null||rep.getMarketOrderRow()==null){
+                str6="";
+            }else {
+                String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+                String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+//                String newStr3 = rep.getProductOrderNO().replaceAll("^(0+)", "");
+                str6=newStr1+"/"+newStr2+"   ";
+            }
+            paint.setTextSize(22);
+            top+=text2+lineSpacing;
+            canvas.drawText(str6,0,top,paint);
+
+            String str7="";
+            if(rep.getProOMaterialNO()==null){
+                str7="";
+            }else {
+                str7=""+rep.getProOMaterialNO();
+            }
+            paint.setTextSize(text3);
+            top+=text3+lineSpacing;
+            canvas.drawText(str7,0,top,paint);
+
+            String str8="";
+            if(rep.getProOMaterialDesc()==null){
+                str8=rep.getWorkNO();
+            }else {
+                str8=""+rep.getProOMaterialDesc();
+            }
+            paint.setTextSize(text3);
+            top+=text3+lineSpacing;
+            canvas.drawText(str8,0,top,paint);
+        }
+
+//        String str13=""+rep.getmCode();
+//        paint.setTextSize(text3);
+//        canvas.drawText(str13,QRx,top,paint);
+
+        //String str9="--------------------------------------------------------------------------------------------------------------------------";
+        paint.setFakeBoldText(true);
+        top+=lineSpacing;
+        canvas.drawLine (0,top,picWidth,top,paint);
+
+        String str10=rep.getCompany()+"-"+rep.getUPFAC()+"            "+rep.getPrintTime()+" "+rep.getPrintFactory();
+        paint.setTextSize(text4);
+        paint.setFakeBoldText(false);
+        top+=text4;
+        canvas.drawText(str10,0,top,paint);
+        //画二维码
+        Bitmap bm=null;
+        try {
+            bm = BarcodeUtil.encodeAsBitmap(content,
+                    BarcodeFormat.QR_CODE,picWidth-QRx-20, picWidth-QRx-20);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        canvas.drawBitmap(bm,QRx,0,paint);
+
+        int y1=picWidth-QRx+10;
+
+        String str11=getSeriesNumber();
+        paint.setTextSize(text5);
+        canvas.drawText(str11,QRx,y1,paint);
+        String str12="备注:"+rep.getRemark();
+        paint.setTextSize(text4);
+        y1+=text5+lineSpacing;
+        canvas.drawText(str12,QRx,y1,paint);
+
+        String str13=rep.getMCode()==null?"":rep.getMCode();
+        paint.setTextSize(text4);
+        y1+=(text5+lineSpacing);
+        canvas.drawText(str13,QRx,y1,paint);
+
+        canvas.save();
+        canvas.restore();
+
+        //转向
+        Bitmap adjustresult = adjustPhotoRotation(result,90);
+
+        return adjustresult;
+    }
+
+
+    //画图9,超量标签转外协标签
+    public Bitmap createImage9(InsertFinAProOrderRecordRep.InsertFinAProOrderRecord rep, Typeface tf) {
         String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getAllocatedQty()+",\"po\":\""+rep.getProductOrderNO()+"\",\"no\":\""+rep.getMarketOrderNO()+"\",\"line\":\""+rep.getMarketOrderRow()+"\",\"fid\":"+rep.getID()+",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getArea()+"\",\"cs\":\""+""+"\"}";
         System.out.println("content:"+content);
         int picWidth = 480;//生成图片的宽度
@@ -916,395 +1298,6 @@ public class CreateBitmap{
         Bitmap adjustresult = adjustPhotoRotation(result,90);
 
         return adjustresult;
-    }
-
-
-    //画图7,外协成品收货标签
-    public Bitmap createImage7(GetOutsourceFinProLableJSRepBean rep, Typeface tf) {
-        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getQty()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"no\":\""+rep.getMarketOrderNO()+"\",\"line\":\""+rep.getMarketOrderRow()+"\",\"type\":\""+rep.getFType()+"\",\"fid\":"+rep.getId()+",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getArea()+"\"}";
-        System.out.println(content);
-        int picWidth = 480;//生成图片的宽度
-        int picHeight = 380;//生成图片的高度
-        int QRx = 250;//二维码x坐标
-        int titleTextSize=34;
-        int text1 = 32;
-        int text2 = 30;
-        int text3 = 28;
-        int text4 = 26;
-        int text5 = 24;//
-        int text6 = 22;//
-        int text7 = 20;//
-        int lineSpacing = 10;//行间距
-
-        //生成的图片
-        Bitmap result = Bitmap.createBitmap(picWidth,picHeight,Bitmap.Config.ARGB_8888);
-
-
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setSubpixelText(true);
-        paint.setDither(true);
-        //从asset 读取字体
-//        AssetManager mgr= getAssets();
-        //根据路径得到Typeface
-//        Typeface tf = Typeface.createFromFile("D:\\MyFile\\temp\\KYManage\\app\\src\\main\\assets\\fonts\\simfang.ttf");//仿宋
-        paint.setTypeface(tf);
-        Canvas canvas = new Canvas(result);
-        //先画一整块白色矩形块
-        canvas.drawRect(0,0,picWidth,picHeight,paint);
-
-
-        //画文字
-        String str1=rep.getMaterialDesc();
-//        titleTextSize=(QRx)/(str1.length());
-//
-        paint.setColor(Color.BLACK);
-//        paint.setTextSize(titleTextSize);
-        int top=15;
-//        canvas.drawText(str1,0,top,paint);
-        TextPaint textPaint = new TextPaint();
-        textPaint.setColor(Color.BLACK);
-        if(str1.length()<30){
-            textPaint.setTextSize(text2);
-        }else if(str1.length()>=30&&str1.length()<=40) {
-            textPaint.setTextSize(text4);
-        }else {
-            textPaint.setTextSize(text6);
-        }
-        textPaint.setTypeface(tf);
-        StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
-
-//从 (20,80)的位置开始绘制
-        canvas.translate(0,top);
-        layout.draw(canvas);
-
-        String str3=rep.getMaterialCode();
-        paint.setFakeBoldText(true);
-        if(str3.length()>16){
-            paint.setTextSize(text7);
-        }else {
-            paint.setTextSize(text3);
-        }
-        top+=titleTextSize*2+30;
-        canvas.drawText(str3,0,top,paint);
-        paint.setFakeBoldText(false);
-
-        String str4="单位:"+rep.getMaterialUnit()+" "+"数量:"+(rep.getQty());
-        paint.setTextSize(text3);
-        top+=text1+lineSpacing;
-        canvas.drawText(str4,0,top,paint);
-
-        if(rep.getClientNO()==null||rep.getClientShortName()==null){
-            String str5=rep.getFactory()+"    "+rep.getArea();
-            paint.setTextSize(text2);
-            top+=text1+lineSpacing;
-            canvas.drawText(str5,0,top,paint);
-
-            String str6="";
-            if(rep.getMarketOrderNO()==null||rep.getMarketOrderRow()==null||rep.getProductOrderNO()==null){
-                str6="";
-            }else {
-                String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
-                String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
-                String newStr3 = rep.getProductOrderNO().replaceAll("^(0+)", "");
-                str6=newStr1+"/"+newStr2+"   "+newStr3;
-            }
-            paint.setTextSize(22);
-            top+=text2+lineSpacing;
-            canvas.drawText(str6,0,top,paint);
-
-            String str7="";
-            if(rep.getProOMaterialNO()==null){
-                str7="";
-            }else {
-                str7=""+rep.getProOMaterialNO();
-            }
-            paint.setTextSize(text3);
-            top+=text3+lineSpacing;
-            canvas.drawText(str7,0,top,paint);
-
-            String str8="";
-            if(rep.getProOMaterialDesc()==null){
-                str8="";
-            }else {
-                str8=""+rep.getProOMaterialDesc();
-            }
-            paint.setTextSize(text3);
-            top+=text3+lineSpacing;
-            canvas.drawText(str8,0,top,paint);
-        }else{
-            String newStr3 = rep.getClientNO().replaceAll("^(0+)", "");
-
-            String str5=newStr3+"  "+rep.getClientShortName();
-            paint.setTextSize(text4);
-            top+=text1+lineSpacing;
-            canvas.drawText(str5,0,top,paint);
-
-            String str6="";
-            if(rep.getMarketOrderNO()==null||rep.getMarketOrderRow()==null){
-                str6="";
-            }else {
-                String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
-                String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
-//                String newStr3 = rep.getProductOrderNO().replaceAll("^(0+)", "");
-                str6=newStr1+"/"+newStr2+"   ";
-            }
-            paint.setTextSize(22);
-            top+=text2+lineSpacing;
-            canvas.drawText(str6,0,top,paint);
-
-            String str7="";
-            if(rep.getProOMaterialNO()==null){
-                str7="";
-            }else {
-                str7=""+rep.getProOMaterialNO();
-            }
-            paint.setTextSize(text3);
-            top+=text3+lineSpacing;
-            canvas.drawText(str7,0,top,paint);
-
-            String str8="";
-            if(rep.getProOMaterialDesc()==null){
-                str8="";
-            }else {
-                str8=""+rep.getProOMaterialDesc();
-            }
-            paint.setTextSize(text3);
-            top+=text3+lineSpacing;
-            canvas.drawText(str8,0,top,paint);
-        }
-
-//        String str13=""+rep.getmCode();
-//        paint.setTextSize(text3);
-//        canvas.drawText(str13,QRx,top,paint);
-
-        //String str9="--------------------------------------------------------------------------------------------------------------------------";
-        paint.setFakeBoldText(true);
-        top+=lineSpacing;
-        canvas.drawLine (0,top,picWidth,top,paint);
-
-        String str10=rep.getCompany()+"            "+rep.getPrintTime()+" "+rep.getPrintFactory();
-        paint.setTextSize(text4);
-        paint.setFakeBoldText(false);
-        top+=text4;
-        canvas.drawText(str10,0,top,paint);
-        //画二维码
-        Bitmap bm=null;
-        try {
-            bm = BarcodeUtil.encodeAsBitmap(content,
-                    BarcodeFormat.QR_CODE,picWidth-QRx-20, picWidth-QRx-20);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        canvas.drawBitmap(bm,QRx,0,paint);
-
-        int y1=picWidth-QRx+10;
-
-        String str11=getSeriesNumber();
-        paint.setTextSize(text5);
-        canvas.drawText(str11,QRx,y1,paint);
-        String str12="备注:"+rep.getRemark();
-        paint.setTextSize(text4);
-        y1+=text5+lineSpacing;
-        canvas.drawText(str12,QRx,y1,paint);
-
-        String str13=rep.getMCode()==null?"":rep.getMCode();
-        paint.setTextSize(text4);
-        y1+=(text5+lineSpacing);
-        canvas.drawText(str13,QRx,y1,paint);
-
-        canvas.save();
-        canvas.restore();
-
-        //转向
-        Bitmap adjustresult = adjustPhotoRotation(result,90);
-
-        return adjustresult;
-    }
-
-
-    //画图9,销售发货单
-    public Bitmap createImage9(GetDeliveryListInfoJSRepBean2 rep, Typeface tf) {
-        int picWidth = 380;//生成图片的宽度
-        int picHeight = 200+200*(rep.getData().size());//生成图片的高度
-        int QRx = 95;//二维码x坐标
-        int QRWidth = 190;//二维码宽
-        int lineCodeWidth = 300;//一维码宽
-        int titleTextSize=27;//标题字号
-        int text1 = 36;
-        int text2 = 32;
-        int text3 = 28;
-        int text4 = 24;
-        int text5 = 20;
-        int text6 = 18;//
-        int text7 = 27;//
-        int lineSpacing = 5;//行间距
-        int textColor = Color.BLACK;
-
-        int leftpadding = 10;//左边距
-        int valueLeftpadding = 130;//左边距
-
-        //生成的图片
-        Bitmap result = Bitmap.createBitmap(picWidth,picHeight,Bitmap.Config.ARGB_8888);
-
-
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setTypeface(tf);
-        //paint.setColor(Color.GREEN);
-        Canvas canvas = new Canvas(result);
-        //先画一整块白色矩形块
-        canvas.drawRect(0,0,picWidth,picHeight,paint);
-
-
-        String str1="TKAS-CM送货单";
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(titleTextSize);
-        int top=25;
-        canvas.drawText(str1,QRx,top,paint);
-
-
-        //String str9="--------------------------------------------------------------------------------------------------------------------------";
-        top+=5;
-        drawGrayLine(canvas,paint,top);
-
-        String str2="编号：";
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(text6);
-        top+=text6+5;
-        canvas.drawText(str2,leftpadding,top,paint);
-        str2=rep.getVBELN_VL();
-        canvas.drawText(str2,valueLeftpadding,top,paint);
-
-
-        top+=5;
-        drawGrayLine(canvas,paint,top);
-
-        String str3="送货时间：";
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(text6);
-        top+=text6+5;
-        canvas.drawText(str3,leftpadding,top,paint);
-        str3=getCurrentdate1();
-        canvas.drawText(str3,valueLeftpadding,top,paint);
-
-        top+=5;
-        drawGrayLine(canvas,paint,top);
-
-        String str4="送货单位：";
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(text6);
-        top+=text6+5;
-        canvas.drawText(str4,leftpadding,top,paint);
-        str4=rep.getNAME_ORG1();
-        canvas.drawText(str4,valueLeftpadding,top,paint);
-
-        top+=5;
-        drawGrayLine(canvas,paint,top);
-
-        String str5="确认：";
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(text6);
-        top+=text6+5;
-        canvas.drawText(str5,leftpadding,top,paint);
-        str5="          年    月    日";
-        canvas.drawText(str5,valueLeftpadding,top,paint);
-
-        top+=5;
-        drawGrayLine(canvas,paint,top);
-
-        String str6="配货：";
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(text6);
-        top+=text6+5;
-        canvas.drawText(str6,leftpadding,top,paint);
-        str6="          年    月    日";
-        canvas.drawText(str6,valueLeftpadding,top,paint);
-
-        //内容行
-
-        for (int i = 0; i < (rep.getData().size()); i++) {
-            GetDeliveryListInfoJSRepBean1 repBean1 = rep.getData().get(i);
-            if (i==0){
-                top+=5;
-                if(repBean1.getSTATUS().equals("S")){
-                    drawXSFHDContentLine1(canvas,paint,top,text6,repBean1,i);
-                }
-            }else {
-                top+=(text6+5)*8*i;
-                top+=15;
-                if(repBean1.getSTATUS().equals("S")){
-                    drawXSFHDContentLine1(canvas,paint,top,text6,repBean1,i);
-                }
-
-            }
-        }
-
-        canvas.save();
-        canvas.restore();
-
-        return result;
-    }
-
-    //画图1,销售发货单内容行
-    public static void drawXSFHDContentLine1(Canvas canvas, Paint paint, int top, int textsize, GetDeliveryListInfoJSRepBean1 bean,int i){
-        int contentLeftPadding=130;
-        int leftpadding=10;
-        drawBlackLine(canvas,paint,top);
-        top+=5;
-        paint.setTextSize(textsize);
-        paint.setColor(Color.BLACK);
-
-        String str1="序号：";
-        top+=textsize+5;
-        canvas.drawText(str1,leftpadding,top,paint);
-        str1=(i+1)+"";
-        canvas.drawText(str1,contentLeftPadding,top,paint);
-        top+=5;
-
-        String str2="工作号：";
-        top+=textsize+5;
-        canvas.drawText(str2,leftpadding,top,paint);
-        str2=bean.getZZGZBH();
-        canvas.drawText(str2,contentLeftPadding,top,paint);
-        top+=5;
-
-        String str3="物料编码：";
-        top+=textsize+5;
-        canvas.drawText(str3,leftpadding,top,paint);
-        str3=bean.getMATNR();
-        canvas.drawText(str3,contentLeftPadding,top,paint);
-        top+=5;
-
-        String str4="物料名称：";
-        top+=textsize+5;
-        canvas.drawText(str4,leftpadding,top,paint);
-        str4=bean.getARKTX();
-        canvas.drawText(str4,contentLeftPadding,top,paint);
-        top+=5;
-
-        String str5="发货数量：";
-        top+=textsize+5;
-        canvas.drawText(str5,leftpadding,top,paint);
-        str5=bean.getKWMENG()+"";
-        canvas.drawText(str5,contentLeftPadding,top,paint);
-        top+=5;
-
-        String str6="客户订单号：";
-        top+=textsize+5;
-        canvas.drawText(str6,leftpadding,top,paint);
-        str6=bean.getBSTKD();
-        canvas.drawText(str6,contentLeftPadding,top,paint);
-        top+=5;
-
-        String str7="SAP订单：";
-        top+=textsize+5;
-        canvas.drawText(str7,leftpadding,top,paint);
-        String newStr1 = bean.getVBELN().replaceAll("^(0+)", "");
-        String newStr2 = bean.getPOSNR().replaceAll("^(0+)", "");
-        str7=newStr1+"/"+newStr2;
-        canvas.drawText(str7,contentLeftPadding,top,paint);
-        top+=5;
     }
 
 
@@ -1474,6 +1467,163 @@ public class CreateBitmap{
         canvas.drawText((i+1)+"             "+bean.getMaterialCode(),10,top,paint);
         top+=textsize+5;
         canvas.drawText(bean.getMaterialDesc()+"             "+bean.getQty()+"/"+bean.getTQty(),10,top,paint);
+    }
+
+
+
+    //画图11,外协半成品标签
+    public Bitmap createImage11(Semi_FinishedProductReceivingLableRep.Semi_FinishedProductReceivingLableRepBean rep, Typeface tf) {
+        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getQty()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrder()+"\",\"no\":\""+rep.getMarketOrderNO()+"\",\"line\":\""+rep.getMarketOrderRow()+"\",\"type\":\""+"\",\"fid\":"+",\"gc\":\""+rep.getDemandFactory()+"\",\"cd\":\""+rep.getDemandStorage()+"\"}";
+        System.out.println(content);
+        int picWidth = 480;//生成图片的宽度
+        int picHeight = 380;//生成图片的高度
+        int QRx = 250;//二维码x坐标
+        int titleTextSize=34;
+        int text1 = 32;
+        int text2 = 30;
+        int text3 = 28;
+        int text4 = 26;
+        int text5 = 24;//
+        int text6 = 22;//
+        int text7 = 20;//
+        int lineSpacing = 10;//行间距
+
+        //生成的图片
+        Bitmap result = Bitmap.createBitmap(picWidth,picHeight,Bitmap.Config.ARGB_8888);
+
+
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setSubpixelText(true);
+        paint.setDither(true);
+        //从asset 读取字体
+//        AssetManager mgr= getAssets();
+        //根据路径得到Typeface
+//        Typeface tf = Typeface.createFromFile("D:\\MyFile\\temp\\KYManage\\app\\src\\main\\assets\\fonts\\simfang.ttf");//仿宋
+        paint.setTypeface(tf);
+        Canvas canvas = new Canvas(result);
+        //先画一整块白色矩形块
+        canvas.drawRect(0,0,picWidth,picHeight,paint);
+
+
+        //画文字
+        String str1=rep.getDescription();
+//        titleTextSize=(QRx)/(str1.length());
+//
+        paint.setColor(Color.BLACK);
+//        paint.setTextSize(titleTextSize);
+        int top=15;
+//        canvas.drawText(str1,0,top,paint);
+        TextPaint textPaint = new TextPaint();
+        textPaint.setColor(Color.BLACK);
+        if(str1.length()<30){
+            textPaint.setTextSize(text2);
+        }else if(str1.length()>=30&&str1.length()<=40) {
+            textPaint.setTextSize(text4);
+        }else {
+            textPaint.setTextSize(text6);
+        }
+        textPaint.setTypeface(tf);
+        StaticLayout layout = new StaticLayout(str1,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
+
+//从 (20,80)的位置开始绘制
+        canvas.translate(0,top);
+        layout.draw(canvas);
+
+        String str3=rep.getMaterialCode();
+        paint.setFakeBoldText(true);
+        if(str3.length()>16){
+            paint.setTextSize(text7);
+        }else {
+            paint.setTextSize(text3);
+        }
+        top+=titleTextSize*2+30;
+        canvas.drawText(str3,0,top,paint);
+        paint.setFakeBoldText(false);
+
+        String str4="单位:"+rep.getUnit()+" "+"数量:"+(rep.getQty());
+        paint.setTextSize(text3);
+        top+=text1+lineSpacing;
+        canvas.drawText(str4,0,top,paint);
+
+        if(true){
+            String str5=rep.getDemandFactory()+"    "+rep.getDemandStorage();
+            paint.setTextSize(text2);
+            top+=text1+lineSpacing;
+            canvas.drawText(str5,0,top,paint);
+
+            String str6="";
+            if(rep.getMarketOrderNO()==null||rep.getMarketOrderRow()==null||rep.getProductOrder()==null){
+                str6="";
+            }else {
+                String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+                String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+                String newStr3 = rep.getProductOrder().replaceAll("^(0+)", "");
+                str6=newStr1+"/"+newStr2+"   "+newStr3;
+            }
+            paint.setTextSize(22);
+            top+=text2+lineSpacing;
+            canvas.drawText(str6,0,top,paint);
+
+            String str7="";
+            if(rep.getPurchaseOrderNO()==null){
+                str7="";
+            }else {
+                String newStr1 = rep.getPurchaseOrderNO().replaceAll("^(0+)", "");
+                String newStr2 = rep.getPurchaseOrderRow().replaceAll("^(0+)", "");
+                str7=newStr1+"/"+newStr2;
+            }
+            paint.setTextSize(text3);
+            top+=text3+lineSpacing;
+            canvas.drawText(str7,0,top,paint);
+        }
+
+//        String str13=""+rep.getmCode();
+//        paint.setTextSize(text3);
+//        canvas.drawText(str13,QRx,top,paint);
+
+        //String str9="--------------------------------------------------------------------------------------------------------------------------";
+        paint.setFakeBoldText(true);
+        top+=lineSpacing;
+        canvas.drawLine (0,top,picWidth,top,paint);
+
+        String str10=rep.getCompany()+"            "+rep.getPrintTime()+" "+rep.getPrintFactory();
+        paint.setTextSize(text4);
+        paint.setFakeBoldText(false);
+        top+=text4;
+        canvas.drawText(str10,0,top,paint);
+        //画二维码
+        Bitmap bm=null;
+        try {
+            bm = BarcodeUtil.encodeAsBitmap(content,
+                    BarcodeFormat.QR_CODE,picWidth-QRx-20, picWidth-QRx-20);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        canvas.drawBitmap(bm,QRx,0,paint);
+
+        int y1=picWidth-QRx+10;
+
+        String str11=getSeriesNumber();
+        paint.setTextSize(text5);
+        canvas.drawText(str11,QRx,y1,paint);
+        String str12="备注:半成品";
+        paint.setTextSize(text4);
+        y1+=text5+lineSpacing;
+        canvas.drawText(str12,QRx,y1,paint);
+
+        String str13=rep.getMCode()==null?"":rep.getMCode();
+        paint.setTextSize(text4);
+        y1+=(text5+lineSpacing);
+        canvas.drawText(str13,QRx,y1,paint);
+
+        canvas.save();
+        canvas.restore();
+
+        //转向
+        Bitmap adjustresult = adjustPhotoRotation(result,90);
+
+        return adjustresult;
     }
 
 

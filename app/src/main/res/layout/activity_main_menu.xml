@@ -60,7 +60,7 @@
         android:id="@+id/cggl_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorWhite"
         android:gravity="center"
         android:orientation="vertical">
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
@@ -89,7 +89,7 @@
             android:horizontalSpacing="5dp"
             android:numColumns="4"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp"></GridView>
+            android:verticalSpacing="10dp"></GridView>
         <!--android:layout_marginTop="50dp"
         android:columnWidth="90dp"-->
 
@@ -98,8 +98,8 @@
     <LinearLayout
         android:id="@+id/wxgl_layout"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:background="@color/colorWhite"
         android:gravity="center"
         android:orientation="vertical">
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
@@ -119,16 +119,15 @@
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/MyGridView2"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
-            android:layout_weight="2"
             android:gravity="center"
             android:horizontalSpacing="0dp"
             android:numColumns="4"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp"></GridView>
+            android:verticalSpacing="10dp"></GridView>
         <!--android:layout_marginTop="50dp"
         android:columnWidth="90dp"-->
 
@@ -138,7 +137,7 @@
         android:id="@+id/kfgl_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorWhite"
         android:gravity="center"
         android:orientation="vertical">
@@ -147,7 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
@@ -177,7 +176,7 @@
         android:id="@+id/wlcx_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorWhite"
         android:gravity="center"
         android:orientation="vertical">
@@ -186,7 +185,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"

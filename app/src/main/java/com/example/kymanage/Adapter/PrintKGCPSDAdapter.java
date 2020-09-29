@@ -49,8 +49,20 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         } else{
-            view=convertView;
-            viewHolder=(ViewHolder) view.getTag();
+            view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+
+            // 避免每次调用getView()时都要重新获取控件实例
+            viewHolder=new ViewHolder();
+            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
+            viewHolder.wllx=view.findViewById(R.id.wllx);
+            viewHolder.sl=view.findViewById(R.id.sl);
+            viewHolder.unit=view.findViewById(R.id.unit);
+            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+            view.setTag(viewHolder);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来

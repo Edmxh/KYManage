@@ -14,14 +14,28 @@
         android:orientation="horizontal"
         android:background="@color/colorBackground2"
         >
+        <ImageView
+            android:id="@+id/receive"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cx"
+            android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:layout_height="match_parent"
             android:text="厂内配送单详情"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:textSize="@dimen/text22"/>
+        <ImageView
+            android:id="@+id/menupoint"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:src="@null"
+            android:layout_marginLeft="10dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

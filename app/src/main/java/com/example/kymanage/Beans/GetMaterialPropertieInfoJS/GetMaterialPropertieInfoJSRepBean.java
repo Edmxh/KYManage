@@ -34,6 +34,9 @@ public class GetMaterialPropertieInfoJSRepBean {
     private String labelSquNum;
     private float qty;
 
+    private String serialNO;//序列号等于 "K03" 时必须输入序列号
+    private String xlh;//序列号等于 "K03" 时必须输入序列号
+
     public static GetMaterialPropertieInfoJSRepBean objectFromData(String str) {
 
         return new Gson().fromJson(str, GetMaterialPropertieInfoJSRepBean.class);
@@ -148,5 +151,21 @@ public class GetMaterialPropertieInfoJSRepBean {
 
     public void setQty(float qty) {
         this.qty = qty;
+    }
+
+    public String getSerialNO() {
+        return serialNO;
+    }
+
+    public void setSerialNO(String serialNO) {
+        this.serialNO = serialNO;
+    }
+
+    public String getXlh() {
+        return xlh;
+    }
+
+    public void setXlh(String xlh) {
+        this.xlh = xlh;
     }
 }

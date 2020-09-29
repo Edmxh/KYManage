@@ -10,7 +10,7 @@ android {
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 29
         versionCode 1
-        versionName "1.6"
+        versionName "2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -86,5 +86,6 @@ dependencies {
     //update
 //    implementation 'com.azhon:appupdateX:3.0.0'
     implementation 'com.github.AlexLiuSheng:CheckVersionLib:2.2.4'
+
 
 }

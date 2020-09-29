@@ -1,12 +1,5 @@
 package com.example.kymanage.API;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-
-import com.example.kymanage.utils.PropertiesUtil;
-
-import java.io.File;
-
 public interface API {
 //    PropertiesUtil pt = new PropertiesUtil();
 //    String filename = new File("app/src/main/java/com/example/kymanage/config/config.properties").getAbsolutePath();
@@ -32,6 +25,14 @@ public interface API {
 
 
     //采购---------------------------------------------------------------------------
+    //获取预收货物料信息
+    String GetPreRecMaterialCodeInfoJS= "ThingX/Things/AppProgramThing/Services/GetPreRecMaterialCodeInfoJS";
+
+    //103收货
+    String AdvanceRec103JS= "ThingX/Things/AppProgramThing/Services/AdvanceRec103JS";
+
+
+
     //查询采购列表
     String GetRecevingDetail= "ThingX/Things/AppProgramThing/Services/GetRecevingDetail";
     //采购收货103预入库
@@ -56,8 +57,7 @@ public interface API {
     //获取物料库存信息接口
     String GetStockInformationDataJS="ThingX/Things/AppProgramThing/Services/GetStockInformationDataJS";
     //261生产订单发料
-    String InsertProductOrderIssue="ThingX/Things/AppProgramThing/Services/InsertProductOrderIssue";
-
+//    String InsertProductOrderIssue="ThingX/Things/AppProgramThing/Services/InsertProductOrderIssue";
     String SendProductOrderIssue="ThingX/Things/AppProgramThing/Services/SendProductOrderIssue";
 
     //扫码发料
@@ -114,6 +114,9 @@ public interface API {
     //获取生产派工单接口
     String GetDispatchListJS="ThingX/Things/AppProgramThing/Services/GetDispatchListJS";
 
+    //外协半成品费用入库类型2标签打印接口
+    String Semi_FinishedProductReceivingLable="ThingX/Things/AppProgramThing/Services/Semi-FinishedProductReceivingLable";
+
     //外协采购半成品收货记录接口
     String Semi_FinishedProductReceivingRecordJS="ThingX/Things/AppProgramThing/Services/Semi-FinishedProductReceivingRecordJS";
 
@@ -127,7 +130,8 @@ public interface API {
     String OutsoureFinProductWriteOffJS="ThingX/Things/AppProgramThing/Services/OutsoureFinProductWriteOffJS";
 
     //##外协采购成品标签打印接口
-    String GetOutsourceFinProLableJS="ThingX/Things/AppProgramThing/Services/GetOutsourceFinProLableJS";
+//    String GetOutsourceFinProLableJS="ThingX/Things/AppProgramThing/Services/GetOutsourceFinProLableJS";
+    String GetOutsourceFinProLableDataJS="ThingX/Things/AppProgramThing/Services/GetOutsourceFinProLableDataJS";
 
     //#301转储接口
     String MaterialFactoryDump="ThingX/Things/AppProgramThing/Services/MaterialFactoryDump";
@@ -144,6 +148,9 @@ public interface API {
     //#301转储冲销
     String WriteOffMaterialFactoryDump="ThingX/Things/AppProgramThing/Services/WriteOffMaterialFactoryDump";
 
+    //301转储子记录冲销
+    String WriteOffMaterialFactoryCDump="ThingX/Things/AppProgramThing/Services/WriteOffMaterialFactoryCDump";
+
     //##外协采购半成品发料厂内配送单生成
     String GetCMInFactoryDeliver="ThingX/Things/AppProgramThing/Services/GetCMInFactoryDeliver";
 
@@ -153,7 +160,11 @@ public interface API {
     //###获取交货单信息
     String GetDeliveryListInfoJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListInfoJS";
 
-    //###获取交货单信息
+    //销售交货单查询
+    String GetDeliveryListDataJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListDataJS";
+
+
+    //销售发货单详情查询
     String GetDeliveryListDetailDataJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListDetailDataJS";
 
     //获取销售发货物料信息及库存地点
@@ -165,13 +176,26 @@ public interface API {
     //外协采购半成品配送单详情查询接口
     String GetInFactoryDeliverListDetailJS="ThingX/Things/AppProgramThing/Services/GetInFactoryDeliverListDetailJS";
 
-    //外协半成品发料配送冲销接口
+    //外协半成品发料配送冲销接口厂内配送单整单冲销
     String GetOutSemifinProductIssueWriteOffJS="ThingX/Things/AppProgramThing/Services/GetOutSemifinProductIssueWriteOffJS";
+
+    //厂内配送单单条冲销
+    String OutSemifinProductIssueWriteOffJS="ThingX/Things/AppProgramThing/Services/OutSemifinProductIssueWriteOffJS";
 
     //外协标签打印接口
     String InsertFinAProOrderRecord="ThingX/Things/AppProgramThing/Services/InsertFinAProOrderRecord";
 
+    //获取外协异常登记原因接口
+    String GetOutsourcingExceptionTypeJS="ThingX/Things/AppProgramThing/Services/GetOutsourcingExceptionTypeJS";
 
+    //外协收货后冲销接口
+    String OutsourcingExceptionJS="ThingX/Things/AppProgramThing/Services/OutsourcingExceptionJS";
+
+    //异常收货记录查询
+    String GetOutsoureExceptionRecordJS="ThingX/Things/AppProgramThing/Services/GetOutsoureExceptionRecordJSRepBean";
+
+    //获取301转储配送记录
+    String GetDistributorDumpRecordData="ThingX/Things/AppProgramThing/Services/GetDistributorDumpRecordData";
 
 
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------

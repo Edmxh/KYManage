@@ -3,6 +3,7 @@ package com.example.kymanage.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -31,6 +32,9 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.Presenters.KFPage1Record.Warehouse105WriteoffPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage1Record.WarehouseReceiptRecordPresenter;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -143,18 +147,7 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<Warehouse105WriteoffReq> datas=new ArrayList<Warehouse105WriteoffReq>();
-                for (int i = 0; i < data1.size(); i++) {
-                    View itmeview=listview1.getAdapter().getView(i,null,null);
-                    CheckBox cb= itmeview.findViewById(R.id.checked);
-                    if(cb.isChecked()){
-                        WarehouseReceiptRecordRep currData = data1.get(i);
-                        Warehouse105WriteoffReq req=new Warehouse105WriteoffReq(currData.getStorageId());
-                        datas.add(req);
-                    }
-                }
-                LoadingBar.dialog(KFCGRKRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
-                presenter2.WarehouseReceiptRecord(datas,getCurrentdate2(),username);
+                confirmDeleteDialog(KFCGRKRecordActivity.this);
             }
         });
     }
@@ -263,5 +256,39 @@ public class KFCGRKRecordActivity extends BaseActivity implements BaseView1<Ware
         SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+
+    //冲销确认
+    private void confirmDeleteDialog(Context context) {
+        new QMUIDialog.MessageDialogBuilder(context)
+                .setTitle("请确认")
+                .setMessage("确定要冲销吗？")
+                .setSkinManager(QMUISkinManager.defaultInstance(context))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "冲销", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        List<Warehouse105WriteoffReq> datas=new ArrayList<Warehouse105WriteoffReq>();
+                        for (int i = 0; i < data1.size(); i++) {
+                            View itmeview=listview1.getAdapter().getView(i,null,null);
+                            CheckBox cb= itmeview.findViewById(R.id.checked);
+                            if(cb.isChecked()){
+                                WarehouseReceiptRecordRep currData = data1.get(i);
+                                Warehouse105WriteoffReq req=new Warehouse105WriteoffReq(currData.getStorageId());
+                                datas.add(req);
+                            }
+                        }
+                        LoadingBar.dialog(KFCGRKRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
+                        presenter2.WarehouseReceiptRecord(datas,getCurrentdate2(),username);
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 }

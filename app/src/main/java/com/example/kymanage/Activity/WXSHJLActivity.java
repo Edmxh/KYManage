@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -44,6 +45,9 @@ import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.GetFinProStorageRecordNotePresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.GetFinProStorageRecordPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.WriteOffProStorageRecordPresenter;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,6 +85,14 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
     //自定义字体
     private Typeface tf;
 
+    //筛选条件
+    private TextView wlbm;
+    private TextView scddh;
+    private ImageView query;
+    private Button reset;
+    private CheckBox queryself;
+    private String queryuser;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_wxshjl;
@@ -93,6 +105,14 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
         receive = findViewById(R.id.receive);
         print = findViewById(R.id.print);
         listview1 = findViewById(R.id.listview1);
+
+
+        //筛选条件
+        wlbm = findViewById(R.id.wlbm);
+        scddh = findViewById(R.id.scddh);
+        query = findViewById(R.id.query);
+        reset = findViewById(R.id.reset);
+        queryself = findViewById(R.id.queryself);
 
         presenter1=new GetFinProStorageRecordPresenter();
         presenter1.setView(this);
@@ -126,13 +146,25 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
 
         date.setText(getCurrentdate());
 
-        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),fac,username);
-//                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq("2020-05-31","kzheng");
-        presenter1.GetFinProStorageRecord(req);
+        queryRecord();
     }
 
     @Override
     public void initLisenter() {
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                date.setText("");
+            }
+        });
+        query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                queryRecord();
+            }
+        });
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,21 +175,8 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<WriteOffProStorageRecordReqBean> idlist=new ArrayList<WriteOffProStorageRecordReqBean>();
-                if(data1!=null){
-                    for (int i = 0; i < data1.size(); i++) {
-//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
-                        View itmeview=listview1.getAdapter().getView(i,null,null);
-                        CheckBox cb= itmeview.findViewById(R.id.checked);
-                        if(cb.isChecked()){
-                            WriteOffProStorageRecordReqBean idreq=new WriteOffProStorageRecordReqBean((data1.get(i).getID()));
-                            idlist.add(idreq);
-                        }
-                    }
-                }
-                WriteOffProStorageRecordReq req=new WriteOffProStorageRecordReq(username,idlist);
-                System.out.println("冲销选中数:"+idlist.size());
-                presenter2.WriteOffProStorageRecord(req);
+                confirmDeleteDialog(WXSHJLActivity.this);
+
                 //Toast.makeText(CGRecordActivity.this,"入库冲销成功",Toast.LENGTH_SHORT).show();
             }
         });
@@ -200,16 +219,22 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
                 str2=(i1+1)<10?("-0"+(i1+1)):"-" + (i1+1);
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
-
-                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq((str1+str2+str3),fac,username);
-//                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq("2020-05-31","kzheng");
-                presenter1.GetFinProStorageRecord(req);
-
+                queryRecord();
             }
         }, mYear,mMonth, mDay);//将年月日放入DatePickerDialog中，并将值传给参数
 
         datePickerDialog.show();//显示dialog
 
+    }
+
+    private void queryRecord(){
+        if(queryself.isChecked()){
+            queryuser=username;
+        }else {
+            queryuser="";
+        }
+        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),"2090",queryuser,wlbm.getText().toString(),scddh.getText().toString());
+        presenter1.GetFinProStorageRecord(req);
     }
 
     @Override
@@ -229,9 +254,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
     @Override
     public void onDataSuccess2(StatusRespBean data) {
         Toast.makeText(WXSHJLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        GetFinProStorageRecordReq req=new GetFinProStorageRecordReq(date.getText().toString(),fac,username);
-//                GetFinProStorageRecordReq req=new GetFinProStorageRecordReq("2020-05-31","kzheng");
-        presenter1.GetFinProStorageRecord(req);
+        queryRecord();
     }
 
     @Override
@@ -293,5 +316,41 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+    //冲销确认
+    private void confirmDeleteDialog(Context context) {
+        new QMUIDialog.MessageDialogBuilder(context)
+                .setTitle("请确认")
+                .setMessage("确定要冲销吗？")
+                .setSkinManager(QMUISkinManager.defaultInstance(context))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "冲销", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        List<WriteOffProStorageRecordReqBean> idlist=new ArrayList<WriteOffProStorageRecordReqBean>();
+                        if(data1!=null){
+                            for (int i = 0; i < data1.size(); i++) {
+//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
+                                View itmeview=listview1.getAdapter().getView(i,null,null);
+                                CheckBox cb= itmeview.findViewById(R.id.checked);
+                                if(cb.isChecked()){
+                                    WriteOffProStorageRecordReqBean idreq=new WriteOffProStorageRecordReqBean((data1.get(i).getID()));
+                                    idlist.add(idreq);
+                                }
+                            }
+                        }
+                        WriteOffProStorageRecordReq req=new WriteOffProStorageRecordReq(username,idlist);
+                        System.out.println("冲销选中数:"+idlist.size());
+                        presenter2.WriteOffProStorageRecord(req);
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 }

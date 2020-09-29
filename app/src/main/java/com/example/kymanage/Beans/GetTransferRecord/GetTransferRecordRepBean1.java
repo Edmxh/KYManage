@@ -60,6 +60,8 @@ public class GetTransferRecordRepBean1 {
     private String MarketOrderRow;
     private String MaterialCode;
 
+    private String WStatus;
+
     public static GetTransferRecordRepBean1 objectFromData(String str) {
 
         return new Gson().fromJson(str, GetTransferRecordRepBean1.class);
@@ -278,5 +280,13 @@ public class GetTransferRecordRepBean1 {
 
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
+    }
+
+    public String getWStatus() {
+        return WStatus;
+    }
+
+    public void setWStatus(String WStatus) {
+        this.WStatus = WStatus;
     }
 }

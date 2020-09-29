@@ -27,11 +27,22 @@ public class InsertFinAProOrderRecordReq {
     private String MaterialCode;
     private String MaterialType;
     private String MaterialDesc;
-    private String Qty;
+    private float Qty;
     private String Handler;
     private String Factory;
     private long FID;
     private List<InsertFinAProOrderRecordReqBean> sdata;
+
+    public InsertFinAProOrderRecordReq(String materialCode, String materialType, String materialDesc, float qty, String handler, String factory, long FID, List<InsertFinAProOrderRecordReqBean> sdata) {
+        MaterialCode = materialCode;
+        MaterialType = materialType;
+        MaterialDesc = materialDesc;
+        Qty = qty;
+        Handler = handler;
+        Factory = factory;
+        this.FID = FID;
+        this.sdata = sdata;
+    }
 
     public static InsertFinAProOrderRecordReq objectFromData(String str) {
 
@@ -101,11 +112,11 @@ public class InsertFinAProOrderRecordReq {
         this.MaterialDesc = MaterialDesc;
     }
     @JSONField(name = "Qty")
-    public String getQty() {
+    public float getQty() {
         return Qty;
     }
     @JSONField(name = "Qty")
-    public void setQty(String Qty) {
+    public void setQty(float Qty) {
         this.Qty = Qty;
     }
     @JSONField(name = "Handler")
@@ -183,6 +194,28 @@ public class InsertFinAProOrderRecordReq {
         private String Unit;
         private String RecordType;
         private String MCode;
+
+        public InsertFinAProOrderRecordReqBean(float demandQty, float alreadyQty, float allocatedQty, String factory, String materialCode, String productOrderNO, String materialDesc, String marketOrderNO, String marketOrderRow, String storage, String productOrderReservedNO, String productOrderReservedRowNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String unit, String recordType, String MCode) {
+            DemandQty = demandQty;
+            AlreadyQty = alreadyQty;
+            AllocatedQty = allocatedQty;
+            Factory = factory;
+            MaterialCode = materialCode;
+            ProductOrderNO = productOrderNO;
+            MaterialDesc = materialDesc;
+            MarketOrderNO = marketOrderNO;
+            MarketOrderRow = marketOrderRow;
+            Storage = storage;
+            ProductOrderReservedNO = productOrderReservedNO;
+            ProductOrderReservedRowNO = productOrderReservedRowNO;
+            ProductOrderDesc = productOrderDesc;
+            ProOMaterialNO = proOMaterialNO;
+            ProOMaterialDesc = proOMaterialDesc;
+            ProOMaterialUnit = proOMaterialUnit;
+            Unit = unit;
+            RecordType = recordType;
+            this.MCode = MCode;
+        }
 
         public static InsertFinAProOrderRecordReqBean objectFromData(String str) {
 

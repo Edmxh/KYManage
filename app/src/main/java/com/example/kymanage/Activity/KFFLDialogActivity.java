@@ -2,9 +2,15 @@ package com.example.kymanage.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.KFFLDialogAdapter;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRepBean;
@@ -25,13 +32,15 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage3.InsertProductOrderIssuePresenter;
+import com.example.kymanage.utils.DialogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class KFFLDialogActivity extends AppCompatActivity implements View.OnClickListener, BaseView1<PreMaterialProductOrderReps>, BaseView2<InsertProductOrderIssueRep> {
+public class KFFLDialogActivity extends AppCompatActivity implements View.OnClickListener, BaseView1<PreMaterialProductOrderReps>, BaseView2<InsertProductOrderIssueRep>, KFFLDialogAdapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
 
     private ListView mListview1;
     /**
@@ -70,6 +79,15 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
     private ArrayList<Integer>  FIssueIds;
     //震动
     private Vibrator vibrator;
+
+
+    //扫描相关
+    private String m_Broadcastname="com.barcode.sendBroadcast";
+    private MyCodeReceiver receiver = new MyCodeReceiver();
+    //扫到的string
+    private String scanString;
+    //序列号扫码识别
+    private int xlScan=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,24 +154,34 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                 confirm=true;
                 //发料操作
                 if(datas!=null){
+                    boolean rec=true;
                     for (int i = 0; i < datas.size(); i++) {
                         PreMaterialProductOrderRep currentRep = datas.get(i);
                         View listItem=mListview1.getAdapter().getView(i,null,null);
                         EditText et1=listItem.findViewById(R.id.fpsl);
                         System.out.println("填写的数量："+et1.getText().toString());
                         float issueNum=Float.parseFloat(("0"+et1.getText().toString()));
+                        //序列号
+                        EditText et2 = listItem.findViewById(R.id.xlh);
+                        String xlhStr = et2.getText().toString();
                         if(issueNum!=0){
-                            //System.out.println("发料请求增加一条");
-//                            InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "2020-01-01", "2020-01-01", username, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
-                            InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), currentRep.getRSART(),"", currentRep.getDemandNum(), currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssuedNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL(),currentRep.getLOGGR(),currentRep.getLGPBE(),"货架名称");
-                            allNum+=issueNum;
-                            FLreqs.add(req);
+                            int count= (xlhStr.length()-xlhStr.replace(",","").length());
+                            if(issueNum==(count+1)||!currentRep.getSERNP().equals("KY01")){
+                                InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), currentRep.getRSART(),"", currentRep.getDemandNum(), currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssuedNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL(),currentRep.getLOGGR(),currentRep.getLGPBE(),"货架名称",xlhStr);
+                                allNum+=issueNum;
+                                FLreqs.add(req);
+                            }else {
+                                rec=false;
+                                Toast.makeText(this, "序列号数量错误", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+
                         }
                     }
-//                    FLreqs.clear();
-//                    InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean("41000117372", "00010", "2020-01-01", "2020-01-01", username, "", "20000012", currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), "", issueNum, currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum));
-                    SendProductOrderIssueReq req=new SendProductOrderIssueReq(username,FLreqs);
-                    presenter2.InsertProductOrderIssue(req);
+                    if(rec==true){
+                        SendProductOrderIssueReq req=new SendProductOrderIssueReq(username,FLreqs);
+                        presenter2.InsertProductOrderIssue(req);
+                    }
                 }
                 break;
             case R.id.cancel:
@@ -204,23 +232,29 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
 //                dhsl=dhsl>0?dhsl:0;
 //            }
             adapter=new KFFLDialogAdapter(KFFLDialogActivity.this, R.layout.kffldialogitem,datas);
+            adapter.setOnInnerItemOnClickListener(this);
             mListview1.setAdapter(adapter);
-            mListview1.setOnItemClickListener(new ListViewItemOnClick());
+            mListview1.setOnItemClickListener(this);
         }
     }
 
     @Override
     public void onDataSuccess2(InsertProductOrderIssueRep data) {
-        Toast.makeText(this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        List<InsertProductOrderIssueRepBean> data1 = data.getData();
-        if(data1!=null){
-            if(data1.size()>0){
-                for (int i = 0; i < data1.size(); i++) {
-                    FIssueIds.add((int) data1.get(i).getFIssueId());
+        if(data.getStatus().getCode()==1){
+            List<InsertProductOrderIssueRepBean> data1 = data.getData();
+            if(data1!=null){
+                if(data1.size()>0){
+                    for (int i = 0; i < data1.size(); i++) {
+                        FIssueIds.add((int) data1.get(i).getFIssueId());
+                    }
                 }
             }
+            KFFLDialogActivity.this.finish();
+            Toast.makeText(this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
+        }else {
+            DialogUtil.errorMessageDialog(KFFLDialogActivity.this,data.getStatus().getMessage());
         }
-        KFFLDialogActivity.this.finish();
+
 //        System.out.println(data.getData().get(0).getFAllocatedID());
     }
 
@@ -229,35 +263,90 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    public class ListViewItemOnClick implements AdapterView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-//            View itme=mListview1.getChildAt(position- mListview1.getFirstVisiblePosition());
-//
-//            CheckableLayout itemlayout=itme.findViewById(R.id.parent_layout);
-//
-//            if(itemlayout.isChecked()){
-//                setBackgroundChange(itme, R.drawable.tablebody3);
-//            }else {
-//                if(position%2==1){
-//                    setBackgroundChange(itme, R.drawable.tablebody1);
-//                }else {
-//                    setBackgroundChange(itme, R.drawable.tablebody2);
-//                }
-//            }
-//            itemlayout.toggle();
-        }
+    //扫描操作
+    public void scan(){
+        Intent intent = new Intent();
+        intent.setAction("com.barcode.sendBroadcastScan");
+        sendBroadcast(intent);
+    }
+    //注册广播
+    public void registerBroadcast() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(m_Broadcastname);
+//        Toast.makeText(KFCGSHRKActivity.this, "扫描注册初始化", Toast.LENGTH_SHORT).show();
+        registerReceiver(receiver, intentFilter);
 
     }
 
-    public void setBackgroundChange(View view,int i){
-        view.findViewById(R.id.xqjb).setBackgroundResource(i);
-        view.findViewById(R.id.scddh).setBackgroundResource(i);
-        view.findViewById(R.id.jhksrq).setBackgroundResource(i);
-        view.findViewById(R.id.xqsl).setBackgroundResource(i);
-        view.findViewById(R.id.fpsl).setBackgroundResource(i);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void itemClick(View v) {
+        int position;
+        position = (Integer) v.getTag();
+        switch (v.getId()) {
+            case R.id.scan:
+                vibrator.vibrate(30);
+                xlScan = position;
+                System.out.println("内部scan>>" + xlScan);
+                scan();
+                break;
+            default:
+                break;
+        }
+    }
+
+    //接收类
+    public class MyCodeReceiver extends BroadcastReceiver
+    {
+        private static final String TAG = "MycodeReceiver";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(m_Broadcastname)) {
+                String str = intent.getStringExtra("BARCODE");
+                if(!str.equals("")){
+                    if (xlScan == -1) {
+                        Toast.makeText(KFFLDialogActivity.this, "选中行错误", Toast.LENGTH_SHORT).show();
+                    } else {
+                        System.out.println("扫描字符串:"+str);
+                        View itme = mListview1.getAdapter().getView(xlScan, null, null);
+                        EditText et = itme.findViewById(R.id.xlh);
+                        String xlhStr = et.getText().toString();
+                        //输入框内容为空，则直接增加；若不为空，判断序列号是否存在，不存在则用“，”隔开并增加
+                        if (xlhStr.equals("")) {
+                            System.out.println("直接增加"+str);
+                            xlhStr = str;
+                            et.setText(xlhStr);
+                        } else {
+                            String[] split = xlhStr.split(",");
+                            if (Arrays.asList(split).contains(str)) {
+                            } else {
+                                xlhStr = xlhStr + "," + str;
+                                et.setText(xlhStr);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                        //扫描完毕后初始化xlScan
+                        xlScan = -1;
+                    }
+                }
+
+            }
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerBroadcast();
     }
 
     //获取当前日期

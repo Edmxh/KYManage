@@ -37,11 +37,12 @@ public class InsertFinProStorageRecordReq {
     private String MarketOrderNO;
     private String MarketOrderRow;
     private String Handler;
+    private String SerialNumber;
 
     private List<InsertFinProStorageRecordReqBean2> ldata;
     private List<InsertFinProStorageRecordReqBean1> sdata;
 
-    public InsertFinProStorageRecordReq(String materialCode, String materialDesc, String materialType, String factory, float qty, float MQty, String unit, String marketOrderNO, String marketOrderRow, String handler, List<InsertFinProStorageRecordReqBean2> ldata, List<InsertFinProStorageRecordReqBean1> sdata) {
+    public InsertFinProStorageRecordReq(String materialCode, String materialDesc, String materialType, String factory, float qty, float MQty, String unit, String marketOrderNO, String marketOrderRow, String handler,String serialNumber, List<InsertFinProStorageRecordReqBean2> ldata, List<InsertFinProStorageRecordReqBean1> sdata) {
         MaterialCode = materialCode;
         MaterialDesc = materialDesc;
         MaterialType = materialType;
@@ -52,6 +53,7 @@ public class InsertFinProStorageRecordReq {
         MarketOrderNO = marketOrderNO;
         MarketOrderRow = marketOrderRow;
         Handler = handler;
+        SerialNumber = serialNumber;
         this.ldata = ldata;
         this.sdata = sdata;
     }
@@ -179,6 +181,16 @@ public class InsertFinProStorageRecordReq {
     @JSONField(name = "Handler")
     public void setHandler(String Handler) {
         this.Handler = Handler;
+    }
+
+
+    @JSONField(name = "SerialNumber")
+    public String getSerialNumber() {
+        return SerialNumber;
+    }
+    @JSONField(name = "SerialNumber")
+    public void setSerialNumber(String serialNumber) {
+        SerialNumber = serialNumber;
     }
 
     public List<InsertFinProStorageRecordReqBean2> getLdata() {

@@ -14,7 +14,7 @@ public class GetInFactoryDeliverListDetailJSRep {
 
     /**
      * code : 1.0
-     * data : [{"DeliverID":"15918752209265","ProductNO":"000010048078","MaterialDesc":"支架加工完成半成品","MarketOrderNO":"0010000208","DemandQty":1000,"MaterialUnit":"EA","ID":4,"Client":"工厂自动化","MaterialCode":"LJ2015000594-A01","MarketOrderRow":"000026","ActuallyQty":3,"ProductMaterialCode":"LJ2015000594-TZ2010043020"}]
+     * data : [{"DeliverID":"16006732949884","Status":"","MarketOrderNO":"0010000432","DemandQty":60,"CreateTime":"2020-09-24 15:47:09","IssueStorage":"2912","ReverseHandler":"","Handler":"","ActuallyQty":4,"ProductMaterialCode":"LJ5565000267-A01","ProductNO":"000010144050","MaterialDesc":"小角架","UpdateTime":"2020-09-24 15:47:12","MaterialUnit":"EA","DispatchListNO":"16006724734475","Client":"2030","MaterialCode":"LJ5565000267-A01","MarketOrderRow":"000030"}]
      * message : 查询成功
      */
 
@@ -92,32 +92,44 @@ public class GetInFactoryDeliverListDetailJSRep {
 
     public static class GetInFactoryDeliverListDetailJSRepBean {
         /**
-         * DeliverID : 15918752209265
-         * ProductNO : 000010048078
-         * MaterialDesc : 支架加工完成半成品
-         * MarketOrderNO : 0010000208
-         * DemandQty : 1000.0
+         * DeliverID : 16006732949884
+         * Status :
+         * MarketOrderNO : 0010000432
+         * DemandQty : 60.0
+         * CreateTime : 2020-09-24 15:47:09
+         * IssueStorage : 2912
+         * ReverseHandler :
+         * Handler :
+         * ActuallyQty : 4.0
+         * ProductMaterialCode : LJ5565000267-A01
+         * ProductNO : 000010144050
+         * MaterialDesc : 小角架
+         * UpdateTime : 2020-09-24 15:47:12
          * MaterialUnit : EA
-         * ID : 4
-         * Client : 工厂自动化
-         * MaterialCode : LJ2015000594-A01
-         * MarketOrderRow : 000026
-         * ActuallyQty : 3.0
-         * ProductMaterialCode : LJ2015000594-TZ2010043020
+         * DispatchListNO : 16006724734475
+         * Client : 2030
+         * MaterialCode : LJ5565000267-A01
+         * MarketOrderRow : 000030
          */
 
         private String DeliverID;
-        private String ProductNO;
-        private String MaterialDesc;
+        private String Status;
         private String MarketOrderNO;
         private float DemandQty;
+        private String CreateTime;
+        private String IssueStorage;
+        private String ReverseHandler;
+        private String Handler;
+        private float ActuallyQty;
+        private String ProductMaterialCode;
+        private String ProductNO;
+        private String MaterialDesc;
+        private String UpdateTime;
         private String MaterialUnit;
-        private long ID;
+        private String DispatchListNO;
         private String Client;
         private String MaterialCode;
         private String MarketOrderRow;
-        private float ActuallyQty;
-        private String ProductMaterialCode;
 
         public static GetInFactoryDeliverListDetailJSRepBean objectFromData(String str) {
 
@@ -171,20 +183,12 @@ public class GetInFactoryDeliverListDetailJSRep {
             this.DeliverID = DeliverID;
         }
 
-        public String getProductNO() {
-            return ProductNO;
+        public String getStatus() {
+            return Status;
         }
 
-        public void setProductNO(String ProductNO) {
-            this.ProductNO = ProductNO;
-        }
-
-        public String getMaterialDesc() {
-            return MaterialDesc;
-        }
-
-        public void setMaterialDesc(String MaterialDesc) {
-            this.MaterialDesc = MaterialDesc;
+        public void setStatus(String Status) {
+            this.Status = Status;
         }
 
         public String getMarketOrderNO() {
@@ -203,6 +207,78 @@ public class GetInFactoryDeliverListDetailJSRep {
             this.DemandQty = DemandQty;
         }
 
+        public String getCreateTime() {
+            return CreateTime;
+        }
+
+        public void setCreateTime(String CreateTime) {
+            this.CreateTime = CreateTime;
+        }
+
+        public String getIssueStorage() {
+            return IssueStorage;
+        }
+
+        public void setIssueStorage(String IssueStorage) {
+            this.IssueStorage = IssueStorage;
+        }
+
+        public String getReverseHandler() {
+            return ReverseHandler;
+        }
+
+        public void setReverseHandler(String ReverseHandler) {
+            this.ReverseHandler = ReverseHandler;
+        }
+
+        public String getHandler() {
+            return Handler;
+        }
+
+        public void setHandler(String Handler) {
+            this.Handler = Handler;
+        }
+
+        public float getActuallyQty() {
+            return ActuallyQty;
+        }
+
+        public void setActuallyQty(float ActuallyQty) {
+            this.ActuallyQty = ActuallyQty;
+        }
+
+        public String getProductMaterialCode() {
+            return ProductMaterialCode;
+        }
+
+        public void setProductMaterialCode(String ProductMaterialCode) {
+            this.ProductMaterialCode = ProductMaterialCode;
+        }
+
+        public String getProductNO() {
+            return ProductNO;
+        }
+
+        public void setProductNO(String ProductNO) {
+            this.ProductNO = ProductNO;
+        }
+
+        public String getMaterialDesc() {
+            return MaterialDesc;
+        }
+
+        public void setMaterialDesc(String MaterialDesc) {
+            this.MaterialDesc = MaterialDesc;
+        }
+
+        public String getUpdateTime() {
+            return UpdateTime;
+        }
+
+        public void setUpdateTime(String UpdateTime) {
+            this.UpdateTime = UpdateTime;
+        }
+
         public String getMaterialUnit() {
             return MaterialUnit;
         }
@@ -211,12 +287,12 @@ public class GetInFactoryDeliverListDetailJSRep {
             this.MaterialUnit = MaterialUnit;
         }
 
-        public long getID() {
-            return ID;
+        public String getDispatchListNO() {
+            return DispatchListNO;
         }
 
-        public void setID(long ID) {
-            this.ID = ID;
+        public void setDispatchListNO(String DispatchListNO) {
+            this.DispatchListNO = DispatchListNO;
         }
 
         public String getClient() {
@@ -241,22 +317,6 @@ public class GetInFactoryDeliverListDetailJSRep {
 
         public void setMarketOrderRow(String MarketOrderRow) {
             this.MarketOrderRow = MarketOrderRow;
-        }
-
-        public float getActuallyQty() {
-            return ActuallyQty;
-        }
-
-        public void setActuallyQty(float ActuallyQty) {
-            this.ActuallyQty = ActuallyQty;
-        }
-
-        public String getProductMaterialCode() {
-            return ProductMaterialCode;
-        }
-
-        public void setProductMaterialCode(String ProductMaterialCode) {
-            this.ProductMaterialCode = ProductMaterialCode;
         }
     }
 }

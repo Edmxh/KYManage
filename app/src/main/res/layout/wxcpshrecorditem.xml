@@ -64,7 +64,7 @@
             <TextView
                 android:layout_width="@dimen/titlewidth2"
                 android:layout_height="match_parent"
-                android:text="凭  证  号  /  行:"
+                android:text="采购订单号/行:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"
@@ -185,17 +185,17 @@
             <TextView
                 android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
-                android:text="需   求   工   厂:"
+                android:text="收   货   类   型:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"
                 android:duplicateParentState="true"/>
             <TextView
-                android:id="@+id/xqgc"
+                android:id="@+id/shlx"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="需求工厂"
+                android:text=""
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center_vertical"
@@ -209,7 +209,55 @@
             <TextView
                 android:layout_width="@dimen/titlewidth2"
                 android:layout_height="wrap_content"
-                android:text="需   求   仓   库:"
+                android:text="收   货   路   径:"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/shlj"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center_vertical"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="@dimen/titlewidth2"
+                android:layout_height="wrap_content"
+                android:text="供   货   工   厂:"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/xqgc"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center_vertical"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="@dimen/titlewidth2"
+                android:layout_height="wrap_content"
+                android:text="供   货   仓   库:"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center"

@@ -2,6 +2,7 @@ package com.example.kymanage.Activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Vibrator;
@@ -32,7 +33,11 @@ import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.Presenters.Print1.GetCMInFactoryDeliverJSPresenter;
 import com.example.kymanage.presenter.Presenters.Print1Record1.GetInFactoryDeliverListJSPresenter;
 import com.example.kymanage.presenter.Presenters.Print1Record1.GetOutSemifinProductIssueWriteOffJSPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.example.kymanage.utils.mPrintUtil;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +53,8 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
     //筛选条件
     private TextView kw;
     private TextView psdh;
+    private TextView sygc;
+    private TextView xsddh;
     private ImageView query;
     private Button reset;
     private CheckBox queryself;
@@ -85,6 +92,8 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
         date = findViewById(R.id.date);
         kw = findViewById(R.id.kw);
         psdh = findViewById(R.id.psdh);
+        sygc = findViewById(R.id.sygc);
+        xsddh = findViewById(R.id.xsddh);
         query = findViewById(R.id.query);
         reset = findViewById(R.id.reset);
         menupoint = findViewById(R.id.menupoint);
@@ -110,6 +119,10 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
 
         datas=new ArrayList<GetInFactoryDeliverListJSRepBean>();
         initPrinter();
+
+        date.setText(getCurrentdate());
+        queryRecord();
+
 
     }
     //初始化
@@ -157,7 +170,7 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
         }else {
             queryall=true;
         }
-        presenter1.GetInFactoryDeliverListJS(psdh.getText().toString(),kw.getText().toString(),username,date.getText().toString(),queryall);
+        presenter1.GetInFactoryDeliverListJS(psdh.getText().toString(),kw.getText().toString(),username,date.getText().toString(),queryall,xsddh.getText().toString(),sygc.getText().toString());
     }
 
     public void onPopupButtonClick(View button)
@@ -197,24 +210,9 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
 //                                break;
                             case R.id.receive:
                                 vibrator.vibrate(30);
+                                confirmDeleteDialog(PrintCNPSDRecord1Activity.this);
                                 // 隐藏该对话框
-                                vibrator.vibrate(30);
-                                List<String> strlist=new ArrayList<String>();
-                                if(datas!=null){
-                                    for (int i = 0; i < datas.size(); i++) {
-                                        View itmeview=listview1.getAdapter().getView(i,null,null);
-                                        CheckBox cb= itmeview.findViewById(R.id.checked);
-                                        if(cb.isChecked()){
-                                            strlist.add(datas.get(i).getDeliverID());
-                                        }
-                                    }
-                                }
-                                System.out.println("冲销选中数:"+strlist.size());
-                                if(strlist.size()>0){
-                                    presenter3.GetOutSemifinProductIssueWriteOffJS(strlist,username,getCurrentdate());
-                                }else {
-                                    Toast.makeText(PrintCNPSDRecord1Activity.this, "未选中要冲销的记录", Toast.LENGTH_SHORT).show();
-                                }
+
 //                                LoadingBar.dialog(PrintCNPSDRecord1Activity.this).setFactoryFromResource(R.layout.layout_custom2).show();
 
                                 break;
@@ -272,8 +270,13 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
 
     @Override
     public void onDataSuccess3(CodeMessageBean data) {
-        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        queryRecord();
+        if(data.getCode()==1){
+            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            queryRecord();
+        }else {
+            DialogUtil.errorMessageDialog(PrintCNPSDRecord1Activity.this,data.getMessage());
+        }
+
     }
 
     @Override
@@ -328,5 +331,42 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = sf.format(date0);//凭证日期
         return currentDate;
+    }
+
+    //冲销确认
+    private void confirmDeleteDialog(Context context) {
+        new QMUIDialog.MessageDialogBuilder(context)
+                .setTitle("请确认")
+                .setMessage("确定要冲销吗？")
+                .setSkinManager(QMUISkinManager.defaultInstance(context))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "冲销", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        List<String> strlist=new ArrayList<String>();
+                        if(datas!=null){
+                            for (int i = 0; i < datas.size(); i++) {
+                                View itmeview=listview1.getAdapter().getView(i,null,null);
+                                CheckBox cb= itmeview.findViewById(R.id.checked);
+                                if(cb.isChecked()){
+                                    strlist.add(datas.get(i).getDeliverID());
+                                }
+                            }
+                        }
+                        System.out.println("冲销选中数:"+strlist.size());
+                        if(strlist.size()>0){
+                            presenter3.GetOutSemifinProductIssueWriteOffJS(strlist,username);
+                        }else {
+                            Toast.makeText(PrintCNPSDRecord1Activity.this, "未选中要冲销的记录", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 }

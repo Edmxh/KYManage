@@ -9,14 +9,18 @@ public class GetFinProStorageRecordReq {
     private String CurrentDate;
     private String Factory;
     private String Handler;
+    private String MaterialCode;
+    private String ProductOrderNO;
 
     public GetFinProStorageRecordReq() {
     }
 
-    public GetFinProStorageRecordReq(String currentDate, String factory, String handler) {
+    public GetFinProStorageRecordReq(String currentDate, String factory, String handler, String materialCode, String productOrderNO) {
         CurrentDate = currentDate;
         Factory = factory;
         Handler = handler;
+        MaterialCode = materialCode;
+        ProductOrderNO = productOrderNO;
     }
 
     @JSONField(name="CurrentDate")
@@ -43,5 +47,22 @@ public class GetFinProStorageRecordReq {
     @JSONField(name="Handler")
     public void setHandler(String handler) {
         Handler = handler;
+    }
+
+    @JSONField(name = "MaterialCode")
+    public String getMaterialCode() {
+        return MaterialCode;
+    }
+    @JSONField(name = "MaterialCode")
+    public void setMaterialCode(String materialCode) {
+        MaterialCode = materialCode;
+    }
+    @JSONField(name = "ProductOrderNO")
+    public String getProductOrderNO() {
+        return ProductOrderNO;
+    }
+    @JSONField(name = "ProductOrderNO")
+    public void setProductOrderNO(String productOrderNO) {
+        ProductOrderNO = productOrderNO;
     }
 }

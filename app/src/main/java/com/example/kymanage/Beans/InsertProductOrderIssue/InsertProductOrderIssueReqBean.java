@@ -67,10 +67,12 @@ public class InsertProductOrderIssueReqBean {
     private String Lgpbe;
     private String Lgobe;
 
+    private String SerialNumber;
+
     public InsertProductOrderIssueReqBean() {
     }
 
-    public InsertProductOrderIssueReqBean(String ordernum, String rowno, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String rsart, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl, String loggr, String lgpbe, String lgobe) {
+    public InsertProductOrderIssueReqBean(String ordernum, String rowno, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String rsart, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl, String loggr, String lgpbe, String lgobe, String serialNumber) {
         this.ordernum = ordernum;
         this.rowno = rowno;
         this.hetxt = hetxt;
@@ -103,6 +105,7 @@ public class InsertProductOrderIssueReqBean {
         Loggr = loggr;
         Lgpbe = lgpbe;
         Lgobe = lgobe;
+        SerialNumber = serialNumber;
     }
 
     public String getOrdernum() {
@@ -363,5 +366,13 @@ public class InsertProductOrderIssueReqBean {
     @JSONField(name = "Lgobe")
     public void setLgobe(String lgobe) {
         Lgobe = lgobe;
+    }
+    @JSONField(name = "SerialNumber")
+    public String getSerialNumber() {
+        return SerialNumber;
+    }
+    @JSONField(name = "SerialNumber")
+    public void setSerialNumber(String serialNumber) {
+        SerialNumber = serialNumber;
     }
 }

@@ -10,10 +10,11 @@ import com.example.kymanage.net.HttpDataListener;
 import com.example.kymanage.presenter.BasePresenter;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
+import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 
 import java.util.List;
 
-public class GetOutsourceFinProLableJSPresenter extends BasePresenter<BaseView3<GetOutsourceFinProLableJSRep>> {
+public class GetOutsourceFinProLableJSPresenter extends BasePresenter<PrintBaseView<GetOutsourceFinProLableJSRep>> {
 
 
     private final AppModel appModel;
@@ -22,13 +23,13 @@ public class GetOutsourceFinProLableJSPresenter extends BasePresenter<BaseView3<
         appModel = new AppModel();
     }
 
-    public void GetOutsourceFinProLableJS(String user, String requestTime, List<GetOutsourceFinProLableJSReqBean> data){
-        appModel.GetOutsourceFinProLableJS(user,requestTime,data,new HttpDataListener<GetOutsourceFinProLableJSRep>() {
+    public void GetOutsourceFinProLableJS(List<Integer> data){
+        appModel.GetOutsourceFinProLableDataJS(data,new HttpDataListener<GetOutsourceFinProLableJSRep>() {
 
 
             @Override
             public void onDataSuccess(GetOutsourceFinProLableJSRep data) {
-                getView().onDataSuccess3(data);
+                getView().onDataSuccessPrint(data);
             }
 
             @Override

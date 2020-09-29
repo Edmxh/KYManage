@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.WXBCPJGRKAdapter1;
 import com.example.kymanage.Adapter.WXBCPJGRKAdapter2;
+import com.example.kymanage.Adapter.WXBCPSHDialogAdapter;
 import com.example.kymanage.Adapter.WXCPSHAdapter;
 import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRep;
 import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRepBean;
@@ -51,6 +52,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.InterfaceView.BaseView4;
+import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetPurchaseOrderInfoJSPresenter;
@@ -66,7 +68,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurchaseOrderInfoJSReps>, BaseView1<PreMaterialProductOrderReps>, BaseView2<OutsourceFinishedProductReceivingJSRep>, BaseView3<GetOutsourceFinProLableJSRep>, BaseView4<PreMaterialProductOrderReps> {
+public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurchaseOrderInfoJSReps>, BaseView1<PreMaterialProductOrderReps>, BaseView2<OutsourceFinishedProductReceivingJSRep>, PrintBaseView<GetOutsourceFinProLableJSRep>, BaseView4<PreMaterialProductOrderReps> {
 
     //震动
     private Vibrator vibrator;
@@ -76,7 +78,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     //表格
     private ListView listview1;
     private CGSHReceiveDetailPresenter presenter4;
-    private WXCPSHAdapter adapter1;
+    private WXBCPSHDialogAdapter adapter1;
     private ListView listview2;
     private WXBCPJGRKAdapter2 adapter2;
     //scan
@@ -132,6 +134,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     private PreMaterialProductOrderJSPresenter presenter5;
     private List<PreMaterialProductOrderRep> productOrderList2;
     private View layout1;
+    private View layout2;
     private Spinner spinner2;
     private ArrayAdapter<String> adapter0;
     private List<String> cgddh_hang=new ArrayList<String>();
@@ -175,6 +178,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
 
         layout1=findViewById(R.id.layout1);
         layout1.setVisibility(View.INVISIBLE);
+        layout2=findViewById(R.id.layout2);
+        layout2.setVisibility(View.INVISIBLE);
         ll_scdd=findViewById(R.id.ll_scdd);
         ll_scdd.setVisibility(View.INVISIBLE);
 
@@ -329,8 +334,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                 float num = Float.parseFloat("0"+numstr);
                 allnum2+=num;
 //                System.out.println("num2=="+num);
-                UPAUFNRBean UPAUFNR=new UPAUFNRBean(currBean2.getProductOrderNO(), currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getRSART(), currBean2.getMCODE(), currBean2.getStorage(), currBean2.getDemandNum(), num, currBean2.getDispatchNum());
-                UPAUFNRs.add(UPAUFNR);
+//                UPAUFNRBean UPAUFNR=new UPAUFNRBean(currBean2.getProductOrderNO(), currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getRSART(), currBean2.getMCODE(), currBean2.getStorage(), currBean2.getDemandNum(), num, currBean2.getDispatchNum(),currBean2.getMATNR());
+//                UPAUFNRs.add(UPAUFNR);
             }
         }
         String allnumStr=dhsl.getText().toString();
@@ -340,9 +345,10 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         if(productOrderList1.size()==0){
             allnum1=allnum;
         }
+        System.out.println(allnum+"--"+allnum1+"--"+allnum2);
         if(allnum2<=allnum1&&allnum1<=allnum){
-            OutsourceFinishedProductReceivingJSReq req=new OutsourceFinishedProductReceivingJSReq(getCurrentdate(), getCurrentdate(), username, selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getEBELN(), selectedRep.getEBELP(), factory, selectedRep.getWERKS(), selectedRep.getLGFSB(), selectedRep.getMATNR(), selectedRep.getTXZ01(), selectedRep.getMaterialType(),selectedRep.getMEINS(), selectedRep.getMENGE(), selectedRep.getInStorage(), allnum, selectedRep.getCGTXT(), selectedRep.getKINDS(),  AUFNRs, UPAUFNRs);
-            presenter2.OutsourceFinishedProductReceivingJS(req);
+//            OutsourceFinishedProductReceivingJSReq req=new OutsourceFinishedProductReceivingJSReq(getCurrentdate(), getCurrentdate(), username, selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getEBELN(), selectedRep.getEBELP(), factory, selectedRep.getWERKS(), selectedRep.getLGFSB(), selectedRep.getMATNR(), selectedRep.getTXZ01(), selectedRep.getMaterialType(),selectedRep.getMEINS(), selectedRep.getMENGE(), selectedRep.getInStorage(), allnum, selectedRep.getCGTXT(), selectedRep.getKINDS(),  AUFNRs, UPAUFNRs);
+//            presenter2.OutsourceFinishedProductReceivingJS(req);
         } else {
             Toast.makeText(this, "分配数量有误", Toast.LENGTH_SHORT).show();
         }
@@ -375,7 +381,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                                 break;
                             case R.id.print:
                                 // 隐藏该对话框
-                                presenter3.GetOutsourceFinProLableJS(username,getCurrentdate2(),printList);
+//                                presenter3.GetOutsourceFinProLableJS(username,getCurrentdate2(),printList);
                                 break;
                             default:
                                 // 使用Toast显示用户单击的菜单项
@@ -395,6 +401,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         if(data.getCode()==1){
             //扫码成功显示
             layout1.setVisibility(View.VISIBLE);
+            layout2.setVisibility(View.VISIBLE);
             ll_scdd.setVisibility(View.VISIBLE);
             if(factory.equals("2090")){
                 rb2.setVisibility(View.INVISIBLE);
@@ -407,8 +414,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         try {
             List<GetPurchaseOrderInfoJSRep> currentDatas = data.getData();
             for (GetPurchaseOrderInfoJSRep data2 : currentDatas) {
-                data2.setMarketorderno(marketorderno);
-                data2.setMarketorderrow(marketorderrow);
+//                data2.setMarketorderno(marketorderno);
+//                data2.setMarketorderrow(marketorderrow);
             }
 
             data1.clear();
@@ -419,15 +426,6 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
             for (GetPurchaseOrderInfoJSRep rep : data1) {
                 String str=rep.getEBELN()+"/"+rep.getEBELP();
                 cgddh_hang.add(str);
-            }
-            //扫码显示
-            layout1.setVisibility(View.VISIBLE);
-            ll_scdd.setVisibility(View.VISIBLE);
-//            radiogroup1.clearCheck();
-            if(factory.equals("2090")){
-                rb2.setVisibility(View.INVISIBLE);
-            }else {
-                rb2.setVisibility(View.VISIBLE);
             }
 
             adapter0 = new ArrayAdapter<String>(getApplicationContext(), R.layout.defined_spinner_item, cgddh_hang);
@@ -451,7 +449,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                     dhsl.setText(num3str);
                     //presenter3.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
                     //ondatasuccess1
-                    presenter4.CGSHReceiveDetail(selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getMarketorderno(),selectedRep.getWERKS(),selectedRep.getWESBS());
+//                    presenter4.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
                     radiogroup1.check(R.id.ben);
                 }
                 @Override
@@ -479,10 +477,17 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
         } catch (Exception e) {
             e.printStackTrace();
         }
+        layout1.setVisibility(View.INVISIBLE);
+        layout2.setVisibility(View.INVISIBLE);
+        productOrderList1.clear();
+        productOrderList2.clear();
+        adapter1.notifyDataSetChanged();
+        adapter2.notifyDataSetChanged();
+        ll_scdd.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onDataSuccess3(GetOutsourceFinProLableJSRep data) {
+    public void onDataSuccessPrint(GetOutsourceFinProLableJSRep data) {
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         try {
             List<GetOutsourceFinProLableJSRepBean> beans = data.getData();
@@ -500,7 +505,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
     @Override
     public void onDataSuccess1(PreMaterialProductOrderReps data) {
         productOrderList1 = data.getData();
-        adapter1=new WXCPSHAdapter(WXCPSHActivity.this, R.layout.wxcpshitem1, productOrderList1);
+        adapter1=new WXBCPSHDialogAdapter(WXCPSHActivity.this, R.layout.wxcpshitem1, productOrderList1);
         listview1.setAdapter(adapter1);
     }
 
@@ -563,7 +568,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                         }
 //
                         if(marketorderno!=null&&marketorderrow!=null&&bm!=null){
-                            presenter1.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr);
+                            presenter1.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"2");
                         }
 //                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
                         scanString="";
@@ -650,7 +655,7 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
             materialCodeArr.add(bean);
         }else {
             for (int i = 0; i < productOrderList1.size(); i++) {
-                String code=productOrderList1.get(i).getMATNR();
+                String code=productOrderList1.get(i).getProOrderMaterialCode();
                 float num0=productOrderList1.get(i).getCurrentNum();
                 boolean dup=false;
                 int ind=0;
@@ -671,6 +676,6 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                 }
             }
         }
-        presenter5.PreMaterialProductOrderJS(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),materialCodeArr,factory);
+//        presenter5.PreMaterialProductOrderJS(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),materialCodeArr,factory);
     }
 }

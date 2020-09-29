@@ -60,7 +60,7 @@
                 <TextView
                     android:layout_width="@dimen/titlewidth2"
                     android:layout_height="match_parent"
-                    android:text="物   料   编   码:"
+                    android:text="物   料    编   码:"
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
                     android:gravity="center"
@@ -70,7 +70,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="物料编码"
+                    android:text=""
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
                     android:gravity="center_vertical"
@@ -96,22 +96,59 @@
                 <TextView
                     android:layout_width="@dimen/titlewidth2"
                     android:layout_height="wrap_content"
-                    android:text="物   料   描   述:"
+                    android:text="销售订单号/行:"
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
                     android:gravity="center"
                     android:duplicateParentState="true"/>
                 <TextView
-                    android:id="@+id/wlms"
+                    android:id="@+id/xsddh_hang"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="物  料  描  述"
+                    android:text=""
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
                     android:gravity="center_vertical"
                     android:duplicateParentState="true"/>
             </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center">-->
+<!--                <TextView-->
+<!--                    android:layout_width="@dimen/titlewidth2"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="序      列      号:"-->
+<!--                    android:textSize="@dimen/text2"-->
+<!--                    android:textColor="@color/fontcolor1"-->
+<!--                    android:gravity="center"-->
+<!--                    android:duplicateParentState="true"/>-->
+<!--                <EditText-->
+<!--                    android:id="@+id/xlh"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="5"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text=""-->
+<!--                    android:textSize="@dimen/text2"-->
+<!--                    android:textColor="@color/fontcolor1"-->
+<!--                    style="@style/LoginInputBoxStyle"-->
+<!--                    android:textCursorDrawable="@null"-->
+<!--                    android:gravity="center"-->
+<!--                    android:duplicateParentState="true"-->
+<!--                    android:layout_marginRight="10dp"/>-->
+<!--                <Button-->
+<!--                    android:id="@+id/scanxlh"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:text="扫码"-->
+<!--                    android:textSize="@dimen/text22"-->
+<!--                    android:textColor="@color/colorWhite"-->
+<!--                    android:background="@drawable/buttonstyle4"-->
+<!--                    android:layout_marginRight="10dp"/>-->
+<!--            </LinearLayout>-->
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -128,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="工厂"
+                    android:text="上游工厂"
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
                     android:gravity="center"
@@ -138,7 +175,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="工厂"
+                    android:text=""
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
                     android:gravity="center"
@@ -153,47 +190,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="单位"
+                    android:text="图纸数量"
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
-                    android:textCursorDrawable="@null"
                     android:gravity="center"
                     android:duplicateParentState="true"/>
                 <TextView
-                    android:id="@+id/dw"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="单位"
-                    android:textSize="@dimen/text2"
-                    android:textColor="@color/fontcolor1"
-                    android:textCursorDrawable="@null"
-                    android:gravity="center"
-                    android:duplicateParentState="true"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="到货数量"
-                    android:textSize="@dimen/text2"
-                    android:textColor="@color/fontcolor1"
-                    android:gravity="center"
-                    android:duplicateParentState="true"/>
-                <EditText
                     android:id="@+id/dhsl"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="到货数量"
+                    android:text=""
                     android:textSize="@dimen/text2"
                     android:textColor="@color/fontcolor1"
-                    android:background="@color/colorGreen"
                     android:digits="@string/filter_vcode"
                     style="@style/EditTextStyle"
                     android:textCursorDrawable="@null"
@@ -243,14 +252,14 @@
                         android:checked="false"
                         android:gravity="center"
                         android:textSize="@dimen/text2"
-                        android:text="本" />
+                        android:text="本事业部" />
                     <RadioButton
                         android:id="@+id/shangyou"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:checked="false"
                         android:textSize="@dimen/text2"
-                        android:text="上游" />
+                        android:text="上游事业部" />
                 </RadioGroup>
             </LinearLayout>
             <ListView

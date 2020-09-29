@@ -52,6 +52,9 @@ import com.example.kymanage.presenter.Presenters.KFPage3Record.GenerateStorageLs
 import com.example.kymanage.presenter.Presenters.KFPage3Record.WriteOffProductOrderIssuePresenter;
 import com.example.kymanage.presenter.Presenters.KFPage4.GetIssueRecordPresenter;
 import com.example.kymanage.utils.mPrintUtil;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -219,6 +222,8 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                 listview1.setAdapter(adapter);
             }
         });
+
+
     }
 
     //弹出菜单
@@ -238,9 +243,9 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
                         switch (item.getItemId())
                         {
                             case R.id.receive:
+                                confirmDeleteDialog(KFFLRecordActivity.this);
                                 // 遮罩
-                                LoadingBar.dialog(KFFLRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
-                                writeOff();
+
                                 break;
 //                            case R.id.print1:
 //                                // 隐藏该对话框
@@ -499,6 +504,29 @@ public class KFFLRecordActivity extends BaseActivity implements BaseView1<GetIss
     protected void onResume() {
         super.onResume();
         registerBroadcast();
+    }
+
+    //冲销确认
+    private void confirmDeleteDialog(Context context) {
+        new QMUIDialog.MessageDialogBuilder(context)
+                .setTitle("请确认")
+                .setMessage("确定要冲销吗？")
+                .setSkinManager(QMUISkinManager.defaultInstance(context))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "冲销", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        LoadingBar.dialog(KFFLRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
+                        writeOff();
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 
 

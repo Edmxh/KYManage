@@ -42,10 +42,13 @@ public class MaterialFactoryDumpReqBean {
     private float qty;
     private String bktxt;
 
+
+    private String labelnum;
+
     public MaterialFactoryDumpReqBean() {
     }
 
-    public MaterialFactoryDumpReqBean(String budat, String bldat, long FID, String matnr, String maktx, String materialtype, String meins, String aufnr, String kdauf, String kdpos, float qty, String bktxt) {
+    public MaterialFactoryDumpReqBean(String budat, String bldat, long FID, String matnr, String maktx, String materialtype, String meins, String aufnr, String kdauf, String kdpos, float qty, String bktxt, String labelnum) {
         this.budat = budat;
         this.bldat = bldat;
         this.FID = FID;
@@ -58,6 +61,7 @@ public class MaterialFactoryDumpReqBean {
         this.kdpos = kdpos;
         this.qty = qty;
         this.bktxt = bktxt;
+        this.labelnum = labelnum;
     }
 
     public String getBudat() {
@@ -154,5 +158,13 @@ public class MaterialFactoryDumpReqBean {
 
     public void setBktxt(String bktxt) {
         this.bktxt = bktxt;
+    }
+
+    public String getLabelnum() {
+        return labelnum;
+    }
+
+    public void setLabelnum(String labelnum) {
+        this.labelnum = labelnum;
     }
 }

@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
     private int resourceId;
-//    HashMap<Integer, Boolean> select=new HashMap<>();
+    HashMap<Integer, Boolean> select=new HashMap<>();
     private List<GetDumpRecordRepBean> mList;
     //private DataBean1 DataBean1;
 
@@ -31,13 +31,13 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
         mList=objects==null?new ArrayList<GetDumpRecordRepBean>():objects;
-//        initData();
+        initData();
     }
-//    private void initData() {
-//        for(int i=0;i<mList.size();i++){
-//            select.put(i, false);
-//        }
-//    }
+    private void initData() {
+        for(int i=0;i<mList.size();i++){
+            select.put(i, false);
+        }
+    }
     // convertView 参数用于将之前加载好的布局进行缓存
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
@@ -71,16 +71,16 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
         viewHolder.xqkf=view.findViewById(R.id.xqkf);
         viewHolder.zcsl=view.findViewById(R.id.zcsl);
         viewHolder.zt=view.findViewById(R.id.zt);
-//        viewHolder.checked=view.findViewById(R.id.checked);
-//        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-//
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView,
-//                                         boolean isChecked) {
-//                select.put(position, isChecked);
-//            }
-//
-//        });
+        viewHolder.checked=view.findViewById(R.id.checked);
+        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                select.put(position, isChecked);
+            }
+
+        });
         // 获取控件实例，并调用set...方法使其显示出来
 //        viewHolder.check.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -119,15 +119,20 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
             viewHolder.xqkf.setText(rep.getDemandStorage());
             String num1str=""+rep.getQty();
             viewHolder.zcsl.setText(num1str);
-            viewHolder.zt.setText(rep.getStatus());
+            if(rep.getReverseHandler()==null||rep.getReverseHandler().equals("")){
+                viewHolder.zt.setText(rep.getStatus());
+            }else {
+                viewHolder.zt.setText(rep.getStatus()+"("+rep.getReverseHandler()+")");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        if(select.get(position)){
-//            viewHolder.checked.setChecked(true);
-//        }else{
-//            viewHolder.checked.setChecked(false);
-//        }
+        if(select.get(position)){
+            viewHolder.checked.setChecked(true);
+        }else{
+            viewHolder.checked.setChecked(false);
+        }
 //        switch (position%2){
 //            default:
 //                break;
@@ -182,7 +187,7 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
         TextView xqkf;
         TextView zcsl;
         TextView zt;
-//        CheckBox checked;
+        CheckBox checked;
     }
 
     public interface DetailViewHolderListener {

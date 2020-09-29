@@ -79,8 +79,14 @@ public class Print3Adapter extends ArrayAdapter<GetDeliveryListInfoJSReqBean1>im
         viewHolder.xh.setText(no);
         viewHolder.wlbm.setText(rep.getMATNR());
 
-        String newStr1 = rep.getVBELN().replaceAll("^(0+)", "");
-        String newStr2 = rep.getPOSNR().replaceAll("^(0+)", "");
+        String newStr1 = null;
+        String newStr2 = null;
+        try {
+            newStr1 = rep.getVBELN().replaceAll("^(0+)", "");
+            newStr2 = rep.getPOSNR().replaceAll("^(0+)", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
 
         viewHolder.jhck.setText(rep.getLGORT());

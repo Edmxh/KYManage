@@ -50,6 +50,8 @@ public class PrintCNPSDAdapter extends ArrayAdapter<CNPSDDisplayBean> {
             viewHolder=new ViewHolder();
             viewHolder.xh=view.findViewById(R.id.xh);
             viewHolder.pgdh=view.findViewById(R.id.pgdh);
+            viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.pgry=view.findViewById(R.id.pgry);
             viewHolder.cjsj=view.findViewById(R.id.cjsj);
             viewHolder.checked=view.findViewById(R.id.checked);
@@ -65,8 +67,28 @@ public class PrintCNPSDAdapter extends ArrayAdapter<CNPSDDisplayBean> {
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         } else{
-            view=convertView;
-            viewHolder=(ViewHolder) view.getTag();
+            view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+
+            // 避免每次调用getView()时都要重新获取控件实例
+            viewHolder=new ViewHolder();
+            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.pgdh=view.findViewById(R.id.pgdh);
+            viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.pgry=view.findViewById(R.id.pgry);
+            viewHolder.cjsj=view.findViewById(R.id.cjsj);
+            viewHolder.checked=view.findViewById(R.id.checked);
+            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    select.put(position, isChecked);
+                }
+
+            });
+            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+            view.setTag(viewHolder);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来
@@ -84,6 +106,8 @@ public class PrintCNPSDAdapter extends ArrayAdapter<CNPSDDisplayBean> {
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
         viewHolder.pgdh.setText(rep.getDispatchno());
+        viewHolder.scddh.setText(rep.getAufnr());
+        viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.pgry.setText(rep.getUser());
         viewHolder.cjsj.setText(rep.getCreateDate());
         if(select.get(position)){
@@ -125,6 +149,8 @@ public class PrintCNPSDAdapter extends ArrayAdapter<CNPSDDisplayBean> {
     class ViewHolder{
         TextView xh;
         TextView pgdh;
+        TextView scddh;
+        TextView wlbm;
         TextView pgry;
         TextView cjsj;
         CheckBox checked;

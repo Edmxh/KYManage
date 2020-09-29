@@ -19,8 +19,8 @@ public class GetInFactoryDeliverListJSPresenter extends BasePresenter<BaseView1<
         appModel = new AppModel();
     }
 
-    public void GetInFactoryDeliverListJS(String DeliverID,String IssueStorage,String CreateUser,String CreateTime,boolean Checked){
-        appModel.GetInFactoryDeliverListJS(DeliverID,IssueStorage,CreateUser,CreateTime,Checked,new HttpDataListener<GetInFactoryDeliverListJSRep>() {
+    public void GetInFactoryDeliverListJS(String DeliverID,String IssueStorage,String CreateUser,String CreateTime,boolean Checked,String MarketOrderNO,String Client){
+        appModel.GetInFactoryDeliverListJS(DeliverID,IssueStorage,CreateUser,CreateTime,Checked,MarketOrderNO,Client,new HttpDataListener<GetInFactoryDeliverListJSRep>() {
 
 
             @Override

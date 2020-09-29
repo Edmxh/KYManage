@@ -1,6 +1,7 @@
 package com.example.kymanage.Activity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -38,6 +39,10 @@ import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHPrintPresenter;
 import com.example.kymanage.presenter.Presenters.CGPage2.CGSHRecordPresenter;
 import com.example.kymanage.presenter.Presenters.YRKCX103Presenter;
+import com.example.kymanage.utils.DialogUtil;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +51,8 @@ import java.util.Date;
 import java.util.List;
 
 import Printer.PrintHelper;
+
+import static java.security.AccessController.getContext;
 
 public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRespBean>, BaseView2<PurchaseCenterRecordReps>, PrintBaseView<GetParchaseCenterLableReps> {
     //选择日期
@@ -228,20 +235,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                             case R.id.receive:
                                 vibrator.vibrate(30);
                                 // 隐藏该对话框
-                                vibrator.vibrate(30);
-                                List<Long> intlist=new ArrayList<Long>();
-                                if(datas!=null){
-                                    for (int i = 0; i < datas.size(); i++) {
-                                        View itmeview=listview1.getAdapter().getView(i,null,null);
-                                        CheckBox cb= itmeview.findViewById(R.id.checked);
-                                        if(cb.isChecked()){
-                                            intlist.add(datas.get(i).getAdvanceStorageId());
-                                        }
-                                    }
-                                }
-                                System.out.println("冲销选中数:"+intlist.size());
-                                LoadingBar.dialog(CGRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
-                                presenter103.YRKCX103(intlist,username,getCurrentdate());
+                                confirmDeleteDialog(CGRecordActivity.this);
                                 break;
                             default:
                                 // 使用Toast显示用户单击的菜单项
@@ -288,29 +282,39 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
 
     @Override
     public void onDataSuccess1(StatusRespBean data) {
-        Toast.makeText(CGRecordActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
+
         LoadingBar.dialog(CGRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
-        if(queryself.isChecked()){
-            queryall=false;
+        if(data.getStatus().getCode()==1){
+            Toast.makeText(CGRecordActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
+            if(queryself.isChecked()){
+                queryall=false;
+            }else {
+                queryall=true;
+            }
+            presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),queryall);
         }else {
-            queryall=true;
+            DialogUtil.errorMessageDialog(CGRecordActivity.this,data.getStatus().getMessage());
         }
-        presenter2.CGSHRecord(date.getText().toString(),username,cgddh.getText().toString(),wlbm.getText().toString(),queryall);
+
+
     }
 
     @Override
     public void onDataSuccess2(PurchaseCenterRecordReps data) {
-        datas=data.getData();
-        if(datas!=null){
-            //表格
-//            System.out.println("查询的数据条数为:"+datas.size());
-//            System.out.println(datas.get(0).getDescribe());
-            adapter=new CGRecordAdapter(CGRecordActivity.this, R.layout.cgrecorditem,datas);
-            listview1.setAdapter(adapter);
-            listview1.setOnItemClickListener(new ListViewItemOnClick());
+        if(data.getStatus().getCode()==1){
+            datas=data.getData();
+            if(datas!=null){
+                //表格
+                adapter=new CGRecordAdapter(CGRecordActivity.this, R.layout.cgrecorditem,datas);
+                listview1.setAdapter(adapter);
+                listview1.setOnItemClickListener(new ListViewItemOnClick());
+            }else {
+                listview1.setAdapter(null);
+            }
         }else {
-            listview1.setAdapter(null);
+            DialogUtil.errorMessageDialog(CGRecordActivity.this,data.getStatus().getMessage());
         }
+
 
     }
 
@@ -332,20 +336,6 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                     }
                 }else {
                     Bitmap bm=cb.createImage1(label,tf);
-                    //确保跳转到下一页了再进行打印
-//                    Thread printThread=new Thread(new Runnable(){
-//                        @Override
-//                        public void run() {
-//                            printHelper.GoToNextPage();
-//                        }
-//                    });
-//                    printThread.start();
-//                    try {
-//                        Log.i("token","scanThread.join();");
-//                        printThread.join();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
                     printHelper.PrintBitmapAtCenter(bm,384,480);
 //                    printHelper.GoToNextPage();
                     printHelper.printBlankLine(81);
@@ -440,4 +430,41 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
         super.onPause();
         printHelper.Close();
     }
+
+
+    //冲销确认
+    private void confirmDeleteDialog(Context context) {
+        new QMUIDialog.MessageDialogBuilder(context)
+                .setTitle("请确认")
+                .setMessage("确定要冲销吗？")
+                .setSkinManager(QMUISkinManager.defaultInstance(context))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "冲销", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        List<Long> intlist=new ArrayList<Long>();
+                        if(datas!=null){
+                            for (int i = 0; i < datas.size(); i++) {
+                                View itmeview=listview1.getAdapter().getView(i,null,null);
+                                CheckBox cb= itmeview.findViewById(R.id.checked);
+                                if(cb.isChecked()){
+                                    intlist.add(datas.get(i).getAdvanceStorageId());
+                                }
+                            }
+                        }
+                        System.out.println("冲销选中数:"+intlist.size());
+                        LoadingBar.dialog(CGRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
+                        presenter103.YRKCX103(intlist,username,getCurrentdate());
+
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
+    }
+
 }

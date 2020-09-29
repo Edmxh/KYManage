@@ -1,5 +1,7 @@
 package com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS;
 
+import java.io.Serializable;
+
 /**
  * {
  *         "orderType": "20",
@@ -7,7 +9,7 @@ package com.example.kymanage.Beans.OutsourceFinishedProductReceivingJS;
  *         "AdvanceStorageId": 460.0
  *     }
  */
-public class OutsourceFinishedProductReceivingJSRepBean {
+public class OutsourceFinishedProductReceivingJSRepBean implements Serializable {
     private String orderType;
     private long StorageId;
     private long AdvanceStorageId;

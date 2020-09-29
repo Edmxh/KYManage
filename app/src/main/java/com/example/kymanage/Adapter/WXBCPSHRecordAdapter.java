@@ -61,10 +61,16 @@ public class WXBCPSHRecordAdapter extends ArrayAdapter<Semi_FinishedProductRecei
 //获取控件实例
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.ddh=view.findViewById(R.id.ddh);
+        viewHolder.xsddh=view.findViewById(R.id.xsddh);
         viewHolder.ddlx=view.findViewById(R.id.ddlx);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
+        viewHolder.wlms=view.findViewById(R.id.wlms);
+        viewHolder.shlj=view.findViewById(R.id.shlj);
+        viewHolder.shlx=view.findViewById(R.id.shlx);
         viewHolder.xqgc=view.findViewById(R.id.xqgc);
         viewHolder.xqck=view.findViewById(R.id.xqck);
+        viewHolder.cjsj=view.findViewById(R.id.cjsj);
+        viewHolder.shr=view.findViewById(R.id.shr);
         viewHolder.gxsj=view.findViewById(R.id.gxsj);
 
         viewHolder.rksl=view.findViewById(R.id.rksl);
@@ -93,22 +99,53 @@ public class WXBCPSHRecordAdapter extends ArrayAdapter<Semi_FinishedProductRecei
 
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
+        if(rep.getPurchaseOrderNO()!=null||rep.getPurchaseOrderRow()!=null){
+            String newStr1 = rep.getPurchaseOrderNO().replaceAll("^(0+)", "");
+            String newStr2 = rep.getPurchaseOrderRow().replaceAll("^(0+)", "");
+            viewHolder.ddh.setText(newStr1+"/"+newStr2);
+        }
 
-        String newStr1 = rep.getPurchaseOrderNO().replaceAll("^(0+)", "");
-        String newStr2 = rep.getPurchaseOrderRow().replaceAll("^(0+)", "");
-        viewHolder.ddh.setText(newStr1+"/"+newStr2);
+        String newStr3 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
+        String newStr4 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
+        viewHolder.xsddh.setText(newStr3+"/"+newStr4);
         viewHolder.ddlx.setText(rep.getMaterialType());
         viewHolder.wlbm.setText(rep.getMaterialCode());
+        viewHolder.wlms.setText(rep.getMaterialDesc());
+
+        switch (rep.getOrderType()){
+            case "20":
+                viewHolder.shlx.setText("实物入库");
+                viewHolder.shlj.setText("103->105");
+                break;
+            case "2":
+                viewHolder.shlx.setText("费用入库");
+                viewHolder.shlj.setText("103->105");
+                break;
+            case "1":
+                viewHolder.shlx.setText("费用入库");
+                viewHolder.shlj.setText("103->105->101");
+                break;
+            default:
+                break;
+        }
+
         viewHolder.xqgc.setText(rep.getDemandFactory());
         viewHolder.xqck.setText(rep.getDemandStorage());
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
-        viewHolder.gxsj.setText(sd);
+//        String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
+        viewHolder.cjsj.setText(rep.getCreateTime());
+        viewHolder.gxsj.setText(rep.getUpdateTime());
+        viewHolder.shr.setText(rep.getHandler());
 
         String num1str=""+rep.getQty();
         viewHolder.rksl.setText(num1str);
-        viewHolder.rkzt.setText(rep.getStatus());
+        if(rep.getReverseHandler()==null||rep.getReverseHandler().equals(" ")||rep.getReverseHandler().equals("")){
+            viewHolder.rkzt.setText(rep.getStatus());
+        }else {
+            viewHolder.rkzt.setText(rep.getStatus()+"("+rep.getReverseHandler()+")");
+        }
+
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{
@@ -139,10 +176,16 @@ public class WXBCPSHRecordAdapter extends ArrayAdapter<Semi_FinishedProductRecei
     class ViewHolder{
         TextView xh;
         TextView ddh;
+        TextView xsddh;
         TextView ddlx;
         TextView wlbm;
+        TextView wlms;
+        TextView shlx;
+        TextView shlj;
         TextView xqgc;
         TextView xqck;
+        TextView cjsj;
+        TextView shr;
         TextView gxsj;
         TextView rksl;
         TextView rkzt;

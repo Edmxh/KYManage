@@ -19,8 +19,8 @@ public class GetLableStorageInfoJSPresenter extends BasePresenter<ScanBaseView<G
         appModel = new AppModel();
     }
 
-    public void GetLableStorageInfoJS(String materialCode,long id, String type, String factory){
-        appModel.GetLableStorageInfoJS(materialCode,id,type,factory,new HttpDataListener<GetLableStorageInfoJSRep>() {
+    public void GetLableStorageInfoJS(long id){
+        appModel.GetLableStorageInfoJS(id,new HttpDataListener<GetLableStorageInfoJSRep>() {
 
 
             @Override

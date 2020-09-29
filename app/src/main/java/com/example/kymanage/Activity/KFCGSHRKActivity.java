@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -35,9 +36,12 @@ import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.KFPage1.GetMaterialPropertieInfoJSPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage1.GetSapStoragesPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage1.KFReceivePresenter;
+import com.example.kymanage.utils.DialogUtil;
+import com.olc.scan.ScanManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -99,6 +103,9 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     //当前收货的序号
     private int currentIndex=-1;
 
+    //序列号扫码识别
+    private int xlScan=-1;
+
 
     @Override
     public int initLayoutId() {
@@ -142,35 +149,6 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
         //初始化
         areadess=new ArrayList<iddesBean>();
         dess=new ArrayList<String>();
-//        //下拉框
-//        adapter2 = new ArrayAdapter<String>(this, R.layout.defined_spinner_item, dess);
-//        //设置下拉列表的风格
-//        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        //将adapter 添加到spinner中
-//        mSpinner1.setAdapter(adapter2);
-//        //添加事件Spinner事件监听
-//        //mSpinner1.setOnItemSelectedListener(new SpinnerSelectedListener());
-//        mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//
-//            public void onItemSelected(AdapterView<?> arg0, View arg1,
-//                                       int arg2, long arg3) {
-//                // TODO Auto-generated method stub
-//                chosenArea=areadess.get(arg2).getId();
-//                System.out.println("spinner选中项"+mSpinner1.getSelectedItemPosition());
-//            }
-//
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//                // TODO Auto-generated method stub
-//            }
-//        });
-//        mSpinner1.setVisibility(View.VISIBLE);
-//        adapter.notifyDataSetChanged();
-//        DemoBean1 db1=new DemoBean1("ZJ0000000001","测试描述1","2010","A123","",6,8);
-//        DemoBean1 db2=new DemoBean1("ZJ0000000002","测试描述2","2030","B132","",3,8);
-//        DemoBean1 db3=new DemoBean1("ZJ0000000003","测试描述3","2030","H152","",12,8);
-//        datas.add(db1);
-//        datas.add(db2);
-//        datas.add(db3);
     }
 
     @Override
@@ -187,64 +165,6 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 scan();
-
-                //Toast.makeText(AdvancedReceiveActivity.this, scanString, Toast.LENGTH_SHORT).show();
-//                scanString="{\"bm\":\"DQ3008000001\",\"sl\":1.0,\"aid\":2995,\"num\":\"2007222012101587\",\"po\":\"\",\"pono\":\"4100026847\",\"porow\":\"00010\",\"gc\":\"2020\",\"cd\":\"\",\"cs\":0}";
-//                JSONObject lableObject= null;
-//                try {
-//                    lableObject = JSONObject.parseObject(scanString);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(KFCGSHRKActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
-//                }
-//                if(lableObject!=null) {
-////                    System.out.println(lableObject.getString("bm"));
-//                    try {
-//                        pono=lableObject.getString("pono");
-//                        porow=lableObject.getString("porow");
-//                        po=lableObject.getString("po");
-//                        sl=lableObject.getFloat("sl");
-//                        bm = lableObject.getString("bm");
-//                        area = lableObject.getString("cd");
-//                        factory=lableObject.getString("gc");
-//                        labelSquNum=lableObject.getString("num");
-//                        cs=lableObject.getInteger("cs");
-//                        aid=lableObject.getLong("aid");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    //判断是否重复扫码
-//                    boolean repeat=false;
-//                    for (GetPurWayMaterialDataRep data : datas) {
-//                        if(labelSquNum.equals(data.getData().getLabelSquNum())){
-//                            repeat=true;
-//                        }
-//                    }
-//                    if(repeat){
-//                        System.out.println("请勿重复扫码");
-//                        Toast.makeText(KFCGSHRKActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
-//
-//                    }else {
-//                        if(porow!=null&&pono!=null&&bm!=null&&factory!=null){
-//                            SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
-//                                    Activity.MODE_PRIVATE);
-//                            String fac =sharedPreferences.getString("factory", "");
-//                            System.out.println("所在部门是"+fac);
-//                            if(factory.equals(fac)){
-//                                presenter1.GetMaterialPropertieInfoJS(aid);
-//                            }else {
-//                                Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                        }
-//                    }
-////                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
-//                    scanString="";
-//                }else {
-//                    Log.i("token","扫描结果为空");
-//                    Toast.makeText(KFCGSHRKActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
-//                }
 
             }
         });
@@ -273,24 +193,28 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     }
     @Override
     public void onDataSuccessScan(GetPurWayMaterialDataRep data) {
-        System.out.println("105查询完毕");
-        Toast.makeText(KFCGSHRKActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
-        if(data.getData()!=null){
-            req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid);
-            receiptReqs.add(req);
-            data.getData().setFactory(factory);
-            data.getData().setLabelSquNum(labelSquNum);
-            data.getData().setQty(sl);
-            factory="";
-            labelSquNum="";
-            sl=0;
-            datas.add(data);
+        if(data.getCode()==1){
+            Toast.makeText(KFCGSHRKActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
+            if(data.getData()!=null){
+                req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid,"");
+                receiptReqs.add(req);
+                data.getData().setFactory(factory);
+                data.getData().setLabelSquNum(labelSquNum);
+                data.getData().setQty(sl);
+                factory="";
+                labelSquNum="";
+                sl=0;
+                datas.add(data);
 
-            adapter=new CGSHRKAdapter(KFCGSHRKActivity.this, R.layout.cgshrkitem,datas);
-            adapter.setOnInnerItemOnClickListener(this);
-            cgshlistview.setAdapter(adapter);
-            cgshlistview.setOnItemClickListener(this);
+                adapter=new CGSHRKAdapter(KFCGSHRKActivity.this, R.layout.cgshrkitem,datas);
+                adapter.setOnInnerItemOnClickListener(this);
+                cgshlistview.setAdapter(adapter);
+                cgshlistview.setOnItemClickListener(this);
+            }
+        }else {
+            DialogUtil.errorMessageDialog(KFCGSHRKActivity.this,data.getMessage());
         }
+
     }
 
     @Override
@@ -306,17 +230,22 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     @Override
     public void onDataSuccess1(CodeMessageBean data) {
         LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
-        Toast.makeText(KFCGSHRKActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        try {
-            if(currentIndex!=-1){
-                datas.remove(currentIndex);
-                receiptReqs.remove(currentIndex);
-                currentIndex=-1;
-                adapter.notifyDataSetChanged();
+        if(data.getCode()==1){
+            Toast.makeText(KFCGSHRKActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            try {
+                if(currentIndex!=-1){
+                    datas.remove(currentIndex);
+                    receiptReqs.remove(currentIndex);
+                    currentIndex=-1;
+                    adapter.notifyDataSetChanged();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else {
+            DialogUtil.errorMessageDialog(KFCGSHRKActivity.this,data.getMessage());
         }
+
     }
 
     @Override
@@ -346,6 +275,9 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                 currentdate=sf.format(date0);
 
                 if(position>=0){
+                    //验证是否需要序列号
+                    GetPurWayMaterialDataRep dataRep = datas.get(position);
+
                     WarehouseReceiptReq checkedReq = receiptReqs.get(position);
                     View itme=cgshlistview.getAdapter().getView(position,null,null);
                     TextView et= itme.findViewById(R.id.rksl);
@@ -355,31 +287,41 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                     //选中的需求仓库
                     int selectedItemPosition = sp.getSelectedItemPosition();
 //                System.out.println("选中的仓库index:"+selectedItemPosition);
-                    areadess=datas.get(position).getData().getStorage();
+                    areadess= dataRep.getData().getStorage();
                     ckid=areadess.get(selectedItemPosition).getId();
                     checkedReq.setDemandStorage(ckid);
+
+                    //序列号
+                    EditText et2 = itme.findViewById(R.id.xlh);
+                    String xlhStr = et2.getText().toString();
+                    checkedReq.setSerialNO(xlhStr);
+                    int count= (xlhStr.length()-xlhStr.replace(",","").length());
 //                System.out.println("ckid:"+ckid);
-                    List<WarehouseReceiptReq> checkedListReq=new ArrayList<WarehouseReceiptReq>();
-                    checkedListReq.add(checkedReq);
-                    currentIndex=position;
-                    LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).show();
-                    presenter3.WarehouseReceipt(getCurrentdate(),getCurrentdate(),username,checkedListReq);
+                    if(dataRep.getData().getSerialNO().equals("KY01")&&checkedReq.getReceNum()!=(count+1)){
+                        Toast.makeText(this, "序列号数量错误", Toast.LENGTH_SHORT).show();
+                    }else {
+                        List<WarehouseReceiptReq> checkedListReq=new ArrayList<WarehouseReceiptReq>();
+                        checkedListReq.add(checkedReq);
+                        currentIndex=position;
+                        LoadingBar.dialog(KFCGSHRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).show();
+                        presenter3.WarehouseReceipt(getCurrentdate(),getCurrentdate(),username,checkedListReq);
+                    }
+
                 }else {
                     Toast.makeText(KFCGSHRKActivity.this,"未选中收货行",Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.scan:
+                vibrator.vibrate(30);
+                xlScan=position;
+                System.out.println("内部scan>>"+xlScan);
+                scan();
+
+
+                break;
             default:
                 break;
         }
-    }
-
-    public void setBackgroundChange(View view,int i){
-        view.findViewById(R.id.xh).setBackgroundResource(i);
-        view.findViewById(R.id.wlbm).setBackgroundResource(i);
-        view.findViewById(R.id.wlms).setBackgroundResource(i);
-//        view.findViewById(R.id.yrksl).setBackgroundResource(i);
-        view.findViewById(R.id.yirksl).setBackgroundResource(i);
-        view.findViewById(R.id.rksl).setBackgroundResource(i);
     }
 
     //日期弹窗
@@ -424,66 +366,94 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(m_Broadcastname)) {
                 String str = intent.getStringExtra("BARCODE");
-                if (!"".equals(str)) {
-                    //tv.setText(str);
-                    scanString=str;
-                    JSONObject lableObject= null;
-                    try {
-                        lableObject = JSONObject.parseObject(scanString);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(KFCGSHRKActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
-                    }
-                    if(lableObject!=null) {
-//                    System.out.println(lableObject.getString("bm"));
+                if (str.contains("{")) {
+                        scanString=str;
+                        JSONObject lableObject= null;
                         try {
-                            pono=lableObject.getString("pono");
-                            porow=lableObject.getString("porow");
-                            po=lableObject.getString("po");
-                            sl=lableObject.getFloat("sl");
-                            bm = lableObject.getString("bm");
-                            area = lableObject.getString("cd");
-                            factory=lableObject.getString("gc");
-                            labelSquNum=lableObject.getString("num");
-                            cs=lableObject.getInteger("cs");
-                            aid=lableObject.getLong("aid");
+                            lableObject = JSONObject.parseObject(scanString);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Toast.makeText(KFCGSHRKActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                         }
-
-                        //判断是否重复扫码
-                        boolean repeat=false;
-                        for (GetPurWayMaterialDataRep data : datas) {
-                            if(labelSquNum.equals(data.getData().getLabelSquNum())){
-                                repeat=true;
+                        if(lableObject!=null) {
+//                    System.out.println(lableObject.getString("bm"));
+                            try {
+                                pono=lableObject.getString("pono");
+                                porow=lableObject.getString("porow");
+                                po=lableObject.getString("po");
+                                sl=lableObject.getFloat("sl");
+                                bm = lableObject.getString("bm");
+                                area = lableObject.getString("cd");
+                                factory=lableObject.getString("gc");
+                                labelSquNum=lableObject.getString("num");
+                                cs=lableObject.getInteger("cs");
+                                aid=lableObject.getLong("aid");
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        }
-                        if(repeat){
-                            System.out.println("请勿重复扫码");
-                            Toast.makeText(KFCGSHRKActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
 
-                        }else {
-                            if(porow!=null&&pono!=null&&bm!=null&&factory!=null){
-                                SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
-                                        Activity.MODE_PRIVATE);
-                                String fac =sharedPreferences.getString("factory", "");
-                                System.out.println("所在部门是"+fac);
-                                if(factory.equals(fac)){
-                                    System.out.println("执行查询105");
-                                    presenter1.GetMaterialPropertieInfoJS(aid);
-                                }else {
-                                    Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+                            //判断是否重复扫码
+                            boolean repeat=false;
+                            for (GetPurWayMaterialDataRep data : datas) {
+                                if(labelSquNum.equals(data.getData().getLabelSquNum())){
+                                    repeat=true;
                                 }
                             }
+                            if(repeat){
+                                System.out.println("请勿重复扫码");
+                                Toast.makeText(KFCGSHRKActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
+
+                            }else {
+                                if(porow!=null&&pono!=null&&bm!=null&&factory!=null){
+                                    SharedPreferences sharedPreferences= getSharedPreferences("userInfo",
+                                            Activity.MODE_PRIVATE);
+                                    String fac =sharedPreferences.getString("factory", "");
+                                    System.out.println("所在部门是"+fac);
+                                    if(factory.equals(fac)){
+                                        System.out.println("执行查询105");
+                                        try {
+                                            presenter1.GetMaterialPropertieInfoJS(aid);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(KFCGSHRKActivity.this, "解析二维码错误", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }else {
+                                        Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                            scanString="";
+                        }else {
+                            Log.i("token","扫描结果为空");
+                            Toast.makeText(KFCGSHRKActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
                         }
-//                    presenter1.GetPurWayMaterialData("00020","4100011740",1,"DQ5095000031","2010");
-                        scanString="";
-                    }else {
-                        Log.i("token","扫描结果为空");
-                        Toast.makeText(KFCGSHRKActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
+                    //tv.setText(str);
+                } else if(!str.equals("")){
+                    if (xlScan == -1) {
+                        Toast.makeText(KFCGSHRKActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+                    } else {
+                        System.out.println("扫描字符串:"+str);
+                        View itme = cgshlistview.getAdapter().getView(xlScan, null, null);
+                        EditText et = itme.findViewById(R.id.xlh);
+                        String xlhStr = et.getText().toString();
+                        //输入框内容为空，则直接增加；若不为空，判断序列号是否存在，不存在则用“，”隔开并增加
+                        if (xlhStr.equals("")) {
+                            System.out.println("直接增加"+str);
+                            xlhStr = str;
+                            et.setText(xlhStr);
+                        } else {
+                            String[] split = xlhStr.split(",");
+                            if (Arrays.asList(split).contains(str)) {
+                            } else {
+                                xlhStr = xlhStr + "," + str;
+                                et.setText(xlhStr);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                        //扫描完毕后初始化xlScan
+                        xlScan = -1;
                     }
                 }
-
             }
         }
     }

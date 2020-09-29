@@ -16,8 +16,8 @@ public class GetPurchaseOrderInfoJSPresenter extends BasePresenter<ScanBaseView<
         appModel = new AppModel();
     }
 
-    public void GetPurchaseOrderInfoJS(String KDAUF,String KDPOS,String MATAR){
-        appModel.GetPurchaseOrderInfoJS(KDAUF,KDPOS,MATAR,new HttpDataListener<GetPurchaseOrderInfoJSReps>() {
+    public void GetPurchaseOrderInfoJS(String KDAUF,String KDPOS,String MATAR,String RTYPE){
+        appModel.GetPurchaseOrderInfoJS(KDAUF,KDPOS,MATAR,RTYPE,new HttpDataListener<GetPurchaseOrderInfoJSReps>() {
 
 
             @Override

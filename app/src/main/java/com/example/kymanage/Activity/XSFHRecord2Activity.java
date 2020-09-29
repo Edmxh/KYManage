@@ -1,10 +1,7 @@
 package com.example.kymanage.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.DatePicker;
@@ -17,6 +14,7 @@ import com.example.kymanage.Adapter.XSFHRecordAdapter;
 import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRep;
 import com.example.kymanage.Beans.GetDeliveryListDetailDataJS.GetDeliveryListDetailDataJSRepBean;
 import com.example.kymanage.R;
+import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.Print3Record.GetDeliveryListDetailDataJSPresenter;
 
@@ -26,7 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class XSFHRecordActivity extends BaseActivity implements BaseView2<GetDeliveryListDetailDataJSRep> {
+public class XSFHRecord2Activity extends BaseActivity implements BaseView1<GetDeliveryListDetailDataJSRep> {
     //print
     private ImageView print;
     //选择日期
@@ -92,7 +90,7 @@ public class XSFHRecordActivity extends BaseActivity implements BaseView2<GetDel
                 str2=(i1+1)<10?("-0"+(i1+1)):"-" + (i1+1);
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
-                presenter2.GetDeliveryListDetailDataJS((str1+str2+str3),username,"S");
+//                presenter2.GetDeliveryListDetailDataJS((str1+str2+str3),username,"S");
 //                presenter1.Semi_FinishedProductReceivingRecordJS((str1+str2+str3),username,"外协半成品");
 
             }
@@ -111,7 +109,7 @@ public class XSFHRecordActivity extends BaseActivity implements BaseView2<GetDel
     }
 
     @Override
-    public void onDataSuccess2(GetDeliveryListDetailDataJSRep data) {
+    public void onDataSuccess1(GetDeliveryListDetailDataJSRep data) {
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
 //        System.out.println(data.getData().get(0).getClientName());
         datas=data.getData();

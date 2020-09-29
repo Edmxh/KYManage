@@ -21,8 +21,8 @@ public class GetDispatchListJSPresenter extends BasePresenter<PrintBaseView<GetD
         appModel = new AppModel();
     }
 
-    public void GetDispatchListJS(List<Long> StorageIdArr, String Handler,String RequestTime){
-        appModel.GetDispatchListJS(StorageIdArr,Handler,RequestTime,new HttpDataListener<GetDispatchListJSRep>() {
+    public void GetDispatchListJS(List<Long> AdvanceStorageIdArr, String Handler,String RequestTime){
+        appModel.GetDispatchListJS(AdvanceStorageIdArr,Handler,RequestTime,new HttpDataListener<GetDispatchListJSRep>() {
 
 
             @Override

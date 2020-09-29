@@ -110,7 +110,6 @@ public class CGListAdapter extends ArrayAdapter<GetRecevingDetailrep>implements 
             view.setTag(viewHolder);
 //            viewHolder.updatePosition(position);
         } else{
-
             view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
 
             // 避免每次调用getView()时都要重新获取控件实例

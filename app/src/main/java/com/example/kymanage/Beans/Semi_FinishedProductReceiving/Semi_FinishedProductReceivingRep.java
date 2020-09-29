@@ -9,7 +9,7 @@ package com.example.kymanage.Beans.Semi_FinishedProductReceiving;
  */
 public class Semi_FinishedProductReceivingRep {
     private int code;
-    private long storageId;
+    private long AdvanceStorageId;
     private String message;
 
     public int getCode() {
@@ -20,12 +20,12 @@ public class Semi_FinishedProductReceivingRep {
         this.code = code;
     }
 
-    public long getStorageId() {
-        return storageId;
+    public long getAdvanceStorageId() {
+        return AdvanceStorageId;
     }
 
-    public void setStorageId(long storageId) {
-        this.storageId = storageId;
+    public void setAdvanceStorageId(long advanceStorageId) {
+        AdvanceStorageId = advanceStorageId;
     }
 
     public String getMessage() {

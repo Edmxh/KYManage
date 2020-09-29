@@ -35,6 +35,7 @@ public class InsertDumpTransferRecordReqBean {
      */
 
     private String Status;
+    private String WStatus;
     private String SendFactory;
     private String Postingdate;
     private String MarketOrderNO;
@@ -61,8 +62,9 @@ public class InsertDumpTransferRecordReqBean {
     public InsertDumpTransferRecordReqBean() {
     }
 
-    public InsertDumpTransferRecordReqBean(String status, String sendFactory, String postingdate, String marketOrderNO, String demandFactory, String createTime, long PID, String documentdate, String unit, String demandStorage, long SID, long YID, String sendStorage, float qty, String productOrderNO, long ID, String marketOrderRow, String materialCode, String mjahr, String mblnr, String recordType) {
+    public InsertDumpTransferRecordReqBean(String status, String WStatus, String sendFactory, String postingdate, String marketOrderNO, String demandFactory, String createTime, long PID, String documentdate, String unit, String demandStorage, long SID, long YID, String sendStorage, float qty, String productOrderNO, long ID, String marketOrderRow, String materialCode, String mjahr, String mblnr, String recordType) {
         Status = status;
+        this.WStatus = WStatus;
         SendFactory = sendFactory;
         Postingdate = postingdate;
         MarketOrderNO = marketOrderNO;
@@ -136,6 +138,15 @@ public class InsertDumpTransferRecordReqBean {
     public void setStatus(String Status) {
         this.Status = Status;
     }
+    @JSONField(name = "WStatus")
+    public String getWStatus() {
+        return WStatus;
+    }
+    @JSONField(name = "WStatus")
+    public void setWStatus(String WStatus) {
+        this.WStatus = WStatus;
+    }
+
     @JSONField(name = "SendFactory")
     public String getSendFactory() {
         return SendFactory;

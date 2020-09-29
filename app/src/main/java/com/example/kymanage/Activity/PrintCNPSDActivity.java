@@ -29,6 +29,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.Presenters.Print1.GetCMInFactoryDeliverJSPresenter;
 import com.example.kymanage.presenter.Presenters.Print1.GetCMInFactoryDeliverPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
@@ -231,26 +232,40 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
 
     @Override
     public void onDataSuccess1(GetCMInFactoryDeliverRep data) {
-        presenter2.GetCMInFactoryDeliverJS(data.getDeliverNO());
+        if(data.getCode()==1){
+            presenter2.GetCMInFactoryDeliverJS(data.getDeliverNO());
+        }else {
+            DialogUtil.errorMessageDialog(PrintCNPSDActivity.this,data.getMessage());
+        }
+
     }
 
     @Override
     public void onDataSuccess2(GetCMInFactoryDeliverJSRep data) {
-        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        for (GetCMInFactoryDeliverJSRepBean2 datum : data.getData()) {
-            mPrintUtil.printCNBill(datum,printHelper);
-            printHelper.printBlankLine(80);
+        if(data.getCode()==1){
+            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            for (GetCMInFactoryDeliverJSRepBean2 datum : data.getData()) {
+                mPrintUtil.printCNBill(datum,printHelper);
+                printHelper.printBlankLine(80);
+            }
+            List<CNPSDDisplayBean> checkedlistBeans=new ArrayList<CNPSDDisplayBean>();
+            for (int i = 0; i < listBeans.size(); i++) {
+                View itmeview=listView1.getAdapter().getView(i,null,null);
+                CheckBox cb= itmeview.findViewById(R.id.checked);
+                if(cb.isChecked()){
+                    checkedlistBeans.add(listBeans.get(i));
+
+                }
+            }
+            for (CNPSDDisplayBean checkedlistBean : checkedlistBeans) {
+                listBeans.remove(checkedlistBean);
+            }
+            adapter=new PrintCNPSDAdapter(this, R.layout.wxcnpsditem,listBeans);
+            listView1.setAdapter(adapter);
+        }else {
+            DialogUtil.errorMessageDialog(PrintCNPSDActivity.this,data.getMessage());
         }
 
-        for (int i = 0; i < listBeans.size(); i++) {
-            View itmeview=listView1.getAdapter().getView(i,null,null);
-            CheckBox cb= itmeview.findViewById(R.id.checked);
-            if(cb.isChecked()){
-                listBeans.remove(i);
-            }
-        }
-        adapter=new PrintCNPSDAdapter(this, R.layout.wxcnpsditem,listBeans);
-        listView1.setAdapter(adapter);
     }
 
     @Override
@@ -274,8 +289,10 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
                         lableObject = JSONObject.parseObject(scanString);
                         if(lableObject!=null) {
                            String DispatchListNO=lableObject.getString("dp");
-                           String user=lableObject.getString("user");
-                           String createDate=lableObject.getString("date");
+                           String materialCode=lableObject.getString("code");
+                           String productOrder=lableObject.getString("po");
+//                           String user=lableObject.getString("user");
+//                           String createDate=lableObject.getString("date");
                             //判断是否重复扫码
                             boolean repeat=false;
                             for (CNPSDDisplayBean listBean : listBeans) {
@@ -287,7 +304,7 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
     //                            System.out.println("请勿重复扫码");
                                 Toast.makeText(PrintCNPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
                             }else {
-                                CNPSDDisplayBean listBean=new CNPSDDisplayBean(DispatchListNO,user,createDate);
+                                CNPSDDisplayBean listBean=new CNPSDDisplayBean(DispatchListNO,productOrder,materialCode,username,getCurrentdate());
                                 listBeans.add(listBean);
                                 adapter=new PrintCNPSDAdapter(getApplicationContext(), R.layout.wxcnpsditem,listBeans);
                                 listView1.setAdapter(adapter);

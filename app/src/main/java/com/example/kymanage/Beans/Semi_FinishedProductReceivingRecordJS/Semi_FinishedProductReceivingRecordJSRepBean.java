@@ -13,66 +13,65 @@ import java.util.List;
 public class Semi_FinishedProductReceivingRecordJSRepBean {
 
     /**
-     * Description : 支架加工完成半成品
-     * MarketOrderNO : 0010000316
+     * MarketOrderNO : 0010000374
      * DemandFactory : 2090
+     * MCode :
      * Unit : EA
-     * StorageId : 348
-     * AdvanceStorageId : 3002
-     * DemandStorage : 2912
-     * Remark : 测试备注
-     * MaterialType : 独立
-     * MblnrRow : 0001
-     * Qty : 1
-     * ID : 37
-     * MarketOrderRow : 000035
-     * MoreQty : 0
+     * AdvanceStorageId : 3309
+     * DemandStorage : 2906
+     * MaterialType :
+     * MaterialDesc : 夹紧块0.5|CuCrZr
+     * OrderType : 1
+     * Qty : 0
+     * id : 153
+     * MarketOrderRow : 000010
      * OutsourcingType : 外协半成品
+     * MoreQty : 0
+     * ProductOrder : 000010116009
+     * Describe : 101成品入库
      * Mjahr : 2020
-     * Status : 105
-     * Describe : 105已入库
+     * Status : 101
+     * PurchaseOrderRow : 00030
      * Messa : S
-     * PurchaseOrderRow : 01970
-     * CreateTime : 1595488819224
-     * Handler : xmao
-     * Mblnr : 5000402863
-     * Type : 外协入库
-     * PostingDate : 1595433600000
-     * UpdateTime : 1595488819224
-     * MaterialCode : LJ5540018426-A01
-     * DocumentDate : 1595433600000
-     * PurchaseOrderNO : 4800002219
+     * CreateTime : 2020-09-04 01:04:15
+     * Handler : pliu
+     * Documentdate : 2020-09-04
+     * Type : 外协半成品入库
+     * PostingDate : 2020-09-04
+     * UpdateTime : 2020-09-04 01:04:15
+     * MaterialCode : LJ4525002454
+     * PurchaseOrderNO : 4300000787
      */
 
-    private String Description;
     private String MarketOrderNO;
     private String DemandFactory;
+    private String MCode;
     private String Unit;
-    private long StorageId;
     private long AdvanceStorageId;
     private String DemandStorage;
-    private String Remark;
     private String MaterialType;
-    private String MblnrRow;
+    private String MaterialDesc;
+    private String OrderType;
     private float Qty;
-    private long ID;
+    private long id;
     private String MarketOrderRow;
-    private float MoreQty;
     private String OutsourcingType;
+    private float MoreQty;
+    private String ProductOrder;
+    private String Describe;
     private String Mjahr;
     private String Status;
-    private String Describe;
-    private String Messa;
     private String PurchaseOrderRow;
+    private String Messa;
     private String CreateTime;
     private String Handler;
-    private String Mblnr;
+    private String Documentdate;
     private String Type;
     private String PostingDate;
     private String UpdateTime;
     private String MaterialCode;
-    private String DocumentDate;
     private String PurchaseOrderNO;
+    private String ReverseHandler;
 
     public static Semi_FinishedProductReceivingRecordJSRepBean objectFromData(String str) {
 
@@ -118,14 +117,6 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
 
     }
 
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String Description) {
-        this.Description = Description;
-    }
-
     public String getMarketOrderNO() {
         return MarketOrderNO;
     }
@@ -142,20 +133,20 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.DemandFactory = DemandFactory;
     }
 
+    public String getMCode() {
+        return MCode;
+    }
+
+    public void setMCode(String MCode) {
+        this.MCode = MCode;
+    }
+
     public String getUnit() {
         return Unit;
     }
 
     public void setUnit(String Unit) {
         this.Unit = Unit;
-    }
-
-    public long getStorageId() {
-        return StorageId;
-    }
-
-    public void setStorageId(long StorageId) {
-        this.StorageId = StorageId;
     }
 
     public long getAdvanceStorageId() {
@@ -174,14 +165,6 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.DemandStorage = DemandStorage;
     }
 
-    public String getRemark() {
-        return Remark;
-    }
-
-    public void setRemark(String Remark) {
-        this.Remark = Remark;
-    }
-
     public String getMaterialType() {
         return MaterialType;
     }
@@ -190,12 +173,20 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.MaterialType = MaterialType;
     }
 
-    public String getMblnrRow() {
-        return MblnrRow;
+    public String getMaterialDesc() {
+        return MaterialDesc;
     }
 
-    public void setMblnrRow(String MblnrRow) {
-        this.MblnrRow = MblnrRow;
+    public void setMaterialDesc(String MaterialDesc) {
+        this.MaterialDesc = MaterialDesc;
+    }
+
+    public String getOrderType() {
+        return OrderType;
+    }
+
+    public void setOrderType(String OrderType) {
+        this.OrderType = OrderType;
     }
 
     public float getQty() {
@@ -206,12 +197,12 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.Qty = Qty;
     }
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getMarketOrderRow() {
@@ -222,6 +213,14 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.MarketOrderRow = MarketOrderRow;
     }
 
+    public String getOutsourcingType() {
+        return OutsourcingType;
+    }
+
+    public void setOutsourcingType(String OutsourcingType) {
+        this.OutsourcingType = OutsourcingType;
+    }
+
     public float getMoreQty() {
         return MoreQty;
     }
@@ -230,12 +229,20 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.MoreQty = MoreQty;
     }
 
-    public String getOutsourcingType() {
-        return OutsourcingType;
+    public String getProductOrder() {
+        return ProductOrder;
     }
 
-    public void setOutsourcingType(String OutsourcingType) {
-        this.OutsourcingType = OutsourcingType;
+    public void setProductOrder(String ProductOrder) {
+        this.ProductOrder = ProductOrder;
+    }
+
+    public String getDescribe() {
+        return Describe;
+    }
+
+    public void setDescribe(String Describe) {
+        this.Describe = Describe;
     }
 
     public String getMjahr() {
@@ -254,12 +261,12 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.Status = Status;
     }
 
-    public String getDescribe() {
-        return Describe;
+    public String getPurchaseOrderRow() {
+        return PurchaseOrderRow;
     }
 
-    public void setDescribe(String Describe) {
-        this.Describe = Describe;
+    public void setPurchaseOrderRow(String PurchaseOrderRow) {
+        this.PurchaseOrderRow = PurchaseOrderRow;
     }
 
     public String getMessa() {
@@ -268,14 +275,6 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
 
     public void setMessa(String Messa) {
         this.Messa = Messa;
-    }
-
-    public String getPurchaseOrderRow() {
-        return PurchaseOrderRow;
-    }
-
-    public void setPurchaseOrderRow(String PurchaseOrderRow) {
-        this.PurchaseOrderRow = PurchaseOrderRow;
     }
 
     public String getCreateTime() {
@@ -294,12 +293,12 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.Handler = Handler;
     }
 
-    public String getMblnr() {
-        return Mblnr;
+    public String getDocumentdate() {
+        return Documentdate;
     }
 
-    public void setMblnr(String Mblnr) {
-        this.Mblnr = Mblnr;
+    public void setDocumentdate(String Documentdate) {
+        this.Documentdate = Documentdate;
     }
 
     public String getType() {
@@ -334,14 +333,6 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
         this.MaterialCode = MaterialCode;
     }
 
-    public String getDocumentDate() {
-        return DocumentDate;
-    }
-
-    public void setDocumentDate(String DocumentDate) {
-        this.DocumentDate = DocumentDate;
-    }
-
     public String getPurchaseOrderNO() {
         return PurchaseOrderNO;
     }
@@ -349,4 +340,14 @@ public class Semi_FinishedProductReceivingRecordJSRepBean {
     public void setPurchaseOrderNO(String PurchaseOrderNO) {
         this.PurchaseOrderNO = PurchaseOrderNO;
     }
+
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String reverseHandler) {
+        ReverseHandler = reverseHandler;
+    }
+
+
 }

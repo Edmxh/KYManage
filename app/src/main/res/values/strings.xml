@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">KYManage</string>
+    <string name="app_name">数据总线</string>
     <string name="app_changePassword"><u>修改密码</u></string>
     <string name="app_login">登      录</string>
     <string name="filter_vcode">0123456789.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

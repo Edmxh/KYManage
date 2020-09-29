@@ -12,22 +12,21 @@ import java.util.List;
 
 public class GetDeliveryListDetailDataJSRepBean {
 
+
     /**
-     * DeliveryListRow : 000000
-     * MarketOrderNO : 0000002107
-     * Message : 交货数量大于所需数量 1 EA对象类型 OutboundDelivery 没有被创建的实例. 外部参考:|交货数量大于所需数量 1 EA对象类型 OutboundDelivery 没有被创建的实例. 外部参考:|
-     * CreateTime : 1591804800000
-     * DeliveryListNO :
-     * Handler : pliu
-     * Code : E
-     * Name : 刘鹏
-     * MaterialDesc : 调整垫片
-     * ClientName : 唐山松下产业机器有限公司
-     * ClientNO : PZD19092901
-     * WorkNO : YA-TY3309
-     * Qty : 2
-     * MaterialCode : PLJ0304000834
-     * MarketOrderRow : 000030
+     * DeliveryListRow : 000010
+     * MarketOrderNO : 0000004112
+     * Message : 交货过账成功！|创建交货单成功！|
+     * CreateTime : 1600876800000
+     * DeliveryListNO : 0080011760
+     * Code : S
+     * MaterialDesc : 辅助支撑箱体
+     * ClientNO : PZD20080101
+     * WorkNO : TG-EA
+     * Qty : 0
+     * ID : 75.0
+     * MaterialCode : PXL0108000008-TZ201004FAH2
+     * MarketOrderRow : 000230
      */
 
     private String DeliveryListRow;
@@ -35,14 +34,12 @@ public class GetDeliveryListDetailDataJSRepBean {
     private String Message;
     private long CreateTime;
     private String DeliveryListNO;
-    private String Handler;
     private String Code;
-    private String Name;
     private String MaterialDesc;
-    private String ClientName;
     private String ClientNO;
     private String WorkNO;
     private float Qty;
+    private long ID;
     private String MaterialCode;
     private String MarketOrderRow;
 
@@ -130,14 +127,6 @@ public class GetDeliveryListDetailDataJSRepBean {
         this.DeliveryListNO = DeliveryListNO;
     }
 
-    public String getHandler() {
-        return Handler;
-    }
-
-    public void setHandler(String Handler) {
-        this.Handler = Handler;
-    }
-
     public String getCode() {
         return Code;
     }
@@ -146,28 +135,12 @@ public class GetDeliveryListDetailDataJSRepBean {
         this.Code = Code;
     }
 
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String Name) {
-        this.Name = Name;
-    }
-
     public String getMaterialDesc() {
         return MaterialDesc;
     }
 
     public void setMaterialDesc(String MaterialDesc) {
         this.MaterialDesc = MaterialDesc;
-    }
-
-    public String getClientName() {
-        return ClientName;
-    }
-
-    public void setClientName(String ClientName) {
-        this.ClientName = ClientName;
     }
 
     public String getClientNO() {
@@ -192,6 +165,14 @@ public class GetDeliveryListDetailDataJSRepBean {
 
     public void setQty(float Qty) {
         this.Qty = Qty;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
     public String getMaterialCode() {

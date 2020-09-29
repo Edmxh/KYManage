@@ -104,7 +104,7 @@ public class XSFHRecordAdapter extends ArrayAdapter<GetDeliveryListDetailDataJSR
 
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlms.setText(rep.getMaterialDesc());
-        viewHolder.client.setText(rep.getClientName()+"/"+rep.getClientNO());
+//        viewHolder.client.setText(rep.getClientName()+"/"+rep.getClientNO());
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
@@ -112,7 +112,7 @@ public class XSFHRecordAdapter extends ArrayAdapter<GetDeliveryListDetailDataJSR
 
         String num1str=""+rep.getQty();
         viewHolder.sl.setText(num1str);
-        viewHolder.czr.setText(rep.getHandler());
+//        viewHolder.czr.setText(rep.getHandler());
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{

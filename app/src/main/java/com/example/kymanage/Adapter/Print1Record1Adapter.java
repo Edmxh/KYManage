@@ -64,7 +64,9 @@ public class Print1Record1Adapter extends ArrayAdapter<GetInFactoryDeliverListJS
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.psdh=view.findViewById(R.id.psdh);
         viewHolder.kcdd=view.findViewById(R.id.kcdd);
+        viewHolder.zt=view.findViewById(R.id.zt);
         viewHolder.cjsj=view.findViewById(R.id.cjsj);
+        viewHolder.gxsj=view.findViewById(R.id.gxsj);
         viewHolder.cjr=view.findViewById(R.id.cjr);
         viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
         viewHolder.detail=view.findViewById(R.id.detail);
@@ -96,7 +98,14 @@ public class Print1Record1Adapter extends ArrayAdapter<GetInFactoryDeliverListJS
         viewHolder.xh.setText(no);
         viewHolder.psdh.setText(rep.getDeliverID());
         viewHolder.kcdd.setText(rep.getIssueStorage());
+        if(rep.getReverseHandler()==null||rep.getReverseHandler().equals("")){
+            viewHolder.zt.setText(rep.getStatus());
+        }else {
+            viewHolder.zt.setText(rep.getStatus()+"("+rep.getReverseHandler()+")");
+        }
+
         viewHolder.cjsj.setText(rep.getCreateTime());
+        viewHolder.gxsj.setText(rep.getUpdateTime());
         viewHolder.cjr.setText(rep.getCreateUser());
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
@@ -182,7 +191,9 @@ public class Print1Record1Adapter extends ArrayAdapter<GetInFactoryDeliverListJS
         TextView xh;
         TextView psdh;
         TextView kcdd;
+        TextView zt;
         TextView cjsj;
+        TextView gxsj;
         TextView cjr;
         Button detail;
         CheckBox checked;

@@ -51,11 +51,13 @@ public class GetOutsourceFinProLableJSRepBean {
     private float Qty;
     private String ProductOrderNO;
     private String MaterialUnit;
-    private long id;
+    private long Id;
     private String MaterialCode;
     private String MarketOrderRow;
     private String ClientNO;
     private String ClientShortName;
+    private String workNO;//工作号
+    private String UPFAC;//工作号
 
     public static GetOutsourceFinProLableJSRepBean objectFromData(String str) {
 
@@ -222,11 +224,11 @@ public class GetOutsourceFinProLableJSRepBean {
     }
 
     public long getId() {
-        return id;
+        return Id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public String getMaterialCode() {
@@ -259,5 +261,21 @@ public class GetOutsourceFinProLableJSRepBean {
 
     public void setClientShortName(String clientShortName) {
         ClientShortName = clientShortName;
+    }
+
+    public String getWorkNO() {
+        return workNO;
+    }
+
+    public void setWorkNO(String workNO) {
+        this.workNO = workNO;
+    }
+
+    public String getUPFAC() {
+        return UPFAC;
+    }
+
+    public void setUPFAC(String UPFAC) {
+        this.UPFAC = UPFAC;
     }
 }

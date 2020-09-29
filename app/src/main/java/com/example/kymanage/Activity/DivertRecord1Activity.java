@@ -3,6 +3,7 @@ package com.example.kymanage.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -38,7 +39,11 @@ import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.Presenters.Print2.GetDumpRecordNodePresenter;
 import com.example.kymanage.presenter.Presenters.Print2Record1.GetMainDumpRecordPresenter;
 import com.example.kymanage.presenter.Presenters.Print2Record1.WriteOffMaterialFactoryDumpPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.example.kymanage.utils.mPrintUtil;
+import com.qmuiteam.qmui.skin.QMUISkinManager;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,8 +88,12 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 
     //筛选条件
     private TextView zcdh;
+    private TextView wlbm;
+    private TextView xsddh;
+    private TextView xqgc;
     private ImageView query;
     private Button reset;
+    private CheckBox queryself;
 
     @Override
     public int initLayoutId() {
@@ -101,8 +110,12 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 
         //筛选条件
         zcdh = findViewById(R.id.zcdh);
+        wlbm = findViewById(R.id.wlbm);
+        xsddh = findViewById(R.id.xsddh);
+        xqgc = findViewById(R.id.xqgc);
         query = findViewById(R.id.query);
         reset = findViewById(R.id.reset);
+        queryself = findViewById(R.id.queryself);
 
 
         presenter1=new GetMainDumpRecordPresenter();
@@ -134,8 +147,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
 
         date.setText(getCurrentdate());
-        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
-        presenter1.GetMainDumpRecord(req);
+        queryRecord();
     }
 
     @Override
@@ -163,32 +175,15 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 //                }else {
 //                    queryall=true;
 //                }
-                GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
-                presenter1.GetMainDumpRecord(req);
+                queryRecord();
             }
         });
         receive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                cxDatas.clear();
-                if(datas!=null){
-                    for (int i = 0; i < datas.size(); i++) {
-//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
-                        View itmeview=listView1.getAdapter().getView(i,null,null);
-                        CheckBox cb= itmeview.findViewById(R.id.checked);
-                        if(cb.isChecked()){
-                            WriteOffMaterialFactoryDumpReqBean cxData=new WriteOffMaterialFactoryDumpReqBean(datas.get(i).getID(),datas.get(i).getDumpNum());
-                            cxDatas.add(cxData);
-                        }
-                    }
-                    if(cxDatas.size()==0){
-                        Toast.makeText(DivertRecord1Activity.this, "未选中要冲销的记录", Toast.LENGTH_SHORT).show();
-                    }else {
-                        WriteOffMaterialFactoryDumpReq cxreq=new WriteOffMaterialFactoryDumpReq(cxDatas,username);
-                        presenter3.WriteOffMaterialFactoryDump(cxreq);
-                    }
-                }
+                confirmDeleteDialog(DivertRecord1Activity.this);
+
             }
         });
 
@@ -268,9 +263,14 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 
     @Override
     public void onDataSuccess3(StatusRespBean data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
-        presenter1.GetMainDumpRecord(req);
+        if(data.getStatus().getCode()==1){
+            Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+            queryRecord();
+        }else {
+            DialogUtil.errorMessageDialog(DivertRecord1Activity.this,data.getStatus().getMessage());
+        }
+
+
     }
 
     @Override
@@ -293,8 +293,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
                 str2=(i1+1)<10?("-0"+(i1+1)):"-" + (i1+1);
                 str3=i2<10?("-0"+i2):"-"+i2;
                 date.setText(str1+str2+str3);
-                GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),username,zcdh.getText().toString());
-                presenter1.GetMainDumpRecord(req);
+                queryRecord();
 
             }
         }, mYear,mMonth, mDay);//将年月日放入DatePickerDialog中，并将值传给参数
@@ -315,7 +314,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
             case R.id.detail:
                 Log.e("detail----->", position + "");
                 Intent intent=new Intent(DivertRecord1Activity.this,DivertRecord2Activity.class);
-                intent.putExtra("id",datas.get(position).getID()+"");
+                intent.putExtra("id",datas.get(position).getID());
                 startActivity(intent);
                 break;
             default:
@@ -328,5 +327,55 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         printHelper=new PrintHelper();
         printHelper.Open(DivertRecord1Activity.this);
 //        Toast.makeText(DivertRecord1Activity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+    }
+
+    private void queryRecord(){
+        String queryall;
+        if(queryself.isChecked()){
+            queryall=username;
+        }else {
+            queryall="";
+        }
+        GetMainDumpRecordReq req=new GetMainDumpRecordReq(date.getText().toString(),queryall,zcdh.getText().toString(),xsddh.getText().toString(),wlbm.getText().toString(),xqgc.getText().toString());
+        presenter1.GetMainDumpRecord(req);
+    }
+
+    //冲销确认
+    private void confirmDeleteDialog(Context context) {
+        new QMUIDialog.MessageDialogBuilder(context)
+                .setTitle("请确认")
+                .setMessage("确定要冲销吗？")
+                .setSkinManager(QMUISkinManager.defaultInstance(context))
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "冲销", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                        cxDatas.clear();
+                        if(datas!=null){
+                            for (int i = 0; i < datas.size(); i++) {
+//                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
+                                View itmeview=listView1.getAdapter().getView(i,null,null);
+                                CheckBox cb= itmeview.findViewById(R.id.checked);
+                                if(cb.isChecked()){
+                                    WriteOffMaterialFactoryDumpReqBean cxData=new WriteOffMaterialFactoryDumpReqBean(datas.get(i).getID(),datas.get(i).getDumpNum());
+                                    cxDatas.add(cxData);
+                                }
+                            }
+                            if(cxDatas.size()==0){
+                                Toast.makeText(DivertRecord1Activity.this, "未选中要冲销的记录", Toast.LENGTH_SHORT).show();
+                            }else {
+                                WriteOffMaterialFactoryDumpReq cxreq=new WriteOffMaterialFactoryDumpReq(cxDatas,username);
+                                presenter3.WriteOffMaterialFactoryDump(cxreq);
+                            }
+                        }
+                    }
+                })
+                .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
     }
 }

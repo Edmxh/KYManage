@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="选择生产订单"
+            android:text="半成品收货选择生产订单"
             android:gravity="center"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text22"/>

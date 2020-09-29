@@ -13,62 +13,63 @@ import java.util.List;
 public class GetOutsoureFinProductDataJSRepBean {
 
     /**
-     * Description : 安装座
-     * MarketOrderNO :
+     * MarketOrderNO : 0000003683
+     * Description : 管线护套45|丁晴橡胶
      * DemandFactory : 2090
-     * StorageId : 221
+     * Unit : EA
+     * StorageId : 576
      * ReverseHandler :
-     * AdvanceStorageId : 588
-     * DemandStorage : 2900
+     * DemandStorage : 2906
+     * AdvanceStorageId : 3404
      * MaterialType : 独立
-     * OrderType : 20
-     * MblnrRow : 0001
+     * OrderType : 10
      * Qty : 1
-     * MarketOrderRow :
+     * ID : 0
+     * MarketOrderRow : 000040
      * OutsourcingType : 外协成品
      * MoreQty : 0
-     * Mjahr : 2020
-     * Status : 105
      * Describe : 105已入库
-     * PurchaseOrderRow : 00010
-     * Messa : S
-     * CreateTime : 1592982501523
-     * Handler : pliu
-     * Mblnr : 5000149496
-     * PostingDate : 1592928000000
-     * UpdateTime : 1592982501523
-     * MaterialCode : LJ1510000078-A01
-     * DocumentDate : 1592928000000
-     * PurchaseOrderNO : 4800000042
+     * Status : 105
+     * Path : 103,105
+     * PurchaseOrderRow : 00040
+     * CreateTime : 2020-09-08 10:09:26
+     * Handler : xmao
+     * PostingDate : 2020-09-08
+     * UpdateTime : 2020-09-08 10:09:26
+     * MaterialCode : LJ7015000968
+     * DocumentDate : 2020-09-08
+     * PurchaseOrderNO : 4800002301
      */
 
-    private String Description;
     private String MarketOrderNO;
+    private String Description;
     private String DemandFactory;
+    private String Factory;
+    private String Unit;
     private long StorageId;
     private String ReverseHandler;
-    private long AdvanceStorageId;
     private String DemandStorage;
+    private long AdvanceStorageId;
     private String MaterialType;
     private String OrderType;
-    private String MblnrRow;
     private float Qty;
+    private long ID;
     private String MarketOrderRow;
     private String OutsourcingType;
     private float MoreQty;
-    private String Mjahr;
-    private String Status;
     private String Describe;
+    private String Status;
+    private String Path;
     private String PurchaseOrderRow;
-    private String Messa;
     private String CreateTime;
     private String Handler;
-    private String Mblnr;
     private String PostingDate;
     private String UpdateTime;
     private String MaterialCode;
     private String DocumentDate;
     private String PurchaseOrderNO;
+
+    private String allocatedId;
 
     public static GetOutsoureFinProductDataJSRepBean objectFromData(String str) {
 
@@ -114,14 +115,6 @@ public class GetOutsoureFinProductDataJSRepBean {
 
     }
 
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String Description) {
-        this.Description = Description;
-    }
-
     public String getMarketOrderNO() {
         return MarketOrderNO;
     }
@@ -130,12 +123,36 @@ public class GetOutsoureFinProductDataJSRepBean {
         this.MarketOrderNO = MarketOrderNO;
     }
 
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String Description) {
+        this.Description = Description;
+    }
+
     public String getDemandFactory() {
         return DemandFactory;
     }
 
     public void setDemandFactory(String DemandFactory) {
         this.DemandFactory = DemandFactory;
+    }
+
+    public String getFactory() {
+        return Factory;
+    }
+
+    public void setFactory(String factory) {
+        Factory = factory;
+    }
+
+    public String getUnit() {
+        return Unit;
+    }
+
+    public void setUnit(String Unit) {
+        this.Unit = Unit;
     }
 
     public long getStorageId() {
@@ -154,20 +171,20 @@ public class GetOutsoureFinProductDataJSRepBean {
         this.ReverseHandler = ReverseHandler;
     }
 
-    public long getAdvanceStorageId() {
-        return AdvanceStorageId;
-    }
-
-    public void setAdvanceStorageId(long AdvanceStorageId) {
-        this.AdvanceStorageId = AdvanceStorageId;
-    }
-
     public String getDemandStorage() {
         return DemandStorage;
     }
 
     public void setDemandStorage(String DemandStorage) {
         this.DemandStorage = DemandStorage;
+    }
+
+    public long getAdvanceStorageId() {
+        return AdvanceStorageId;
+    }
+
+    public void setAdvanceStorageId(long AdvanceStorageId) {
+        this.AdvanceStorageId = AdvanceStorageId;
     }
 
     public String getMaterialType() {
@@ -186,20 +203,20 @@ public class GetOutsoureFinProductDataJSRepBean {
         this.OrderType = OrderType;
     }
 
-    public String getMblnrRow() {
-        return MblnrRow;
-    }
-
-    public void setMblnrRow(String MblnrRow) {
-        this.MblnrRow = MblnrRow;
-    }
-
     public float getQty() {
         return Qty;
     }
 
     public void setQty(float Qty) {
         this.Qty = Qty;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
     public String getMarketOrderRow() {
@@ -226,12 +243,12 @@ public class GetOutsoureFinProductDataJSRepBean {
         this.MoreQty = MoreQty;
     }
 
-    public String getMjahr() {
-        return Mjahr;
+    public String getDescribe() {
+        return Describe;
     }
 
-    public void setMjahr(String Mjahr) {
-        this.Mjahr = Mjahr;
+    public void setDescribe(String Describe) {
+        this.Describe = Describe;
     }
 
     public String getStatus() {
@@ -242,12 +259,12 @@ public class GetOutsoureFinProductDataJSRepBean {
         this.Status = Status;
     }
 
-    public String getDescribe() {
-        return Describe;
+    public String getPath() {
+        return Path;
     }
 
-    public void setDescribe(String Describe) {
-        this.Describe = Describe;
+    public void setPath(String Path) {
+        this.Path = Path;
     }
 
     public String getPurchaseOrderRow() {
@@ -256,14 +273,6 @@ public class GetOutsoureFinProductDataJSRepBean {
 
     public void setPurchaseOrderRow(String PurchaseOrderRow) {
         this.PurchaseOrderRow = PurchaseOrderRow;
-    }
-
-    public String getMessa() {
-        return Messa;
-    }
-
-    public void setMessa(String Messa) {
-        this.Messa = Messa;
     }
 
     public String getCreateTime() {
@@ -280,14 +289,6 @@ public class GetOutsoureFinProductDataJSRepBean {
 
     public void setHandler(String Handler) {
         this.Handler = Handler;
-    }
-
-    public String getMblnr() {
-        return Mblnr;
-    }
-
-    public void setMblnr(String Mblnr) {
-        this.Mblnr = Mblnr;
     }
 
     public String getPostingDate() {
@@ -328,5 +329,13 @@ public class GetOutsoureFinProductDataJSRepBean {
 
     public void setPurchaseOrderNO(String PurchaseOrderNO) {
         this.PurchaseOrderNO = PurchaseOrderNO;
+    }
+
+    public String getAllocatedId() {
+        return allocatedId;
+    }
+
+    public void setAllocatedId(String allocatedId) {
+        this.allocatedId = allocatedId;
     }
 }

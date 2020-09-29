@@ -48,8 +48,11 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
     private String ProductOrderReservedNO;
     private String ProductOrderReservedRowNO;
     private String MCode;
+    private String MaterialCode;
+    private String MaterialDesc;
+    private String RecordType;
 
-    public InsertFinProStorageRecordReqBean1(String factory, String storage, String marketOrderNO, String marketOrderRow, String productOrderNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String demandQty, String alreadyQty, String allocatedQty, String productOrderReservedNO, String productOrderReservedRowNO, String MCode) {
+    public InsertFinProStorageRecordReqBean1(String factory, String storage, String marketOrderNO, String marketOrderRow, String productOrderNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String demandQty, String alreadyQty, String allocatedQty, String productOrderReservedNO, String productOrderReservedRowNO, String MCode, String materialCode, String materialDesc, String recordType) {
         Factory = factory;
         Storage = storage;
         MarketOrderNO = marketOrderNO;
@@ -65,6 +68,9 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
         ProductOrderReservedNO = productOrderReservedNO;
         ProductOrderReservedRowNO = productOrderReservedRowNO;
         this.MCode = MCode;
+        MaterialCode = materialCode;
+        MaterialDesc = materialDesc;
+        RecordType = recordType;
     }
 
     public static InsertFinProStorageRecordReqBean1 objectFromData(String str) {
@@ -229,5 +235,30 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
     @JSONField(name = "MCode")
     public void setMCode(String MCode) {
         this.MCode = MCode;
+    }
+    @JSONField(name = "MaterialCode")
+    public String getMaterialCode() {
+        return MaterialCode;
+    }
+    @JSONField(name = "MaterialCode")
+    public void setMaterialCode(String materialCode) {
+        MaterialCode = materialCode;
+    }
+    @JSONField(name = "MaterialDesc")
+    public String getMaterialDesc() {
+        return MaterialDesc;
+    }
+    @JSONField(name = "MaterialDesc")
+    public void setMaterialDesc(String materialDesc) {
+        MaterialDesc = materialDesc;
+    }
+
+    @JSONField(name = "RecordType")
+    public String getRecordType() {
+        return RecordType;
+    }
+    @JSONField(name = "RecordType")
+    public void setRecordType(String recordType) {
+        RecordType = recordType;
     }
 }

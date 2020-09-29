@@ -18,8 +18,34 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustPan">
-        <activity android:name=".Activity.WXKFBQDYActivity"></activity>
-        <activity android:name=".Activity.PrintCNPSDRecord2Activity" />
+        <activity android:name=".Activity.XSFHRecord1Activity"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".Activity.CGScanReceiveActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".Activity.KFZCSHRecordActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXExceptionRecordActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXExceptionReceiveActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXCPSHDialogActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXCPSHNActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXBCPSHNActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.WXKFBQDYActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity.PrintCNPSDRecord2Activity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.PrintCNPSDRecord1Activity"
             android:windowSoftInputMode="adjustPan" />
@@ -28,7 +54,7 @@
             android:name=".Activity.KFFL2Activity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Activity.XSFHRecordActivity"
+            android:name=".Activity.XSFHRecord2Activity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.DivertRecord2Activity"

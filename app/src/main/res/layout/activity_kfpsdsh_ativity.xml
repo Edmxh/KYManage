@@ -21,13 +21,6 @@
             android:src="@drawable/scan"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"/>
-<!--        <ImageView-->
-<!--            android:id="@+id/nullicon"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_weight="0.5"-->
-<!--            android:src="@null"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="10dp"/>-->
         <TextView
             android:layout_width="0dp"
             android:layout_weight="5"
@@ -37,19 +30,12 @@
             android:gravity="center"
             android:textSize="@dimen/text22"/>
         <ImageView
-            android:id="@+id/receive"
+            android:id="@+id/menupoint"
             android:layout_width="0dp"
-            android:layout_weight="0.4"
-            android:src="@drawable/zcsh_shqr"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
+            android:src="@drawable/menupoint"
             android:layout_marginRight="10dp"/>
-<!--        <ImageView-->
-<!--            android:id="@+id/cx"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_weight="0.5"-->
-<!--            android:src="@drawable/cx"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginRight="10dp"/>-->
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,16 +45,179 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp">
-        <ListView
-            android:id="@+id/listview1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
-            android:clickable="true"
-            android:focusable="true"
-            android:choiceMode="singleChoice"
-            android:dividerHeight="@dimen/divider"
-            android:divider="@color/colorBackground3"
-            />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:showDividers="middle"
+            android:divider="@drawable/linearlayout_divider"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:text="转储单信息"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text22"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/fldxx_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    >
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:text="生产订单:"
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center"
+                        android:duplicateParentState="true"/>
+                    <TextView
+                        android:id="@+id/scdd"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center_vertical"
+                        android:duplicateParentState="true"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    >
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:text="创建时间:"
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center"
+                        android:duplicateParentState="true"/>
+                    <TextView
+                        android:id="@+id/cjsj"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center_vertical"
+                        android:duplicateParentState="true"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    >
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:text="更新时间:"
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center"
+                        android:duplicateParentState="true"/>
+                    <TextView
+                        android:id="@+id/gxsj"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center_vertical"
+                        android:duplicateParentState="true"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    >
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:text="转储状态:"
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center"
+                        android:duplicateParentState="true"/>
+                    <TextView
+                        android:id="@+id/zczt"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="@dimen/text2"
+                        android:textColor="@color/fontcolor1"
+                        android:gravity="center_vertical"
+                        android:duplicateParentState="true"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:showDividers="middle"
+            android:divider="@drawable/linearlayout_divider"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="30dp"
+                    android:background="@color/colorWhite"
+                    android:gravity="center_vertical"
+                    android:text="转储单详情"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text22"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listview1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:clickable="true"
+                android:focusable="true"
+                android:choiceMode="singleChoice"
+                android:dividerHeight="@dimen/divider"
+                android:divider="@color/colorBackground3"
+                />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

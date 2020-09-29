@@ -54,6 +54,7 @@ public class GetDispatchListJSRepBean2 {
     private String DispatchListNO;
     private String username;
     private String createDate;
+    private String UPFAC;
 
     public List<GetDispatchListJSBean1> getData() {
         return data;
@@ -213,5 +214,13 @@ public class GetDispatchListJSRepBean2 {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getUPFAC() {
+        return UPFAC;
+    }
+
+    public void setUPFAC(String UPFAC) {
+        this.UPFAC = UPFAC;
     }
 }

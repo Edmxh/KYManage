@@ -129,6 +129,8 @@ public class InsertFinAProOrderRecordRep {
         private String ProOMaterialUnit;
         private String MarketOrderRow;
         private String MaterialCode;
+        private String clientNO;
+        private String clientShortName;
 
         public static InsertFinAProOrderRecord objectFromData(String str) {
 
@@ -348,6 +350,22 @@ public class InsertFinAProOrderRecordRep {
 
         public void setMaterialCode(String MaterialCode) {
             this.MaterialCode = MaterialCode;
+        }
+
+        public String getClientNO() {
+            return clientNO;
+        }
+
+        public void setClientNO(String clientNO) {
+            this.clientNO = clientNO;
+        }
+
+        public String getClientShortName() {
+            return clientShortName;
+        }
+
+        public void setClientShortName(String clientShortName) {
+            this.clientShortName = clientShortName;
         }
     }
 }

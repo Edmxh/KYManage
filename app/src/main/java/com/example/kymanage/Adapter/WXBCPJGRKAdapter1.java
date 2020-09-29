@@ -90,8 +90,36 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
             view.setTag(viewHolder);
             viewHolder.updatePosition(position);
         } else{
-            view=convertView;
-            viewHolder=(ViewHolder) view.getTag();
+            view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+
+            // 避免每次调用getView()时都要重新获取控件实例
+            viewHolder=new ViewHolder();
+            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
+            viewHolder.xqsl=view.findViewById(R.id.xqsl);
+            viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
+            viewHolder.fpsl=view.findViewById(R.id.fpsl);
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
+            viewHolder.checked=view.findViewById(R.id.checked);
+            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    select.put(position, isChecked);
+                }
+
+            });
+            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+            view.setTag(viewHolder);
+
+//            viewHolder=(ViewHolder) view.getTag();
+            viewHolder.updatePosition(position);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来
@@ -118,8 +146,13 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
         viewHolder.xqsl.setText(num1str);
         String num2str=""+rep.getWEMNG();
         viewHolder.yfpsl.setText(num2str);
-        String num3str=""+rep.getINQTY();
-        viewHolder.fpsl.setText(num3str);
+        if(rep.getINQTY()==0){
+            viewHolder.fpsl.setText(num1str);
+        }else {
+            String num3str=""+rep.getINQTY();
+            viewHolder.fpsl.setText(num3str);
+        }
+
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{

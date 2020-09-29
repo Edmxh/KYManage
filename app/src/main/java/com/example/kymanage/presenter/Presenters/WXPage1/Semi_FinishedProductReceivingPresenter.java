@@ -6,6 +6,7 @@ import com.example.kymanage.Beans.Semi_FinishedProductReceiving.Semi_FinishedPro
 import com.example.kymanage.model.AppModel;
 import com.example.kymanage.net.HttpDataListener;
 import com.example.kymanage.presenter.BasePresenter;
+import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.InterfaceView.BaseView2;
 
 public class Semi_FinishedProductReceivingPresenter extends BasePresenter<BaseView2<Semi_FinishedProductReceivingRep>> {
@@ -17,8 +18,8 @@ public class Semi_FinishedProductReceivingPresenter extends BasePresenter<BaseVi
         appModel = new AppModel();
     }
 
-    public void Semi_FinishedProductReceiving(String postingDate, String documentDate, String user, Semi_FinishedProductReceivingReq detail){
-        appModel.Semi_FinishedProductReceiving(postingDate,documentDate,user,detail,new HttpDataListener<Semi_FinishedProductReceivingRep>() {
+    public void Semi_FinishedProductReceiving(Semi_FinishedProductReceivingReq datas){
+        appModel.Semi_FinishedProductReceiving(datas,new HttpDataListener<Semi_FinishedProductReceivingRep>() {
 
 
             @Override

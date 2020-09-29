@@ -65,6 +65,8 @@ public class WXCPSHRecordAdapter extends ArrayAdapter<GetOutsoureFinProductDataJ
         viewHolder.ddlx=view.findViewById(R.id.ddlx);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
+        viewHolder.shlj=view.findViewById(R.id.shlj);
+        viewHolder.shlx=view.findViewById(R.id.shlx);
         viewHolder.xqgc=view.findViewById(R.id.xqgc);
         viewHolder.xqck=view.findViewById(R.id.xqck);
         viewHolder.shry=view.findViewById(R.id.shry);
@@ -98,9 +100,9 @@ public class WXCPSHRecordAdapter extends ArrayAdapter<GetOutsoureFinProductDataJ
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
 
-        String newStr1 = rep.getMblnr().replaceAll("^(0+)", "");
-        String newStr2 = rep.getMblnrRow().replaceAll("^(0+)", "");
-        viewHolder.ddh.setText(rep.getMblnr()+"/"+rep.getMblnrRow());
+//        String newStr1 = rep.getPurchaseOrderNO().replaceAll("^(0+)", "");
+//        String newStr2 = rep.getPurchaseOrderRow().replaceAll("^(0+)", "");
+        viewHolder.ddh.setText(rep.getPurchaseOrderNO()+"/"+rep.getPurchaseOrderRow());
 
         String newStr3 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
         String newStr4 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
@@ -109,16 +111,38 @@ public class WXCPSHRecordAdapter extends ArrayAdapter<GetOutsoureFinProductDataJ
         viewHolder.ddlx.setText(rep.getMaterialType());
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlms.setText(rep.getDescription());
+
+        switch (rep.getOrderType()){
+            case "10":
+                viewHolder.shlx.setText("实物入库");
+                viewHolder.shlj.setText("103->105");
+                break;
+            case "20":
+                viewHolder.shlx.setText("实物入库");
+                viewHolder.shlj.setText("103->105->261->101");
+                break;
+            case "3":
+                viewHolder.shlx.setText("费用入库");
+                viewHolder.shlj.setText("103->105->101");
+                break;
+            case "4":
+                viewHolder.shlx.setText("费用入库");
+                viewHolder.shlj.setText("103->105->101->261->101");
+                break;
+            default:
+                break;
+        }
+
         viewHolder.xqgc.setText(rep.getDemandFactory());
         viewHolder.xqck.setText(rep.getDemandStorage());
         viewHolder.shry.setText(rep.getHandler());
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
-        viewHolder.shsj.setText(sd);
+//        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
+        viewHolder.shsj.setText(rep.getCreateTime());
 
-        String sd2 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getUpdateTime()))));
-        viewHolder.gxsj.setText(sd2);
+//        String sd2 = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getUpdateTime()))));
+        viewHolder.gxsj.setText(rep.getUpdateTime());
 
         String num1str=""+rep.getQty();
         viewHolder.rksl.setText(num1str);
@@ -162,6 +186,8 @@ public class WXCPSHRecordAdapter extends ArrayAdapter<GetOutsoureFinProductDataJ
         TextView ddlx;
         TextView wlbm;
         TextView wlms;
+        TextView shlx;
+        TextView shlj;
         TextView xqgc;
         TextView xqck;
         TextView shry;

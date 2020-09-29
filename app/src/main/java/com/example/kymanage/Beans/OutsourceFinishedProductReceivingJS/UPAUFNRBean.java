@@ -32,7 +32,7 @@ import java.util.List;
  *     }
  */
 public class UPAUFNRBean implements Serializable {
-    /**
+    /**PMATNR : ZJxxxxxxxxxx
      * UPPAUFNR : 000010048077
      * UPPRSNUM : 0000095024
      * UPPRSPOS : 0007
@@ -60,7 +60,11 @@ public class UPAUFNRBean implements Serializable {
     private float UPPIssueQty;
     private float UPPIssuedQty;
 
-    public UPAUFNRBean(String UPPAUFNR, String UPPRSNUM, String UPPRSPOS, String UPPMATNR, String UPPMAKTX, String UPPMEINS, String UPPRSART, String UPPMCODE, String UPPLGFSB, float UPPMENGE, float UPPIssueQty, float UPPIssuedQty) {
+    private String PMATNR;
+    private String PMAKTX;
+    private String PMEINS;
+
+    public UPAUFNRBean(String UPPAUFNR, String UPPRSNUM, String UPPRSPOS, String UPPMATNR, String UPPMAKTX, String UPPMEINS, String UPPRSART, String UPPMCODE, String UPPLGFSB, float UPPMENGE, float UPPIssueQty, float UPPIssuedQty, String PMATNR, String PMAKTX, String PMEINS) {
         this.UPPAUFNR = UPPAUFNR;
         this.UPPRSNUM = UPPRSNUM;
         this.UPPRSPOS = UPPRSPOS;
@@ -73,6 +77,9 @@ public class UPAUFNRBean implements Serializable {
         this.UPPMENGE = UPPMENGE;
         this.UPPIssueQty = UPPIssueQty;
         this.UPPIssuedQty = UPPIssuedQty;
+        this.PMATNR = PMATNR;
+        this.PMAKTX = PMAKTX;
+        this.PMEINS = PMEINS;
     }
 
     public static UPAUFNRBean objectFromData(String str) {
@@ -214,5 +221,30 @@ public class UPAUFNRBean implements Serializable {
     @JSONField(name = "UPPIssuedQty")
     public void setUPPIssuedQty(float UPPIssuedQty) {
         this.UPPIssuedQty = UPPIssuedQty;
+    }
+
+    @JSONField(name = "PMATNR")
+    public String getPMATNR() {
+        return PMATNR;
+    }
+    @JSONField(name = "PMATNR")
+    public void setPMATNR(String PMATNR) {
+        this.PMATNR = PMATNR;
+    }
+    @JSONField(name = "PMAKTX")
+    public String getPMAKTX() {
+        return PMAKTX;
+    }
+    @JSONField(name = "PMAKTX")
+    public void setPMAKTX(String PMAKTX) {
+        this.PMAKTX = PMAKTX;
+    }
+    @JSONField(name = "PMEINS")
+    public String getPMEINS() {
+        return PMEINS;
+    }
+    @JSONField(name = "PMEINS")
+    public void setPMEINS(String PMEINS) {
+        this.PMEINS = PMEINS;
     }
 }

@@ -512,9 +512,11 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                 if (!"".equals(str)) {
                     //tv.setText(str);
                     scanString=str;
+                    System.out.println(str);
                     JSONObject lableObject= null;
                     try {
                         lableObject = JSONObject.parseObject(scanString);
+                        System.out.println("lableObject.toString():"+lableObject.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(KFFLActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
@@ -544,6 +546,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     // 使用getString方法获得value，注意第2个参数是value的默认值
                                 String fac =sharedPreferences.getString("factory", "");
                                 if(factory.equals(fac)){
+                                    System.out.println("materialCode:"+materialCode);
                                     presenter1.GetStockInformationDataJS(materialCode,factory);
                                 }else {
                                     Toast.makeText(context, "该物料属于"+factory, Toast.LENGTH_SHORT).show();

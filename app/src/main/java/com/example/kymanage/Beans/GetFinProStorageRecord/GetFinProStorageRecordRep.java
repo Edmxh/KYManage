@@ -14,24 +14,26 @@ import java.util.List;
 public class GetFinProStorageRecordRep {
 
     /**
-     * MarketOrderNO : 30000115
+     * Status : 101已入库
+     * MarketOrderNO : 10000425
      * DemandFactory : 2090
-     * CreateTime : 2020-07-26 18:18:35
-     * Handler : kzheng
+     * CreateTime : 2020-09-17 08:13:07
+     * Handler : xmao
      * Unit : EA
      * ReverseHandler :
      * DemandStorage : 2906
-     * MaterialType : 非专有
-     * MaterialDesc : 测试20200601
+     * MaterialType : 独立
+     * MaterialDesc : 支座|组焊件
      * ReceiveType : 机加入库
-     * Qty : 1
-     * UpdateTime : 2020-07-26 18:18:35
-     * ID : 5.0
-     * MaterialCode : LJ6025011857
-     * MarketOrderRow : 000020
-     * Status:"11"
+     * Qty : 6.0
+     * UpdateTime : 2020-09-17 08:13:07
+     * ID : 264.0
+     * MaterialCode : LJ5530031545-TZ2010047038
+     * MarketOrderRow : 16
+     * datajson : [{"Status":"101","Qty":6,"ProductOrderNO":"000010138566"}]
      */
 
+    private String Status;
     private String MarketOrderNO;
     private String DemandFactory;
     private String CreateTime;
@@ -47,7 +49,7 @@ public class GetFinProStorageRecordRep {
     private long ID;
     private String MaterialCode;
     private String MarketOrderRow;
-    private String Status;
+    private List<DatajsonBean> datajson;
 
     public static GetFinProStorageRecordRep objectFromData(String str) {
 
@@ -91,6 +93,14 @@ public class GetFinProStorageRecordRep {
         return new ArrayList();
 
 
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 
     public String getMarketOrderNO() {
@@ -213,11 +223,91 @@ public class GetFinProStorageRecordRep {
         this.MarketOrderRow = MarketOrderRow;
     }
 
-    public String getStatus() {
-        return Status;
+    public List<DatajsonBean> getDatajson() {
+        return datajson;
     }
 
-    public void setStatus(String status) {
-        Status = status;
+    public void setDatajson(List<DatajsonBean> datajson) {
+        this.datajson = datajson;
+    }
+
+    public static class DatajsonBean {
+        /**
+         * Status : 101
+         * Qty : 6
+         * ProductOrderNO : 000010138566
+         */
+
+        private String Status;
+        private float Qty;
+        private String ProductOrderNO;
+
+        public static DatajsonBean objectFromData(String str) {
+
+            return new Gson().fromJson(str, DatajsonBean.class);
+        }
+
+        public static DatajsonBean objectFromData(String str, String key) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(str);
+
+                return new Gson().fromJson(jsonObject.getString(str), DatajsonBean.class);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        public static List<DatajsonBean> arrayDatajsonBeanFromData(String str) {
+
+            Type listType = new TypeToken<ArrayList<DatajsonBean>>() {
+            }.getType();
+
+            return new Gson().fromJson(str, listType);
+        }
+
+        public static List<DatajsonBean> arrayDatajsonBeanFromData(String str, String key) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(str);
+                Type listType = new TypeToken<ArrayList<DatajsonBean>>() {
+                }.getType();
+
+                return new Gson().fromJson(jsonObject.getString(str), listType);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return new ArrayList();
+
+
+        }
+
+        public String getStatus() {
+            return Status;
+        }
+
+        public void setStatus(String Status) {
+            this.Status = Status;
+        }
+
+        public float getQty() {
+            return Qty;
+        }
+
+        public void setQty(float Qty) {
+            this.Qty = Qty;
+        }
+
+        public String getProductOrderNO() {
+            return ProductOrderNO;
+        }
+
+        public void setProductOrderNO(String ProductOrderNO) {
+            this.ProductOrderNO = ProductOrderNO;
+        }
     }
 }

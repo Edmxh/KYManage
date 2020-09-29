@@ -2,6 +2,7 @@ package com.example.kymanage.Beans.Semi_FinishedProductReceiving;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,7 +29,10 @@ import java.util.List;
  *             ]
  *         }
  */
-public class Semi_FinishedProductReceivingReq {
+public class Semi_FinishedProductReceivingReq implements Serializable {
+    private String postingDate;
+    private String documentDate;
+    private String user;
     private String marketOrderNO;
     private String marketOrderRow;
     private String upstreamFactory;
@@ -44,12 +48,20 @@ public class Semi_FinishedProductReceivingReq {
     private String description;
     private String unit;
     private String remark;
+    private String orderType;
+    private String aufnr;
+    private String pmatn;
+    private String mcode;
+    private String maktx;
     private List<Semi_FinishedProductReceivingReqBean> productOrder;
 
     public Semi_FinishedProductReceivingReq() {
     }
 
-    public Semi_FinishedProductReceivingReq(String marketOrderNO, String marketOrderRow, String upstreamFactory, float receNum, float inStorage, float demandNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String demandStorage, String description, String unit, String remark, List<Semi_FinishedProductReceivingReqBean> productOrder) {
+    public Semi_FinishedProductReceivingReq(String postingDate, String documentDate, String user, String marketOrderNO, String marketOrderRow, String upstreamFactory, float receNum, float inStorage, float demandNum, String orderNum, String orderRow, String materialCode, String materialType, String demandFactory, String demandStorage, String description, String unit, String remark, String orderType, String aufnr, String pmatn, String mcode,String maktx, List<Semi_FinishedProductReceivingReqBean> productOrder) {
+        this.postingDate = postingDate;
+        this.documentDate = documentDate;
+        this.user = user;
         this.marketOrderNO = marketOrderNO;
         this.marketOrderRow = marketOrderRow;
         this.upstreamFactory = upstreamFactory;
@@ -65,6 +77,11 @@ public class Semi_FinishedProductReceivingReq {
         this.description = description;
         this.unit = unit;
         this.remark = remark;
+        this.orderType = orderType;
+        this.aufnr = aufnr;
+        this.pmatn = pmatn;
+        this.mcode = mcode;
+        this.maktx = maktx;
         this.productOrder = productOrder;
     }
 
@@ -196,5 +213,69 @@ public class Semi_FinishedProductReceivingReq {
 
     public void setProductOrder(List<Semi_FinishedProductReceivingReqBean> productOrder) {
         this.productOrder = productOrder;
+    }
+
+    public String getPostingDate() {
+        return postingDate;
+    }
+
+    public void setPostingDate(String postingDate) {
+        this.postingDate = postingDate;
+    }
+
+    public String getDocumentDate() {
+        return documentDate;
+    }
+
+    public void setDocumentDate(String documentDate) {
+        this.documentDate = documentDate;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getAufnr() {
+        return aufnr;
+    }
+
+    public void setAufnr(String aufnr) {
+        this.aufnr = aufnr;
+    }
+
+    public String getPmatn() {
+        return pmatn;
+    }
+
+    public void setPmatn(String pmatn) {
+        this.pmatn = pmatn;
+    }
+
+    public String getMcode() {
+        return mcode;
+    }
+
+    public void setMcode(String mcode) {
+        this.mcode = mcode;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
     }
 }

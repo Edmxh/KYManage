@@ -72,6 +72,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
 //                .statusBarDarkFont(true)
 //                .init();
 
+
     }
 
     @Override
@@ -106,7 +107,6 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
                     vibrator.vibrate(30);
 //                    Toast.makeText(MainActivity.this, "正在登陆...", Toast.LENGTH_SHORT).show();

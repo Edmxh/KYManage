@@ -51,6 +51,7 @@ public class GetDumpRecordRepBean {
     private long ID;
     private String MarketOrderRow;
     private String MaterialCode;
+    private String ReverseHandler;
 
     public static GetDumpRecordRepBean objectFromData(String str) {
 
@@ -238,5 +239,13 @@ public class GetDumpRecordRepBean {
 
     public void setMaterialCode(String MaterialCode) {
         this.MaterialCode = MaterialCode;
+    }
+
+    public String getReverseHandler() {
+        return ReverseHandler;
+    }
+
+    public void setReverseHandler(String reverseHandler) {
+        ReverseHandler = reverseHandler;
     }
 }

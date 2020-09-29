@@ -65,6 +65,7 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
             viewHolder.xh=view.findViewById(R.id.xh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.sygc=view.findViewById(R.id.sygc);
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
@@ -72,22 +73,39 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
             viewHolder.fpsl=view.findViewById(R.id.fpsl);
             viewHolder.mTextWatcher = new MyTextWatcher();
             viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
-            viewHolder.checked=view.findViewById(R.id.checked);
-            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                                             boolean isChecked) {
-                    select.put(position, isChecked);
-                }
-
-            });
+//            viewHolder.checked=view.findViewById(R.id.checked);
+//            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+//
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView,
+//                                             boolean isChecked) {
+//                    select.put(position, isChecked);
+//                }
+//
+//            });
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
             viewHolder.updatePosition(position);
         } else{
-            view=convertView;
-            viewHolder=(ViewHolder) view.getTag();
+            // 避免ListView每次滚动时都要重新加载布局，以提高运行效率
+            view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+
+            // 避免每次调用getView()时都要重新获取控件实例
+            viewHolder=new ViewHolder();
+            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.sygc=view.findViewById(R.id.sygc);
+            viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
+            viewHolder.xqsl=view.findViewById(R.id.xqsl);
+            viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
+            viewHolder.fpsl=view.findViewById(R.id.fpsl);
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
+            view.setTag(viewHolder);
+            viewHolder.updatePosition(position);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来
@@ -105,6 +123,7 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
         viewHolder.xh.setText(no);
         viewHolder.wlbm.setText(rep.getMATNR());
         viewHolder.wlms.setText(rep.getMAKTX());
+        viewHolder.sygc.setText(rep.getFactory());
 
         String newStr1 = rep.getProductOrderNO().replaceAll("^(0+)", "");
         viewHolder.scddh.setText(newStr1);
@@ -116,11 +135,11 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
         viewHolder.yfpsl.setText(num2str);
         String num3str=""+rep.getCurrentNum();
         viewHolder.fpsl.setText(num3str);
-        if(select.get(position)){
-            viewHolder.checked.setChecked(true);
-        }else{
-            viewHolder.checked.setChecked(false);
-        }
+//        if(select.get(position)){
+//            viewHolder.checked.setChecked(true);
+//        }else{
+//            viewHolder.checked.setChecked(false);
+//        }
 //        areadess=rep.getStorage();
 //        for (iddesBean iddesBean : areadess) {
 //            dess.add(iddesBean.getDesc());
@@ -155,17 +174,17 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
 //                setRowBackgroundColor(viewHolder,R.drawable.tablebody1);
 //                break;
 //        }
-        viewHolder.fpsl.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ((ViewGroup)viewHolder.parent_layout)
-                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-                ((ViewGroup) v.getParent())
-                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-                return false;
-            }
-        });
+//        viewHolder.fpsl.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                ((ViewGroup)viewHolder.parent_layout)
+//                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+//                ((ViewGroup) v.getParent())
+//                        .setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+//                return false;
+//            }
+//        });
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -183,12 +202,13 @@ public class WXBCPJGRKAdapter2 extends ArrayAdapter<PreMaterialProductOrderRep> 
         TextView xh;
         TextView wlbm;
         TextView wlms;
+        TextView sygc;
         TextView scddh;
         TextView jhksrq;
         TextView xqsl;
         TextView yfpsl;
-        EditText fpsl;
-        CheckBox checked;
+        TextView fpsl;
+//        CheckBox checked;
         MyTextWatcher mTextWatcher;
 
         //动态更新TextWathcer的position

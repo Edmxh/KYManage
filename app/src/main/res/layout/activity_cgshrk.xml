@@ -24,6 +24,7 @@
             android:src="@drawable/scan"
             android:layout_marginLeft="10dp"/>
         <TextView
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="match_parent"

@@ -23,6 +23,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.PrintKGCPSDAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.General.StatusRespBean;
@@ -43,6 +44,7 @@ import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.Print2.GetDumpRecordNodePresenter;
 import com.example.kymanage.presenter.Presenters.Print2.MaterialFactoryDumpPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3.GetMaterialMasterDataJSPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.example.kymanage.utils.mPrintUtil;
 
 import java.text.SimpleDateFormat;
@@ -75,6 +77,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     private String no;
     private String line;
     private float qty;
+    private String labelnum;
 
     //301转储
     private MaterialFactoryDumpPresenter presenter2;
@@ -121,6 +124,8 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
         presenter3=new GetDumpRecordNodePresenter();
         presenter3.setView(this);
+
+//        LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
     }
 
     @Override
@@ -243,7 +248,9 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                             case R.id.divert:
                                 // 隐藏该对话框
                                 vibrator.vibrate(30);
+
                                 if(datas.size()>0){
+                                    LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom6).show();
                                     MaterialFactoryDumpReq req=new MaterialFactoryDumpReq(username,datas);
                                     presenter2.MaterialFactoryDump(req);
                                 }
@@ -283,7 +290,8 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
     @Override
     public void onDataSuccessScan(GetMaterialMasterDataRep data) {
-        MaterialFactoryDumpReqBean scanBean=new MaterialFactoryDumpReqBean(getCurrentdate(), getCurrentdate(), fid, data.getMaterial().getMATNR(), data.getMaterial().getMAKTX(), data.getMaterial().getMaterialType(), data.getMaterial().getMEINS(), po, no, line, qty, "301转储");
+        LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
+        MaterialFactoryDumpReqBean scanBean=new MaterialFactoryDumpReqBean(getCurrentdate(), getCurrentdate(), fid, data.getMaterial().getMATNR(), data.getMaterial().getMAKTX(), data.getMaterial().getMaterialType(), data.getMaterial().getMEINS(), po, no, line, qty, "301转储",labelnum);
         datas.add(scanBean);
         adapter=new PrintKGCPSDAdapter(this, R.layout.wxkgcpsditem,datas);
         listview1.setAdapter(adapter);
@@ -291,15 +299,22 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
     @Override
     public void onDataSuccess1(MaterialFactoryDumpRep data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        for (int i = 0; i < data.getData().size(); i++) {
-            MaterialFactoryDumpRepBean bean = data.getData().get(i);
-            System.out.println(bean.getPID());
-            GetDumpRecordNodeReqBean printData=new GetDumpRecordNodeReqBean(bean.getPID());
-            printDatas.add(printData);
+        LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom6).cancel();
+        if(data.getStatus().getCode()==1){
+            Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < data.getData().size(); i++) {
+                MaterialFactoryDumpRepBean bean = data.getData().get(i);
+                System.out.println(bean.getPID());
+                GetDumpRecordNodeReqBean printData=new GetDumpRecordNodeReqBean(bean.getPID());
+                printDatas.add(printData);
+            }
+            presenter3.GetDumpRecordNode(printDatas);
+            datas.clear();
+            adapter.notifyDataSetChanged();
+        }else {
+            DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,data.getStatus().getMessage());
         }
-        datas.clear();
-        adapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -324,7 +339,8 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
+        LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom6).cancel();
     }
 
     //接收类
@@ -355,6 +371,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                             fid = lableObject.getLong("fid");
                             qty = lableObject.getFloat("sl");
                             bm = lableObject.getString("bm");
+                            labelnum = lableObject.getString("num");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -368,7 +385,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                         //判断是否重复扫码
                         boolean repeat = false;
                         for (MaterialFactoryDumpReqBean data : datas) {
-                            if (data.getMatnr().equals(bm)) {
+                            if (data.getLabelnum().equals(labelnum)) {
                                 repeat = true;
                                 break;
                             }
@@ -379,7 +396,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
                         } else {
                             if (bm != null) {
-//                                String decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
+                                LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
                                 presenter1.GetMaterialMasterDataJS(bm, "2090");
                             }
 

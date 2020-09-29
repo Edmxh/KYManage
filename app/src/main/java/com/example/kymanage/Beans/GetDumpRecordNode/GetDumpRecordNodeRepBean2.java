@@ -35,6 +35,8 @@ public class GetDumpRecordNodeRepBean2 {
     private String MarketOrderRow;
     private List<GetDumpRecordNodeRepBean1> data;
 
+    private String facName;
+
     public static GetDumpRecordNodeRepBean2 objectFromData(String str) {
 
         return new Gson().fromJson(str, GetDumpRecordNodeRepBean2.class);
@@ -157,5 +159,13 @@ public class GetDumpRecordNodeRepBean2 {
 
     public void setData(List<GetDumpRecordNodeRepBean1> data) {
         this.data = data;
+    }
+
+    public String getFacName() {
+        return facName;
+    }
+
+    public void setFacName(String facName) {
+        this.facName = facName;
     }
 }

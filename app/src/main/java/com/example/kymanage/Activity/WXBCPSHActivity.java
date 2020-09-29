@@ -162,7 +162,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
         presenter3.setView(this);
 
         presenter4=new Semi_FinishedProductReceivingPresenter();
-        presenter4.setView(this);
+//        presenter4.setView(this);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -305,8 +305,8 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                 }
                 float recNum=Float.parseFloat(("0"+dhsl.getText().toString()));
                 if(recNum>0&&recNum>=allnum){
-                    Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getUpstreamFactory(), recNum,selectedRep.getInStorage(),selectedRep.getMENGE(),selectedRep.getEBELN(), selectedRep.getEBELP(), selectedRep.getMATNR(), selectedRep.getMaterialType(), selectedRep.getWERKS(), selectedRep.getLGPRO(), selectedRep.getTXZ01(), selectedRep.getMEINS(), selectedRep.getCGTXT(), productOrderReqs);
-                    presenter4.Semi_FinishedProductReceiving(getCurrentdate(),getCurrentdate(),username,req);
+//                    Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(selectedRep.getMarketorderno(), selectedRep.getMarketorderrow(), selectedRep.getUpstreamFactory(), recNum,selectedRep.getInStorage(),selectedRep.getMENGE(),selectedRep.getEBELN(), selectedRep.getEBELP(), selectedRep.getMATNR(), selectedRep.getMaterialType(), selectedRep.getWERKS(), selectedRep.getLGPRO(), selectedRep.getTXZ01(), selectedRep.getMEINS(), selectedRep.getCGTXT(), productOrderReqs);
+//                    presenter4.Semi_FinishedProductReceiving(getCurrentdate(),getCurrentdate(),username,req);
                 }else {
                     Toast.makeText(WXBCPSHActivity.this, "输入数量错误", Toast.LENGTH_SHORT).show();
                 }
@@ -358,13 +358,17 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
 
     @Override
     public void onDataSuccessScan(GetPurchaseOrderInfoJSReps data) {
-        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+        if(data.getCode()==1){
+            layout1.setVisibility(View.VISIBLE);
+        }else {
+            Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+        }
         try {
             List<GetPurchaseOrderInfoJSRep> currentDatas = data.getData();
             for (GetPurchaseOrderInfoJSRep data2 : currentDatas) {
-                data2.setMarketorderno(marketorderno);
-                data2.setMarketorderrow(marketorderrow);
-                data2.setUpstreamFactory(upstreamFactory);
+//                data2.setMarketorderno(marketorderno);
+//                data2.setMarketorderrow(marketorderrow);
+//                data2.setUpstreamFactory(upstreamFactory);
             }
             data1.clear();
             cgddh_hang.clear();
@@ -376,7 +380,6 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                 String str=rep.getEBELN()+"/"+rep.getEBELP();
                 cgddh_hang.add(str);
             }
-            layout1.setVisibility(View.VISIBLE);
             adapter2 = new ArrayAdapter<String>(getApplicationContext(), R.layout.defined_spinner_item, cgddh_hang);
             //设置下拉列表的风格
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -397,7 +400,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                     String num3str=""+selectedRep.getWESBS();
                     dhsl.setText(num3str);
 
-                    presenter3.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
+//                    presenter3.CGSHReceiveDetail(selectedRep.getMarketorderno(),selectedRep.getMarketorderrow(),selectedRep.getMATNR(),selectedRep.getWERKS(),selectedRep.getWESBS());
 
                 }
                 @Override
@@ -436,7 +439,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
     @Override
     public void onDataSuccess1(PreMaterialProductOrderReps data) {
         productOrderList = data.getData();
-        adapter1=new WXBCPSHAdapter(WXBCPSHActivity.this, R.layout.wxbcpshitem, productOrderList);
+//        adapter1=new WXBCPSHAdapter(WXBCPSHActivity.this, R.layout.wxbcpshitem, productOrderList);
         listview1.setAdapter(adapter1);
     }
 
@@ -447,7 +450,7 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
             layout1.setVisibility(View.INVISIBLE);
             productOrderList.clear();
             adapter1.notifyDataSetChanged();
-            AdvanceStorageId.add(data.getStorageId());
+            AdvanceStorageId.add(data.getAdvanceStorageId());
         }
     }
 
@@ -506,14 +509,12 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        presenter1.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr);
+                        presenter1.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"");
                         scanString="";
                     }else {
                         Log.i("token","扫描结果为空");
                         Toast.makeText(WXBCPSHActivity.this, "扫描结果为空", Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
 
             }
