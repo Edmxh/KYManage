@@ -62,6 +62,11 @@ public class GetFinProStorageRecordNoteRepBean {
     private String MarketOrderRow;
     private String MaterialCode;
     private String facName;
+    private String workNO;
+    private String PlanOrderNO;
+    private String Sobkz;
+    private String Lgpbz;
+    private String OrderType;
 
     public static GetFinProStorageRecordNoteRepBean objectFromData(String str) {
 
@@ -297,5 +302,45 @@ public class GetFinProStorageRecordNoteRepBean {
 
     public void setFacName(String facName) {
         this.facName = facName;
+    }
+
+    public String getWorkNO() {
+        return workNO;
+    }
+
+    public void setWorkNO(String workNO) {
+        this.workNO = workNO;
+    }
+
+    public String getPlanOrderNO() {
+        return PlanOrderNO;
+    }
+
+    public void setPlanOrderNO(String planOrderNO) {
+        PlanOrderNO = planOrderNO;
+    }
+
+    public String getSobkz() {
+        return Sobkz;
+    }
+
+    public void setSobkz(String sobkz) {
+        Sobkz = sobkz;
+    }
+
+    public String getLgpbz() {
+        return Lgpbz;
+    }
+
+    public void setLgpbz(String lgpbz) {
+        Lgpbz = lgpbz;
+    }
+
+    public String getOrderType() {
+        return OrderType;
+    }
+
+    public void setOrderType(String orderType) {
+        OrderType = orderType;
     }
 }

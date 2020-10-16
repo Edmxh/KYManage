@@ -2,6 +2,7 @@ package com.example.kymanage.Activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -195,12 +196,14 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
                                 for (int i = 0; i < datas.size(); i++) {
                                     View itmeview=listview1.getAdapter().getView(i,null,null);
                                     CheckBox cb= itmeview.findViewById(R.id.checked);
-                                    if(cb.isChecked()){
+                                    if(cb.isChecked()&&!datas.get(i).getStatus().equals("已冲销")){
                                         nos.add(datas.get(i).getDeliverID());
                                     }
                                 }
                                 if(nos.size()>0){
                                     presenter2.GetCMInFactoryDeliverJS(nos);
+                                }else {
+                                    DialogUtil.infoMessageDialog(PrintCNPSDRecord1Activity.this,"未选中要补打的记录或选中的记录已被冲销");
                                 }
                                 break;
 //                            case R.id.exit:
@@ -252,11 +255,16 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
 
     @Override
     public void onDataSuccess1(GetInFactoryDeliverListJSRep data) {
-        datas=data.getData();
-        adapter=new Print1Record1Adapter(this, R.layout.print1record1item,datas);
-        adapter.setOnInnerItemOnClickListener(this);
-        listview1.setAdapter(adapter);
-        listview1.setOnItemClickListener(this);
+        if(data.getCode()==1){
+            datas=data.getData();
+            adapter=new Print1Record1Adapter(this, R.layout.print1record1item,datas);
+            adapter.setOnInnerItemOnClickListener(this);
+            listview1.setAdapter(adapter);
+            listview1.setOnItemClickListener(this);
+        }else {
+            DialogUtil.errorMessageDialog(PrintCNPSDRecord1Activity.this,data.getMessage());
+        }
+
     }
 
     @Override

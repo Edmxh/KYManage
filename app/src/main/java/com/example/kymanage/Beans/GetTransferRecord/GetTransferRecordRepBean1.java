@@ -62,6 +62,9 @@ public class GetTransferRecordRepBean1 {
 
     private String WStatus;
 
+    private String Sobkz;
+    private String RecordType;
+
     public static GetTransferRecordRepBean1 objectFromData(String str) {
 
         return new Gson().fromJson(str, GetTransferRecordRepBean1.class);
@@ -288,5 +291,21 @@ public class GetTransferRecordRepBean1 {
 
     public void setWStatus(String WStatus) {
         this.WStatus = WStatus;
+    }
+
+    public String getSobkz() {
+        return Sobkz;
+    }
+
+    public void setSobkz(String sobkz) {
+        Sobkz = sobkz;
+    }
+
+    public String getRecordType() {
+        return RecordType;
+    }
+
+    public void setRecordType(String recordType) {
+        RecordType = recordType;
     }
 }

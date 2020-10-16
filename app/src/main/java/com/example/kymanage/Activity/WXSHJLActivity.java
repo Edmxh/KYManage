@@ -264,11 +264,11 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
         if(labels!=null){
             printHelper.printBlankLine(10);
             for (GetFinProStorageRecordNoteRepBean label : labels) {
-                Bitmap bm=cb.createImage6(label,tf);
-                printHelper.PrintBitmapAtCenter(bm,384,480);
                 printHelper.printBlankLine(40);
+                Bitmap bm=cb.createImage6(label,tf);
+                printHelper.PrintBitmapAtCenter(bm,384,530);
+                printHelper.printBlankLine(80);
             }
-            printHelper.printBlankLine(80);
             System.out.println("打印标签的数量为"+data.getData().size());
             Toast.makeText(WXSHJLActivity.this, "打印标签的数量为"+labels.size(), Toast.LENGTH_SHORT).show();
         }else {

@@ -319,8 +319,8 @@ public class WXCPSHActivity extends BaseActivity implements ScanBaseView<GetPurc
                 float num = Float.parseFloat("0"+numstr);
                 allnum1+=num;
 //                System.out.println("num1=="+num);
-                AUFNRBean AUFNR=new AUFNRBean(currBean1.getProductOrderNO(), currBean1.getRSNUM(), currBean1.getRSPOS(), currBean1.getProOrderMaterialCode(), currBean1.getProOrderMaterialDesc(), currBean1.getProOrderMaterialUnit(), currBean1.getRSART(), currBean1.getMCODE(), currBean1.getStorage(), currBean1.getDemandNum(), num, currBean1.getDispatchNum());
-                AUFNRs.add(AUFNR);
+//                AUFNRBean AUFNR=new AUFNRBean(currBean1.getProductOrderNO(), currBean1.getRSNUM(), currBean1.getRSPOS(), currBean1.getProOrderMaterialCode(), currBean1.getProOrderMaterialDesc(), currBean1.getProOrderMaterialUnit(), currBean1.getRSART(), currBean1.getMCODE(), currBean1.getStorage(), currBean1.getDemandNum(), num, currBean1.getDispatchNum());
+//                AUFNRs.add(AUFNR);
             }
         }
 

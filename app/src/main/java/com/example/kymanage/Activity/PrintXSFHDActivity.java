@@ -223,7 +223,6 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
     public void onDataSuccess1(GetDeliveryListInfoJSRepBean3 data) {
         if(data.getCode()==0){
 //            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-
             List<GetDeliveryListInfoJSRepBean2> data1 = data.getData();
             for (GetDeliveryListInfoJSRepBean2 data2 : data1) {
                 mPrintUtil.printXSFHBill(data2,printHelper);
@@ -234,7 +233,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
             adapter.notifyDataSetChanged();
 
         }else {
-            DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,data.getMessage());
+            DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,data.getMessge());
         }
 
     }

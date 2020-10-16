@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,7 +55,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<MaterialFactoryDumpRep>, BaseView2<GetDumpRecordNodeRep> {
+public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<MaterialFactoryDumpRep>, BaseView2<GetDumpRecordNodeRep>, PrintKGCPSDAdapter.InnerItemOnclickListener, AdapterView.OnItemClickListener {
     //震动
     private Vibrator vibrator;
     private ImageView scan;
@@ -294,7 +295,9 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
         MaterialFactoryDumpReqBean scanBean=new MaterialFactoryDumpReqBean(getCurrentdate(), getCurrentdate(), fid, data.getMaterial().getMATNR(), data.getMaterial().getMAKTX(), data.getMaterial().getMaterialType(), data.getMaterial().getMEINS(), po, no, line, qty, "301转储",labelnum);
         datas.add(scanBean);
         adapter=new PrintKGCPSDAdapter(this, R.layout.wxkgcpsditem,datas);
+        adapter.setOnInnerItemOnClickListener(this);
         listview1.setAdapter(adapter);
+        listview1.setOnItemClickListener(this);
     }
 
     @Override
@@ -319,28 +322,55 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
     @Override
     public void onDataSuccess2(GetDumpRecordNodeRep data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        List<GetDumpRecordNodeRepBean2> data1 = data.getData();
-        //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        try {
-            printHelper.printBlankLine(10);
-            for (GetDumpRecordNodeRepBean2 data2 : data1) {
+        if(data.getStatus().getCode()==1){
+            printDatas.clear();
+            Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+            List<GetDumpRecordNodeRepBean2> data1 = data.getData();
+            //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            try {
+                printHelper.printBlankLine(10);
+                for (GetDumpRecordNodeRepBean2 data2 : data1) {
 //                Bitmap bm=cb.createImage10(data2,tf);
 //                printHelper.PrintBitmapAtCenter(bm,384,450+55*(data2.getData().size()));
 //                printHelper.printBlankLine(40);
-                mPrintUtil.printKGCBill(data2,printHelper);
-                printHelper.printBlankLine(80);
-            }
+                    mPrintUtil.printKGCBill(data2,printHelper);
+                    printHelper.printBlankLine(80);
+                }
 //            printHelper.printBlankLine(40);
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,data.getStatus().getMessage());
         }
+
     }
 
     @Override
     public void onFailed(String msg) {
         LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
         LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom6).cancel();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("456");
+    }
+
+    @Override
+    public void itemClick(View v) {
+        int position;
+        position = (Integer) v.getTag();
+        switch (v.getId()) {
+            case R.id.delete:
+                System.out.println("delete"+position);
+                datas.remove(position);
+                adapter.notifyDataSetChanged();
+                break;
+            default:
+                System.out.println("123");
+                break;
+        }
     }
 
     //接收类
@@ -364,6 +394,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                     if (lableObject != null) {
 //                    System.out.println(lableObject.getString("bm"));
                         String bm = null;
+                        String gc="";
                         try {
                             po = lableObject.getString("po");
                             no = lableObject.getString("no");
@@ -372,6 +403,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                             qty = lableObject.getFloat("sl");
                             bm = lableObject.getString("bm");
                             labelnum = lableObject.getString("num");
+                            gc = lableObject.getString("gc");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -396,8 +428,13 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
                         } else {
                             if (bm != null) {
-                                LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
-                                presenter1.GetMaterialMasterDataJS(bm, "2090");
+                                if(gc.equals("")||gc.equals("2090")){
+                                    DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,bm+"该物料不是上游需求");
+                                }else {
+                                    LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
+                                    presenter1.GetMaterialMasterDataJS(bm, "2090");
+                                }
+
                             }
 
                         }

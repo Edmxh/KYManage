@@ -61,6 +61,7 @@ public class WXZCSHRecordAdapter extends ArrayAdapter<GetDistributorDumpRecordDa
         viewHolder.psdh=view.findViewById(R.id.psdh);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
+        viewHolder.zcsl=view.findViewById(R.id.zcsl);
         viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
         viewHolder.scddh=view.findViewById(R.id.scddh);
         viewHolder.psgc=view.findViewById(R.id.psgc);
@@ -101,6 +102,7 @@ public class WXZCSHRecordAdapter extends ArrayAdapter<GetDistributorDumpRecordDa
         viewHolder.psdh.setText(rep.getDumpNum());
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlms.setText(rep.getMaterialDesc());
+        viewHolder.zcsl.setText(rep.getQty()+"");
 
         String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
         String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
@@ -157,6 +159,7 @@ public class WXZCSHRecordAdapter extends ArrayAdapter<GetDistributorDumpRecordDa
         TextView psdh;
         TextView wlbm;
         TextView wlms;
+        TextView zcsl;
         TextView xsddh_hang;
         TextView scddh;
         TextView psgc;

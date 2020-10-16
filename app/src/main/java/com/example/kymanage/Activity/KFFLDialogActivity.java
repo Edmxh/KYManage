@@ -167,7 +167,12 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                         if(issueNum!=0){
                             int count= (xlhStr.length()-xlhStr.replace(",","").length());
                             if(issueNum==(count+1)||!currentRep.getSERNP().equals("KY01")){
-                                InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), currentRep.getRSART(),"", currentRep.getDemandNum(), currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssuedNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL(),currentRep.getLOGGR(),currentRep.getLGPBE(),"货架名称",xlhStr);
+                                InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), currentRep.getRSART(),"", currentRep.getDemandNum(), currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssuedNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL(),currentRep.getLOGGR(),currentRep.getLGPBE(),"货架名称",xlhStr,currentRep.getSOBKZ());
+                                //字段SOBKZ ==“E”时，发料时应该传 销售订单号 和行号，等于其他时销售订单号和行号传 空“”
+//                                if(!currentRep.getSOBKZ().equals("E")){
+//                                    req.setKdauf("");
+//                                    req.setKdpos("");
+//                                }
                                 allNum+=issueNum;
                                 FLreqs.add(req);
                             }else {

@@ -169,9 +169,10 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
         try {
             datas.clear();
+            reqList.clear();
             for (GetTransferRecordRepBean1 datum : data.getData()) {
                 datas.add(datum);
-                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(),datum.getWStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode(),datum.getMjahr(),datum.getMblnr(),"");
+                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(),datum.getWStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode(),datum.getMjahr(),datum.getMblnr(),datum.getRecordType(),datum.getSobkz());
                 reqList.add(reqBean);
             }
             adapter=new KFPSDAdapter(KFZCSHAtivity.this, R.layout.kfpsditem,datas);

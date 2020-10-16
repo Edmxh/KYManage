@@ -124,7 +124,7 @@ public class WXExceptionAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>i
 //                break;
 //        }
         viewHolder.xqrq.setText(rep.getDeliveryDate());
-
+        exceptionList=new ArrayList<String>();
         for (GetOutsourcingExceptionTypeJSRep.GetOutsourcingExceptionTypeJSRepBean bean : rep.getReasonList()) {
             exceptionList.add(bean.getType());
         }

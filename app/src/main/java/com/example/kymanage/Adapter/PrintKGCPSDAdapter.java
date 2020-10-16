@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kymanage.Beans.MaterialFactoryDump.MaterialFactoryDumpReqBean;
@@ -13,9 +14,10 @@ import com.example.kymanage.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean> {
+public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>implements View.OnClickListener {
     private int resourceId;
     private List<MaterialFactoryDumpReqBean> mList;
+    private InnerItemOnclickListener mListener;
     //private DataBean1 DataBean1;
 
     // 适配器的构造函数，把要适配的数据传入这里
@@ -46,6 +48,9 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
             viewHolder.wllx=view.findViewById(R.id.wllx);
             viewHolder.sl=view.findViewById(R.id.sl);
             viewHolder.unit=view.findViewById(R.id.unit);
+            viewHolder.delete=view.findViewById(R.id.delete);
+            viewHolder.delete.setOnClickListener(this);
+            viewHolder.delete.setTag(position);
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         } else{
@@ -61,6 +66,9 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
             viewHolder.wllx=view.findViewById(R.id.wllx);
             viewHolder.sl=view.findViewById(R.id.sl);
             viewHolder.unit=view.findViewById(R.id.unit);
+            viewHolder.delete=view.findViewById(R.id.delete);
+            viewHolder.delete.setOnClickListener(this);
+            viewHolder.delete.setTag(position);
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         }
@@ -122,6 +130,11 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
         return view;
     }
 
+    @Override
+    public void onClick(View v) {
+        mListener.itemClick(v);
+    }
+
     // 定义一个内部类，用于对控件的实例进行缓存
     class ViewHolder{
         TextView xh;
@@ -132,9 +145,16 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
         TextView wllx;
         TextView sl;
         TextView unit;
+        ImageView delete;
     }
 
     public interface DetailViewHolderListener {
         void setData(ViewHolder viewHolder, int position);
+    }
+    public interface InnerItemOnclickListener {
+        void itemClick(View v);
+    }
+    public void setOnInnerItemOnClickListener(InnerItemOnclickListener listener){
+        this.mListener=listener;
     }
 }

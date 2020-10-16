@@ -64,7 +64,12 @@ public class UPAUFNRBean implements Serializable {
     private String PMAKTX;
     private String PMEINS;
 
-    public UPAUFNRBean(String UPPAUFNR, String UPPRSNUM, String UPPRSPOS, String UPPMATNR, String UPPMAKTX, String UPPMEINS, String UPPRSART, String UPPMCODE, String UPPLGFSB, float UPPMENGE, float UPPIssueQty, float UPPIssuedQty, String PMATNR, String PMAKTX, String PMEINS) {
+    private String UPPSOBKZ;
+    private String UPPLGPBE;
+    private String UPPPLORD;
+    private String UPPOTYPE;
+
+    public UPAUFNRBean(String UPPAUFNR, String UPPRSNUM, String UPPRSPOS, String UPPMATNR, String UPPMAKTX, String UPPMEINS, String UPPRSART, String UPPMCODE, String UPPLGFSB, float UPPMENGE, float UPPIssueQty, float UPPIssuedQty, String PMATNR, String PMAKTX, String PMEINS, String UPPSOBKZ, String UPPLGPBE, String UPPPLORD, String UPPOTYPE) {
         this.UPPAUFNR = UPPAUFNR;
         this.UPPRSNUM = UPPRSNUM;
         this.UPPRSPOS = UPPRSPOS;
@@ -80,6 +85,10 @@ public class UPAUFNRBean implements Serializable {
         this.PMATNR = PMATNR;
         this.PMAKTX = PMAKTX;
         this.PMEINS = PMEINS;
+        this.UPPSOBKZ = UPPSOBKZ;
+        this.UPPLGPBE = UPPLGPBE;
+        this.UPPPLORD = UPPPLORD;
+        this.UPPOTYPE = UPPOTYPE;
     }
 
     public static UPAUFNRBean objectFromData(String str) {
@@ -246,5 +255,37 @@ public class UPAUFNRBean implements Serializable {
     @JSONField(name = "PMEINS")
     public void setPMEINS(String PMEINS) {
         this.PMEINS = PMEINS;
+    }
+    @JSONField(name = "UPPSOBKZ")
+    public String getUPPSOBKZ() {
+        return UPPSOBKZ;
+    }
+    @JSONField(name = "UPPSOBKZ")
+    public void setUPPSOBKZ(String UPPSOBKZ) {
+        this.UPPSOBKZ = UPPSOBKZ;
+    }
+    @JSONField(name = "UPPLGPBE")
+    public String getUPPLGPBE() {
+        return UPPLGPBE;
+    }
+    @JSONField(name = "UPPLGPBE")
+    public void setUPPLGPBE(String UPPLGPBE) {
+        this.UPPLGPBE = UPPLGPBE;
+    }
+    @JSONField(name = "UPPPLORD")
+    public String getUPPPLORD() {
+        return UPPPLORD;
+    }
+    @JSONField(name = "UPPPLORD")
+    public void setUPPPLORD(String UPPPLORD) {
+        this.UPPPLORD = UPPPLORD;
+    }
+    @JSONField(name = "UPPOTYPE")
+    public String getUPPOTYPE() {
+        return UPPOTYPE;
+    }
+    @JSONField(name = "UPPOTYPE")
+    public void setUPPOTYPE(String UPPOTYPE) {
+        this.UPPOTYPE = UPPOTYPE;
     }
 }

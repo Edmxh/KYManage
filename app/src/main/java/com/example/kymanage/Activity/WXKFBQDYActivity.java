@@ -199,7 +199,7 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
                     issueNum=Float.parseFloat(("0"+et1.getText().toString()));
                     if(checkBox.isChecked()){
                         allnum+=issueNum;
-                        InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean bean =new InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean(rep.getDemandNum(), rep.getDispatchNum(), issueNum, rep.getFactory(), rep.getMATNR(), rep.getProductOrderNO(), rep.getMAKTX(), rep.getKDAUF(), rep.getKDPOS(), rep.getStorage(), rep.getRSNUM(), rep.getRSPOS(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getMEINS(), "", rep.getMCODE());
+                        InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean bean =new InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean(rep.getDemandNum(), rep.getDispatchNum(), issueNum, rep.getFactory(), rep.getMATNR(), rep.getProductOrderNO(), rep.getMAKTX(), rep.getKDAUF(), rep.getKDPOS(), rep.getStorage(), rep.getRSNUM(), rep.getRSPOS(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getMEINS(), "", rep.getMCODE(),rep.getPLORD(),rep.getOTYPE(),rep.getSOBKZ(),rep.getLGPBE());
                         sdata.add(bean);
                     }
                 }

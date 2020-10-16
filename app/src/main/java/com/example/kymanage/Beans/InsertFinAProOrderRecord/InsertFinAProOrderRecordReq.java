@@ -194,8 +194,12 @@ public class InsertFinAProOrderRecordReq {
         private String Unit;
         private String RecordType;
         private String MCode;
+        private String PlanOrderNO;
+        private String OrderType;
+        private String Sobkz;
+        private String Lgpbz;
 
-        public InsertFinAProOrderRecordReqBean(float demandQty, float alreadyQty, float allocatedQty, String factory, String materialCode, String productOrderNO, String materialDesc, String marketOrderNO, String marketOrderRow, String storage, String productOrderReservedNO, String productOrderReservedRowNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String unit, String recordType, String MCode) {
+        public InsertFinAProOrderRecordReqBean(float demandQty, float alreadyQty, float allocatedQty, String factory, String materialCode, String productOrderNO, String materialDesc, String marketOrderNO, String marketOrderRow, String storage, String productOrderReservedNO, String productOrderReservedRowNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String unit, String recordType, String MCode, String planOrderNO, String orderType, String sobkz, String lgpbz) {
             DemandQty = demandQty;
             AlreadyQty = alreadyQty;
             AllocatedQty = allocatedQty;
@@ -215,6 +219,10 @@ public class InsertFinAProOrderRecordReq {
             Unit = unit;
             RecordType = recordType;
             this.MCode = MCode;
+            PlanOrderNO = planOrderNO;
+            OrderType = orderType;
+            Sobkz = sobkz;
+            Lgpbz = lgpbz;
         }
 
         public static InsertFinAProOrderRecordReqBean objectFromData(String str) {
@@ -412,6 +420,39 @@ public class InsertFinAProOrderRecordReq {
         @JSONField(name = "MCode")
         public void setMCode(String MCode) {
             this.MCode = MCode;
+        }
+
+        @JSONField(name = "PlanOrderNO")
+        public String getPlanOrderNO() {
+            return PlanOrderNO;
+        }
+        @JSONField(name = "PlanOrderNO")
+        public void setPlanOrderNO(String planOrderNO) {
+            PlanOrderNO = planOrderNO;
+        }
+        @JSONField(name = "OrderType")
+        public String getOrderType() {
+            return OrderType;
+        }
+        @JSONField(name = "OrderType")
+        public void setOrderType(String orderType) {
+            OrderType = orderType;
+        }
+        @JSONField(name = "Sobkz")
+        public String getSobkz() {
+            return Sobkz;
+        }
+        @JSONField(name = "Sobkz")
+        public void setSobkz(String sobkz) {
+            Sobkz = sobkz;
+        }
+        @JSONField(name = "Lgpbz")
+        public String getLgpbz() {
+            return Lgpbz;
+        }
+        @JSONField(name = "Lgpbz")
+        public void setLgpbz(String lgpbz) {
+            Lgpbz = lgpbz;
         }
     }
 }

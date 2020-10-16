@@ -286,6 +286,7 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
                 }
 
                 for (GetDispatchListJSRepBean3 label : data.getData().getLableDataArr()) {
+                    printHelper.printBlankLine(40);
                     Bitmap bm=cb.createImage5(label,tf);
                     printHelper.PrintBitmapAtCenter(bm,384,480);
                     printHelper.printBlankLine(80);
@@ -399,8 +400,13 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
                             upstreamFactory=lableObject.getString("gc");
                             bm = lableObject.getString("code");
                             decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
-                            LoadingBar.dialog(WXBCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
-                            presenterScan.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"2");
+                            if(!upstreamFactory.equals("")){
+                                LoadingBar.dialog(WXBCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
+                                presenterScan.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"2");
+                            }else {
+                                DialogUtil.errorMessageDialog(WXBCPSHNActivity.this,"二维码中工厂字段为空，无法解析");
+                            }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(WXBCPSHNActivity.this, "解析二维码获取采购订单错误", Toast.LENGTH_LONG).show();

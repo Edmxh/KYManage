@@ -227,16 +227,21 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 
     @Override
     public void onDataSuccess1(GetMainDumpRecordRep data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        try {
-            datas=data.getData();
-            adapter=new Print2Record1Adapter(this, R.layout.print2record1item,datas);
-            adapter.setOnInnerItemOnClickListener(this);
-            listView1.setAdapter(adapter);
-            listView1.setOnItemClickListener(this);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(data.getStatus().getCode()==1){
+            Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+            try {
+                datas=data.getData();
+                adapter=new Print2Record1Adapter(this, R.layout.print2record1item,datas);
+                adapter.setOnInnerItemOnClickListener(this);
+                listView1.setAdapter(adapter);
+                listView1.setOnItemClickListener(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            DialogUtil.errorMessageDialog(DivertRecord1Activity.this,data.getStatus().getMessage());
         }
+
     }
 
     @Override

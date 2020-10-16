@@ -80,6 +80,8 @@ public class PreMaterialProductOrderRep {
 
     private String seriesno;
     private String SOBKZ;
+    private String PLORD;
+    private String OTYPE;
 
 
 
@@ -395,5 +397,21 @@ public class PreMaterialProductOrderRep {
 
     public void setSOBKZ(String SOBKZ) {
         this.SOBKZ = SOBKZ;
+    }
+
+    public String getPLORD() {
+        return PLORD;
+    }
+
+    public void setPLORD(String PLORD) {
+        this.PLORD = PLORD;
+    }
+
+    public String getOTYPE() {
+        return OTYPE;
+    }
+
+    public void setOTYPE(String OTYPE) {
+        this.OTYPE = OTYPE;
     }
 }

@@ -148,14 +148,19 @@ public class WXBCPSHDialogActivity extends AppCompatActivity implements View.OnC
                         }
                         if(issueNum>0){
                             receinum+=issueNum;
-                            Semi_FinishedProductReceivingReqBean bean=new Semi_FinishedProductReceivingReqBean(rep.getDemandNum(), rep.getKDAUF(), rep.getKDPOS(), rep.getMAKTX(), rep.getMATNR(), rep.getRSART(), rep.getRSNUM(), rep.getRSPOS(), rep.getDispatchNum(), rep.getProductOrderNO(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getFactory(), rep.getStorage(), rep.getMCODE(), issueNum);
+                            Semi_FinishedProductReceivingReqBean bean=new Semi_FinishedProductReceivingReqBean(rep.getDemandNum(), rep.getKDAUF(), rep.getKDPOS(), rep.getMAKTX(), rep.getMATNR(), rep.getRSART(), rep.getRSNUM(), rep.getRSPOS(), rep.getDispatchNum(), rep.getProductOrderNO(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getFactory(), rep.getStorage(), rep.getMCODE(), issueNum,rep.getSOBKZ(),rep.getLGPBE(),rep.getPLORD(),rep.getOTYPE());
                             productOrder.add(bean);
                         }
 
                     }
                 }
                 receiveReq.setProductOrder(productOrder);
-                presenter2.Semi_FinishedProductReceiving(receiveReq);
+                if(productOrder.size()>0){
+                    presenter2.Semi_FinishedProductReceiving(receiveReq);
+                }else {
+                    DialogUtil.errorMessageDialog(WXBCPSHDialogActivity.this,"没有本事业部生产订单不能进行收货！");
+                }
+
 //                Toast.makeText(WXBCPSHDialogActivity.this,"外协103预入库成功",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.cancel:

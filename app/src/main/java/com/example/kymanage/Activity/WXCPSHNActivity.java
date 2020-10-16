@@ -88,8 +88,10 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
 
 
     //缩略菜单
-    private ImageView menupoint;
+//    private ImageView menupoint;
     PopupMenu popup = null;
+    //查询记录
+    private ImageView record;
 
     //username
     private String username;
@@ -111,8 +113,9 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
 
         //按钮
         scan=findViewById(R.id.scan);
-        menupoint=findViewById(R.id.menupoint);
+//        menupoint=findViewById(R.id.menupoint);
         listView1=findViewById(R.id.listview1);//采购订单列表
+        record=findViewById(R.id.record);//查询记录
 
         //扫描获取采购订单信息
         presenterScan=new GetPurchaseOrderInfoJSPresenter();
@@ -179,9 +182,15 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
             vibrator.vibrate(30);
             scan();
         });
-        menupoint.setOnClickListener(v -> {
+//        menupoint.setOnClickListener(v -> {
+//            vibrator.vibrate(30);
+//            onPopupButtonClick(menupoint);
+//        });
+        record.setOnClickListener(v -> {
             vibrator.vibrate(30);
-            onPopupButtonClick(menupoint);
+            Intent intent = new Intent(WXCPSHNActivity.this, WXCPSHRecordActivity.class);
+            intent.putExtra("username",username);
+            startActivity(intent);
         });
     }
 
@@ -237,6 +246,7 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
             printList.clear();
             List<GetOutsourceFinProLableJSRepBean> beans = data.getData();
             for (GetOutsourceFinProLableJSRepBean bean : beans) {
+                printHelper.printBlankLine(40);
                 Bitmap bm=cb.createImage7(bean,tf);
                 printHelper.PrintBitmapAtCenter(bm,384,530);
                 printHelper.printBlankLine(80);
@@ -325,8 +335,13 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
                             upstreamFactory=lableObject.getString("gc");
                             bm = lableObject.getString("code");
                             decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
-                            LoadingBar.dialog(WXCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
-                            presenterScan.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"1");
+                            if(!upstreamFactory.equals("")){
+                                LoadingBar.dialog(WXCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
+                                presenterScan.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"1");
+                            }else {
+                                DialogUtil.errorMessageDialog(WXCPSHNActivity.this,"二维码中工厂字段为空，无法解析");
+                            }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(WXCPSHNActivity.this, "解析二维码获取采购订单错误", Toast.LENGTH_LONG).show();

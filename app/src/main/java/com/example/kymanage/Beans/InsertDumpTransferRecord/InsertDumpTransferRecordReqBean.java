@@ -58,11 +58,12 @@ public class InsertDumpTransferRecordReqBean {
     private String Mjahr;
     private String Mblnr;
     private String RecordType;
+    private String Sobkz;
 
     public InsertDumpTransferRecordReqBean() {
     }
 
-    public InsertDumpTransferRecordReqBean(String status, String WStatus, String sendFactory, String postingdate, String marketOrderNO, String demandFactory, String createTime, long PID, String documentdate, String unit, String demandStorage, long SID, long YID, String sendStorage, float qty, String productOrderNO, long ID, String marketOrderRow, String materialCode, String mjahr, String mblnr, String recordType) {
+    public InsertDumpTransferRecordReqBean(String status, String WStatus, String sendFactory, String postingdate, String marketOrderNO, String demandFactory, String createTime, long PID, String documentdate, String unit, String demandStorage, long SID, long YID, String sendStorage, float qty, String productOrderNO, long ID, String marketOrderRow, String materialCode, String mjahr, String mblnr, String recordType, String sobkz) {
         Status = status;
         this.WStatus = WStatus;
         SendFactory = sendFactory;
@@ -85,6 +86,7 @@ public class InsertDumpTransferRecordReqBean {
         Mjahr = mjahr;
         Mblnr = mblnr;
         RecordType = recordType;
+        Sobkz = sobkz;
     }
 
     public static InsertDumpTransferRecordReqBean objectFromData(String str) {
@@ -306,5 +308,13 @@ public class InsertDumpTransferRecordReqBean {
     @JSONField(name = "RecordType")
     public void setRecordType(String recordType) {
         RecordType = recordType;
+    }
+    @JSONField(name = "Sobkz")
+    public String getSobkz() {
+        return Sobkz;
+    }
+    @JSONField(name = "Sobkz")
+    public void setSobkz(String sobkz) {
+        Sobkz = sobkz;
     }
 }

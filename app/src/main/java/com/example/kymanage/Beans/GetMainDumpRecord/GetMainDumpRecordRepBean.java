@@ -16,6 +16,7 @@ public class GetMainDumpRecordRepBean {
     private String ReverseHandler;
     private String Status;
     private String MarketOrderNO;
+    private String Factory;
     private long ID;
 
     public String getDumpNum() {
@@ -80,5 +81,13 @@ public class GetMainDumpRecordRepBean {
 
     public void setMarketOrderNO(String marketOrderNO) {
         MarketOrderNO = marketOrderNO;
+    }
+
+    public String getFactory() {
+        return Factory;
+    }
+
+    public void setFactory(String factory) {
+        Factory = factory;
     }
 }

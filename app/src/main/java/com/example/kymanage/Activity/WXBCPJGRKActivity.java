@@ -105,8 +105,9 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 
 
 
-    private ImageView menupoint;
+//    private ImageView menupoint;
     PopupMenu popup = null;
+    private ImageView record;
 
     //上方物料信息
     private View layout1;
@@ -177,7 +178,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 
 //        print=findViewById(R.id.print);
 //        record=findViewById(R.id.record);
-        menupoint=findViewById(R.id.menupoint);
+        record=findViewById(R.id.record);
         //表格
         listview1=findViewById(R.id.listview1);
         listview2=findViewById(R.id.listview2);
@@ -261,11 +262,20 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 //                scan();
 //            }
 //        });
-        menupoint.setOnClickListener(new View.OnClickListener() {
+//        menupoint.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//                onPopupButtonClick(menupoint);
+//            }
+//        });
+        record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                onPopupButtonClick(menupoint);
+                Intent intent = new Intent(WXBCPJGRKActivity.this, WXSHJLActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
             }
         });
 
@@ -295,7 +305,6 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 autoReceive=true;
-
                 autoLoadContent2();
 
             }
@@ -331,7 +340,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             float num = currBean2.getCurrentNum();
             if(num>0){
                 allnum2+=num;
-                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum()+"", currBean2.getDispatchNum()+"", num+"", currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE(),currBean2.getMATNR(),currBean2.getMAKTX(),currBean2.getRSART());
+                InsertFinProStorageRecordReqBean1 bean1=new InsertFinProStorageRecordReqBean1(currBean2.getFactory(), currBean2.getStorage(), currBean2.getKDAUF(), currBean2.getKDPOS(), currBean2.getProductOrderNO(), currBean2.getProOrderDesc(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getDemandNum()+"", currBean2.getDispatchNum()+"", num+"", currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getMCODE(),currBean2.getMATNR(),currBean2.getMAKTX(),currBean2.getRSART(),currBean2.getPLORD(),currBean2.getOTYPE(),currBean2.getSOBKZ(),currBean2.getLGPBE());
                 sdata.add(bean1);
             }
 
@@ -377,6 +386,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         if(allnum1<=allnum){
             try {
                 LoadingBar.dialog(WXBCPJGRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).show();
+//                sdata.clear();
                 InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(ldata.get(0).getMaterialCode(), ldata.get(0).getMaterialDesc(), "独立", factory, allnum1,mqty, ldata.get(0).getUnit(), marketorderno, marketorderrow, username, "", ldata, sdata);
                 presenter2.InsertFinProStorageRecord(req);
             } catch (Exception e) {
@@ -504,7 +514,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             //收货完成直接自动打印标签
             presenter3.GetFinProStorageRecordNote(idlist);
         }else {
-            System.out.println("error");
+//            System.out.println("error");
             DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,data.getStatus().getMessage());
         }
 
@@ -515,9 +525,10 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         List<GetFinProStorageRecordNoteRepBean> labels = data.getData();
         if (labels != null) {
             for (GetFinProStorageRecordNoteRepBean label : labels) {
+                printHelper.printBlankLine(40);
                 Bitmap bm = cb.createImage6(label, tf);
-                printHelper.PrintBitmapAtCenter(bm, 384, 480);
-                printHelper.printBlankLine(81);
+                printHelper.PrintBitmapAtCenter(bm, 384, 530);
+                printHelper.printBlankLine(80);
             }
             System.out.println("打印标签的数量为" + data.getData().size());
 //            Toast.makeText(WXBCPJGRKActivity.this, "打印标签的数量为" + labels.size(), Toast.LENGTH_SHORT).show();
@@ -636,6 +647,10 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
         //销售订单号为空则不查上游订单
         if(!marketorderno.equals("")){
             presenter5.PreMaterialProductOrderJS(marketorderno,marketorderrow,materialCodeArr,gc.getText().toString());
+        }else {
+            if(autoReceive){
+                receive();
+            }
         }
     }
 

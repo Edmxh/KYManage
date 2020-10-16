@@ -167,6 +167,14 @@ public interface API {
     //销售发货单详情查询
     String GetDeliveryListDetailDataJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListDetailDataJS";
 
+    //销售发货单冲销
+    String DeliveryListDataWriteOff="ThingX/Things/AppProgramThing/Services/DeliveryListDataWriteOff";
+
+    //补打销售发货单
+    String GetDeliveryListJS="ThingX/Things/AppProgramThing/Services/GetDeliveryListJS";
+
+
+
     //获取销售发货物料信息及库存地点
     String GetLableStorageInfoJS="ThingX/Things/AppProgramThing/Services/GetLableStorageInfoJS";
 

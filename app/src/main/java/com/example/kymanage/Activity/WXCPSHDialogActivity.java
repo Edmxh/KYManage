@@ -220,7 +220,7 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
                 if(num>0){
                     allnum1+=num;
 //                System.out.println("num1=="+num);
-                    AUFNRBean AUFNR=new AUFNRBean(currBean1.getProductOrderNO(), currBean1.getRSNUM(), currBean1.getRSPOS(), currBean1.getProOrderMaterialCode(), currBean1.getProOrderMaterialDesc(), currBean1.getProOrderMaterialUnit(), currBean1.getRSART(), currBean1.getMCODE(), currBean1.getStorage(), currBean1.getDemandNum(), num, currBean1.getDispatchNum());
+                    AUFNRBean AUFNR=new AUFNRBean(currBean1.getProductOrderNO(), currBean1.getRSNUM(), currBean1.getRSPOS(), currBean1.getProOrderMaterialCode(), currBean1.getProOrderMaterialDesc(), currBean1.getProOrderMaterialUnit(), currBean1.getRSART(), currBean1.getMCODE(), currBean1.getStorage(), currBean1.getDemandNum(), num, currBean1.getDispatchNum(),currBean1.getSOBKZ(),currBean1.getLGPBE(),currBean1.getPLORD(),currBean1.getOTYPE());
                     AUFNRs.add(AUFNR);
                 }
 
@@ -232,7 +232,7 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
             float num = currBean2.getCurrentNum();
             if(num>0){
                 allnum2+=num;
-                UPAUFNRBean UPAUFNR=new UPAUFNRBean(currBean2.getProductOrderNO(), currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getRSART(), currBean2.getMCODE(), currBean2.getStorage(), currBean2.getDemandNum(), num, currBean2.getDispatchNum(),currBean2.getMATNR(),currBean2.getMAKTX(),currBean2.getMEINS());
+                UPAUFNRBean UPAUFNR=new UPAUFNRBean(currBean2.getProductOrderNO(), currBean2.getRSNUM(), currBean2.getRSPOS(), currBean2.getProOrderMaterialCode(), currBean2.getProOrderMaterialDesc(), currBean2.getProOrderMaterialUnit(), currBean2.getRSART(), currBean2.getMCODE(), currBean2.getStorage(), currBean2.getDemandNum(), num, currBean2.getDispatchNum(),currBean2.getMATNR(),currBean2.getMAKTX(),currBean2.getMEINS(),currBean2.getSOBKZ(),currBean2.getLGPBE(),currBean2.getPLORD(),currBean2.getOTYPE());
                 UPAUFNRs.add(UPAUFNR);
             }
         }
@@ -266,9 +266,14 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
         System.out.println(allnum);
         System.out.println(allnum2);
         if(rece&&allnum2<=allnum&&allnum1<=allnum){
-            OutsourceFinishedProductReceivingJSReq req=new OutsourceFinishedProductReceivingJSReq(getCurrentdate(), getCurrentdate(), username, marketorderno, marketorderrow, selectListData.getEBELN(), selectListData.getEBELP(), factoryNO, selectListData.getWERKS(), selectListData.getLGFSB(), selectListData.getMATNR(), selectListData.getTXZ01(), selectListData.getMaterialType(),selectListData.getMEINS(), selectListData.getMENGE(), selectListData.getInStorage(), allnum, selectListData.getCGTXT(), selectListData.getKINDS(), selectListData.getAUFNR(), selectListData.getPMATN(), selectListData.getMCODE(), selectListData.getMAKTX(), AUFNRs, UPAUFNRs);
+            if(kinds.equals("20")&&AUFNRs.size()==0){
+                DialogUtil.errorMessageDialog(WXCPSHDialogActivity.this,"无法收货!该采购订单物料需要本事业部生产订单才能收货");
+            }else {
+                OutsourceFinishedProductReceivingJSReq req=new OutsourceFinishedProductReceivingJSReq(getCurrentdate(), getCurrentdate(), username, marketorderno, marketorderrow, selectListData.getEBELN(), selectListData.getEBELP(), factoryNO, selectListData.getWERKS(), selectListData.getLGFSB(), selectListData.getMATNR(), selectListData.getTXZ01(), selectListData.getMaterialType(),selectListData.getMEINS(), selectListData.getMENGE(), selectListData.getInStorage(), allnum, selectListData.getCGTXT(), selectListData.getKINDS(), selectListData.getAUFNR(), selectListData.getPMATN(), selectListData.getMCODE(), selectListData.getMAKTX(), AUFNRs, UPAUFNRs);
 //            System.out.println("生产订单号"+selectListData.getAUFNR()+"--"+selectListData.getPMATN());
-            presenter2.OutsourceFinishedProductReceivingJS(req);
+                presenter2.OutsourceFinishedProductReceivingJS(req);
+            }
+
         } else {
             Toast.makeText(this, "分配数量有误", Toast.LENGTH_SHORT).show();
         }
@@ -351,6 +356,10 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
         //销售订单号为空则不查上游订单
         if(!marketorderno.equals("")){
             presenter4.PreMaterialProductOrderJS(marketorderno,marketorderrow,materialCodeArr,factoryNO);
+        }else {
+            if(autoReceive){
+                receive();
+            }
         }
     }
 

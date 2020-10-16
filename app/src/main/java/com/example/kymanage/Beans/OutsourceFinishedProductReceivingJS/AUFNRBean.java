@@ -62,8 +62,12 @@ public class AUFNRBean implements Serializable {
     private float PMENGE;
     private float PIssueQty;
     private float PIssuedQty;
+    private String PSOBKZ;
+    private String PLGPBE;
+    private String PPLORD;
+    private String POTYPE;
 
-    public AUFNRBean(String PAUFNR, String PRSNUM, String PRSPOS, String PMATNR, String PMAKTX, String PMEINS, String PRSART, String PMCODE, String PLGFSB, float PMENGE, float PIssueQty, float PIssuedQty) {
+    public AUFNRBean(String PAUFNR, String PRSNUM, String PRSPOS, String PMATNR, String PMAKTX, String PMEINS, String PRSART, String PMCODE, String PLGFSB, float PMENGE, float PIssueQty, float PIssuedQty, String PSOBKZ, String PLGPBE, String PPLORD, String POTYPE) {
         this.PAUFNR = PAUFNR;
         this.PRSNUM = PRSNUM;
         this.PRSPOS = PRSPOS;
@@ -76,6 +80,10 @@ public class AUFNRBean implements Serializable {
         this.PMENGE = PMENGE;
         this.PIssueQty = PIssueQty;
         this.PIssuedQty = PIssuedQty;
+        this.PSOBKZ = PSOBKZ;
+        this.PLGPBE = PLGPBE;
+        this.PPLORD = PPLORD;
+        this.POTYPE = POTYPE;
     }
 
     public static AUFNRBean objectFromData(String str) {
@@ -217,5 +225,37 @@ public class AUFNRBean implements Serializable {
     @JSONField(name = "PIssuedQty")
     public void setPIssuedQty(float PIssuedQty) {
         this.PIssuedQty = PIssuedQty;
+    }
+    @JSONField(name = "PSOBKZ")
+    public String getPSOBKZ() {
+        return PSOBKZ;
+    }
+    @JSONField(name = "PSOBKZ")
+    public void setPSOBKZ(String PSOBKZ) {
+        this.PSOBKZ = PSOBKZ;
+    }
+    @JSONField(name = "PLGPBE")
+    public String getPLGPBE() {
+        return PLGPBE;
+    }
+    @JSONField(name = "PLGPBE")
+    public void setPLGPBE(String PLGPBE) {
+        this.PLGPBE = PLGPBE;
+    }
+    @JSONField(name = "PPLORD")
+    public String getPPLORD() {
+        return PPLORD;
+    }
+    @JSONField(name = "PPLORD")
+    public void setPPLORD(String PPLORD) {
+        this.PPLORD = PPLORD;
+    }
+    @JSONField(name = "POTYPE")
+    public String getPOTYPE() {
+        return POTYPE;
+    }
+    @JSONField(name = "POTYPE")
+    public void setPOTYPE(String POTYPE) {
+        this.POTYPE = POTYPE;
     }
 }

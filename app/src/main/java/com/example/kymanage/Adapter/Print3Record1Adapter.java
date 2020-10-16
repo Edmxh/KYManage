@@ -103,7 +103,7 @@ public class Print3Record1Adapter extends ArrayAdapter<GetDeliveryListDataJSRepB
         viewHolder.gxsj.setText(rep.getUpdateTime());
         viewHolder.fhr.setText(rep.getHandler());
         viewHolder.cxr.setText(rep.getReverseHandler());
-        viewHolder.zt.setText(rep.getMessage());
+        viewHolder.zt.setText(rep.getDesc());
         if(select.get(position)){
             viewHolder.checked.setChecked(true);
         }else{

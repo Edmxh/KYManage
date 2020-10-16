@@ -68,11 +68,12 @@ public class InsertProductOrderIssueReqBean {
     private String Lgobe;
 
     private String SerialNumber;
+    private String SOBKZ;
 
     public InsertProductOrderIssueReqBean() {
     }
 
-    public InsertProductOrderIssueReqBean(String ordernum, String rowno, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String rsart, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl, String loggr, String lgpbe, String lgobe, String serialNumber) {
+    public InsertProductOrderIssueReqBean(String ordernum, String rowno, String hetxt, String matnr, String mdesc, String meins, String werks, String aufnr, String rsnum, String rspos, String bktxt, String kdauf, String kdpos, String rsart, String batch, float qty, String sertb, String lgort, String menge, String lastqty, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String processNo, String processText, String RSNum, String RSPos, String matkl, String loggr, String lgpbe, String lgobe, String serialNumber, String SOBKZ) {
         this.ordernum = ordernum;
         this.rowno = rowno;
         this.hetxt = hetxt;
@@ -106,6 +107,7 @@ public class InsertProductOrderIssueReqBean {
         Lgpbe = lgpbe;
         Lgobe = lgobe;
         SerialNumber = serialNumber;
+        this.SOBKZ = SOBKZ;
     }
 
     public String getOrdernum() {
@@ -374,5 +376,13 @@ public class InsertProductOrderIssueReqBean {
     @JSONField(name = "SerialNumber")
     public void setSerialNumber(String serialNumber) {
         SerialNumber = serialNumber;
+    }
+    @JSONField(name = "SOBKZ")
+    public String getSOBKZ() {
+        return SOBKZ;
+    }
+    @JSONField(name = "SOBKZ")
+    public void setSOBKZ(String SOBKZ) {
+        this.SOBKZ = SOBKZ;
     }
 }

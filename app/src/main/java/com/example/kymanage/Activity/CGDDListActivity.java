@@ -145,6 +145,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
+        System.out.println(getCurrentdate());
         //选择日期
         //date=findViewById(R.id.date);
     }

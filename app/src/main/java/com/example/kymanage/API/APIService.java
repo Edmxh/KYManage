@@ -274,6 +274,14 @@ public interface APIService {
     @POST(API.GetDeliveryListDetailDataJS)
     Observable<GetDeliveryListDetailDataJSRep> GetDeliveryListDetailDataJS(@Body RequestBody issuevouchernumber);
 
+    //销售发货单冲销
+    @POST(API.DeliveryListDataWriteOff)
+    Observable<CodeMessageBean> DeliveryListDataWriteOff(@Body RequestBody issuevouchernumber);
+
+    //补打销售发货单
+    @POST(API.GetDeliveryListJS)
+    Observable<GetDeliveryListInfoJSRepBean3> GetDeliveryListJS(@Body RequestBody issuevouchernumber);
+
     //获取销售发货物料信息及库存地点
     @POST(API.GetLableStorageInfoJS)
     Observable<GetLableStorageInfoJSRep> GetLableStorageInfoJS(@Body RequestBody issuevouchernumber);

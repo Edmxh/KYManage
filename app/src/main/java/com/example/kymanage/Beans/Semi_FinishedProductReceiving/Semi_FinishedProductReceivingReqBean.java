@@ -54,7 +54,12 @@ public class Semi_FinishedProductReceivingReqBean implements Serializable {
     private String MCODE;
     private float currentNum;
 
-    public Semi_FinishedProductReceivingReqBean(float BDMNG, String KDAUF, String KDPOS, String MAKTX, String MATNR, String RSART, String RSNUM, String RSPOS, float issueNum, String AUFNR, String proOrderDesc, String proOrderMaterialCode, String proOrderMaterialDesc, String proOrderMaterialUnit, String factory, String storage, String MCODE, float currentNum) {
+    private String SOBKZ;
+    private String LGPBE;
+    private String PLORD;
+    private String OTYPE;
+
+    public Semi_FinishedProductReceivingReqBean(float BDMNG, String KDAUF, String KDPOS, String MAKTX, String MATNR, String RSART, String RSNUM, String RSPOS, float issueNum, String AUFNR, String proOrderDesc, String proOrderMaterialCode, String proOrderMaterialDesc, String proOrderMaterialUnit, String factory, String storage, String MCODE, float currentNum, String SOBKZ, String LGPBE, String PLORD, String OTYPE) {
         this.BDMNG = BDMNG;
         this.KDAUF = KDAUF;
         this.KDPOS = KDPOS;
@@ -73,6 +78,10 @@ public class Semi_FinishedProductReceivingReqBean implements Serializable {
         this.storage = storage;
         this.MCODE = MCODE;
         this.currentNum = currentNum;
+        this.SOBKZ = SOBKZ;
+        this.LGPBE = LGPBE;
+        this.PLORD = PLORD;
+        this.OTYPE = OTYPE;
     }
 
     public static Semi_FinishedProductReceivingReqBean objectFromData(String str) {
@@ -263,5 +272,37 @@ public class Semi_FinishedProductReceivingReqBean implements Serializable {
     @JSONField(name = "currentNum")
     public void setCurrentNum(float currentNum) {
         this.currentNum = currentNum;
+    }
+    @JSONField(name = "SOBKZ")
+    public String getSOBKZ() {
+        return SOBKZ;
+    }
+    @JSONField(name = "SOBKZ")
+    public void setSOBKZ(String SOBKZ) {
+        this.SOBKZ = SOBKZ;
+    }
+    @JSONField(name = "LGPBE")
+    public String getLGPBE() {
+        return LGPBE;
+    }
+    @JSONField(name = "LGPBE")
+    public void setLGPBE(String LGPBE) {
+        this.LGPBE = LGPBE;
+    }
+    @JSONField(name = "PLORD")
+    public String getPLORD() {
+        return PLORD;
+    }
+    @JSONField(name = "PLORD")
+    public void setPLORD(String PLORD) {
+        this.PLORD = PLORD;
+    }
+    @JSONField(name = "OTYPE")
+    public String getOTYPE() {
+        return OTYPE;
+    }
+    @JSONField(name = "OTYPE")
+    public void setOTYPE(String OTYPE) {
+        this.OTYPE = OTYPE;
     }
 }

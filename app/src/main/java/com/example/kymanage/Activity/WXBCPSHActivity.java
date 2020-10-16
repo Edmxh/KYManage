@@ -299,8 +299,8 @@ public class WXBCPSHActivity extends BaseActivity implements ScanBaseView<GetPur
                     issueNum=Float.parseFloat(("0"+et1.getText().toString()));
                     if(issueNum>0){
                         allnum+=issueNum;
-                        Semi_FinishedProductReceivingReqBean bean=new Semi_FinishedProductReceivingReqBean(rep.getDemandNum(), rep.getKDAUF(), rep.getKDPOS(), rep.getMAKTX(), rep.getMATNR(), rep.getRSART(), rep.getRSNUM(), rep.getRSPOS(), rep.getIssuedNum(), rep.getProductOrderNO(), rep.getProOrderDesc(),rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getFactory(), rep.getStorage(),rep.getMCODE(),issueNum);
-                        productOrderReqs.add(bean);
+//                        Semi_FinishedProductReceivingReqBean bean=new Semi_FinishedProductReceivingReqBean(rep.getDemandNum(), rep.getKDAUF(), rep.getKDPOS(), rep.getMAKTX(), rep.getMATNR(), rep.getRSART(), rep.getRSNUM(), rep.getRSPOS(), rep.getIssuedNum(), rep.getProductOrderNO(), rep.getProOrderDesc(),rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getFactory(), rep.getStorage(),rep.getMCODE(),issueNum);
+//                        productOrderReqs.add(bean);
                     }
                 }
                 float recNum=Float.parseFloat(("0"+dhsl.getText().toString()));

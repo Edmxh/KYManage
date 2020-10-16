@@ -68,17 +68,18 @@ public class XSFHRecordAdapter extends ArrayAdapter<GetDeliveryListDetailDataJSR
         viewHolder.cjsj=view.findViewById(R.id.cjsj);
 
         viewHolder.sl=view.findViewById(R.id.sl);
-        viewHolder.czr=view.findViewById(R.id.czr);
-        viewHolder.checked=view.findViewById(R.id.checked);
-        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                select.put(position, isChecked);
-            }
-
-        });
+        viewHolder.gzh=view.findViewById(R.id.gzh);
+        viewHolder.fhxx=view.findViewById(R.id.fhxx);
+//        viewHolder.checked=view.findViewById(R.id.checked);
+//        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView,
+//                                         boolean isChecked) {
+//                select.put(position, isChecked);
+//            }
+//
+//        });
         // 获取控件实例，并调用set...方法使其显示出来
 //        viewHolder.check.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -104,7 +105,9 @@ public class XSFHRecordAdapter extends ArrayAdapter<GetDeliveryListDetailDataJSR
 
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlms.setText(rep.getMaterialDesc());
-//        viewHolder.client.setText(rep.getClientName()+"/"+rep.getClientNO());
+        viewHolder.gzh.setText(rep.getWorkNO());
+        viewHolder.fhxx.setText(rep.getMessage());
+        viewHolder.client.setText(rep.getClientNO());
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
@@ -112,12 +115,12 @@ public class XSFHRecordAdapter extends ArrayAdapter<GetDeliveryListDetailDataJSR
 
         String num1str=""+rep.getQty();
         viewHolder.sl.setText(num1str);
-//        viewHolder.czr.setText(rep.getHandler());
-        if(select.get(position)){
-            viewHolder.checked.setChecked(true);
-        }else{
-            viewHolder.checked.setChecked(false);
-        }
+//        viewHolder.czr.setText(rep.());
+//        if(select.get(position)){
+//            viewHolder.checked.setChecked(true);
+//        }else{
+//            viewHolder.checked.setChecked(false);
+//        }
 
 //        viewHolder.rksl.setOnTouchListener(new View.OnTouchListener() {
 //
@@ -149,8 +152,9 @@ public class XSFHRecordAdapter extends ArrayAdapter<GetDeliveryListDetailDataJSR
         TextView client;
         TextView cjsj;
         TextView sl;
-        TextView czr;
-        CheckBox checked;
+        TextView gzh;
+        TextView fhxx;
+//        CheckBox checked;
     }
 
     public interface DetailViewHolderListener {

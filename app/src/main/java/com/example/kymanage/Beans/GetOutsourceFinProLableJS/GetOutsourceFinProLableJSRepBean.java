@@ -58,6 +58,11 @@ public class GetOutsourceFinProLableJSRepBean {
     private String ClientShortName;
     private String workNO;//工作号
     private String UPFAC;//工作号
+    private String TargetStorage;//目标仓库
+    private String PlanOrderNO;//目标仓库
+    private String OrderType;//目标仓库
+    private String Sobkz;//目标仓库
+    private String Lgpbz;//目标仓库
 
     public static GetOutsourceFinProLableJSRepBean objectFromData(String str) {
 
@@ -277,5 +282,45 @@ public class GetOutsourceFinProLableJSRepBean {
 
     public void setUPFAC(String UPFAC) {
         this.UPFAC = UPFAC;
+    }
+
+    public String getTargetStorage() {
+        return TargetStorage;
+    }
+
+    public void setTargetStorage(String targetStorage) {
+        TargetStorage = targetStorage;
+    }
+
+    public String getPlanOrderNO() {
+        return PlanOrderNO;
+    }
+
+    public void setPlanOrderNO(String planOrderNO) {
+        PlanOrderNO = planOrderNO;
+    }
+
+    public String getOrderType() {
+        return OrderType;
+    }
+
+    public void setOrderType(String orderType) {
+        OrderType = orderType;
+    }
+
+    public String getSobkz() {
+        return Sobkz;
+    }
+
+    public void setSobkz(String sobkz) {
+        Sobkz = sobkz;
+    }
+
+    public String getLgpbz() {
+        return Lgpbz;
+    }
+
+    public void setLgpbz(String lgpbz) {
+        Lgpbz = lgpbz;
     }
 }

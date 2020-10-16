@@ -51,8 +51,13 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
     private String MaterialCode;
     private String MaterialDesc;
     private String RecordType;
+    //10.12
+    private String PlanOrderNO;
+    private String OrderType;
+    private String Sobkz;
+    private String Lgpbz;
 
-    public InsertFinProStorageRecordReqBean1(String factory, String storage, String marketOrderNO, String marketOrderRow, String productOrderNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String demandQty, String alreadyQty, String allocatedQty, String productOrderReservedNO, String productOrderReservedRowNO, String MCode, String materialCode, String materialDesc, String recordType) {
+    public InsertFinProStorageRecordReqBean1(String factory, String storage, String marketOrderNO, String marketOrderRow, String productOrderNO, String productOrderDesc, String proOMaterialNO, String proOMaterialDesc, String proOMaterialUnit, String demandQty, String alreadyQty, String allocatedQty, String productOrderReservedNO, String productOrderReservedRowNO, String MCode, String materialCode, String materialDesc, String recordType, String planOrderNO, String orderType, String sobkz, String lgpbz) {
         Factory = factory;
         Storage = storage;
         MarketOrderNO = marketOrderNO;
@@ -71,6 +76,10 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
         MaterialCode = materialCode;
         MaterialDesc = materialDesc;
         RecordType = recordType;
+        PlanOrderNO = planOrderNO;
+        OrderType = orderType;
+        Sobkz = sobkz;
+        Lgpbz = lgpbz;
     }
 
     public static InsertFinProStorageRecordReqBean1 objectFromData(String str) {
@@ -260,5 +269,38 @@ public class InsertFinProStorageRecordReqBean1 implements Serializable {
     @JSONField(name = "RecordType")
     public void setRecordType(String recordType) {
         RecordType = recordType;
+    }
+
+    @JSONField(name = "PlanOrderNO")
+    public String getPlanOrderNO() {
+        return PlanOrderNO;
+    }
+    @JSONField(name = "PlanOrderNO")
+    public void setPlanOrderNO(String planOrderNO) {
+        PlanOrderNO = planOrderNO;
+    }
+    @JSONField(name = "OrderType")
+    public String getOrderType() {
+        return OrderType;
+    }
+    @JSONField(name = "OrderType")
+    public void setOrderType(String orderType) {
+        OrderType = orderType;
+    }
+    @JSONField(name = "Sobkz")
+    public String getSobkz() {
+        return Sobkz;
+    }
+    @JSONField(name = "Sobkz")
+    public void setSobkz(String sobkz) {
+        Sobkz = sobkz;
+    }
+    @JSONField(name = "Lgpbz")
+    public String getLgpbz() {
+        return Lgpbz;
+    }
+    @JSONField(name = "Lgpbz")
+    public void setLgpbz(String lgpbz) {
+        Lgpbz = lgpbz;
     }
 }

@@ -1597,7 +1597,7 @@ public class AppModel extends BaseModel{
             e.printStackTrace();
         }
         RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
-        RetrofitManager.getmInstance().createService1(APIService.class).
+        RetrofitManager2.getmInstance().createService1(APIService.class).
                 OutsourceFinishedProductReceivingJS(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -2542,6 +2542,89 @@ public class AppModel extends BaseModel{
 
                     @Override
                     public void onNext(GetDeliveryListDetailDataJSRep value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //销售发货单冲销
+    public void DeliveryListDataWriteOff(List<String> VBELN_VL,String user, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(detail);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(materialArr));
+
+        try {
+            jsonObject.put("VBELN_VL",VBELN_VL);
+            jsonObject.put("user",user);
+            System.out.println("销售发货单冲销传参："+jsonObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                DeliveryListDataWriteOff(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CodeMessageBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(CodeMessageBean value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //销售发货单补打
+    public void GetDeliveryListJS(String DeliveryListNO, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(detail);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(materialArr));
+
+        try {
+            jsonObject.put("DeliveryListNO",DeliveryListNO);
+            System.out.println("销售发货单冲销补打："+jsonObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetDeliveryListJS(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDeliveryListInfoJSRepBean3>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDeliveryListInfoJSRepBean3 value) {
                         httpDataListener.onDataSuccess(value);
                     }
 

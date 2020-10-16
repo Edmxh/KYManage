@@ -304,6 +304,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
             }
 
             for (GetDispatchListJSRepBean3 label : data.getData().getLableDataArr()) {
+                printHelper.printBlankLine(40);
                 Bitmap bm=cb.createImage5(label,tf);
                 printHelper.PrintBitmapAtCenter(bm,384,480);
                 printHelper.printBlankLine(80);

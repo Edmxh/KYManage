@@ -284,6 +284,7 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
         try {
             List<GetOutsourceFinProLableJSRepBean> beans = data.getData();
             for (GetOutsourceFinProLableJSRepBean bean : beans) {
+                printHelper.printBlankLine(40);
                 Bitmap bm=cb.createImage7(bean,tf);
                 printHelper.PrintBitmapAtCenter(bm,384,530);
                 printHelper.printBlankLine(80);

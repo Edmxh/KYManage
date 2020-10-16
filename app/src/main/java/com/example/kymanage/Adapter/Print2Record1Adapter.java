@@ -67,6 +67,7 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
         // 获取控件实例
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.zcdh=view.findViewById(R.id.zcdh);
+        viewHolder.zcgc=view.findViewById(R.id.zcgc);
         viewHolder.xsddh=view.findViewById(R.id.xsddh);
         viewHolder.cjsj=view.findViewById(R.id.cjsj);
         viewHolder.gxsj=view.findViewById(R.id.gxsj);
@@ -102,6 +103,7 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
         String no=(position+1)+"";
         viewHolder.xh.setText(no);
         viewHolder.zcdh.setText(rep.getDumpNum());
+        viewHolder.zcgc.setText(rep.getFactory());
         viewHolder.xsddh.setText(rep.getMarketOrderNO());
         viewHolder.cjsj.setText(rep.getCreateTime());
         viewHolder.gxsj.setText(rep.getUpdateTime());
@@ -191,6 +193,7 @@ public class Print2Record1Adapter extends ArrayAdapter<GetMainDumpRecordRepBean>
     class ViewHolder{
         TextView xh;
         TextView zcdh;
+        TextView zcgc;
         TextView xsddh;
         TextView cjsj;
         TextView gxsj;

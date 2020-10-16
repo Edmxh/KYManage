@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GetDeliveryListInfoJSRepBean3 {
     private int code;
-    private String message;
+    private String messge;
     private List<GetDeliveryListInfoJSRepBean2> data;
 
     public int getCode() {
@@ -15,12 +15,12 @@ public class GetDeliveryListInfoJSRepBean3 {
         this.code = code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMessge() {
+        return messge;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessge(String messge) {
+        this.messge = messge;
     }
 
     public List<GetDeliveryListInfoJSRepBean2> getData() {
