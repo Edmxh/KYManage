@@ -146,7 +146,7 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
         viewHolder.xqsl.setText(num1str);
         String num2str=""+rep.getWEMNG();
         viewHolder.yfpsl.setText(num2str);
-        if(rep.getINQTY()==0){
+        if(rep.getINQTY()==0&&!rep.isChange()){
             viewHolder.fpsl.setText(num1str);
         }else {
             String num3str=""+rep.getINQTY();
@@ -256,6 +256,7 @@ public class WXBCPJGRKAdapter1 extends ArrayAdapter<GetOutStorageMaterialOrderJS
         public void afterTextChanged(Editable s) {
             float num=Float.parseFloat(("0"+s.toString()));
             mList.get(mPosition).setINQTY(num);
+            mList.get(mPosition).setChange(true);
         }
     }
 

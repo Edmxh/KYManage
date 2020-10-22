@@ -180,6 +180,7 @@ public class WXExceptionReceiveActivity extends BaseActivity implements ScanBase
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
             scanDatas.clear();
             adapter.notifyDataSetChanged();
+            //DialogUtil.errorMessageDialog(WXExceptionReceiveActivity.this,data.getMessage());
         }else {
             DialogUtil.errorMessageDialog(WXExceptionReceiveActivity.this,data.getMessage());
         }

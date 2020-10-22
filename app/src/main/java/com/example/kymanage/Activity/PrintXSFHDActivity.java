@@ -75,6 +75,8 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
 
     //震动
     private Vibrator vibrator;
+    //
+    boolean scanfinish=true;
 
     @Override
     public int initLayoutId() {
@@ -209,7 +211,9 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
 
     @Override
     public void onDataSuccessScan(GetLableStorageInfoJSRep data) {
+
         try {
+            scanfinish=true;
             GetDeliveryListInfoJSReqBean1 req=new GetDeliveryListInfoJSReqBean1(code, no, line, num, data.getSendStorage());
             printReqs.add(req);
             adapter=new Print3Adapter(this, R.layout.print3item,printReqs);
@@ -240,7 +244,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
 
     @Override
     public void onFailed(String msg) {
-
+        scanfinish=true;
     }
 
     //初始化
@@ -258,7 +262,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(m_Broadcastname)) {
                 String str = intent.getStringExtra("BARCODE");
-                if (!"".equals(str)) {
+                if (!"".equals(str)&&scanfinish) {
                     //tv.setText(str);
                     scanString=str;
                     JSONObject lableObject= null;
@@ -293,6 +297,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
                             System.out.println("请勿重复扫码");
                             Toast.makeText(PrintXSFHDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
                         }else {
+                            scanfinish=false;
                             presenter1.GetLableStorageInfoJS(id);
                         }
                         scanString="";

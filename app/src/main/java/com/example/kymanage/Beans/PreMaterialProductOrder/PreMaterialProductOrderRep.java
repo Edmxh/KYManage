@@ -75,6 +75,7 @@ public class PreMaterialProductOrderRep {
     private String LGPBE;
 
     private boolean chosen;
+    private boolean change;
 
     private String SERNP;
 
@@ -413,5 +414,13 @@ public class PreMaterialProductOrderRep {
 
     public void setOTYPE(String OTYPE) {
         this.OTYPE = OTYPE;
+    }
+
+    public boolean isChange() {
+        return change;
+    }
+
+    public void setChange(boolean change) {
+        this.change = change;
     }
 }

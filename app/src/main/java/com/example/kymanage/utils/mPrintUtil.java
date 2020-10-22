@@ -244,15 +244,67 @@ public class mPrintUtil {
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,true);
         printHelper.PrintLineEnd();
 
-        str=bean.getVORNR().replaceAll("^(0+)", "")+"           "+bean.getLTXA1();
-        printHelper.PrintLineInit(text2);
-        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
-        printHelper.PrintLineEnd();
+        String des1="";
+        String des2="";
+        String des3="";
+        if(bean.getLTXA1().length()>=10&&bean.getLTXA1().length()<=30){
+            des1=bean.getLTXA1().substring(0,10);
+            des2=bean.getLTXA1().substring(10,bean.getLTXA1().length());
+        }else if(bean.getLTXA1().length()<10) {
+            des1=bean.getLTXA1();
+        }else {
+            des1=bean.getLTXA1().substring(0,10);
+            des2=bean.getLTXA1().substring(10,30);
+            des3=bean.getLTXA1().substring(30,bean.getLTXA1().length());
+        }
 
-        str=bean.getGXCWB();
+        str=bean.getVORNR().replaceAll("^(0+)", "")+"           "+des1;
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
+        if(!des2.equals("")){
+            str=des2;
+            printHelper.PrintLineInit(text2);
+            printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,false);
+            printHelper.PrintLineEnd();
+        }
+        if(!des3.equals("")){
+            str=des3;
+            printHelper.PrintLineInit(text2);
+            printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,false);
+            printHelper.PrintLineEnd();
+        }
+
+
+        String des4="";
+        String des5="";
+        String des6="";
+        if(bean.getGXCWB().length()>=15&&bean.getGXCWB().length()<=30){
+            des4=bean.getGXCWB().substring(0,15);
+            des5=bean.getGXCWB().substring(15,bean.getGXCWB().length());
+        }else if(bean.getGXCWB().length()<15) {
+            des4=bean.getGXCWB();
+        }else {
+            des4=bean.getGXCWB().substring(0,15);
+            des5=bean.getGXCWB().substring(15,30);
+            des6=bean.getGXCWB().substring(30,bean.getGXCWB().length());
+        }
+        str=des4;
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
+        if(!des5.equals("")){
+            str=des5;
+            printHelper.PrintLineInit(text2);
+            printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,false);
+            printHelper.PrintLineEnd();
+        }
+        if(!des6.equals("")){
+            str=des6;
+            printHelper.PrintLineInit(text2);
+            printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Centering,false);
+            printHelper.PrintLineEnd();
+        }
     }
 
     /**

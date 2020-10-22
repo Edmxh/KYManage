@@ -146,6 +146,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
 
+        queryself.setChecked(true);
         date.setText(getCurrentdate());
         queryRecord();
     }
@@ -197,7 +198,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 //                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
                         View itmeview=listView1.getAdapter().getView(i,null,null);
                         CheckBox cb= itmeview.findViewById(R.id.checked);
-                        if(cb.isChecked()){
+                        if(cb.isChecked()&&!datas.get(i).getStatus().equals("已冲销")){
                             GetDumpRecordNodeReqBean printData=new GetDumpRecordNodeReqBean(datas.get(i).getID());
                             printDatas.add(printData);
                         }
@@ -209,7 +210,7 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
                 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 String currentdate = sf.format(dateNow);
                 if(printDatas.size()==0){
-                    Toast.makeText(DivertRecord1Activity.this, "未选中要打印的标签行", Toast.LENGTH_SHORT).show();
+                    DialogUtil.errorMessageDialog(DivertRecord1Activity.this, "未选中要打印的标签行或已被冲销");
                 }else {
                     presenter2.GetDumpRecordNode(printDatas);
                 }
@@ -367,13 +368,13 @@ public class DivertRecord1Activity extends BaseActivity implements BaseView1<Get
 //                            CheckBox cb=listview1.getChildAt(i - listview1.getFirstVisiblePosition()).findViewById(R.id.checked);
                                 View itmeview=listView1.getAdapter().getView(i,null,null);
                                 CheckBox cb= itmeview.findViewById(R.id.checked);
-                                if(cb.isChecked()){
+                                if(cb.isChecked()&&!datas.get(i).getStatus().equals("已冲销")){
                                     WriteOffMaterialFactoryDumpReqBean cxData=new WriteOffMaterialFactoryDumpReqBean(datas.get(i).getID(),datas.get(i).getDumpNum());
                                     cxDatas.add(cxData);
                                 }
                             }
                             if(cxDatas.size()==0){
-                                Toast.makeText(DivertRecord1Activity.this, "未选中要冲销的记录", Toast.LENGTH_SHORT).show();
+                                DialogUtil.errorMessageDialog(DivertRecord1Activity.this, "未选中要打印的标签行或已被冲销");
                             }else {
                                 WriteOffMaterialFactoryDumpReq cxreq=new WriteOffMaterialFactoryDumpReq(cxDatas,username);
                                 presenter3.WriteOffMaterialFactoryDump(cxreq);

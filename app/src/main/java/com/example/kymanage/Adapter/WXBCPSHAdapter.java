@@ -70,9 +70,32 @@ public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>imple
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         } else{
-            view=convertView;
-            viewHolder=(ViewHolder) view.getTag();
+            view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+
+            // 避免每次调用getView()时都要重新获取控件实例
+            viewHolder=new ViewHolder();
+            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.cgddh_hang=view.findViewById(R.id.cgddh_hang);
+            viewHolder.scddh=view.findViewById(R.id.scddh);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.ddlx=view.findViewById(R.id.ddlx);
+            viewHolder.rklj=view.findViewById(R.id.rklj);
+            viewHolder.xqrq=view.findViewById(R.id.xqrq);
+            viewHolder.xqsl=view.findViewById(R.id.xqsl);
+            viewHolder.yrksl=view.findViewById(R.id.yrksl);
+            viewHolder.dhsl=view.findViewById(R.id.dhsl);
+            viewHolder.receive=view.findViewById(R.id.receive);
+            viewHolder.receive.setOnClickListener(this);
+            viewHolder.receive.setTag(position);
+
+            // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.dhsl.addTextChangedListener(viewHolder.mTextWatcher);
             viewHolder.updatePosition(position);
+            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+            view.setTag(viewHolder);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来

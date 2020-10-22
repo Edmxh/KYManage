@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class MaterialFactoryDumpRep {
     private List<MaterialFactoryDumpRepBean> data;
+    private List<MaterialFactoryDumpRepBean2> warnInfo;
     private StatusBean status;
 
     public List<MaterialFactoryDumpRepBean> getData() {
@@ -35,5 +36,13 @@ public class MaterialFactoryDumpRep {
 
     public void setStatus(StatusBean status) {
         this.status = status;
+    }
+
+    public List<MaterialFactoryDumpRepBean2> getWarnInfo() {
+        return warnInfo;
+    }
+
+    public void setWarnInfo(List<MaterialFactoryDumpRepBean2> warnInfo) {
+        this.warnInfo = warnInfo;
     }
 }

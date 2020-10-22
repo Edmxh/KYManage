@@ -33,6 +33,7 @@ public class GetOutStorageMaterialOrderJSRepBean {
     private GetOutStorageMaterialOrderJSRepBean1 STORAGE;
 
     private boolean chosen;
+    private boolean change;
 
     public float getWEMNG() {
         return WEMNG;
@@ -136,5 +137,13 @@ public class GetOutStorageMaterialOrderJSRepBean {
 
     public void setChosen(boolean chosen) {
         this.chosen = chosen;
+    }
+
+    public boolean isChange() {
+        return change;
+    }
+
+    public void setChange(boolean change) {
+        this.change = change;
     }
 }

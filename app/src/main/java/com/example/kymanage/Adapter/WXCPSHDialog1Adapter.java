@@ -3,6 +3,7 @@ package com.example.kymanage.Adapter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -55,71 +56,43 @@ public class WXCPSHDialog1Adapter extends ArrayAdapter<PreMaterialProductOrderRe
 
             // 避免ListView每次滚动时都要重新加载布局，以提高运行效率
             view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
-
-            // 避免每次调用getView()时都要重新获取控件实例
-            viewHolder=new ViewHolder();
-            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
-            viewHolder.xh=view.findViewById(R.id.xh);
-            viewHolder.wlbm=view.findViewById(R.id.wlbm);
-            viewHolder.wlms=view.findViewById(R.id.wlms);
-            viewHolder.scddh=view.findViewById(R.id.scddh);
-            viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
-            viewHolder.xqsl=view.findViewById(R.id.xqsl);
-            viewHolder.fpsl=view.findViewById(R.id.fpsl);
-            viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
-
-
-            // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
-            viewHolder.mTextWatcher = new MyTextWatcher();
-            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
-            viewHolder.checked=view.findViewById(R.id.checked);
-            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                                             boolean isChecked) {
-                    select.put(position, isChecked);
-                }
-
-            });
-            viewHolder.updatePosition(position);
-            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
-            view.setTag(viewHolder);
         } else{
             view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
 
-            // 避免每次调用getView()时都要重新获取控件实例
-            viewHolder=new ViewHolder();
-            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
-            viewHolder.xh=view.findViewById(R.id.xh);
-            viewHolder.wlbm=view.findViewById(R.id.wlbm);
-            viewHolder.wlms=view.findViewById(R.id.wlms);
-            viewHolder.scddh=view.findViewById(R.id.scddh);
-            viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
-            viewHolder.xqsl=view.findViewById(R.id.xqsl);
-            viewHolder.fpsl=view.findViewById(R.id.fpsl);
-            viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
-
-
-            // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
-            viewHolder.mTextWatcher = new MyTextWatcher();
-            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
-            viewHolder.checked=view.findViewById(R.id.checked);
-            viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                                             boolean isChecked) {
-                    select.put(position, isChecked);
-                }
-
-            });
-            viewHolder.updatePosition(position);
-            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
-            view.setTag(viewHolder);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来
+        viewHolder=new ViewHolder();
+        viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+        viewHolder.xh=view.findViewById(R.id.xh);
+        viewHolder.wlbm=view.findViewById(R.id.wlbm);
+        viewHolder.wlms=view.findViewById(R.id.wlms);
+        viewHolder.scddh=view.findViewById(R.id.scddh);
+        viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
+        viewHolder.xqsl=view.findViewById(R.id.xqsl);
+        viewHolder.fpsl=view.findViewById(R.id.fpsl);
+        viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
+
+
+        // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
+        if (viewHolder.mTextWatcher ==null){
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.fpsl.addTextChangedListener(viewHolder.mTextWatcher);
+        }
+
+        viewHolder.checked=view.findViewById(R.id.checked);
+        viewHolder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                select.put(position, isChecked);
+            }
+
+        });
+        viewHolder.updatePosition(position);
+        // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+        view.setTag(viewHolder);
 //        viewHolder.check.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -139,7 +112,7 @@ public class WXCPSHDialog1Adapter extends ArrayAdapter<PreMaterialProductOrderRe
         viewHolder.jhksrq.setText(rep.getPlanStartTime());
         String num1str=""+rep.getDemandNum();
         viewHolder.xqsl.setText(num1str);
-        if(rep.getCurrentNum()==0){
+        if(rep.getCurrentNum()==0&&!rep.isChange()){
             viewHolder.fpsl.setText(num1str);
         }else {
             String num2str=""+rep.getCurrentNum();
@@ -237,8 +210,12 @@ public class WXCPSHDialog1Adapter extends ArrayAdapter<PreMaterialProductOrderRe
 
         @Override
         public void afterTextChanged(Editable s) {
+            //Log.i(TAG, "afterTextChanged: editable=" + s);
+            System.out.println("afterTextChanged run!"+s.toString());
             float num=Float.parseFloat(("0"+s.toString()));
             mList.get(mPosition).setCurrentNum(num);
+            mList.get(mPosition).setChange(true);
+            //System.out.println(mList.get(mPosition).getCurrentNum());
         }
     }
 }

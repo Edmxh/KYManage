@@ -322,6 +322,10 @@ public interface APIService {
     @POST(API.GetDistributorDumpRecordData)
     Observable<GetDistributorDumpRecordDataRep> GetDistributorDumpRecordData(@Body RequestBody issuevouchernumber);
 
+    //301物料转储判断
+    @POST(API.MaterialExistDumpData)
+    Observable<StatusRespBean> MaterialExistDumpData(@Body RequestBody issuevouchernumber);
+
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------
     //物料查询
     @POST(API.GetMaterialStorage)

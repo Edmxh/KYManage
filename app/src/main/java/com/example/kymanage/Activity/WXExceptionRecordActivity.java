@@ -79,6 +79,7 @@ public class WXExceptionRecordActivity extends BaseActivity implements BaseView1
 
 
         date.setText(getCurrentdate());
+        queryself.setChecked(true);
         query();
 
     }

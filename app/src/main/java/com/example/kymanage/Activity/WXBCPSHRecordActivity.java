@@ -142,6 +142,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 
         date.setText(getCurrentdate());
 
+        queryself.setChecked(true);
         if(queryself.isChecked()){
             queryall=false;
         }else {

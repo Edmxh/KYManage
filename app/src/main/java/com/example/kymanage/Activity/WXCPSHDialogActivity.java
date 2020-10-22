@@ -275,6 +275,7 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
             }
 
         } else {
+            LoadingBar.dialog(WXCPSHDialogActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
             Toast.makeText(this, "分配数量有误", Toast.LENGTH_SHORT).show();
         }
     }
@@ -295,24 +296,31 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
             materialCodeArr.add(bean);
         }else {
             for (int i = 0; i < productOrderList1.size(); i++) {
-                String code=productOrderList1.get(i).getProOrderMaterialCode();
-                float num0=productOrderList1.get(i).getCurrentNum();
-                boolean dup=false;
-                int ind=0;
-                for (int j = 0; j < materialCodeArr.size(); j++) {
-                    if(materialCodeArr.get(j).getMaterialCode().equals(code)){
-                        ind=j;
-                        dup=true;
-                        break;
+                View itmeview=listview1.getAdapter().getView(i,null,null);
+                CheckBox cb= itmeview.findViewById(R.id.checked);
+                EditText et= itmeview.findViewById(R.id.fpsl);
+                float num0 = Float.parseFloat("0" + et.getText().toString());
+                //勾选的才算上
+                if(cb.isChecked()&&num0>0){
+                    String code=productOrderList1.get(i).getProOrderMaterialCode();
+
+                    boolean dup=false;
+                    int ind=0;
+                    for (int j = 0; j < materialCodeArr.size(); j++) {
+                        if(materialCodeArr.get(j).getMaterialCode().equals(code)){
+                            ind=j;
+                            dup=true;
+                            break;
+                        }
                     }
-                }
-                //物料未重复，则传参添加；物料重复，则只增加数量
-                if(dup==false){
-                    PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
-                    materialCodeArr.add(bean);
-                }else {
-                    float num00=materialCodeArr.get(ind).getMatnrCurrentNum()+num0;
-                    materialCodeArr.get(ind).setMatnrCurrentNum(num00);
+                    //物料未重复，则传参添加；物料重复，则只增加数量
+                    if(dup==false){
+                        PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
+                        materialCodeArr.add(bean);
+                    }else {
+                        float num00=materialCodeArr.get(ind).getMatnrCurrentNum()+num0;
+                        materialCodeArr.get(ind).setMatnrCurrentNum(num00);
+                    }
                 }
             }
         }
@@ -332,24 +340,30 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
             materialCodeArr.add(bean);
         }else {
             for (int i = 0; i < productOrderList1.size(); i++) {
-                String code=productOrderList1.get(i).getProOrderMaterialCode();
-                float num0=productOrderList1.get(i).getCurrentNum();
-                boolean dup=false;
-                int ind=0;
-                for (int j = 0; j < materialCodeArr.size(); j++) {
-                    if(materialCodeArr.get(j).getMaterialCode().equals(code)){
-                        ind=j;
-                        dup=true;
-                        break;
+                View itmeview=listview1.getAdapter().getView(i,null,null);
+                CheckBox cb= itmeview.findViewById(R.id.checked);
+                EditText et= itmeview.findViewById(R.id.fpsl);
+                float num0 = Float.parseFloat("0" + et.getText().toString());
+                //勾选的才算上
+                if(cb.isChecked()&&num0>0){
+                    String code=productOrderList1.get(i).getProOrderMaterialCode();
+                    boolean dup=false;
+                    int ind=0;
+                    for (int j = 0; j < materialCodeArr.size(); j++) {
+                        if(materialCodeArr.get(j).getMaterialCode().equals(code)){
+                            ind=j;
+                            dup=true;
+                            break;
+                        }
                     }
-                }
-                //物料未重复，则传参添加；物料重复，则只增加数量
-                if(dup==false){
-                    PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
-                    materialCodeArr.add(bean);
-                }else {
-                    float num00=materialCodeArr.get(ind).getMatnrCurrentNum()+num0;
-                    materialCodeArr.get(ind).setMatnrCurrentNum(num00);
+                    //物料未重复，则传参添加；物料重复，则只增加数量
+                    if(dup==false){
+                        PreMaterialProductOrderJSReqBean bean=new PreMaterialProductOrderJSReqBean(code,num0);
+                        materialCodeArr.add(bean);
+                    }else {
+                        float num00=materialCodeArr.get(ind).getMatnrCurrentNum()+num0;
+                        materialCodeArr.get(ind).setMatnrCurrentNum(num00);
+                    }
                 }
             }
         }

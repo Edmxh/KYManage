@@ -6,7 +6,7 @@ public interface API {
 
 
 //    String BASEURL = "http://"+pt.getString("baseurl")+"/";
-    String BASEURL = "http://"+"10.254.100.81"+"/";
+    String BASEURL = "http://"+"10.254.100.82"+"/";
     //登录
     String LOGIN = "ThingX/Things/AppProgramThing/Services/Login";
 
@@ -204,6 +204,9 @@ public interface API {
 
     //获取301转储配送记录
     String GetDistributorDumpRecordData="ThingX/Things/AppProgramThing/Services/GetDistributorDumpRecordData";
+
+    //301物料转储判断
+    String MaterialExistDumpData="ThingX/Things/AppProgramThing/Services/MaterialExistDumpData";
 
 
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------

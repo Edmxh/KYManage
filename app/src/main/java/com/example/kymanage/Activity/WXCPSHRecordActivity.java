@@ -133,6 +133,7 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
 
+        queryself.setChecked(true);
         date.setText(getCurrentdate());
         if(queryself.isChecked()){
             queryall=false;

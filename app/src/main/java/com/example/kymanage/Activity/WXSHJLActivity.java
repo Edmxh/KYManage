@@ -145,7 +145,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
 
         date.setText(getCurrentdate());
-
+        queryself.setChecked(true);
         queryRecord();
     }
 

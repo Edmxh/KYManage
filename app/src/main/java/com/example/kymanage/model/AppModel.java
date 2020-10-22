@@ -2895,6 +2895,47 @@ public class AppModel extends BaseModel{
                 });
     }
 
+    //301物料转储判断
+    public void MaterialExistDumpData(MaterialFactoryDumpReq data, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+        Object obj = JSON.toJSON(data);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(materialArr));
+//        System.out.println("打印交货单数据："+jsonArray.toString());
+        try {
+            jsonObject.put("data",obj);
+            System.out.println("301物料转储判断:"+jsonObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                MaterialExistDumpData(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<StatusRespBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(StatusRespBean value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 
     //物料查询----------------------------------------------------------------------------------------------------------------------------------------
     //物料查询

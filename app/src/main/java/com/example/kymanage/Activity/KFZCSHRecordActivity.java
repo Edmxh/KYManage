@@ -107,6 +107,7 @@ public class KFZCSHRecordActivity extends BaseActivity implements BaseView1<GetD
                 Activity.MODE_PRIVATE);
         username =sharedPreferences.getString("username", "");
 
+        queryself.setChecked(true);
         date.setText(getCurrentdate());
         queryRecord();
     }

@@ -120,7 +120,7 @@ public class PrintCNPSDRecord1Activity extends BaseActivity implements BaseView1
 
         datas=new ArrayList<GetInFactoryDeliverListJSRepBean>();
         initPrinter();
-
+        queryself.setChecked(true);
         date.setText(getCurrentdate());
         queryRecord();
 

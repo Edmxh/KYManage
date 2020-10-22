@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
                     string_password = password.getText().toString();
                     System.out.println("login2");
                     URL url = null;
-                    url = new URL("http://" + "10.254.100.81" + "/ThingX" + "/Home/");
+                    url = new URL("http://" + "10.254.100.82" + "/ThingX" + "/Home/");
                     String authorization = "Mobile "
                             + Base64.base64Encode(string_name + ":" + string_password);
                     HttpURLConnection conn = null;

@@ -121,6 +121,7 @@ public class XSFHRecord1Activity extends BaseActivity implements BaseView1<GetDe
         datas=new ArrayList<GetDeliveryListDataJSRepBean>();
 
         date.setText(getCurrentdate());
+        queryself.setChecked(true);
         queryRecord();
 
         mPrintUtil=new mPrintUtil();
@@ -296,7 +297,7 @@ public class XSFHRecord1Activity extends BaseActivity implements BaseView1<GetDe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        System.out.println("record:"+position);
     }
 
     @Override

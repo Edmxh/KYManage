@@ -143,6 +143,7 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
 //        onPopupButtonClick(menupoint);
 
         //初始今天记录
+        queryself.setChecked(true);
 //        date.setText(getCurrentdate());
 //        presenter2.CGSHRecord(date.getText().toString(),username);
     }

@@ -30,7 +30,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="序号"
+                android:text=""
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
                 android:gravity="center_vertical"
@@ -137,6 +137,30 @@
                 android:text="销售订单号/行"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
+                android:gravity="center_vertical"
+                android:duplicateParentState="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="@dimen/titlewidth2"
+                android:layout_height="wrap_content"
+                android:text="错   误   信   息:"
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor1"
+                android:gravity="center"
+                android:duplicateParentState="true"/>
+            <TextView
+                android:id="@+id/warning"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/text2"
+                android:textColor="@color/fontcolor2"
                 android:gravity="center_vertical"
                 android:duplicateParentState="true"/>
         </LinearLayout>
