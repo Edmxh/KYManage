@@ -109,6 +109,10 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
     private ImageView menupoint;
     PopupMenu popup = null;
 
+    //重复打印
+    GetParchaseCenterLableReps againPrint=new GetParchaseCenterLableReps();
+    boolean isAgain=false;
+
 
 
 
@@ -373,6 +377,13 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                 }
                 LoadingBar.dialog(CGDDListActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
                 queryList();
+                //当前时间
+                Date dateNow = new Date();
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                currentdate = sf.format(dateNow);
+                //收货成功自动打印
+                isAgain=false;
+                presenter3.CGSHPrint(printList,username,currentdate);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -384,6 +395,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 
     @Override
     public void onDataSuccessPrint(GetParchaseCenterLableReps data) {
+        againPrint=data;
         if(data.getCode()==1){
             List<GetParchaseCenterLableRep> labels=data.getData();
             Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
@@ -410,7 +422,10 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                 System.out.println("未打印标签");
             }
         }else {
-            DialogUtil.errorMessageDialog(CGDDListActivity.this,data.getMessage());
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(CGDDListActivity.this,data.getMessage());
+            }
+
         }
 
     }
@@ -562,6 +577,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                         {
                             case R.id.receive:
                                 vibrator.vibrate(30);
+                                isAgain=false;
                                 if(list.size()==0){
                                     Toast.makeText(CGDDListActivity.this, "未查出要收货的物料", Toast.LENGTH_SHORT).show();
                                 }else {
@@ -572,12 +588,8 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                             case R.id.print:
                                 // 隐藏该对话框
                                 vibrator.vibrate(30);
-                                //当前时间
-                                Date dateNow = new Date();
-                                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                                currentdate = sf.format(dateNow);
-
-                                presenter3.CGSHPrint(printList,username,currentdate);
+                                isAgain=true;
+                                onDataSuccessPrint(againPrint);
 
                                 break;
 //                            case R.id.exit:

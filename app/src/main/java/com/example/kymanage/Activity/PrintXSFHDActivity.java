@@ -12,9 +12,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.Print3Adapter;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean2;
 import com.example.kymanage.Beans.GetDeliveryListInfoJS.GetDeliveryListInfoJSRepBean3;
@@ -77,6 +79,14 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
     private Vibrator vibrator;
     //
     boolean scanfinish=true;
+    long id= 0;
+
+    private ImageView menupoint;
+    PopupMenu popup = null;
+
+    //重复打印
+    GetDeliveryListInfoJSRepBean3 againPrint=new GetDeliveryListInfoJSRepBean3();
+    boolean isAgain=false;
 
     @Override
     public int initLayoutId() {
@@ -90,7 +100,8 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
         //按钮
         scan=findViewById(R.id.scan);
         print=findViewById(R.id.print);
-        record=findViewById(R.id.record);
+//        record=findViewById(R.id.record);
+        menupoint=findViewById(R.id.menupoint);
         //表格
         listView1=findViewById(R.id.listview1);
 
@@ -189,43 +200,102 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
             }
         });
 
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibrator.vibrate(30);
-                presenter2.GetDeliveryListInfoJS(printReqs,6,username,getCurrentdate());
-            }
-        });
+//        print.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//                LoadingBar.dialog(PrintXSFHDActivity.this).setFactoryFromResource(R.layout.layout_custom7).show();
+//                presenter2.GetDeliveryListInfoJS(printReqs,6,username,getCurrentdate());
+//            }
+//        });
 
-        record.setOnClickListener(new View.OnClickListener() {
+//        record.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//                Intent intent = new Intent(PrintXSFHDActivity.this, XSFHRecord1Activity.class);
+//                intent.putExtra("username",username);
+////                System.out.println("外协二级菜单发："+username);
+//                startActivity(intent);
+//            }
+//        });
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                Intent intent = new Intent(PrintXSFHDActivity.this, XSFHRecord1Activity.class);
-                intent.putExtra("username",username);
-//                System.out.println("外协二级菜单发："+username);
-                startActivity(intent);
+                onPopupButtonClick(menupoint);
+
             }
         });
+    }
+
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.xsfhmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                item -> {
+                    switch (item.getItemId())
+                    {
+                        case R.id.receive:
+                            // 隐藏该对话框
+                            vibrator.vibrate(30);
+                            LoadingBar.dialog(PrintXSFHDActivity.this).setFactoryFromResource(R.layout.layout_custom7).show();
+                            isAgain=false;
+                            presenter2.GetDeliveryListInfoJS(printReqs,6,username,getCurrentdate());
+                            break;
+                        case R.id.print:
+                            // 隐藏该对话框
+                            vibrator.vibrate(30);
+                            isAgain=true;
+                            onDataSuccess1(againPrint);
+                            break;
+                        case R.id.record:
+                            // 隐藏该对话框
+                            vibrator.vibrate(30);
+                            Intent intent = new Intent(PrintXSFHDActivity.this, XSFHRecord1Activity.class);
+                            intent.putExtra("username",username);
+//                System.out.println("外协二级菜单发："+username);
+                            startActivity(intent);
+                            break;
+                        default:
+                            // 使用Toast显示用户单击的菜单项
+                    }
+                    return true;
+                });
+        popup.show();
     }
 
     @Override
     public void onDataSuccessScan(GetLableStorageInfoJSRep data) {
 
-        try {
-            scanfinish=true;
-            GetDeliveryListInfoJSReqBean1 req=new GetDeliveryListInfoJSReqBean1(code, no, line, num, data.getSendStorage());
-            printReqs.add(req);
-            adapter=new Print3Adapter(this, R.layout.print3item,printReqs);
-            listView1.setAdapter(adapter);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        scanfinish=true;
+        DialogUtil.startAlarm(this);
+        vibrator.vibrate(300);
+        if(data.getCode()==1){
+            if(id!=-1){
+                GetDeliveryListInfoJSReqBean1 req=new GetDeliveryListInfoJSReqBean1(code, no, line, num, data.getSendStorage(),id);
+                printReqs.add(req);
+                adapter=new Print3Adapter(this, R.layout.print3item,printReqs);
+                listView1.setAdapter(adapter);
+            }else {
+                DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,"标签内容ID错误");
+            }
+        }else {
+            DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,data.getMessage());
         }
+
     }
 
     @Override
     public void onDataSuccess1(GetDeliveryListInfoJSRepBean3 data) {
-        if(data.getCode()==0){
+        LoadingBar.dialog(PrintXSFHDActivity.this).setFactoryFromResource(R.layout.layout_custom7).cancel();
+        againPrint=data;
+        if(data.getCode()==0&&data.getData()!=null){
 //            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
             List<GetDeliveryListInfoJSRepBean2> data1 = data.getData();
             for (GetDeliveryListInfoJSRepBean2 data2 : data1) {
@@ -237,14 +307,19 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
             adapter.notifyDataSetChanged();
 
         }else {
-            DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,data.getMessge());
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,data.getMessge());
+            }
+
         }
 
     }
 
     @Override
     public void onFailed(String msg) {
+        LoadingBar.dialog(PrintXSFHDActivity.this).setFactoryFromResource(R.layout.layout_custom7).cancel();
         scanfinish=true;
+        DialogUtil.errorMessageDialog(PrintXSFHDActivity.this,"服务器响应失败，请稍后重试!");
     }
 
     //初始化
@@ -273,7 +348,7 @@ public class PrintXSFHDActivity extends BaseActivity implements ScanBaseView<Get
                         Toast.makeText(PrintXSFHDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                     }
                     if(lableObject!=null) {
-                        long id= 0;
+                        id= -1;
                         String type= null;
                         try {
                             no=lableObject.getString("no");

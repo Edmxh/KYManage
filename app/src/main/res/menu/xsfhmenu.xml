@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<!--    <item-->
-<!--        android:id="@+id/receive"-->
-<!--        android:title="采购收货" />-->
-<!--    <item-->
-<!--        android:id="@+id/print"-->
-<!--        android:title="打印派工单" />-->
+    <item
+        android:id="@+id/receive"
+        android:title="销售发货" />
     <item
         android:id="@+id/print"
         android:title="再次打印" />

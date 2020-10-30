@@ -266,7 +266,9 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
         System.out.println(allnum);
         System.out.println(allnum2);
         if(rece&&allnum2<=allnum&&allnum1<=allnum){
-            if(kinds.equals("20")&&AUFNRs.size()==0){
+            //成品收货，类型20，4的   本事业部必须有生产订单
+            if((kinds.equals("20")||kinds.equals("4"))&&AUFNRs.size()==0){
+                LoadingBar.dialog(WXCPSHDialogActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
                 DialogUtil.errorMessageDialog(WXCPSHDialogActivity.this,"无法收货!该采购订单物料需要本事业部生产订单才能收货");
             }else {
                 OutsourceFinishedProductReceivingJSReq req=new OutsourceFinishedProductReceivingJSReq(getCurrentdate(), getCurrentdate(), username, marketorderno, marketorderrow, selectListData.getEBELN(), selectListData.getEBELP(), factoryNO, selectListData.getWERKS(), selectListData.getLGFSB(), selectListData.getMATNR(), selectListData.getTXZ01(), selectListData.getMaterialType(),selectListData.getMEINS(), selectListData.getMENGE(), selectListData.getInStorage(), allnum, selectListData.getCGTXT(), selectListData.getKINDS(), selectListData.getAUFNR(), selectListData.getPMATN(), selectListData.getMCODE(), selectListData.getMAKTX(), AUFNRs, UPAUFNRs);

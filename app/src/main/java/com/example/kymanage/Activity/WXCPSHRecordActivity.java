@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.WXCPSHRecordAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GetOutsourceFinProLableJS.GetOutsourceFinProLableJSRep;
@@ -265,6 +266,7 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
 
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
+        LoadingBar.dialog(WXCPSHRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
         if(data.getCode()==1){
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
             if(queryself.isChecked()){
@@ -297,7 +299,8 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(WXCPSHRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
+        DialogUtil.errorMessageDialog(WXCPSHRecordActivity.this,"服务器响应失败，请稍后重试!");
     }
 
     //获取当前日期
@@ -374,6 +377,7 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
                             }
                         }
                         if(idslist.size()>0){
+                            LoadingBar.dialog(WXCPSHRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
                             presenter2.OutsoureFinProductWriteOffJS(username,getCurrentdate(),idslist);
                         }
                     }

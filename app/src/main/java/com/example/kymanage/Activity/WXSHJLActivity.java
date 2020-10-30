@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.CGRecordAdapter;
 import com.example.kymanage.Adapter.WXRecordAdapter;
 import com.example.kymanage.Beans.DemoBeans.DemoBean1;
@@ -45,6 +46,7 @@ import com.example.kymanage.presenter.InterfaceView.BaseView3;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.GetFinProStorageRecordNotePresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.GetFinProStorageRecordPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3Record.WriteOffProStorageRecordPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -239,20 +241,26 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
 
     @Override
     public void onDataSuccess1(GetFinProStorageRecordReps data) {
-        try {
-            System.out.println(data.getStatus().getMessage());
-            data1 = data.getData();
-            System.out.println(data1.size());
-            //表格适配数据
-            adapter=new WXRecordAdapter(WXSHJLActivity.this, R.layout.wxrecorditem,data1);
-            listview1.setAdapter(adapter);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(data.getStatus().getCode()==1){
+            try {
+                System.out.println(data.getStatus().getMessage());
+                data1 = data.getData();
+                System.out.println(data1.size());
+                //表格适配数据
+                adapter=new WXRecordAdapter(WXSHJLActivity.this, R.layout.wxrecorditem,data1);
+                listview1.setAdapter(adapter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            DialogUtil.errorMessageDialog(WXSHJLActivity.this,data.getStatus().getMessage());
         }
+
     }
 
     @Override
     public void onDataSuccess2(StatusRespBean data) {
+        LoadingBar.dialog(WXSHJLActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
         Toast.makeText(WXSHJLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
         queryRecord();
     }
@@ -280,7 +288,8 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(WXSHJLActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
+        DialogUtil.errorMessageDialog(WXSHJLActivity.this,"服务器响应失败，请稍后重试!");
     }
 
     //初始化
@@ -348,6 +357,7 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
                         }
                         WriteOffProStorageRecordReq req=new WriteOffProStorageRecordReq(username,idlist);
                         System.out.println("冲销选中数:"+idlist.size());
+                        LoadingBar.dialog(WXSHJLActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
                         presenter2.WriteOffProStorageRecord(req);
                     }
                 })

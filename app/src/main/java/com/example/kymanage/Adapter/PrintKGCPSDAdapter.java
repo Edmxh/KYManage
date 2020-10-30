@@ -48,6 +48,7 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
+        viewHolder.mbgc=view.findViewById(R.id.mbgc);
         viewHolder.scddh=view.findViewById(R.id.scddh);
         viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
         viewHolder.wllx=view.findViewById(R.id.wllx);
@@ -68,12 +69,13 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
 //            }
 //        });
 
-        String no=(position+1)+"";
+        String no=(mList.size()-position)+"";
         viewHolder.xh.setText(no);
 
 
         viewHolder.wlbm.setText(rep.getMatnr());
         viewHolder.wlms.setText(rep.getMaktx());
+        viewHolder.mbgc.setText(rep.getZcgc());
 
         String newStr1 = rep.getAufnr().replaceAll("^(0+)", "");
         viewHolder.scddh.setText(newStr1);
@@ -126,6 +128,7 @@ public class PrintKGCPSDAdapter extends ArrayAdapter<MaterialFactoryDumpReqBean>
         TextView xh;
         TextView wlbm;
         TextView wlms;
+        TextView mbgc;
         TextView scddh;
         TextView xsddh_hang;
         TextView wllx;

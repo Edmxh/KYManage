@@ -60,6 +60,7 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
         //获取控件和设置监听
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
+        viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.wlpz=view.findViewById(R.id.wlpz);
         viewHolder.gzrq=view.findViewById(R.id.gzrq);
         viewHolder.pzrq=view.findViewById(R.id.pzrq);
@@ -97,6 +98,7 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
         viewHolder.xh.setText(no);
         try {
             viewHolder.wlbm.setText(rep.getMaterialCode());
+            viewHolder.wlms.setText(rep.getMaterialDesc());
             viewHolder.wlpz.setText(rep.getMblnr());
 
 //        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -176,6 +178,7 @@ public class Print2Record2Adapter extends ArrayAdapter<GetDumpRecordRepBean> {
     class ViewHolder{
         TextView xh;
         TextView wlbm;
+        TextView wlms;
         TextView wlpz;
         TextView gzrq;
         TextView pzrq;

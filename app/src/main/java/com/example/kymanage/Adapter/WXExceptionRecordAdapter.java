@@ -64,6 +64,7 @@ public class WXExceptionRecordAdapter extends ArrayAdapter<GetOutsoureExceptionR
         viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.ycyy=view.findViewById(R.id.ycyy);
         viewHolder.cjsj=view.findViewById(R.id.cjsj);
+        viewHolder.czr=view.findViewById(R.id.czr);
 
         viewHolder.rksl=view.findViewById(R.id.rksl);
         viewHolder.rkzt=view.findViewById(R.id.rkzt);
@@ -107,6 +108,7 @@ public class WXExceptionRecordAdapter extends ArrayAdapter<GetOutsoureExceptionR
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        String sd = sdf.format(new Date(Long.parseLong(String.valueOf(rep.getCreateTime()))));
         viewHolder.cjsj.setText(rep.getCreateTime());
+        viewHolder.czr.setText(rep.getHandler());
 
         String num1str=""+rep.getQty();
         viewHolder.rksl.setText(num1str);
@@ -148,6 +150,7 @@ public class WXExceptionRecordAdapter extends ArrayAdapter<GetOutsoureExceptionR
         TextView wlms;
         TextView ycyy;
         TextView cjsj;
+        TextView czr;
         TextView rksl;
         TextView rkzt;
 //        CheckBox checked;

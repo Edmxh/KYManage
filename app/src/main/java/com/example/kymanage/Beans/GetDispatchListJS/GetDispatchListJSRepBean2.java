@@ -55,6 +55,9 @@ public class GetDispatchListJSRepBean2 {
     private String username;
     private String createDate;
     private String UPFAC;
+    private String sonMaterialCode;
+    private String sonMaterialDesc;
+    private String sonUnit;
 
     public List<GetDispatchListJSBean1> getData() {
         return data;
@@ -222,5 +225,29 @@ public class GetDispatchListJSRepBean2 {
 
     public void setUPFAC(String UPFAC) {
         this.UPFAC = UPFAC;
+    }
+
+    public String getSonMaterialCode() {
+        return sonMaterialCode;
+    }
+
+    public void setSonMaterialCode(String sonMaterialCode) {
+        this.sonMaterialCode = sonMaterialCode;
+    }
+
+    public String getSonMaterialDesc() {
+        return sonMaterialDesc;
+    }
+
+    public void setSonMaterialDesc(String sonMaterialDesc) {
+        this.sonMaterialDesc = sonMaterialDesc;
+    }
+
+    public String getSonUnit() {
+        return sonUnit;
+    }
+
+    public void setSonUnit(String sonUnit) {
+        this.sonUnit = sonUnit;
     }
 }

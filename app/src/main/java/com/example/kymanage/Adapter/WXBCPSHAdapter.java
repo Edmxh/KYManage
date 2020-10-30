@@ -53,6 +53,7 @@ public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>imple
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.gys=view.findViewById(R.id.gys);
             viewHolder.ddlx=view.findViewById(R.id.ddlx);
             viewHolder.rklj=view.findViewById(R.id.rklj);
             viewHolder.xqrq=view.findViewById(R.id.xqrq);
@@ -80,6 +81,7 @@ public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>imple
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.gys=view.findViewById(R.id.gys);
             viewHolder.ddlx=view.findViewById(R.id.ddlx);
             viewHolder.rklj=view.findViewById(R.id.rklj);
             viewHolder.xqrq=view.findViewById(R.id.xqrq);
@@ -119,6 +121,7 @@ public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>imple
         viewHolder.scddh.setText(newStr3);
         viewHolder.wlbm.setText(rep.getMATNR());
         viewHolder.wlms.setText(rep.getTXZ01());
+        viewHolder.gys.setText(rep.getLIFNR()+"--"+rep.getSNAME());
 
         switch (rep.getKINDS()){
             case "20":
@@ -215,6 +218,7 @@ public class WXBCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>imple
         TextView scddh;
         TextView wlbm;
         TextView wlms;
+        TextView gys;
         TextView ddlx;
         TextView rklj;
         TextView xqrq;

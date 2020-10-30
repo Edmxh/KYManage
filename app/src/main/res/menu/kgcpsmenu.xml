@@ -4,10 +4,10 @@
         android:id="@+id/divert"
         android:icon="@android:drawable/ic_menu_search"
         android:title="转储" />
-<!--    <item-->
-<!--        android:id="@+id/print"-->
-<!--        android:icon="@android:drawable/ic_menu_search"-->
-<!--        android:title="跨工厂配送单打印" />-->
+    <item
+        android:id="@+id/print"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="再次打印" />
     <item
         android:id="@+id/record"
         android:icon="@android:drawable/ic_menu_search"

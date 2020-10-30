@@ -192,12 +192,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="收货数量"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
@@ -206,8 +205,7 @@
             <TextView
                 android:id="@+id/shsl"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="收货数量"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
@@ -217,12 +215,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="超需求入库"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
@@ -231,8 +228,7 @@
             <TextView
                 android:id="@+id/cxqrk"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="超需求入库"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
@@ -242,12 +238,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="4"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="收货状态"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"
@@ -257,8 +252,7 @@
             <TextView
                 android:id="@+id/shzt"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="收货状态"
                 android:textSize="@dimen/text2"
                 android:textColor="@color/fontcolor1"

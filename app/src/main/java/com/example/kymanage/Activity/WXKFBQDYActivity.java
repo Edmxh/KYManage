@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3.GetMaterialMasterDataJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage7.InsertFinAProOrderRecordPresenter;
+import com.example.kymanage.utils.DialogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
 
 
     //打印
-    private ImageView print;
+//    private ImageView print;
     private InsertFinAProOrderRecordPresenter presenterPrint;
     private PrintHelper printHelper=null;
     //标签生成器
@@ -92,6 +94,13 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
     private Vibrator vibrator;
     //username
     private String username;
+
+    //缩略菜单
+    private ImageView menupoint;
+    PopupMenu popup = null;
+    //重复打印
+    InsertFinAProOrderRecordRep againPrint=new InsertFinAProOrderRecordRep();
+    boolean isAgain=false;
 
     @Override
     public int initLayoutId() {
@@ -120,7 +129,8 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
         presenter1.setView(this);
 
         //打印
-        print=findViewById(R.id.print);
+//        print=findViewById(R.id.print);
+        menupoint=findViewById(R.id.menupoint);
         presenterPrint=new InsertFinAProOrderRecordPresenter();
         presenterPrint.setView(this);
     }
@@ -183,38 +193,84 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
                 scan();
             }
         });
-
-        print.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                List<InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean> sdata=new ArrayList<InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean>();
-                float allnum=0;
-                for (int i = 0; i < productOrderList.size(); i++) {
-                    PreMaterialProductOrderRep rep = productOrderList.get(i);
-                    View listItem=listview1.getAdapter().getView(i,null,null);
-                    CheckBox checkBox=listItem.findViewById(R.id.checked);
-                    EditText et1=listItem.findViewById(R.id.fpsl);
-                    float issueNum=0;
-                    issueNum=Float.parseFloat(("0"+et1.getText().toString()));
-                    if(checkBox.isChecked()){
-                        allnum+=issueNum;
-                        InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean bean =new InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean(rep.getDemandNum(), rep.getDispatchNum(), issueNum, rep.getFactory(), rep.getMATNR(), rep.getProductOrderNO(), rep.getMAKTX(), rep.getKDAUF(), rep.getKDPOS(), rep.getStorage(), rep.getRSNUM(), rep.getRSPOS(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getMEINS(), "", rep.getMCODE(),rep.getPLORD(),rep.getOTYPE(),rep.getSOBKZ(),rep.getLGPBE());
-                        sdata.add(bean);
-                    }
-                }
-                InsertFinAProOrderRecordReq req=new InsertFinAProOrderRecordReq(material.getMATNR(), material.getMaterialType(), material.getMAKTX(), allnum, username, material.getWERKS(), fid, sdata);
-                presenterPrint.InsertFinAProOrderRecord(req);
+                onPopupButtonClick(menupoint);
+
             }
         });
+
+//        print.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//
+//            }
+//        });
+    }
+
+    public void onPopupButtonClick(View button)
+    {
+        // 创建PopupMenu对象
+        popup = new PopupMenu(this, button);
+        // 将R.menu.popup_menu菜单资源加载到popup菜单中
+        getMenuInflater().inflate(R.menu.xsfhmenu, popup.getMenu());
+        // 为popup菜单的菜单项单击事件绑定事件监听器
+        popup.setOnMenuItemClickListener(
+                item -> {
+                    switch (item.getItemId())
+                    {
+                        case R.id.print:
+                            // 隐藏该对话框
+                            vibrator.vibrate(30);
+                            isAgain=false;
+                            List<InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean> sdata=new ArrayList<InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean>();
+                            float allnum=0;
+                            for (int i = 0; i < productOrderList.size(); i++) {
+                                PreMaterialProductOrderRep rep = productOrderList.get(i);
+                                View listItem=listview1.getAdapter().getView(i,null,null);
+                                CheckBox checkBox=listItem.findViewById(R.id.checked);
+                                EditText et1=listItem.findViewById(R.id.fpsl);
+                                float issueNum=0;
+                                issueNum=Float.parseFloat(("0"+et1.getText().toString()));
+                                if(checkBox.isChecked()){
+                                    allnum+=issueNum;
+                                    InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean bean =new InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean(rep.getDemandNum(), rep.getDispatchNum(), issueNum, rep.getFactory(), rep.getMATNR(), rep.getProductOrderNO(), rep.getMAKTX(), rep.getKDAUF(), rep.getKDPOS(), rep.getStorage(), rep.getRSNUM(), rep.getRSPOS(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getMEINS(), "", rep.getMCODE(),rep.getPLORD(),rep.getOTYPE(),rep.getSOBKZ(),rep.getLGPBE());
+                                    sdata.add(bean);
+                                }
+                            }
+                            InsertFinAProOrderRecordReq req=new InsertFinAProOrderRecordReq(material.getMATNR(), material.getMaterialType(), material.getMAKTX(), allnum, username, material.getWERKS(), fid, sdata);
+                            presenterPrint.InsertFinAProOrderRecord(req);
+                            break;
+                        case R.id.print2:
+                            // 隐藏该对话框
+                            vibrator.vibrate(30);
+                            isAgain=true;
+                            onDataSuccessPrint(againPrint);
+                            break;
+                        default:
+                            // 使用Toast显示用户单击的菜单项
+                    }
+                    return true;
+                });
+        popup.show();
     }
 
     @Override
     public void onDataSuccessScan(GetMaterialMasterDataRep data) {
-        material = data.getMaterial();
-        wlbm.setText(material.getMATNR());
-        wlms.setText(material.getMAKTX());
-        wllx.setText(material.getMaterialType());
+        if(data.getCode()==1){
+            DialogUtil.startAlarm(this);
+            vibrator.vibrate(300);
+            material = data.getMaterial();
+            wlbm.setText(material.getMATNR());
+            wlms.setText(material.getMAKTX());
+            wllx.setText(material.getMaterialType());
+        }else {
+            DialogUtil.errorMessageDialog(WXKFBQDYActivity.this,data.getMessage());
+        }
+
     }
 
     @Override
@@ -226,21 +282,30 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
 
     @Override
     public void onDataSuccessPrint(InsertFinAProOrderRecordRep data) {
-        List<InsertFinAProOrderRecordRep.InsertFinAProOrderRecord> datas = data.getData();
+        againPrint=data;
+        if(data.getStatus()!=null&&data.getStatus().getCode()==1){
+            List<InsertFinAProOrderRecordRep.InsertFinAProOrderRecord> datas = data.getData();
 
-        for (InsertFinAProOrderRecordRep.InsertFinAProOrderRecord label : datas) {
-            Bitmap bm = cb.createImage9(label, tf);
-            printHelper.PrintBitmapAtCenter(bm, 384, 480);
-            printHelper.printBlankLine(81);
+            for (InsertFinAProOrderRecordRep.InsertFinAProOrderRecord label : datas) {
+                Bitmap bm = cb.createImage9(label, tf);
+                printHelper.PrintBitmapAtCenter(bm, 384, 480);
+                printHelper.printBlankLine(81);
+            }
+
+            wlbm.setText("");
+            wlms.setText("");
+            wllx.setText("");
+            wlsl.setText("");
+            spinner1.setSelection(0);
+            productOrderList.clear();
+            adapter1.notifyDataSetChanged();
+        }else {
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(WXKFBQDYActivity.this,data.getStatus().getMessage());
+            }
+
         }
 
-        wlbm.setText("");
-        wlms.setText("");
-        wllx.setText("");
-        wlsl.setText("");
-        spinner1.setSelection(0);
-        productOrderList.clear();
-        adapter1.notifyDataSetChanged();
     }
 
     @Override

@@ -105,9 +105,9 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 
 
 
-//    private ImageView menupoint;
+    private ImageView menupoint;
     PopupMenu popup = null;
-    private ImageView record;
+//    private ImageView record;
 
     //上方物料信息
     private View layout1;
@@ -141,6 +141,10 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 
     //全局变量
     private boolean autoReceive=false;
+    //重复打印
+    GetFinProStorageRecordNoteRep againPrint=new GetFinProStorageRecordNoteRep();
+    boolean isAgain=false;
+
 
 
     @Override
@@ -177,8 +181,8 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 //        xlh=findViewById(R.id.xlh);
 
 //        print=findViewById(R.id.print);
+        menupoint=findViewById(R.id.menupoint);
 //        record=findViewById(R.id.record);
-        record=findViewById(R.id.record);
         //表格
         listview1=findViewById(R.id.listview1);
         listview2=findViewById(R.id.listview2);
@@ -262,22 +266,22 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 //                scan();
 //            }
 //        });
-//        menupoint.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                vibrator.vibrate(30);
-//                onPopupButtonClick(menupoint);
-//            }
-//        });
-        record.setOnClickListener(new View.OnClickListener() {
+        menupoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(30);
-                Intent intent = new Intent(WXBCPJGRKActivity.this, WXSHJLActivity.class);
-                intent.putExtra("username", username);
-                startActivity(intent);
+                onPopupButtonClick(menupoint);
             }
         });
+//        record.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibrator.vibrate(30);
+//                Intent intent = new Intent(WXBCPJGRKActivity.this, WXSHJLActivity.class);
+//                intent.putExtra("username", username);
+//                startActivity(intent);
+//            }
+//        });
 
         radiogroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -390,7 +394,8 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                 InsertFinProStorageRecordReq req=new InsertFinProStorageRecordReq(ldata.get(0).getMaterialCode(), ldata.get(0).getMaterialDesc(), "独立", factory, allnum1,mqty, ldata.get(0).getUnit(), marketorderno, marketorderrow, username, "", ldata, sdata);
                 presenter2.InsertFinProStorageRecord(req);
             } catch (Exception e) {
-                DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,"收货发生错误");
+                LoadingBar.dialog(WXBCPJGRKActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
+                DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,"收货发生错误,缺少本事业部生产订单");
             }
         } else {
             Toast.makeText(this, "分配数量超出图纸数量", Toast.LENGTH_SHORT).show();
@@ -412,8 +417,15 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 //                                // 隐藏该对话框
 //                                popup.dismiss();
 //                                break;
+                        case R.id.print:
+                            // 隐藏该对话框
+                            vibrator.vibrate(30);
+                            isAgain=true;
+                            onDataSuccess3(againPrint);
+                            break;
                         case R.id.record:
                             // 隐藏该对话框
+                            vibrator.vibrate(30);
                             Intent intent = new Intent(WXBCPJGRKActivity.this, WXSHJLActivity.class);
                             intent.putExtra("username", username);
                             startActivity(intent);
@@ -432,6 +444,8 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
     @Override
     public void onDataSuccessScan(GetMaterialMasterDataRep data) {
 //        Toast.makeText(this,data.getMessage(),Toast.LENGTH_SHORT).show();
+        DialogUtil.startAlarm(this);
+        vibrator.vibrate(300);
         if(data.getCode()==1){
             //扫码成功显示
             layout1.setVisibility(View.VISIBLE);
@@ -512,6 +526,7 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
             adapter2.notifyDataSetChanged();
             ll_scdd.setVisibility(View.INVISIBLE);
             //收货完成直接自动打印标签
+            isAgain=false;
             presenter3.GetFinProStorageRecordNote(idlist);
         }else {
 //            System.out.println("error");
@@ -522,21 +537,29 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
 
     @Override
     public void onDataSuccess3(GetFinProStorageRecordNoteRep data) {
-        List<GetFinProStorageRecordNoteRepBean> labels = data.getData();
-        if (labels != null) {
-            for (GetFinProStorageRecordNoteRepBean label : labels) {
-                printHelper.printBlankLine(40);
-                Bitmap bm = cb.createImage6(label, tf);
-                printHelper.PrintBitmapAtCenter(bm, 384, 530);
-                printHelper.printBlankLine(80);
-            }
-            System.out.println("打印标签的数量为" + data.getData().size());
+        againPrint=data;
+        if(data.getStatus()!=null&&data.getStatus().getCode()==1){
+            List<GetFinProStorageRecordNoteRepBean> labels = data.getData();
+            if (labels != null) {
+                for (GetFinProStorageRecordNoteRepBean label : labels) {
+                    printHelper.printBlankLine(40);
+                    Bitmap bm = cb.createImage6(label, tf);
+                    printHelper.PrintBitmapAtCenter(bm, 384, 530);
+                    printHelper.printBlankLine(80);
+                }
+                System.out.println("打印标签的数量为" + data.getData().size());
 //            Toast.makeText(WXBCPJGRKActivity.this, "打印标签的数量为" + labels.size(), Toast.LENGTH_SHORT).show();
-        } else {
-            System.out.println("未打印标签");
+            } else {
+                System.out.println("未打印标签");
+            }
+            idlist.clear();
+            Toast.makeText(WXBCPJGRKActivity.this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        }else {
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,data.getStatus().getMessage());
+            }
         }
-        idlist.clear();
-        Toast.makeText(WXBCPJGRKActivity.this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -707,10 +730,23 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                             Toast.makeText(WXBCPJGRKActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
                         }
 //
-                        if(marketorderno!=null&&marketorderrow!=null&&bm!=null){
+                        if(marketorderno!=null&&marketorderrow!=null&&bm!=null&&factory!=null&&!factory.equals("")){
                             ScanSuccess(decodestr);
                         }else {
-                            DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,"外协图纸内容有误");
+                            String moremsg="";
+                            if(marketorderno==null){
+                                moremsg+="|销售订单号";
+                            }
+                            if(marketorderrow==null){
+                                moremsg+="|销售订单行";
+                            }
+                            if(bm==null){
+                                moremsg+="物料编码";
+                            }
+                            if(factory==null||factory.equals("")){
+                                moremsg+="工厂";
+                            }
+                            DialogUtil.errorMessageDialog(WXBCPJGRKActivity.this,"图纸内容有误,缺少字段"+moremsg);
                         }
                         scanString="";
                     }

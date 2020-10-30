@@ -42,6 +42,7 @@ import com.example.kymanage.presenter.Presenters.KFPage1.GetSapStoragesPresenter
 import com.example.kymanage.presenter.Presenters.KFPage3.GetIssueNoteDetail2Presenter;
 import com.example.kymanage.presenter.Presenters.KFPage3.GenerateStorageLssueRecordPresenter;
 import com.example.kymanage.presenter.Presenters.KFPage3.GetStockInformationDataJSPresenter;
+import com.example.kymanage.utils.DialogUtil;
 import com.example.kymanage.utils.mPrintUtil;
 
 import java.util.ArrayList;
@@ -104,6 +105,12 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     PopupMenu popup = null;
 
     private mPrintUtil mPrintUtil;
+
+    //重复打印
+    GetIssueNoteDetailRep againPrint=new GetIssueNoteDetailRep();
+    boolean isAgain=false;
+    //本次扫描完成之前不允许进行下一次扫描
+    boolean scanfinish=true;
 
     @Override
     public int initLayoutId() {
@@ -188,6 +195,9 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                     if(flIndex!=-1){
                         datas.remove(flIndex);
                     }
+                    //发料完成自动打印标签
+                    isAgain=false;
+                    presenter4.GetIssueNoteDetail2(bqDatas);
                 }
                 adapter.notifyDataSetChanged();
 
@@ -306,7 +316,8 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 //                                break;
                             case R.id.print2:
                                 // 隐藏该对话框
-                                presenter4.GetIssueNoteDetail2(bqDatas);
+                                vibrator.vibrate(30);
+                                onDataSuccess3(againPrint);
                                 break;
                             default:
                                 // 使用Toast显示用户单击的菜单项
@@ -322,6 +333,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 
     @Override
     public void onDataSuccessScan(GetStockInformationDataJSRep data) {
+        scanfinish=true;
         currentdata=data.getData();
         currentdata.setPono(pono);
         currentdata.setPorow(porow);
@@ -353,42 +365,51 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
     }
     @Override
     public void onDataSuccess3(GetIssueNoteDetailRep data) {
-        Toast.makeText(KFFLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        List<GetIssueNoteDetailBean2> data1 = data.getData();
+        againPrint=data;
+        if(data.getStatus()!=null&&data.getStatus().getCode()==1){
+            Toast.makeText(KFFLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
+            List<GetIssueNoteDetailBean2> data1 = data.getData();
 
-        int labelnum=0;
-        if(data1!=null){
-            if(data1.size()>0){
+
+            int labelnum=0;
+            if(data1!=null){
+                if(data1.size()>0){
 //                System.out.println();
-                for (int i = 0; i < data1.size(); i++) {
-                    GetIssueNoteDetailBean2 data2 = data1.get(i);
-                    List<GetIssueNoteDetailBean1> data3 = data2.getData();
-                    if(data3!=null){
-                        if(data3.size()>0){
-                            for (GetIssueNoteDetailBean1 data4 : data3) {
-                                KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
-                                Bitmap bm=cb.createImage2(labelBean,tf);
+                    for (int i = 0; i < data1.size(); i++) {
+                        GetIssueNoteDetailBean2 data2 = data1.get(i);
+                        List<GetIssueNoteDetailBean1> data3 = data2.getData();
+                        if(data3!=null){
+                            if(data3.size()>0){
+                                for (GetIssueNoteDetailBean1 data4 : data3) {
+                                    KFLabelBean labelBean=new KFLabelBean(data2.getMaterialDesc(), data2.getMarketOrderNO(),data4 ,data2.getProductOrderNO(), data2.getMaterialCode(), data2.getMarketOrderRow());
+                                    Bitmap bm=cb.createImage2(labelBean,tf);
 //                                printHelper.GoToNextPage();
-                                printHelper.PrintBitmapAtCenter(bm,384,480);
-                                printHelper.printBlankLine(81);
-                                labelnum++;
+                                    printHelper.PrintBitmapAtCenter(bm,384,480);
+                                    printHelper.printBlankLine(81);
+                                    labelnum++;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 //        printHelper.printBlankLine(100);
-        System.out.println("打印标签的数量为"+labelnum);
+            System.out.println("打印标签的数量为"+labelnum);
 
-        bqDatas.clear();
+            bqDatas.clear();
+        }else {
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(KFFLActivity.this,data.getStatus().getMessage());
+            }
+        }
+
        // Toast.makeText(KFFLActivity.this, "打印标签的数量为"+labelnum, Toast.LENGTH_SHORT).show();
         //Toast.makeText(CGDDListActivity.this, data.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFailed(String msg) {
-
+        scanfinish=true;
     }
 
     @Override
@@ -509,7 +530,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(m_Broadcastname)) {
                 String str = intent.getStringExtra("BARCODE");
-                if (!"".equals(str)) {
+                if (!"".equals(str)&&scanfinish) {
                     //tv.setText(str);
                     scanString=str;
                     System.out.println(str);
@@ -547,6 +568,7 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
                                 String fac =sharedPreferences.getString("factory", "");
                                 if(factory.equals(fac)){
                                     System.out.println("materialCode:"+materialCode);
+                                    scanfinish=false;
                                     presenter1.GetStockInformationDataJS(materialCode,factory);
                                 }else {
                                     Toast.makeText(context, "该物料属于"+factory, Toast.LENGTH_SHORT).show();

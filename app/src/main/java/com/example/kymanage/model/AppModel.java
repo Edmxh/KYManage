@@ -300,6 +300,7 @@ public class AppModel extends BaseModel{
         try {
             jsonObject.put("materialCode",materialCode);
             jsonObject.put("factory",factory);
+            System.out.println("获取物料主数据接口:"+jsonObject.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -760,6 +761,7 @@ public class AppModel extends BaseModel{
             jsonObject.put("materialCode",materialCode);
             jsonObject.put("storage",storage);
             jsonObject.put("checked",checked);
+            System.out.println("库房收货(采购入库)记录:"+jsonObject.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -2909,7 +2911,7 @@ public class AppModel extends BaseModel{
             e.printStackTrace();
         }
         RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
-        RetrofitManager.getmInstance().createService1(APIService.class).
+        RetrofitManager2.getmInstance().createService1(APIService.class).
                 MaterialExistDumpData(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

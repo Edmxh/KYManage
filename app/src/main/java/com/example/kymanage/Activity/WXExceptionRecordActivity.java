@@ -17,6 +17,7 @@ import com.example.kymanage.Beans.GetOutsoureExceptionRecordJS.GetOutsoureExcept
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
 import com.example.kymanage.presenter.Presenters.WXPage9Record.GetOutsoureExceptionRecordJSPresenter;
+import com.example.kymanage.utils.DialogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class WXExceptionRecordActivity extends BaseActivity implements BaseView1
         }else {
             queryall=true;
         }
-        presenter1.GetOutsoureExceptionRecordJS(username,getCurrentdate(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
+        presenter1.GetOutsoureExceptionRecordJS(username,date.getText().toString(),xsddh.getText().toString(),"","",queryall,"",wlbm.getText().toString(),"");
     }
 
     @Override
@@ -101,6 +102,13 @@ public class WXExceptionRecordActivity extends BaseActivity implements BaseView1
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 showdate();
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(30);
+                date.setText("");
             }
         });
         query.setOnClickListener(new View.OnClickListener() {
@@ -147,12 +155,17 @@ public class WXExceptionRecordActivity extends BaseActivity implements BaseView1
 
     @Override
     public void onDataSuccess1(GetOutsoureExceptionRecordJSRep data) {
-        adapter=new WXExceptionRecordAdapter(this, R.layout.wxexceptionrecorditem,data.getData());
-        listview1.setAdapter(adapter);
+        if(data.getCode()==1){
+            adapter=new WXExceptionRecordAdapter(this, R.layout.wxexceptionrecorditem,data.getData());
+            listview1.setAdapter(adapter);
+        }else {
+            DialogUtil.errorMessageDialog(WXExceptionRecordActivity.this,data.getMessage());
+        }
+
     }
 
     @Override
     public void onFailed(String msg) {
-
+        DialogUtil.errorMessageDialog(WXExceptionRecordActivity.this,"服务器响应失败!");
     }
 }

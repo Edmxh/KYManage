@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.KFPSDAdapter;
 import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRep;
 import com.example.kymanage.Beans.GetTransferRecord.GetTransferRecordRepBean1;
@@ -153,6 +154,7 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
                             if(reqList.size()>0){
                                 recordReq.setData(reqList);
                                 recordReq.setDumpNum(dumpNum);
+                                LoadingBar.dialog(KFZCSHAtivity.this).setFactoryFromResource(R.layout.layout_custom8).show();
                                 presenter2.InsertDumpTransferRecord(recordReq);
                             }
                             break;
@@ -167,12 +169,14 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
     @Override
     public void onDataSuccessScan(GetTransferRecordRep data) {
         Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+        DialogUtil.startAlarm(this);
+        vibrator.vibrate(300);
         try {
             datas.clear();
             reqList.clear();
             for (GetTransferRecordRepBean1 datum : data.getData()) {
                 datas.add(datum);
-                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getStatus(),datum.getWStatus(), datum.getSendFactory(), datum.getPostingdate(), datum.getMarketOrderNO(), datum.getDemandFactory(), datum.getCreateTime(), datum.getPID(), datum.getDocumentdate(), datum.getUnit(), datum.getDemandStorage(), datum.getSID(), datum.getYID(), datum.getSendStorage(), datum.getQty(), datum.getProductOrderNO(), datum.getID(), datum.getMarketOrderRow(), datum.getMaterialCode(),datum.getMjahr(),datum.getMblnr(),datum.getRecordType(),datum.getSobkz());
+                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getID());
                 reqList.add(reqBean);
             }
             adapter=new KFPSDAdapter(KFZCSHAtivity.this, R.layout.kfpsditem,datas);
@@ -196,6 +200,7 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
 
     @Override
     public void onDataSuccess1(InsertDumpTransferRecordRep data) {
+        LoadingBar.dialog(KFZCSHAtivity.this).setFactoryFromResource(R.layout.layout_custom8).cancel();
         if(data.getStatus().getCode()==1){
             Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
             datas.clear();
@@ -213,7 +218,8 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(KFZCSHAtivity.this).setFactoryFromResource(R.layout.layout_custom8).cancel();
+        DialogUtil.errorMessageDialog(KFZCSHAtivity.this,"服务器响应失败，请稍后重试!");
     }
 
     //接收类

@@ -57,6 +57,9 @@ public class GetPurchaseOrderInfoJSRep implements Serializable {
     private String TXZ01;
     private String MATNR;
     private String MAKTX;
+    private String LNAME;
+    private String SNAME;
+    private String LIFNR;
 
     private String marketorderno;
     private String marketorderrow;
@@ -296,5 +299,29 @@ public class GetPurchaseOrderInfoJSRep implements Serializable {
 
     public void setReasonList(List<GetOutsourcingExceptionTypeJSRep.GetOutsourcingExceptionTypeJSRepBean> reasonList) {
         this.reasonList = reasonList;
+    }
+
+    public String getLNAME() {
+        return LNAME;
+    }
+
+    public void setLNAME(String LNAME) {
+        this.LNAME = LNAME;
+    }
+
+    public String getSNAME() {
+        return SNAME;
+    }
+
+    public void setSNAME(String SNAME) {
+        this.SNAME = SNAME;
+    }
+
+    public String getLIFNR() {
+        return LIFNR;
+    }
+
+    public void setLIFNR(String LIFNR) {
+        this.LIFNR = LIFNR;
     }
 }

@@ -188,6 +188,15 @@ public class mPrintUtil {
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
+        //二级物料编码
+        if(rep.getSonMaterialCode()==null){
+            str="";
+        }else {
+            str=rep.getSonMaterialCode();
+        }
+        printHelper.PrintLineInit(text2);
+        printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+        printHelper.PrintLineEnd();
         //去0
         String newStr1 = rep.getKDAUF().replaceAll("^(0+)", "");
         String newStr2 = rep.getKDPOS().replaceAll("^(0+)", "");
@@ -548,10 +557,24 @@ public class mPrintUtil {
         printHelper.PrintLineEnd();
 
         //
-        str="送货单位："+rep.getNAME_ORG1();
+        String namestr1="";
+        String namestr2="";
+        if(rep.getNAME_ORG1().length()<10){
+            namestr1=rep.getNAME_ORG1();
+        }else {
+            namestr1=rep.getNAME_ORG1().substring(0,10);
+            namestr2=rep.getNAME_ORG1().substring(10);
+        }
+        str="送货单位："+namestr1;
         printHelper.PrintLineInit(text2);
         printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
         printHelper.PrintLineEnd();
+        if(!namestr2.equals("")){
+            str=namestr2;
+            printHelper.PrintLineInit(text2);
+            printHelper.PrintLineStringByType(str,text2, PrintHelper.PrintType.Left,false);
+            printHelper.PrintLineEnd();
+        }
 
         //
         str="确认："+"              "+"   年   月   日";

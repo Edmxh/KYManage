@@ -58,6 +58,7 @@ public class WXCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>implem
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.gys=view.findViewById(R.id.gys);
             viewHolder.ddlx=view.findViewById(R.id.ddlx);
             viewHolder.rklj=view.findViewById(R.id.rklj);
 
@@ -86,6 +87,7 @@ public class WXCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>implem
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.wlbm=view.findViewById(R.id.wlbm);
             viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.gys=view.findViewById(R.id.gys);
             viewHolder.ddlx=view.findViewById(R.id.ddlx);
             viewHolder.rklj=view.findViewById(R.id.rklj);
 
@@ -126,6 +128,7 @@ public class WXCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>implem
         viewHolder.scddh.setText(newStr3);
         viewHolder.wlbm.setText(rep.getMATNR());
         viewHolder.wlms.setText(rep.getTXZ01());
+        viewHolder.gys.setText(rep.getLIFNR()+"--"+rep.getSNAME());
 
         switch (rep.getKINDS()){
             case "10":
@@ -227,6 +230,7 @@ public class WXCPSHAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>implem
         TextView scddh;
         TextView wlbm;
         TextView wlms;
+        TextView gys;
         TextView ddlx;
         TextView rklj;
         TextView xqrq;

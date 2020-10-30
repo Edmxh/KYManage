@@ -1,6 +1,9 @@
 package com.example.kymanage.utils;
 
 import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.example.kymanage.Activity.MainMenuActivity;
@@ -61,5 +64,13 @@ public class DialogUtil {
                 })
                 .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show();
         return isConfirm[0];
+    }
+
+    //提示音
+    public static void startAlarm(Context context) {
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        if (notification == null) return;
+        Ringtone r = RingtoneManager.getRingtone(context, notification);
+        r.play();
     }
 }

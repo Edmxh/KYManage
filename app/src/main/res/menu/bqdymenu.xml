@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<!--    <item-->
-<!--        android:id="@+id/receive"-->
-<!--        android:title="采购收货" />-->
-<!--    <item-->
-<!--        android:id="@+id/print"-->
-<!--        android:title="打印派工单" />-->
     <item
         android:id="@+id/print"
-        android:title="再次打印" />
+        android:title="打印标签" />
     <item
-        android:id="@+id/record"
-        android:title="查看记录" />
+        android:id="@+id/print2"
+        android:title="再次打印" />
+<!--    <item-->
+<!--        android:id="@+id/record"-->
+<!--        android:title="查看记录" />-->
 <!--    <item-->
 <!--        android:id="@+id/add"-->
 <!--        android:icon="@android:drawable/ic_menu_add"-->

@@ -9,6 +9,9 @@ import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Base64;
@@ -83,6 +86,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     private String line;
     private float qty;
     private String labelnum;
+    private String gc;
 
     //301转储
     private MaterialFactoryDumpPresenter presenter2;
@@ -108,6 +112,10 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
     //全局变量
     String bm = "";
+
+    //重复打印
+    GetDumpRecordNodeRep againPrint=new GetDumpRecordNodeRep();
+    boolean isAgain=false;
 
     @Override
     public int initLayoutId() {
@@ -262,18 +270,18 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
                                 if(datas.size()>0){
                                     LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom6).show();
+                                    isAgain=false;
                                     MaterialFactoryDumpReq req=new MaterialFactoryDumpReq(username,datas);
                                     presenter2.MaterialFactoryDump(req);
+                                }else {
+                                    DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,"转储内容为空");
                                 }
                                 break;
                             case R.id.print:
                                 // 隐藏该对话框
                                 vibrator.vibrate(30);
-                                if(printDatas.size()>0){
-                                    presenter3.GetDumpRecordNode(printDatas);
-                                }else {
-                                    Toast.makeText(PrintKGCPSDActivity.this, "请先转储", Toast.LENGTH_SHORT).show();
-                                }
+                                isAgain=true;
+                               onDataSuccess2(againPrint);
                                 break;
 //                            case R.id.exit:
 //                                vibrator.vibrate(30);
@@ -311,12 +319,21 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                 }
             }
             if(!cf){
-                MaterialFactoryDumpReqBean scanBean=new MaterialFactoryDumpReqBean(getCurrentdate(), getCurrentdate(), fid, data.getMaterial().getMATNR(), data.getMaterial().getMAKTX(), data.getMaterial().getMaterialType(), data.getMaterial().getMEINS(), po, no, line, qty, "301转储",labelnum,"");
+                MaterialFactoryDumpReqBean scanBean=new MaterialFactoryDumpReqBean(getCurrentdate(), getCurrentdate(), fid, data.getMaterial().getMATNR(), data.getMaterial().getMAKTX(), data.getMaterial().getMaterialType(), data.getMaterial().getMEINS(), po, no, line, qty, "301转储",labelnum,"",gc);
                 datas.add(scanBean);
+                DialogUtil.startAlarm(this);
+                vibrator.vibrate(300);
+                List<MaterialFactoryDumpReqBean> newdatas=new ArrayList<MaterialFactoryDumpReqBean>();
+                for (int i = datas.size() - 1; i >= 0; i--) {
+                    newdatas.add(datas.get(i));
+                }
+                datas=newdatas;
                 adapter=new PrintKGCPSDAdapter(this, R.layout.wxkgcpsditem,datas);
                 adapter.setOnInnerItemOnClickListener(this);
                 listview1.setAdapter(adapter);
                 listview1.setOnItemClickListener(this);
+            }else {
+                DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,"该物料已存在，请勿重复扫码");
             }
         }else {
             DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,data.getMessage());
@@ -383,7 +400,8 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
 
     @Override
     public void onDataSuccess2(GetDumpRecordNodeRep data) {
-        if(data.getStatus().getCode()==1){
+        againPrint=data;
+        if(data.getStatus()!=null&&data.getStatus().getCode()==1){
             printDatas.clear();
             Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
             List<GetDumpRecordNodeRepBean2> data1 = data.getData();
@@ -402,7 +420,10 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                 e.printStackTrace();
             }
         }else {
-            DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,data.getStatus().getMessage());
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,data.getStatus().getMessage());
+            }
+
         }
 
     }
@@ -421,6 +442,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
     public void onFailed(String msg) {
         LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
         LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom6).cancel();
+        DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,"服务器响应失败，请稍后重试！");
     }
 
     @Override
@@ -460,12 +482,12 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                         lableObject = JSONObject.parseObject(scanString);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(PrintKGCPSDActivity.this, "二维码格式有误", Toast.LENGTH_SHORT).show();
+                        DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,"二维码格式有误");
                     }
                     if (lableObject != null) {
 //                    System.out.println(lableObject.getString("bm"));
 
-                        String gc="";
+
                         try {
                             po = lableObject.getString("po");
                             no = lableObject.getString("no");
@@ -477,6 +499,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                             gc = lableObject.getString("gc");
                         } catch (Exception e) {
                             e.printStackTrace();
+                            DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,"二维码格式有误");
                         }
 //                        sl=lableObject.getFloat("sl");
 //                        bm = lableObject.getString("bm");
@@ -493,14 +516,23 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                                 break;
                             }
                         }
+                        //判断是否和之前扫入标签的转储工厂相同
+                        boolean difFactory=false;
+                        if(datas.size()==0||datas.get(0).getZcgc().equals(gc)){
+                            difFactory=false;
+                        }else {
+                            difFactory=true;
+                        }
                         if (repeat) {
                             System.out.println("请勿重复扫码");
-                            Toast.makeText(PrintKGCPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PrintKGCPSDActivity.this, "该物料已存在，请勿重复扫码", Toast.LENGTH_SHORT).show();
 
                         } else {
                             if (bm != null) {
                                 if(gc.equals("")||gc.equals("2090")){
                                     DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,bm+"该物料不是上游需求");
+                                }else if(difFactory){
+                                    DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,bm+"该物料目标工厂与已扫入的其他物料的目标工厂不同，请分开转储！");
                                 }else {
                                     List<MaterialFactoryDumpReqBean> currdata=new ArrayList<>();
                                     MaterialFactoryDumpReqBean currbean=new MaterialFactoryDumpReqBean();
@@ -590,4 +622,6 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
         }
         return super.onKeyDown (keyCode, event);
     }
+
+
 }

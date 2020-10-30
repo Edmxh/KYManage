@@ -94,7 +94,7 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
     private long currAdvanceStorageId;//当前收货返回的id，随收货操作成功时更新
 
     //缩略菜单
-//    private ImageView menupoint;
+    private ImageView menupoint;
     PopupMenu popup = null;
     //记录
     private ImageView record;
@@ -104,6 +104,12 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
 
     //自定义请求码常量
     private static final int REQUEST_CODE = 1;
+
+    //重复打印
+    GetDispatchListJSRep againPrint=new GetDispatchListJSRep();
+    Semi_FinishedProductReceivingLableRep againPrint2=new Semi_FinishedProductReceivingLableRep();
+    boolean isAgain=false;//判断是否重复打印
+    int printType=0;
 
 
 
@@ -119,8 +125,8 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
 
         //按钮
         scan=findViewById(R.id.scan);
-//        menupoint=findViewById(R.id.menupoint);
-        record=findViewById(R.id.record);
+        menupoint=findViewById(R.id.menupoint);
+//        record=findViewById(R.id.record);
         listView1=findViewById(R.id.listview1);//采购订单列表
 
         //扫描获取采购订单信息
@@ -182,6 +188,8 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
                         currAdvanceStorageId=receiveid;
                     }
                     //收货完直接自动打印派工单
+                    isAgain=false;
+                    printType=0;
                     presenterPrint.GetDispatchListJS(AdvanceStorageId,username,getCurrentdate());
                 }
                 adapter.notifyDataSetChanged();
@@ -199,16 +207,16 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
             vibrator.vibrate(30);
             scan();
         });
-        record.setOnClickListener(v -> {
-            vibrator.vibrate(30);
-            Intent intent = new Intent(WXBCPSHNActivity.this, WXBCPSHRecordActivity.class);
-            intent.putExtra("username",username);
-            startActivity(intent);
-        });
-//        menupoint.setOnClickListener(v -> {
+//        record.setOnClickListener(v -> {
 //            vibrator.vibrate(30);
-//            onPopupButtonClick(menupoint);
+//            Intent intent = new Intent(WXBCPSHNActivity.this, WXBCPSHRecordActivity.class);
+//            intent.putExtra("username",username);
+//            startActivity(intent);
 //        });
+        menupoint.setOnClickListener(v -> {
+            vibrator.vibrate(30);
+            onPopupButtonClick(menupoint);
+        });
     }
 
     //缩略菜单
@@ -223,8 +231,20 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
                 item -> {
                     switch (item.getItemId())
                     {
+                        case R.id.print:
+                            vibrator.vibrate(30);
+                            isAgain=true;
+                            if(printType==0){
+                                onDataSuccessPrint(againPrint);
+                            }else {
+                                onDataSuccessPrint2(againPrint2);
+                            }
+
+
+                            break;
                         case R.id.record:
                             // 隐藏该对话框
+                            vibrator.vibrate(30);
                             Intent intent = new Intent(WXBCPSHNActivity.this, WXBCPSHRecordActivity.class);
                             intent.putExtra("username",username);
                             startActivity(intent);
@@ -244,6 +264,8 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
     public void onDataSuccessScan(GetPurchaseOrderInfoJSReps data) {
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         LoadingBar.dialog(WXBCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
+        DialogUtil.startAlarm(this);
+        vibrator.vibrate(300);
         scanDatas=data.getData();
         adapter=new WXBCPSHAdapter(this, R.layout.wxbcpshitem,scanDatas);
         adapter.setOnInnerItemOnClickListener(this);
@@ -265,6 +287,8 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
             scanDatas.clear();
             adapter.notifyDataSetChanged();
             //收货完直接自动打印标签
+            isAgain=false;
+            printType=1;
             presenterPrint2.Semi_FinishedProductReceivingLable(currAdvanceStorageId,username,getCurrentdate());
         }else {
             DialogUtil.errorMessageDialog(WXBCPSHNActivity.this,data.getMessage());
@@ -275,6 +299,7 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
     @Override
     public void onDataSuccessPrint(GetDispatchListJSRep data) {
         if(data.getCode()==1){
+            againPrint=data;
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
             AdvanceStorageId.clear();
             try {
@@ -295,18 +320,29 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
                 e.printStackTrace();
             }
         }else {
-            DialogUtil.errorMessageDialog(WXBCPSHNActivity.this,data.getMessage());
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(WXBCPSHNActivity.this,data.getMessage());
+            }
+
         }
 
     }
 
     @Override
     public void onDataSuccessPrint2(Semi_FinishedProductReceivingLableRep data) {
-        for (Semi_FinishedProductReceivingLableRep.Semi_FinishedProductReceivingLableRepBean datum : data.getData()) {
-            Bitmap bm=cb.createImage11(datum,tf);
-            printHelper.PrintBitmapAtCenter(bm,384,480);
-            printHelper.printBlankLine(80);
+        againPrint2=data;
+        if(data.getCode()==1){
+            for (Semi_FinishedProductReceivingLableRep.Semi_FinishedProductReceivingLableRepBean datum : data.getData()) {
+                Bitmap bm=cb.createImage11(datum,tf);
+                printHelper.PrintBitmapAtCenter(bm,384,480);
+                printHelper.printBlankLine(80);
+            }
+        }else {
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(WXBCPSHNActivity.this,data.getMessage());
+            }
         }
+
     }
 
     @Override
@@ -400,7 +436,7 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
                             upstreamFactory=lableObject.getString("gc");
                             bm = lableObject.getString("code");
                             decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
-                            if(!upstreamFactory.equals("")){
+                            if(upstreamFactory!=null&&!upstreamFactory.equals("")){
                                 LoadingBar.dialog(WXBCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
                                 presenterScan.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"2");
                             }else {

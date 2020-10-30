@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.WXBCPSHRecordAdapter;
 import com.example.kymanage.Beans.General.CodeMessageBean;
 import com.example.kymanage.Beans.GetDispatchListJS.GetDispatchListJSRepBean2;
@@ -285,6 +286,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
+        LoadingBar.dialog(WXBCPSHRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
         Toast.makeText(WXBCPSHRecordActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
 
         if(queryself.isChecked()){
@@ -331,7 +333,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(WXBCPSHRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
     }
 
     //获取当前日期
@@ -400,6 +402,7 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
                         }
 //                WriteOffProStorageRecordReq req=new WriteOffProStorageRecordReq(username,idlist);
 //                System.out.println("冲销选中数:"+idlist.size());
+                        LoadingBar.dialog(WXBCPSHRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).show();
                         presenter2.Semi_FinishedProductReceivingwriteoffJS(username,getCurrentdate(),idslist);
                     }
                 })

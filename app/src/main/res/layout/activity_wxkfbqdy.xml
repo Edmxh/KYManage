@@ -31,11 +31,11 @@
             android:gravity="center"
             android:textSize="14sp"/>
         <ImageView
-            android:id="@+id/print"
+            android:id="@+id/menupoint"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:src="@drawable/print"
+            android:src="@drawable/menupoint"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
     <LinearLayout

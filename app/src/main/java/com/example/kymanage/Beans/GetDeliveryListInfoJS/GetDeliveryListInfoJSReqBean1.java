@@ -17,17 +17,20 @@ public class GetDeliveryListInfoJSReqBean1 {
     private String POSNR;
     private float KWMENG;
     private String LGORT;
+    private long AllocatedID;
 
     public GetDeliveryListInfoJSReqBean1() {
     }
 
-    public GetDeliveryListInfoJSReqBean1(String MATNR, String VBELN, String POSNR, float KWMENG, String LGORT) {
+    public GetDeliveryListInfoJSReqBean1(String MATNR, String VBELN, String POSNR, float KWMENG, String LGORT, long allocatedID) {
         this.MATNR = MATNR;
         this.VBELN = VBELN;
         this.POSNR = POSNR;
         this.KWMENG = KWMENG;
         this.LGORT = LGORT;
+        AllocatedID = allocatedID;
     }
+
     @JSONField(name = "MATNR")
     public String getMATNR() {
         return MATNR;
@@ -67,5 +70,13 @@ public class GetDeliveryListInfoJSReqBean1 {
     @JSONField(name = "LGORT")
     public void setLGORT(String LGORT) {
         this.LGORT = LGORT;
+    }
+    @JSONField(name = "AllocatedID")
+    public long getAllocatedID() {
+        return AllocatedID;
+    }
+    @JSONField(name = "AllocatedID")
+    public void setAllocatedID(long allocatedID) {
+        AllocatedID = allocatedID;
     }
 }

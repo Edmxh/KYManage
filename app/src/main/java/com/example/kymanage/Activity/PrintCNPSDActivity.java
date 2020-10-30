@@ -71,6 +71,10 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
     private ImageView menupoint;
     PopupMenu popup = null;
 
+    //重复打印
+    GetCMInFactoryDeliverJSRep againPrint=new GetCMInFactoryDeliverJSRep();
+    boolean isAgain=false;
+
     @Override
     public int initLayoutId() {
         return R.layout.activity_print_cnpsd;
@@ -200,9 +204,16 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
 //                                break;
                             case R.id.record:
                                 // 隐藏该对话框
+                                vibrator.vibrate(30);
                                 Intent intent = new Intent(PrintCNPSDActivity.this, PrintCNPSDRecord1Activity.class);
                                 intent.putExtra("username",username);
                                 startActivity(intent);
+                                break;
+                            case R.id.print2:
+                                // 隐藏该对话框
+                                vibrator.vibrate(30);
+                                isAgain=true;
+                                onDataSuccess2(againPrint);
                                 break;
                             case R.id.print:
                                 // 隐藏该对话框
@@ -216,6 +227,7 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
                                     }
                                 }
                                 if(DispatchListNOList.size()>0){
+                                    isAgain=false;
                                     presenter1.GetCMInFactoryDeliver(DispatchListNOList,username,getCurrentdate());
                                 }else {
                                     Toast.makeText(PrintCNPSDActivity.this, "未选择派工单行", Toast.LENGTH_SHORT).show();
@@ -242,6 +254,7 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
 
     @Override
     public void onDataSuccess2(GetCMInFactoryDeliverJSRep data) {
+        againPrint=data;
         if(data.getCode()==1){
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
             for (GetCMInFactoryDeliverJSRepBean2 datum : data.getData()) {
@@ -263,7 +276,11 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
             adapter=new PrintCNPSDAdapter(this, R.layout.wxcnpsditem,listBeans);
             listView1.setAdapter(adapter);
         }else {
-            DialogUtil.errorMessageDialog(PrintCNPSDActivity.this,data.getMessage());
+            //again打印不弹窗错误
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(PrintCNPSDActivity.this,data.getMessage());
+            }
+
         }
 
     }
@@ -304,6 +321,8 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
     //                            System.out.println("请勿重复扫码");
                                 Toast.makeText(PrintCNPSDActivity.this, "请勿重复扫码", Toast.LENGTH_SHORT).show();
                             }else {
+                                DialogUtil.startAlarm(PrintCNPSDActivity.this);
+                                vibrator.vibrate(300);
                                 CNPSDDisplayBean listBean=new CNPSDDisplayBean(DispatchListNO,productOrder,materialCode,username,getCurrentdate());
                                 listBeans.add(listBean);
                                 adapter=new PrintCNPSDAdapter(getApplicationContext(), R.layout.wxcnpsditem,listBeans);

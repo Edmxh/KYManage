@@ -30,11 +30,11 @@
             android:gravity="center"
             android:textSize="@dimen/text22"/>
         <ImageView
-            android:id="@+id/record"
+            android:id="@+id/menupoint"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            android:src="@drawable/record"
+            android:src="@drawable/menupoint"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
     <LinearLayout

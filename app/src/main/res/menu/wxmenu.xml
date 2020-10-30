@@ -3,9 +3,9 @@
 <!--    <item-->
 <!--        android:id="@+id/receive"-->
 <!--        android:title="采购收货" />-->
-<!--    <item-->
-<!--        android:id="@+id/print"-->
-<!--        android:title="打印标签" />-->
+    <item
+        android:id="@+id/print"
+        android:title="再次打印" />
     <item
         android:id="@+id/record"
         android:title="查看记录" />

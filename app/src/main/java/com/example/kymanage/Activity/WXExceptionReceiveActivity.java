@@ -151,6 +151,8 @@ public class WXExceptionReceiveActivity extends BaseActivity implements ScanBase
     @Override
     public void onDataSuccessScan(GetPurchaseOrderInfoJSReps data) {
         LoadingBar.dialog(WXExceptionReceiveActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
+        DialogUtil.startAlarm(this);
+        vibrator.vibrate(300);
         if(data.getCode()==1){
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
             for (GetPurchaseOrderInfoJSRep datum : data.getData()) {
@@ -176,6 +178,7 @@ public class WXExceptionReceiveActivity extends BaseActivity implements ScanBase
 
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
+        LoadingBar.dialog(WXExceptionReceiveActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
         if(data.getCode()==1){
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
             scanDatas.clear();
@@ -189,6 +192,8 @@ public class WXExceptionReceiveActivity extends BaseActivity implements ScanBase
     @Override
     public void onFailed(String msg) {
         LoadingBar.dialog(WXExceptionReceiveActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
+        LoadingBar.dialog(WXExceptionReceiveActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
+        DialogUtil.errorMessageDialog(WXExceptionReceiveActivity.this,"服务器响应失败，请稍后重试!");
     }
 
     @Override
@@ -204,6 +209,7 @@ public class WXExceptionReceiveActivity extends BaseActivity implements ScanBase
             case R.id.receive:
                 Log.d("内部receive>>", position + "");
                 vibrator.vibrate(30);
+                LoadingBar.dialog(WXExceptionReceiveActivity.this).setFactoryFromResource(R.layout.layout_custom1).show();
                 receive(position);
                 break;
             default:
@@ -231,6 +237,7 @@ public class WXExceptionReceiveActivity extends BaseActivity implements ScanBase
             presenter2.OutsourcingExceptionJS(req);
 
         }else {
+            LoadingBar.dialog(WXExceptionReceiveActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
             Toast.makeText(WXExceptionReceiveActivity.this,"未选中收货行",Toast.LENGTH_SHORT).show();
         }
     }

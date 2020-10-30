@@ -88,7 +88,7 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
 
 
     //缩略菜单
-//    private ImageView menupoint;
+    private ImageView menupoint;
     PopupMenu popup = null;
     //查询记录
     private ImageView record;
@@ -98,6 +98,10 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
 
     //自定义请求码常量
     private static final int REQUEST_CODE = 1;
+
+    //重复打印
+    GetOutsourceFinProLableJSRep againPrint=new GetOutsourceFinProLableJSRep();
+    boolean isAgain=false;
 
 
 
@@ -113,9 +117,9 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
 
         //按钮
         scan=findViewById(R.id.scan);
-//        menupoint=findViewById(R.id.menupoint);
+        menupoint=findViewById(R.id.menupoint);
         listView1=findViewById(R.id.listview1);//采购订单列表
-        record=findViewById(R.id.record);//查询记录
+//        record=findViewById(R.id.record);//查询记录
 
         //扫描获取采购订单信息
         presenterScan=new GetPurchaseOrderInfoJSPresenter();
@@ -167,6 +171,7 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
                         printList.add(printReq);
                     }
                     //收货完成直接自动打印标签
+                    isAgain=false;
                     presenterPrint.GetOutsourceFinProLableJS(printList);
                 }
                 adapter.notifyDataSetChanged();
@@ -182,16 +187,16 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
             vibrator.vibrate(30);
             scan();
         });
-//        menupoint.setOnClickListener(v -> {
-//            vibrator.vibrate(30);
-//            onPopupButtonClick(menupoint);
-//        });
-        record.setOnClickListener(v -> {
+        menupoint.setOnClickListener(v -> {
             vibrator.vibrate(30);
-            Intent intent = new Intent(WXCPSHNActivity.this, WXCPSHRecordActivity.class);
-            intent.putExtra("username",username);
-            startActivity(intent);
+            onPopupButtonClick(menupoint);
         });
+//        record.setOnClickListener(v -> {
+//            vibrator.vibrate(30);
+//            Intent intent = new Intent(WXCPSHNActivity.this, WXCPSHRecordActivity.class);
+//            intent.putExtra("username",username);
+//            startActivity(intent);
+//        });
     }
 
     //缩略菜单
@@ -206,8 +211,15 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
                 item -> {
                     switch (item.getItemId())
                     {
+                        case R.id.print:
+                            // 隐藏该对话框
+                            vibrator.vibrate(30);
+                            isAgain=true;
+                            onDataSuccessPrint(againPrint);
+                            break;
                         case R.id.record:
                             // 隐藏该对话框
+                            vibrator.vibrate(30);
                             Intent intent = new Intent(WXCPSHNActivity.this, WXCPSHRecordActivity.class);
                             intent.putExtra("username",username);
                             startActivity(intent);
@@ -228,6 +240,8 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
         LoadingBar.dialog(WXCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
         Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         scanDatas=data.getData();
+        DialogUtil.startAlarm(this);
+        vibrator.vibrate(300);
         adapter=new WXCPSHAdapter(this, R.layout.wxbcpshitem,scanDatas);
         adapter.setOnInnerItemOnClickListener(this);
         listView1.setAdapter(adapter);
@@ -241,19 +255,28 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
 
     @Override
     public void onDataSuccessPrint(GetOutsourceFinProLableJSRep data) {
-        Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-        try {
-            printList.clear();
-            List<GetOutsourceFinProLableJSRepBean> beans = data.getData();
-            for (GetOutsourceFinProLableJSRepBean bean : beans) {
-                printHelper.printBlankLine(40);
-                Bitmap bm=cb.createImage7(bean,tf);
-                printHelper.PrintBitmapAtCenter(bm,384,530);
-                printHelper.printBlankLine(80);
+        againPrint=data;
+        if(data.getCode()==1){
+            Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            try {
+                printList.clear();
+                List<GetOutsourceFinProLableJSRepBean> beans = data.getData();
+                for (GetOutsourceFinProLableJSRepBean bean : beans) {
+                    printHelper.printBlankLine(40);
+                    Bitmap bm=cb.createImage7(bean,tf);
+                    printHelper.PrintBitmapAtCenter(bm,384,530);
+                    printHelper.printBlankLine(80);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else {
+            if(!isAgain){
+                DialogUtil.errorMessageDialog(WXCPSHNActivity.this,data.getMessage());
+            }
+
         }
+
     }
 
     @Override
@@ -335,7 +358,7 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
                             upstreamFactory=lableObject.getString("gc");
                             bm = lableObject.getString("code");
                             decodestr = new String(Base64.decode(bm.getBytes(), Base64.DEFAULT));
-                            if(!upstreamFactory.equals("")){
+                            if(upstreamFactory!=null&&!upstreamFactory.equals("")){
                                 LoadingBar.dialog(WXCPSHNActivity.this).setFactoryFromResource(R.layout.layout_custom5).show();
                                 presenterScan.GetPurchaseOrderInfoJS(marketorderno,marketorderrow,decodestr,"1");
                             }else {
