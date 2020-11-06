@@ -198,6 +198,8 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
             if(data.getData()!=null){
                 req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid,"");
                 receiptReqs.add(req);
+                DialogUtil.startAlarm(this);
+                vibrator.vibrate(300);
                 data.getData().setFactory(factory);
                 data.getData().setLabelSquNum(labelSquNum);
                 data.getData().setQty(sl);
@@ -418,7 +420,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                                             Toast.makeText(KFCGSHRKActivity.this, "解析二维码错误", Toast.LENGTH_SHORT).show();
                                         }
                                     }else {
-                                        Toast.makeText(getApplicationContext(), "该物料属于"+factory, Toast.LENGTH_SHORT).show();
+                                        DialogUtil.errorMessageDialog(KFCGSHRKActivity.this,"该物料属于"+factory);
                                     }
                                 }
                             }

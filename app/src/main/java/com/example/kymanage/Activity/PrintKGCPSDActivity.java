@@ -493,6 +493,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                             no = lableObject.getString("no");
                             line = lableObject.getString("line");
                             fid = lableObject.getLong("fid");
+                            System.out.println("fid="+fid);
                             qty = lableObject.getFloat("sl");
                             bm = lableObject.getString("bm");
                             labelnum = lableObject.getString("num");
@@ -500,6 +501,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                         } catch (Exception e) {
                             e.printStackTrace();
                             DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,"二维码格式有误");
+                            return;
                         }
 //                        sl=lableObject.getFloat("sl");
 //                        bm = lableObject.getString("bm");

@@ -333,14 +333,21 @@ public class KFFLActivity extends BaseActivity implements ScanBaseView<GetStockI
 
     @Override
     public void onDataSuccessScan(GetStockInformationDataJSRep data) {
-        scanfinish=true;
-        currentdata=data.getData();
-        currentdata.setPono(pono);
-        currentdata.setPorow(porow);
-        datas.add(currentdata);
-        adapter.notifyDataSetChanged();
-        pono="";
-        porow="";
+        if(data.getCode()==1){
+            scanfinish=true;
+            DialogUtil.startAlarm(this);
+            vibrator.vibrate(300);
+            currentdata=data.getData();
+            currentdata.setPono(pono);
+            currentdata.setPorow(porow);
+            datas.add(currentdata);
+            adapter.notifyDataSetChanged();
+            pono="";
+            porow="";
+        }else {
+            DialogUtil.errorMessageDialog(KFFLActivity.this,data.getMessage());
+        }
+
 //        Intent intent=new Intent(KFFLActivity.this,KFFLDialogActivity.class);
 //        intent.putExtra("qty",qty);
 //        intent.putExtra("materialCode",materialCode);

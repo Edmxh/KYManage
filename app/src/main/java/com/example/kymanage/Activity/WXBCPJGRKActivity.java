@@ -719,6 +719,8 @@ public class WXBCPJGRKActivity extends BaseActivity implements ScanBaseView<GetM
                         String decodestr = null;
                         try {
                             marketorderno=lableObject.getString("no");
+                            String s1=".*[0-9]{1,}.*";
+                            marketorderno=marketorderno.matches(s1)?marketorderno:"";
                             marketorderrow=lableObject.getString("line");
                             bm = lableObject.getString("code");
                             factory=lableObject.getString("gc");

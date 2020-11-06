@@ -190,6 +190,9 @@ public interface API {
     //厂内配送单单条冲销
     String OutSemifinProductIssueWriteOffJS="ThingX/Things/AppProgramThing/Services/OutSemifinProductIssueWriteOffJS";
 
+    //获取预占物料销售订单接口
+    String GetMarketOrderNoByCode="ThingX/Things/AppProgramThing/Services/GetMarketOrderNoByCode";
+
     //外协标签打印接口
     String InsertFinAProOrderRecord="ThingX/Things/AppProgramThing/Services/InsertFinAProOrderRecord";
 

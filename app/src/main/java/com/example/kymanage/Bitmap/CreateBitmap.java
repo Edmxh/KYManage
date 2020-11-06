@@ -1200,14 +1200,13 @@ public class CreateBitmap{
         layout.draw(canvas);
 
         String str3=rep.getMaterialCode();
-        paint.setFakeBoldText(true);
-        if(str3.length()>16){
-            paint.setTextSize(text8);
-        }else {
-            paint.setTextSize(text3);
-        }
-        top+=titleTextSize*2+30;
-        canvas.drawText(str3,0,top,paint);
+        textPaint.setFakeBoldText(true);
+        textPaint.setTextSize(text2);
+
+        top+=titleTextSize+30;
+        StaticLayout layout2 = new StaticLayout(str3,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
+        canvas.translate(0,top);
+        layout2.draw(canvas);
         paint.setFakeBoldText(false);
 
         String str4="单位:"+rep.getProOMaterialUnit()+" "+"数量:"+(rep.getAllocatedQty());

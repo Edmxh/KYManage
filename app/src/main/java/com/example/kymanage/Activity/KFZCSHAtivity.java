@@ -168,34 +168,42 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
 
     @Override
     public void onDataSuccessScan(GetTransferRecordRep data) {
-        Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
-        DialogUtil.startAlarm(this);
-        vibrator.vibrate(300);
-        try {
-            datas.clear();
-            reqList.clear();
-            for (GetTransferRecordRepBean1 datum : data.getData()) {
-                datas.add(datum);
-                InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getID());
-                reqList.add(reqBean);
+        if(data.getStatus().getCode()==1){
+            Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
+            DialogUtil.startAlarm(this);
+            vibrator.vibrate(300);
+            if(data.getMdata().getStatus().equals("已全部转储配送")||data.getMdata().getStatus().equals("已全部转储配送发料")){
+                DialogUtil.infoMessageDialog(KFZCSHAtivity.this,"已发料，请勿重复操作!");
             }
-            adapter=new KFPSDAdapter(KFZCSHAtivity.this, R.layout.kfpsditem,datas);
-            listview1.setAdapter(adapter);
+            try {
+                datas.clear();
+                reqList.clear();
+                for (GetTransferRecordRepBean1 datum : data.getData()) {
+                    datas.add(datum);
+                    InsertDumpTransferRecordReqBean reqBean=new InsertDumpTransferRecordReqBean(datum.getID());
+                    reqList.add(reqBean);
+                }
+                adapter=new KFPSDAdapter(KFZCSHAtivity.this, R.layout.kfpsditem,datas);
+                listview1.setAdapter(adapter);
 
-            scdd.setText(data.getMdata().getProductOrderNO());
-            cjsj.setText(data.getMdata().getCreateTime());
-            gxsj.setText(data.getMdata().getUpdateTime());
-            String ztStr;
-            if(data.getMdata().getReverseHandler().equals("")){
-                ztStr=data.getMdata().getStatus();
-            }else {
-                ztStr=data.getMdata().getStatus()+"("+data.getMdata().getReverseHandler()+")";
+                scdd.setText(data.getMdata().getProductOrderNO());
+                cjsj.setText(data.getMdata().getCreateTime());
+                gxsj.setText(data.getMdata().getUpdateTime());
+                String ztStr;
+                if(data.getMdata().getReverseHandler().equals("")){
+                    ztStr=data.getMdata().getStatus();
+                }else {
+                    ztStr=data.getMdata().getStatus()+"("+data.getMdata().getReverseHandler()+")";
+                }
+                zczt.setText(ztStr);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            zczt.setText(ztStr);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else {
+            DialogUtil.errorMessageDialog(KFZCSHAtivity.this,data.getStatus().getMessage());
         }
+
     }
 
     @Override

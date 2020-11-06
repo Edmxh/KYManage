@@ -30,6 +30,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.example.kymanage.Adapter.WXCPSHAdapter;
 import com.example.kymanage.Adapter.WXCPSHDialog1Adapter;
+import com.example.kymanage.Adapter.WXKFBQDY2Adapter;
+import com.example.kymanage.Beans.GetMarketOrderNoByCode.GetMarketOrderNoByCodeRep;
+import com.example.kymanage.Beans.GetMarketOrderNoByCode.GetMarketOrderNoByCodeRepBean;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataInfo;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
 import com.example.kymanage.Beans.InsertFinAProOrderRecord.InsertFinAProOrderRecordRep;
@@ -39,10 +42,12 @@ import com.example.kymanage.Beans.PreMaterialProductOrder.PreMaterialProductOrde
 import com.example.kymanage.Bitmap.CreateBitmap;
 import com.example.kymanage.R;
 import com.example.kymanage.presenter.InterfaceView.BaseView1;
+import com.example.kymanage.presenter.InterfaceView.BaseView2;
 import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.CGPage1.CGSHReceiveDetailPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage3.GetMaterialMasterDataJSPresenter;
+import com.example.kymanage.presenter.Presenters.WXPage7.GetMarketOrderNoByCodePresenter;
 import com.example.kymanage.presenter.Presenters.WXPage7.InsertFinAProOrderRecordPresenter;
 import com.example.kymanage.utils.DialogUtil;
 
@@ -53,7 +58,7 @@ import java.util.List;
 
 import Printer.PrintHelper;
 
-public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<PreMaterialProductOrderReps>, PrintBaseView<InsertFinAProOrderRecordRep> {
+public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMaterialMasterDataRep>, BaseView1<PreMaterialProductOrderReps>, PrintBaseView<InsertFinAProOrderRecordRep>, BaseView2<GetMarketOrderNoByCodeRep> {
 
     //扫码
     private ImageView scan;
@@ -74,11 +79,17 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
 
     //选择上游工厂
     private Spinner spinner1;
+    private int spinnerCode=0;//0:什么都没选；1：选了2090；2：选了其他上游事业部
     private ArrayAdapter<String> adapter0;
     private CGSHReceiveDetailPresenter presenter1;
     private ListView listview1;
     private WXCPSHDialog1Adapter adapter1;
     private List<PreMaterialProductOrderRep> productOrderList=new ArrayList<PreMaterialProductOrderRep>();
+
+    //对外销售的销售订单
+    private GetMarketOrderNoByCodePresenter presenter2;
+    private WXKFBQDY2Adapter adapter2;
+    private List<GetMarketOrderNoByCodeRepBean> marketorderList=new ArrayList<GetMarketOrderNoByCodeRepBean>();
 
 
     //打印
@@ -128,6 +139,10 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
         presenter1=new CGSHReceiveDetailPresenter();
         presenter1.setView(this);
 
+        //对外销售的销售订单
+        presenter2=new GetMarketOrderNoByCodePresenter();
+        presenter2.setView(this);
+
         //打印
 //        print=findViewById(R.id.print);
         menupoint=findViewById(R.id.menupoint);
@@ -160,8 +175,21 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
         spinner1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                float reqnum=Float.parseFloat("0"+wlsl.getText().toString());
-                presenter1.CGSHReceiveDetail("","",wlbm.getText().toString(),factorys.get(arg2),reqnum);
+                //int position,long id,一般它俩相等
+                if(arg2==0){
+                    //选择“请选择”，相当于什么都不选
+                    spinnerCode=0;
+                }else if(arg2==7){
+                    //选择“2090”，去获取销售订单
+                    spinnerCode=1;
+                    presenter2.GetMarketOrderNoByCode(wlbm.getText().toString());
+                }else {
+                    //选择上游事业部，去获取生产订单
+                    spinnerCode=2;
+                    float reqnum=Float.parseFloat("0"+wlsl.getText().toString());
+                    presenter1.CGSHReceiveDetail("","",wlbm.getText().toString(),factorys.get(arg2),reqnum);
+                }
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -176,6 +204,9 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
         AssetManager mgr = getAssets();
         //根据路径得到Typeface
         tf = Typeface.createFromAsset(mgr, "fonts/simfang.ttf");//仿宋
+
+        adapter1=new WXCPSHDialog1Adapter(WXKFBQDYActivity.this, R.layout.wxcpshitem1, productOrderList);
+        listview1.setAdapter(adapter1);
     }
 
     //初始化
@@ -216,7 +247,7 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
         // 创建PopupMenu对象
         popup = new PopupMenu(this, button);
         // 将R.menu.popup_menu菜单资源加载到popup菜单中
-        getMenuInflater().inflate(R.menu.xsfhmenu, popup.getMenu());
+        getMenuInflater().inflate(R.menu.bqdymenu, popup.getMenu());
         // 为popup菜单的菜单项单击事件绑定事件监听器
         popup.setOnMenuItemClickListener(
                 item -> {
@@ -228,21 +259,41 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
                             isAgain=false;
                             List<InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean> sdata=new ArrayList<InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean>();
                             float allnum=0;
-                            for (int i = 0; i < productOrderList.size(); i++) {
-                                PreMaterialProductOrderRep rep = productOrderList.get(i);
-                                View listItem=listview1.getAdapter().getView(i,null,null);
-                                CheckBox checkBox=listItem.findViewById(R.id.checked);
-                                EditText et1=listItem.findViewById(R.id.fpsl);
-                                float issueNum=0;
-                                issueNum=Float.parseFloat(("0"+et1.getText().toString()));
-                                if(checkBox.isChecked()){
-                                    allnum+=issueNum;
-                                    InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean bean =new InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean(rep.getDemandNum(), rep.getDispatchNum(), issueNum, rep.getFactory(), rep.getMATNR(), rep.getProductOrderNO(), rep.getMAKTX(), rep.getKDAUF(), rep.getKDPOS(), rep.getStorage(), rep.getRSNUM(), rep.getRSPOS(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getMEINS(), "", rep.getMCODE(),rep.getPLORD(),rep.getOTYPE(),rep.getSOBKZ(),rep.getLGPBE());
-                                    sdata.add(bean);
+                            if(spinnerCode==2&&productOrderList.size()>0){
+                                for (int i = 0; i < productOrderList.size(); i++) {
+                                    PreMaterialProductOrderRep rep = productOrderList.get(i);
+                                    View listItem=listview1.getAdapter().getView(i,null,null);
+                                    CheckBox checkBox=listItem.findViewById(R.id.checked);
+                                    EditText et1=listItem.findViewById(R.id.fpsl);
+                                    float issueNum=0;
+                                    issueNum=Float.parseFloat(("0"+et1.getText().toString()));
+                                    if(checkBox.isChecked()&&issueNum>0){
+                                        allnum+=issueNum;
+                                        InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean bean =new InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean(rep.getDemandNum(), rep.getDispatchNum(), issueNum, rep.getFactory(), rep.getMATNR(), rep.getProductOrderNO(), rep.getMAKTX(), rep.getKDAUF(), rep.getKDPOS(), rep.getStorage(), rep.getRSNUM(), rep.getRSPOS(), rep.getProOrderDesc(), rep.getProOrderMaterialCode(), rep.getProOrderMaterialDesc(), rep.getProOrderMaterialUnit(), rep.getMEINS(), "", rep.getMCODE(),rep.getPLORD(),rep.getOTYPE(),rep.getSOBKZ(),rep.getLGPBE());
+                                        sdata.add(bean);
+                                    }
                                 }
+                                InsertFinAProOrderRecordReq req=new InsertFinAProOrderRecordReq(material.getMATNR(), material.getMaterialType(), material.getMAKTX(), allnum, username, material.getWERKS(), fid, sdata);
+                                presenterPrint.InsertFinAProOrderRecord(req);
+                            }else if(spinnerCode==1&&marketorderList.size()>0) {
+                                for (int i = 0; i < marketorderList.size(); i++) {
+                                    GetMarketOrderNoByCodeRepBean marketorderBean = marketorderList.get(i);
+                                    View listItem=listview1.getAdapter().getView(i,null,null);
+                                    CheckBox checkBox=listItem.findViewById(R.id.checked);
+                                    EditText et1=listItem.findViewById(R.id.fpsl);
+                                    float issueNum=0;
+                                    issueNum=Float.parseFloat(("0"+et1.getText().toString()));
+                                    if(checkBox.isChecked()&&issueNum>0){
+                                        allnum+=issueNum;
+                                        InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean bean =new InsertFinAProOrderRecordReq.InsertFinAProOrderRecordReqBean(marketorderBean.getWMENG(), marketorderBean.getYJHSL(), issueNum, "", marketorderBean.getMATRN(), "", material.getMAKTX(), marketorderBean.getKDAUF(), marketorderBean.getKDPOS(), "", "", "", "", "", "","", "", "", "", "", "", "", "");
+                                        sdata.add(bean);
+                                    }
+                                }
+                                InsertFinAProOrderRecordReq req=new InsertFinAProOrderRecordReq(material.getMATNR(), material.getMaterialType(), material.getMAKTX(), allnum, username, material.getWERKS(), fid, sdata);
+                                presenterPrint.InsertFinAProOrderRecord(req);
+                            }else {
+                                DialogUtil.infoMessageDialog(WXKFBQDYActivity.this,"请先选择事业部,查出生产订单或销售订单后再进行标签打印");
                             }
-                            InsertFinAProOrderRecordReq req=new InsertFinAProOrderRecordReq(material.getMATNR(), material.getMaterialType(), material.getMAKTX(), allnum, username, material.getWERKS(), fid, sdata);
-                            presenterPrint.InsertFinAProOrderRecord(req);
                             break;
                         case R.id.print2:
                             // 隐藏该对话框
@@ -299,6 +350,8 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
             spinner1.setSelection(0);
             productOrderList.clear();
             adapter1.notifyDataSetChanged();
+            marketorderList.clear();
+            adapter2.notifyDataSetChanged();
         }else {
             if(!isAgain){
                 DialogUtil.errorMessageDialog(WXKFBQDYActivity.this,data.getStatus().getMessage());
@@ -306,6 +359,17 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
 
         }
 
+    }
+
+    @Override
+    public void onDataSuccess2(GetMarketOrderNoByCodeRep data) {
+        if(data.getStatus().getCode()==1){
+            marketorderList=data.getData();
+            adapter2=new WXKFBQDY2Adapter(WXKFBQDYActivity.this, R.layout.wxkfbqdyitem2,marketorderList);
+            listview1.setAdapter(adapter2);
+        }else {
+            DialogUtil.errorMessageDialog(WXKFBQDYActivity.this,data.getStatus().getMessage());
+        }
     }
 
     @Override

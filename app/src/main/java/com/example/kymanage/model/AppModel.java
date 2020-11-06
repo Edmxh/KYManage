@@ -36,6 +36,7 @@ import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordReq;
+import com.example.kymanage.Beans.GetMarketOrderNoByCode.GetMarketOrderNoByCodeRep;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
 import com.example.kymanage.Beans.GetMaterialStorage.GetMaterialStorageRep;
 import com.example.kymanage.Beans.GetMaterialStorage.GetMaterialStorageReq;
@@ -422,6 +423,7 @@ public class AppModel extends BaseModel{
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("purchaseOrderNo",orderno);
+            System.out.println("采购查询列表:"+jsonObject.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -457,12 +459,13 @@ public class AppModel extends BaseModel{
 
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(detail));
-        System.out.println("预入库的信息为："+jsonArray.toString());
+
         try {
             jsonObject.put("postingDate",postingDate);
             jsonObject.put("documentDate",documentDate);
             jsonObject.put("user",user);
             jsonObject.put("detail",jsonArray);
+            System.out.println("预入库的信息为："+jsonObject.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1207,9 +1210,10 @@ public class AppModel extends BaseModel{
         JSONObject jsonObject = new JSONObject();
 //        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
         Object obj = JSON.toJSON(data);
-        System.out.println(obj.toString());
+
         try {
             jsonObject.put("data",obj);
+            System.out.println("获取301转储收获确认记录:"+jsonObject.toJSONString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -2683,6 +2687,47 @@ public class AppModel extends BaseModel{
                 });
     }
 
+    //获取预占物料销售订单接口
+    public void GetMarketOrderNoByCode(String materialCode, final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(data);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(materialArr));
+//        System.out.println("打印交货单数据："+jsonArray.toString());
+        try {
+            jsonObject.put("materialCode",materialCode);
+            System.out.println("获取预占物料销售订单接口:"+jsonObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetMarketOrderNoByCode(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetMarketOrderNoByCodeRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetMarketOrderNoByCodeRep value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //外协标签打印接口
     public void InsertFinAProOrderRecord(InsertFinAProOrderRecordReq data, final HttpDataListener httpDataListener) {
 
@@ -2692,7 +2737,7 @@ public class AppModel extends BaseModel{
 //        System.out.println("打印交货单数据："+jsonArray.toString());
         try {
             jsonObject.put("data",obj);
-            System.out.println("获取销售发货物料信息及库存地点:"+jsonObject.toString());
+            System.out.println("外协标签打印接口:"+jsonObject.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

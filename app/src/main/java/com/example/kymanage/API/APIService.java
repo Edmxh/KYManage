@@ -21,6 +21,7 @@ import com.example.kymanage.Beans.GetIssueNoteDetail.GetIssueNoteDetailRep;
 import com.example.kymanage.Beans.GetIssueDetailRecord.GetIssueDetailRecordReps;
 import com.example.kymanage.Beans.GetLableStorageInfoJS.GetLableStorageInfoJSRep;
 import com.example.kymanage.Beans.GetMainDumpRecord.GetMainDumpRecordRep;
+import com.example.kymanage.Beans.GetMarketOrderNoByCode.GetMarketOrderNoByCodeRep;
 import com.example.kymanage.Beans.GetMaterialMasterDataJS.GetMaterialMasterDataRep;
 import com.example.kymanage.Beans.GetMaterialStorage.GetMaterialStorageRep;
 import com.example.kymanage.Beans.GetOutStorageMaterialOrderJS.GetOutStorageMaterialOrderJSRep;
@@ -301,6 +302,10 @@ public interface APIService {
     //厂内配送单单条冲销
     @POST(API.OutSemifinProductIssueWriteOffJS)
     Observable<CodeMessageBean> OutSemifinProductIssueWriteOffJS(@Body RequestBody issuevouchernumber);
+
+    //获取预占物料销售订单接口
+    @POST(API.GetMarketOrderNoByCode)
+    Observable<GetMarketOrderNoByCodeRep> GetMarketOrderNoByCode(@Body RequestBody issuevouchernumber);
 
     //外协标签打印接口
     @POST(API.InsertFinAProOrderRecord)

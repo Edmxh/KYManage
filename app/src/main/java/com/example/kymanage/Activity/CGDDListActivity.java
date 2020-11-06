@@ -368,6 +368,7 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
 
     @Override
     public void onDataSuccess2(MaterialFlow103RepStatus data) {
+        LoadingBar.dialog(CGDDListActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
         if(data.getCode()==1){
             try {
                 printList.clear();
@@ -375,7 +376,6 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                 for (Long aLong : data.getData()) {
                     printList.add(aLong);
                 }
-                LoadingBar.dialog(CGDDListActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
                 queryList();
                 //当前时间
                 Date dateNow = new Date();

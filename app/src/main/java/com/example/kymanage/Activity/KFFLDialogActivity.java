@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dyhdyh.widget.loadingbar2.LoadingBar;
 import com.example.kymanage.Adapter.KFFLDialogAdapter;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRep;
 import com.example.kymanage.Beans.InsertProductOrderIssue.InsertProductOrderIssueRepBean;
@@ -184,6 +185,7 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
                     if(rec==true){
+                        LoadingBar.dialog(KFFLDialogActivity.this).setFactoryFromResource(R.layout.layout_custom3).show();
                         SendProductOrderIssueReq req=new SendProductOrderIssueReq(username,FLreqs);
                         presenter2.InsertProductOrderIssue(req);
                     }
@@ -245,6 +247,7 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onDataSuccess2(InsertProductOrderIssueRep data) {
+        LoadingBar.dialog(KFFLDialogActivity.this).setFactoryFromResource(R.layout.layout_custom3).cancel();
         if(data.getStatus().getCode()==1){
             List<InsertProductOrderIssueRepBean> data1 = data.getData();
             if(data1!=null){
@@ -265,7 +268,8 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onFailed(String msg) {
-
+        LoadingBar.dialog(KFFLDialogActivity.this).setFactoryFromResource(R.layout.layout_custom3).cancel();
+        DialogUtil.errorMessageDialog(KFFLDialogActivity.this,"服务器响应失败，请稍后重试!");
     }
 
     //扫描操作
