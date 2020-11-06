@@ -1199,10 +1199,11 @@ public class CreateBitmap{
         canvas.translate(0,top);
         layout.draw(canvas);
 
+        //物料编码换行
         String str3=rep.getMaterialCode();
         textPaint.setFakeBoldText(true);
         textPaint.setTextSize(text2);
-
+        //
         top+=titleTextSize+30;
         StaticLayout layout2 = new StaticLayout(str3,textPaint,QRx-10, Layout.Alignment.ALIGN_NORMAL,1.0F,0.0F,true);
         canvas.translate(0,top);
