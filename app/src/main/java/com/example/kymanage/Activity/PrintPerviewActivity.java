@@ -129,8 +129,8 @@ public class PrintPerviewActivity extends BaseActivity implements PrintBaseView<
     @Override
     public void onDataSuccessPrint(GetParchaseCenterLableReps data) {
         GetParchaseCenterLableRep label = data.getData().get(0);
-        bm=cb.createImage1(label,tf);
-        tempbmIV.setImageBitmap(bm);
+//        bm=cb.createImage1(label,tf);
+//        tempbmIV.setImageBitmap(bm);
     }
 
     @Override

@@ -187,7 +187,7 @@ public class WXKFBQDYActivity extends BaseActivity implements ScanBaseView<GetMa
                     //选择上游事业部，去获取生产订单
                     spinnerCode=2;
                     float reqnum=Float.parseFloat("0"+wlsl.getText().toString());
-                    presenter1.CGSHReceiveDetail("","",wlbm.getText().toString(),factorys.get(arg2),reqnum);
+                    presenter1.CGSHReceiveDetail(marketorderno,marketorderrow,wlbm.getText().toString(),factorys.get(arg2),reqnum);
                 }
 
             }

@@ -83,6 +83,7 @@ public class PreMaterialProductOrderRep {
     private String SOBKZ;
     private String PLORD;
     private String OTYPE;
+    private String ZDDZT;
 
 
 
@@ -422,5 +423,13 @@ public class PreMaterialProductOrderRep {
 
     public void setChange(boolean change) {
         this.change = change;
+    }
+
+    public String getZDDZT() {
+        return ZDDZT;
+    }
+
+    public void setZDDZT(String ZDDZT) {
+        this.ZDDZT = ZDDZT;
     }
 }

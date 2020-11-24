@@ -156,6 +156,7 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                 //发料操作
                 if(datas!=null){
                     boolean rec=true;
+                    boolean ddzt=true;
                     for (int i = 0; i < datas.size(); i++) {
                         PreMaterialProductOrderRep currentRep = datas.get(i);
                         View listItem=mListview1.getAdapter().getView(i,null,null);
@@ -166,6 +167,11 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                         EditText et2 = listItem.findViewById(R.id.xlh);
                         String xlhStr = et2.getText().toString();
                         if(issueNum!=0){
+                            //判断订单状态,不是REL不让发料
+                            if(!currentRep.getZDDZT().equals("REL")){
+                                ddzt=false;
+                                break;
+                            }
                             int count= (xlhStr.length()-xlhStr.replace(",","").length());
                             if(issueNum==(count+1)||!currentRep.getSERNP().equals("KY01")){
                                 InsertProductOrderIssueReqBean req=new InsertProductOrderIssueReqBean(pono, porow, "", currentRep.getMATNR(), currentRep.getMAKTX(), currentRep.getMEINS(), currentRep.getFactory(), currentRep.getProductOrderNO(), currentRep.getRSNUM(), currentRep.getRSPOS(), "", currentRep.getKDAUF(), currentRep.getKDPOS(), currentRep.getRSART(),"", currentRep.getDemandNum(), currentRep.getZSERNR(), currentRep.getStorage(), (""+issueNum),(""+currentRep.getIssuedNum()),currentRep.getProOrderDesc(),currentRep.getProOrderMaterialCode(),currentRep.getProOrderMaterialDesc(),currentRep.getProOrderMaterialUnit(),currentRep.getPLNFL(),currentRep.getLTXA1(),currentRep.getRSNUM(),currentRep.getRSPOS(),currentRep.getMATKL(),currentRep.getLOGGR(),currentRep.getLGPBE(),"货架名称",xlhStr,currentRep.getSOBKZ());
@@ -178,17 +184,27 @@ public class KFFLDialogActivity extends AppCompatActivity implements View.OnClic
                                 FLreqs.add(req);
                             }else {
                                 rec=false;
-                                Toast.makeText(this, "序列号数量错误", Toast.LENGTH_SHORT).show();
                                 break;
                             }
-
                         }
                     }
-                    if(rec==true){
-                        LoadingBar.dialog(KFFLDialogActivity.this).setFactoryFromResource(R.layout.layout_custom3).show();
-                        SendProductOrderIssueReq req=new SendProductOrderIssueReq(username,FLreqs);
-                        presenter2.InsertProductOrderIssue(req);
+                    if(ddzt){
+                        if(FLreqs.size()>0){
+                            if(rec==true){
+                                LoadingBar.dialog(KFFLDialogActivity.this).setFactoryFromResource(R.layout.layout_custom3).show();
+                                SendProductOrderIssueReq req=new SendProductOrderIssueReq(username,FLreqs);
+                                presenter2.InsertProductOrderIssue(req);
+                            }else {
+                                DialogUtil.errorMessageDialog(KFFLDialogActivity.this,"序列号数量错误!");
+                            }
+                        }else {
+                            DialogUtil.errorMessageDialog(KFFLDialogActivity.this,"生产订单分配数量为0!");
+                        }
+
+                    }else {
+                        DialogUtil.errorMessageDialog(KFFLDialogActivity.this,"非正常状态的生产订单无法发料!");
                     }
+
                 }
                 break;
             case R.id.cancel:

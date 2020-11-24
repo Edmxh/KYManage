@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -139,6 +140,17 @@ public class CGSHRKAdapter extends ArrayAdapter<GetPurWayMaterialDataRep>impleme
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //将adapter 添加到spinner中
         viewHolder.spinner1.setAdapter(adapter2);
+        viewHolder.spinner1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                //int position,long id,一般它俩相等
+                System.out.println("selectedItemPosition=="+arg2);
+                mList.get(position).setSelectedItem(arg2);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         if(!repData.getSerialNO().equals("KY01")){
             viewHolder.xlhlayout.setVisibility(View.GONE);

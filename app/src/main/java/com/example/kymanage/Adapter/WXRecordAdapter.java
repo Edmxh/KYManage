@@ -61,6 +61,7 @@ public class WXRecordAdapter extends ArrayAdapter<GetFinProStorageRecordRep> {
 //获取控件实例
         viewHolder.xh=view.findViewById(R.id.xh);
         viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
+        viewHolder.scddh=view.findViewById(R.id.scddh);
         viewHolder.wlbm=view.findViewById(R.id.wlbm);
         viewHolder.wlms=view.findViewById(R.id.wlms);
         viewHolder.wllx=view.findViewById(R.id.wllx);
@@ -99,6 +100,21 @@ public class WXRecordAdapter extends ArrayAdapter<GetFinProStorageRecordRep> {
         String newStr1 = rep.getMarketOrderNO().replaceAll("^(0+)", "");
         String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
         viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
+
+        String scddh="";
+        if(rep.getDatajson()!=null){
+            for (int i = 0; i < rep.getDatajson().size(); i++) {
+                String newStr3 = rep.getDatajson().get(i).getProductOrderNO().replaceAll("^(0+)", "");
+                if(i==0){
+                    scddh+=newStr3+"("+rep.getDatajson().get(i).getQty()+")";
+                }else {
+                    scddh+=","+newStr3+"("+rep.getDatajson().get(i).getQty()+")";
+                }
+
+            }
+        }
+
+        viewHolder.scddh.setText(scddh);
 
         viewHolder.wlbm.setText(rep.getMaterialCode());
         viewHolder.wlms.setText(rep.getMaterialDesc());
@@ -148,6 +164,7 @@ public class WXRecordAdapter extends ArrayAdapter<GetFinProStorageRecordRep> {
     class ViewHolder{
         TextView xh;
         TextView xsddh_hang;
+        TextView scddh;
         TextView wlbm;
         TextView wlms;
         TextView wllx;

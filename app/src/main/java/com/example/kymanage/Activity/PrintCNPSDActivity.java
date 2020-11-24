@@ -308,6 +308,12 @@ public class PrintCNPSDActivity extends BaseActivity implements BaseView1<GetCMI
                            String DispatchListNO=lableObject.getString("dp");
                            String materialCode=lableObject.getString("code");
                            String productOrder=lableObject.getString("po");
+                           String status=lableObject.getString("status");
+                            System.out.println("status="+status);
+                            if(status!=null&&status.equals("2610")){
+                                DialogUtil.errorMessageDialog(PrintCNPSDActivity.this,"该派工单已发料，无需打印场内配送单!");
+                                return;
+                            }
 //                           String user=lableObject.getString("user");
 //                           String createDate=lableObject.getString("date");
                             //判断是否重复扫码

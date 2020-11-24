@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,9 +75,33 @@ public class WXExceptionAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>i
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
         } else{
-            view=convertView;
-            viewHolder=(ViewHolder) view.getTag();
+            view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+
+            // 避免每次调用getView()时都要重新获取控件实例
+            viewHolder=new ViewHolder();
+            viewHolder.parent_layout=view.findViewById(R.id.parent_layout);
+            viewHolder.xh=view.findViewById(R.id.xh);
+            viewHolder.cgddh_hang=view.findViewById(R.id.cgddh_hang);
+            viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
+            viewHolder.wlbm=view.findViewById(R.id.wlbm);
+            viewHolder.wlms=view.findViewById(R.id.wlms);
+            viewHolder.wllx=view.findViewById(R.id.wllx);
+
+            viewHolder.xqrq=view.findViewById(R.id.xqrq);
+            viewHolder.spinner1=view.findViewById(R.id.spinner1);
+            viewHolder.xqsl=view.findViewById(R.id.xqsl);
+            viewHolder.yrksl=view.findViewById(R.id.yrksl);
+            viewHolder.dhsl=view.findViewById(R.id.dhsl);
+            viewHolder.receive=view.findViewById(R.id.receive);
+            viewHolder.receive.setOnClickListener(this);
+            viewHolder.receive.setTag(position);
+
+            // 让ViewHolder持有一个TextWathcer，动态更新position来防治数据错乱；不能将position定义成final直接使用，必须动态更新
+            viewHolder.mTextWatcher = new MyTextWatcher();
+            viewHolder.dhsl.addTextChangedListener(viewHolder.mTextWatcher);
             viewHolder.updatePosition(position);
+            // 将ViewHolder存储在View中（即将控件的实例存储在其中）
+            view.setTag(viewHolder);
         }
 
         // 获取控件实例，并调用set...方法使其显示出来
@@ -134,6 +159,17 @@ public class WXExceptionAdapter extends ArrayAdapter<GetPurchaseOrderInfoJSRep>i
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //将adapter 添加到spinner中
         viewHolder.spinner1.setAdapter(adapter2);
+        viewHolder.spinner1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                //int position,long id,一般它俩相等
+                System.out.println("selectedItemPosition=="+arg2);
+                mList.get(position).setSelectedItem(arg2);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         /**
          * 需求/已入库/到货

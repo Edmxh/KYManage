@@ -30,13 +30,16 @@ import java.net.URL;
 public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
 
 
+    //登录按钮
     private Button login_button;
+    //用户名密码输入框
     private EditText name,password;
     private String string_name;
     private String string_password;
+    //登录接口
     private LoginPresenter loginPresenter;
     private static final String TAG = "MainActivity";
-    //private CheckBox remember;
+    //private CheckBox remember;是否记住密码，已弃用
     private boolean checked=false;
     private String token;
     private int code;
@@ -114,7 +117,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
                     string_password = password.getText().toString();
                     System.out.println("login2");
                     URL url = null;
-                    url = new URL("http://" + "10.254.100.81" + "/ThingX" + "/Home/");
+                    url = new URL("http://" + "10.254.100.82" + "/ThingX" + "/Home/");
                     String authorization = "Mobile "
                             + Base64.base64Encode(string_name + ":" + string_password);
                     HttpURLConnection conn = null;
@@ -124,7 +127,7 @@ public class MainActivity extends BaseActivity implements IBaseView<LoginBean> {
                     code = 0;
                     conn.connect();
                     code = conn.getResponseCode();
-//                            System.out.println("---"+code);
+                    System.out.println("---"+code);
                     code2=code;
                     //System.out.println(1);
                     if (code == 403) {

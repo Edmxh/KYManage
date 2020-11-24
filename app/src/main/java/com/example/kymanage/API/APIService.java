@@ -203,6 +203,10 @@ public interface APIService {
     @POST(API.GetFinProStorageRecordNote)
     Observable<GetFinProStorageRecordNoteRep> GetFinProStorageRecordNote(@Body RequestBody issuevouchernumber);
 
+    //发料及派工单打印
+    @POST(API.GetIssueAndDispatchListJS)
+    Observable<GetDispatchListJSRep> GetIssueAndDispatchListJS(@Body RequestBody issuevouchernumber);
+
     //获取生产派工单接口
     @POST(API.GetDispatchListJS)
     Observable<GetDispatchListJSRep> GetDispatchListJS(@Body RequestBody issuevouchernumber);

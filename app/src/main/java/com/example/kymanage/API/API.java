@@ -6,7 +6,7 @@ public interface API {
 
 
 //    String BASEURL = "http://"+pt.getString("baseurl")+"/";
-    String BASEURL = "http://"+"10.254.100.81"+"/";
+    String BASEURL = "http://"+"10.254.100.82"+"/";
     //登录
     String LOGIN = "ThingX/Things/AppProgramThing/Services/Login";
 
@@ -110,6 +110,11 @@ public interface API {
 
     //获取机加101入库标签信息
     String GetFinProStorageRecordNote="ThingX/Things/AppProgramThing/Services/GetFinProStorageRecordNote";
+
+
+    //发料及派工单打印
+    String GetIssueAndDispatchListJS="ThingX/Things/AppProgramThing/Services/GetIssueAndDispatchListJS";
+
 
     //获取生产派工单接口
     String GetDispatchListJS="ThingX/Things/AppProgramThing/Services/GetDispatchListJS";

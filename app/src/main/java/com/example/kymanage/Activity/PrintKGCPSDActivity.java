@@ -321,8 +321,10 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
             if(!cf){
                 MaterialFactoryDumpReqBean scanBean=new MaterialFactoryDumpReqBean(getCurrentdate(), getCurrentdate(), fid, data.getMaterial().getMATNR(), data.getMaterial().getMAKTX(), data.getMaterial().getMaterialType(), data.getMaterial().getMEINS(), po, no, line, qty, "301转储",labelnum,"",gc);
                 datas.add(scanBean);
+                //声音提示
                 DialogUtil.startAlarm(this);
                 vibrator.vibrate(300);
+
                 List<MaterialFactoryDumpReqBean> newdatas=new ArrayList<MaterialFactoryDumpReqBean>();
                 for (int i = datas.size() - 1; i >= 0; i--) {
                     newdatas.add(datas.get(i));
@@ -352,7 +354,12 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
                 GetDumpRecordNodeReqBean printData=new GetDumpRecordNodeReqBean(bean.getPID());
                 printDatas.add(printData);
             }
-            presenter3.GetDumpRecordNode(printDatas);
+            if(printDatas.size()>0){
+                presenter3.GetDumpRecordNode(printDatas);
+            }else {
+                DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,"转储接口未返回PID，无法打印转储单！");
+            }
+
             datas.clear();
             adapter=new PrintKGCPSDAdapter(this, R.layout.wxkgcpsditem,datas);
             adapter.setOnInnerItemOnClickListener(this);
@@ -435,6 +442,7 @@ public class PrintKGCPSDActivity extends BaseActivity implements ScanBaseView<Ge
         }else {
             LoadingBar.dialog(PrintKGCPSDActivity.this).setFactoryFromResource(R.layout.layout_custom5).cancel();
             DialogUtil.errorMessageDialog(PrintKGCPSDActivity.this,data.getStatus().getMessage());
+//            presenter1.GetMaterialMasterDataJS(bm, "2090");
         }
     }
 

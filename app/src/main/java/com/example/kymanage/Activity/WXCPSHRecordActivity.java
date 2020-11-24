@@ -177,8 +177,6 @@ public class WXCPSHRecordActivity extends BaseActivity implements BaseView1<GetO
             public void onClick(View v) {
                 vibrator.vibrate(30);
                 confirmDeleteDialog(WXCPSHRecordActivity.this);
-
-
             }
         });
 

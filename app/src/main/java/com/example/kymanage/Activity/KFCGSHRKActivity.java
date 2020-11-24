@@ -70,6 +70,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
     private String pono;
     private String porow;
     private String bm;
+    private int xh;
     private float sl;
     private String area;
     private int cs;
@@ -196,7 +197,7 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
         if(data.getCode()==1){
             Toast.makeText(KFCGSHRKActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
             if(data.getData()!=null){
-                req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid,"");
+                req=new WarehouseReceiptReq(pono, porow, po, bm, factory, null, sl,area, cs,aid,"",xh);
                 receiptReqs.add(req);
                 DialogUtil.startAlarm(this);
                 vibrator.vibrate(300);
@@ -287,7 +288,8 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                     float recenum=Float.parseFloat(et.getText().toString());
                     checkedReq.setReceNum(recenum);
                     //选中的需求仓库
-                    int selectedItemPosition = sp.getSelectedItemPosition();
+//                    int selectedItemPosition = sp.getSelectedItemPosition();
+                    int selectedItemPosition = dataRep.getSelectedItem();
 //                System.out.println("选中的仓库index:"+selectedItemPosition);
                     areadess= dataRep.getData().getStorage();
                     ckid=areadess.get(selectedItemPosition).getId();
@@ -390,8 +392,11 @@ public class KFCGSHRKActivity extends BaseActivity implements ScanBaseView<GetPu
                                 labelSquNum=lableObject.getString("num");
                                 cs=lableObject.getInteger("cs");
                                 aid=lableObject.getLong("aid");
+                                xh=lableObject.getInteger("xh");
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                DialogUtil.errorMessageDialog(KFCGSHRKActivity.this,"二维码解析错误，缺少固定字段");
+                                return;
                             }
 
                             //判断是否重复扫码

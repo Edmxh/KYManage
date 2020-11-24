@@ -544,7 +544,7 @@ public class AppModel extends BaseModel{
         JSONObject jsonObject = new JSONObject();
         //JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(data));
         //System.out.println(jsonArray.toString());
-        System.out.println("打印标签接口调用："+AdvanceStorageIds.size());
+
         System.out.println(AdvanceStorageIds.toString());
 //        System.out.println("打印标签："+AdvanceStorageIds.get(0));
         System.out.println(PrintTime);
@@ -552,6 +552,7 @@ public class AppModel extends BaseModel{
             jsonObject.put("AdvanceStorageIds",AdvanceStorageIds);
             jsonObject.put("Employee",Employee);
             jsonObject.put("PrintTime",PrintTime);
+            System.out.println("打印采购标签接口调用："+jsonObject.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1615,6 +1616,47 @@ public class AppModel extends BaseModel{
 
                     @Override
                     public void onNext(OutsourceFinishedProductReceivingJSRep value) {
+                        httpDataListener.onDataSuccess(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        httpDataListener.onFailer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //发料及派工单打印
+    public void GetIssueAndDispatchListJS(List<Long> AdvanceStorageIdArr, String user,final HttpDataListener httpDataListener) {
+
+        JSONObject jsonObject = new JSONObject();
+//        Object obj = JSON.toJSON(detail);
+//        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(AdvanceStorageId));
+        try {
+            jsonObject.put("AdvanceStorageIdArr",AdvanceStorageIdArr);
+            jsonObject.put("user",user);
+            System.out.println("发料及派工单打印："+jsonObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),jsonObject.toString());
+        RetrofitManager.getmInstance().createService1(APIService.class).
+                GetIssueAndDispatchListJS(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetDispatchListJSRep>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetDispatchListJSRep value) {
                         httpDataListener.onDataSuccess(value);
                     }
 

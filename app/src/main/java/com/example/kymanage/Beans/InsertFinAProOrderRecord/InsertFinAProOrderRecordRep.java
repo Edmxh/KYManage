@@ -131,6 +131,8 @@ public class InsertFinAProOrderRecordRep {
         private String MaterialCode;
         private String clientNO;
         private String clientShortName;
+        private String workNO;
+        private String facName;
 
         public static InsertFinAProOrderRecord objectFromData(String str) {
 
@@ -366,6 +368,22 @@ public class InsertFinAProOrderRecordRep {
 
         public void setClientShortName(String clientShortName) {
             this.clientShortName = clientShortName;
+        }
+
+        public String getWorkNO() {
+            return workNO;
+        }
+
+        public void setWorkNO(String workNO) {
+            this.workNO = workNO;
+        }
+
+        public String getFacName() {
+            return facName;
+        }
+
+        public void setFacName(String facName) {
+            this.facName = facName;
         }
     }
 }

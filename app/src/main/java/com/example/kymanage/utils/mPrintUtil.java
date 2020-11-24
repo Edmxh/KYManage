@@ -157,7 +157,7 @@ public class mPrintUtil {
         printHelper.PrintLineStringByType("机加生产派工单",titleTextSize, PrintHelper.PrintType.Centering,false);
         printHelper.PrintLineEnd();
         //画二维码
-        String content="{\"code\":\""+rep.getMATNR()+"\",\"dp\":\""+rep.getDispatchListNO()+"\",\"po\":\""+rep.getAUFNR()+"\",\"no\":\""+rep.getKDAUF()+"\",\"line\":\""+rep.getKDPOS()+"\",\"user\":\""+rep.getUsername()+"\",\"date\":\""+rep.getCreateDate()+"\"}";
+        String content="{\"code\":\""+rep.getMATNR()+"\",\"dp\":\""+rep.getDispatchListNO()+"\",\"po\":\""+rep.getAUFNR()+"\",\"no\":\""+rep.getKDAUF()+"\",\"status\":\""+"2610"+"\",\"line\":\""+rep.getKDPOS()+"\",\"user\":\""+rep.getUsername()+"\",\"date\":\""+rep.getCreateDate()+"\"}";
         Bitmap bm=null;
         try {
             bm = BarcodeUtil.encodeAsBitmap(content,

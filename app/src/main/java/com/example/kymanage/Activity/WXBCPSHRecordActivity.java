@@ -287,14 +287,19 @@ public class WXBCPSHRecordActivity extends BaseActivity implements BaseView1<Sem
     @Override
     public void onDataSuccess2(CodeMessageBean data) {
         LoadingBar.dialog(WXBCPSHRecordActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
-        Toast.makeText(WXBCPSHRecordActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
+        if(data.getCode()==1){
+            Toast.makeText(WXBCPSHRecordActivity.this,data.getMessage(),Toast.LENGTH_SHORT).show();
 
-        if(queryself.isChecked()){
-            queryall=false;
+            if(queryself.isChecked()){
+                queryall=false;
+            }else {
+                queryall=true;
+            }
+            presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,queryall,xsddh.getText().toString(),"",wlbm.getText().toString(),"","");
         }else {
-            queryall=true;
+            DialogUtil.errorMessageDialog(WXBCPSHRecordActivity.this,data.getMessage());
         }
-        presenter1.Semi_FinishedProductReceivingRecordJS(date.getText().toString(),username,queryall,xsddh.getText().toString(),"",wlbm.getText().toString(),"","");
+
     }
 
     @Override

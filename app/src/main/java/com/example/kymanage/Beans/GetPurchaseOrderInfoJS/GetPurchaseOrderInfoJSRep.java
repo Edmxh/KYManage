@@ -64,6 +64,7 @@ public class GetPurchaseOrderInfoJSRep implements Serializable {
     private String marketorderno;
     private String marketorderrow;
     private List<GetOutsourcingExceptionTypeJSRep.GetOutsourcingExceptionTypeJSRepBean> reasonList;
+    private int selectedItem;
 
     public static GetPurchaseOrderInfoJSRep objectFromData(String str) {
 
@@ -323,5 +324,13 @@ public class GetPurchaseOrderInfoJSRep implements Serializable {
 
     public void setLIFNR(String LIFNR) {
         this.LIFNR = LIFNR;
+    }
+
+    public int getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(int selectedItem) {
+        this.selectedItem = selectedItem;
     }
 }

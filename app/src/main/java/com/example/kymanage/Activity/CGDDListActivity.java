@@ -405,12 +405,12 @@ public class CGDDListActivity extends BaseActivity implements BaseView1<GetRecev
                         int labelNum= (int) label.getNum();
                         for (int i = 0; i <labelNum ; i++) {
                             label.setNum(1);
-                            Bitmap bm=cb.createImage1(label,tf);
+                            Bitmap bm=cb.createImage1(label,(i+1),tf);
                             printHelper.PrintBitmapAtCenter(bm,384,480);
                             printHelper.printBlankLine(81);
                         }
                     }else {
-                        Bitmap bm=cb.createImage1(label,tf);
+                        Bitmap bm=cb.createImage1(label,1,tf);
                         printHelper.PrintBitmapAtCenter(bm,384,480);
                         printHelper.printBlankLine(81);
                     }

@@ -53,6 +53,7 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
             viewHolder.xqjb=view.findViewById(R.id.xqjb);
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
+            viewHolder.ddzt=view.findViewById(R.id.ddzt);
             viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
@@ -82,6 +83,7 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
             viewHolder.xqjb=view.findViewById(R.id.xqjb);
             viewHolder.scddh=view.findViewById(R.id.scddh);
             viewHolder.xsddh_hang=view.findViewById(R.id.xsddh_hang);
+            viewHolder.ddzt=view.findViewById(R.id.ddzt);
             viewHolder.jhksrq=view.findViewById(R.id.jhksrq);
             viewHolder.xqsl=view.findViewById(R.id.xqsl);
             viewHolder.yfpsl=view.findViewById(R.id.yfpsl);
@@ -120,6 +122,13 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
         String newStr1 = rep.getKDAUF().replaceAll("^(0+)", "");
         String newStr2 = rep.getKDPOS().replaceAll("^(0+)", "");
         viewHolder.xsddh_hang.setText(newStr1+"/"+newStr2);
+//        rep.setZDDZT("123");//测试
+        if(rep.getZDDZT().equals("REL")){
+            viewHolder.ddzt.setText("正常状态");
+        }else {
+            viewHolder.ddzt.setText("非正常状态");
+        }
+
         viewHolder.jhksrq.setText(rep.getPlanStartTime());
         String num1str=""+rep.getDemandNum();
         viewHolder.xqsl.setText(num1str);
@@ -192,6 +201,7 @@ public class KFFLDialogAdapter extends ArrayAdapter<PreMaterialProductOrderRep> 
         TextView xqjb;
         TextView scddh;
         TextView xsddh_hang;
+        TextView ddzt;
         TextView jhksrq;
         TextView xqsl;
         TextView yfpsl;

@@ -31,6 +31,7 @@ public class GetPurWayMaterialDataRep {
     private long code;
     private GetMaterialPropertieInfoJSRepBean data;
     private String message;
+    private int selectedItem;
 
     public long getCode() {
         return code;
@@ -54,5 +55,13 @@ public class GetPurWayMaterialDataRep {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(int selectedItem) {
+        this.selectedItem = selectedItem;
     }
 }

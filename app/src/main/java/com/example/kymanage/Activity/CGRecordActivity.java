@@ -331,12 +331,12 @@ public class CGRecordActivity extends BaseActivity implements BaseView1<StatusRe
                     for (int i = 0; i <labelNum ; i++) {
                         System.out.println("第"+i+"个签打印");
                         label.setNum(1);
-                        Bitmap bm=cb.createImage1(label,tf);
+                        Bitmap bm=cb.createImage1(label,(i+1),tf);
                         printHelper.PrintBitmapAtCenter(bm,384,480);
                         printHelper.printBlankLine(81);
                     }
                 }else {
-                    Bitmap bm=cb.createImage1(label,tf);
+                    Bitmap bm=cb.createImage1(label,1,tf);
                     printHelper.PrintBitmapAtCenter(bm,384,480);
 //                    printHelper.GoToNextPage();
                     printHelper.printBlankLine(81);

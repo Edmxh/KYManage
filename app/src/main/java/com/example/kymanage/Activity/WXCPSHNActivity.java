@@ -318,6 +318,10 @@ public class WXCPSHNActivity extends BaseActivity implements ScanBaseView<GetPur
         EditText et=itmeview.findViewById(R.id.dhsl);
         String recenumstr=et.getText().toString();
         float num=Float.parseFloat(("0"+recenumstr));
+        if(num==0){
+            DialogUtil.errorMessageDialog(WXCPSHNActivity.this,"收货数量为0禁止收货，请修改收货数量！");
+            return;
+        }
         intent.putExtra("marketorderno", marketorderno);
         intent.putExtra("marketorderrow", marketorderrow);
         intent.putExtra("materialCode", selectListData.getMATNR());

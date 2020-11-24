@@ -261,8 +261,16 @@ public class WXSHJLActivity extends BaseActivity implements BaseView1<GetFinProS
     @Override
     public void onDataSuccess2(StatusRespBean data) {
         LoadingBar.dialog(WXSHJLActivity.this).setFactoryFromResource(R.layout.layout_custom2).cancel();
-        Toast.makeText(WXSHJLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
-        queryRecord();
+        if(data.getStatus()!=null){
+            if(data.getStatus().getCode()==1){
+                Toast.makeText(WXSHJLActivity.this,data.getStatus().getMessage(),Toast.LENGTH_SHORT).show();
+                queryRecord();
+            }else {
+                DialogUtil.errorMessageDialog(WXSHJLActivity.this,data.getStatus().getMessage());
+            }
+        }
+
+
     }
 
     @Override

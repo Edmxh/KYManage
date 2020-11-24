@@ -172,8 +172,10 @@ public class KFZCSHAtivity extends BaseActivity implements ScanBaseView<GetTrans
             Toast.makeText(this, data.getStatus().getMessage(), Toast.LENGTH_SHORT).show();
             DialogUtil.startAlarm(this);
             vibrator.vibrate(300);
-            if(data.getMdata().getStatus().equals("已全部转储配送")||data.getMdata().getStatus().equals("已全部转储配送发料")){
-                DialogUtil.infoMessageDialog(KFZCSHAtivity.this,"已发料，请勿重复操作!");
+            if(data.getMdata().getStatus().equals("已全部配送")){
+                DialogUtil.infoMessageDialog(KFZCSHAtivity.this,"配送单已全部配送，请勿重复扫码!");
+            }else if(data.getMdata().getStatus().equals("已全部发料")){
+                DialogUtil.infoMessageDialog(KFZCSHAtivity.this,"配送单已全部发料，请勿重复扫码!");
             }
             try {
                 datas.clear();

@@ -243,29 +243,30 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
             allnum1=allnum;
         }else {
             //若有本事业部生产订单,循环本事业部生产订单，确保对应的上游事业部生产订单分配数量都小于本事业部生产订单分配数量
-            for (AUFNRBean aufnrBean : AUFNRs) {
-                String pmatnr = aufnrBean.getPMATNR();
-                float qty1 = aufnrBean.getPIssueQty();//本事业部订单分配数量
-//                System.out.println("本事业部共分配:"+qty1);
-                float qty2=0;//上游订单分配数量
-                for (UPAUFNRBean upaufnr : UPAUFNRs) {
-                    //物料编码相同，则可本事业部生产订单与上游事业部生产订单对应起来
-                    if(upaufnr.getPMATNR().equals(pmatnr)){
-                        qty2+=upaufnr.getUPPIssueQty();
-                        System.out.println("--"+upaufnr.getUPPIssueQty()+"--");
-                    }
-                }
-//                System.out.println("上游事业部共分配:"+qty2);
-                if(qty2>qty1){
-                    rece=false;
-                    break;
-                }
-            }
+//            for (AUFNRBean aufnrBean : AUFNRs) {
+//                String pmatnr = aufnrBean.getPMATNR();
+//                float qty1 = aufnrBean.getPIssueQty();//本事业部订单分配数量
+////                System.out.println("本事业部共分配:"+qty1);
+//                float qty2=0;//上游订单分配数量
+//                for (UPAUFNRBean upaufnr : UPAUFNRs) {
+//                    //物料编码相同，则可本事业部生产订单与上游事业部生产订单对应起来
+//                    if(upaufnr.getPMATNR().equals(pmatnr)){
+//                        qty2+=upaufnr.getUPPIssueQty();
+//                        System.out.println("--"+upaufnr.getUPPIssueQty()+"--");
+//                    }
+//                }
+////                System.out.println("上游事业部共分配:"+qty2);
+//                if(qty2>qty1){
+//                    rece=false;
+//                    break;
+//                }
+//            }
         }
         System.out.println(rece);
         System.out.println(allnum);
+//        System.out.println(allnum1);
         System.out.println(allnum2);
-        if(rece&&allnum2<=allnum&&allnum1<=allnum){
+        if(allnum2<=allnum&&allnum1<=allnum){
             //成品收货，类型20，4的   本事业部必须有生产订单
             if((kinds.equals("20")||kinds.equals("4"))&&AUFNRs.size()==0){
                 LoadingBar.dialog(WXCPSHDialogActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
@@ -278,7 +279,7 @@ public class WXCPSHDialogActivity extends BaseActivity implements BaseView1<PreM
 
         } else {
             LoadingBar.dialog(WXCPSHDialogActivity.this).setFactoryFromResource(R.layout.layout_custom1).cancel();
-            Toast.makeText(this, "分配数量有误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "分配数量有误，给生产订单分配数量不得大于收货总数量", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -230,7 +230,9 @@ public class WXExceptionReceiveActivity extends BaseActivity implements ScanBase
             Spinner sp= itme.findViewById(R.id.spinner1);
             float recenum=Float.parseFloat("0"+et.getText().toString());
             //选中的需求仓库
-            int selectedItemPosition = sp.getSelectedItemPosition();
+//            int selectedItemPosition = sp.getSelectedItemPosition();
+            int selectedItemPosition = selectedData.getSelectedItem();
+            System.out.println("selectedItemPosition="+selectedItemPosition);
             String idStr = reasonList.get(selectedItemPosition).getId();
 
             OutsourcingExceptionJSReq req=new OutsourcingExceptionJSReq(getCurrentdate(), getCurrentdate(), selectedData.getEBELN(), selectedData.getEBELP(), selectedData.getKINDS(), marketorderno, marketorderrow, selectedData.getMATNR(), selectedData.getMAKTX(), selectedData.getMEINS(), selectedData.getMENGE(), upstreamFactory, username, idStr, recenum, selectedData.getInStorage(), selectedData.getMaterialType());

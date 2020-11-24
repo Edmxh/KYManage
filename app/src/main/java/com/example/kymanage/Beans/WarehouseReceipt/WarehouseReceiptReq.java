@@ -27,11 +27,12 @@ public class WarehouseReceiptReq {
     private int batchNumber;
     private long AdvanceStorageId;
     private String serialNO;//序列号，逗号隔开
+    private int LableNum;//序号
 
     public WarehouseReceiptReq() {
     }
 
-    public WarehouseReceiptReq(String orderNum, String orderRow, String productOrder, String materialCode, String demandFactory, String demandStorage, float receNum, String targetArea, int batchNumber, long advanceStorageId, String serialNO) {
+    public WarehouseReceiptReq(String orderNum, String orderRow, String productOrder, String materialCode, String demandFactory, String demandStorage, float receNum, String targetArea, int batchNumber, long advanceStorageId, String serialNO, int lableNum) {
         this.orderNum = orderNum;
         this.orderRow = orderRow;
         this.productOrder = productOrder;
@@ -43,6 +44,7 @@ public class WarehouseReceiptReq {
         this.batchNumber = batchNumber;
         AdvanceStorageId = advanceStorageId;
         this.serialNO = serialNO;
+        LableNum = lableNum;
     }
 
     public String getOrderNum() {
@@ -133,5 +135,14 @@ public class WarehouseReceiptReq {
     @JSONField(name = "serialNO")
     public void setSerialNO(String serialNO) {
         this.serialNO = serialNO;
+    }
+
+    @JSONField(name = "LableNum")
+    public int getLableNum() {
+        return LableNum;
+    }
+    @JSONField(name = "LableNum")
+    public void setLableNum(int lableNum) {
+        LableNum = lableNum;
     }
 }

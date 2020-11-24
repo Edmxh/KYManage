@@ -45,6 +45,7 @@ import com.example.kymanage.presenter.InterfaceView.Print2BaseView;
 import com.example.kymanage.presenter.InterfaceView.PrintBaseView;
 import com.example.kymanage.presenter.InterfaceView.ScanBaseView;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetDispatchListJSPresenter;
+import com.example.kymanage.presenter.Presenters.WXPage1.GetIssueAndDispatchListJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.GetPurchaseOrderInfoJSPresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.Semi_FinishedProductReceivingLablePresenter;
 import com.example.kymanage.presenter.Presenters.WXPage1.Semi_FinishedProductReceivingPresenter;
@@ -88,7 +89,9 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
     private Typeface tf;
     //表单打印工具
     private com.example.kymanage.utils.mPrintUtil mPrintUtil=new mPrintUtil();
-    private GetDispatchListJSPresenter presenterPrint;//派工单打印
+//    private GetDispatchListJSPresenter presenterPrint;//派工单打印
+    private GetIssueAndDispatchListJSPresenter presenterPrint;//派工单打印
+
     private List<Long> AdvanceStorageId;
     private Semi_FinishedProductReceivingLablePresenter presenterPrint2;//标签打印
     private long currAdvanceStorageId;//当前收货返回的id，随收货操作成功时更新
@@ -138,7 +141,7 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
         presenter2.setView(this);
 
         //打印派工单
-        presenterPrint=new GetDispatchListJSPresenter();
+        presenterPrint=new GetIssueAndDispatchListJSPresenter();
         presenterPrint.setView(this);
 
         //打印标签
@@ -190,7 +193,7 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
                     //收货完直接自动打印派工单
                     isAgain=false;
                     printType=0;
-                    presenterPrint.GetDispatchListJS(AdvanceStorageId,username,getCurrentdate());
+                    presenterPrint.GetIssueAndDispatchListJS(AdvanceStorageId,username);
                 }
                 adapter.notifyDataSetChanged();
 
@@ -381,6 +384,10 @@ public class WXBCPSHNActivity extends BaseActivity implements ScanBaseView<GetPu
         String recenumstr=et.getText().toString();
         float num=Float.parseFloat(("0"+recenumstr));
         System.out.println(recenumstr+"=="+num);
+        if(num==0){
+            DialogUtil.errorMessageDialog(WXBCPSHNActivity.this,"收货数量为0禁止收货，请修改收货数量！");
+            return;
+        }
         Semi_FinishedProductReceivingReq req=new Semi_FinishedProductReceivingReq(getCurrentdate(), getCurrentdate(), username, marketorderno, marketorderrow, upstreamFactory, num, selectListData.getInStorage(), selectListData.getMENGE(), selectListData.getEBELN(), selectListData.getEBELP(), selectListData.getMATNR(), selectListData.getMaterialType(), selectListData.getWERKS(), selectListData.getLGPRO(), selectListData.getTXZ01(), selectListData.getMEINS(), selectListData.getCGTXT(), selectListData.getKINDS(), selectListData.getAUFNR(), selectListData.getPMATN(), selectListData.getMCODE(),selectListData.getMAKTX(), productOrder);
         /**
          *

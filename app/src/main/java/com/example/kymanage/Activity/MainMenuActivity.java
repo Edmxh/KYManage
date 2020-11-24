@@ -139,6 +139,7 @@ public class MainMenuActivity extends BaseActivity implements BaseView1<UpdateAp
         iconmap.put("异常收货", R.drawable.icon_printxsfhd);
         iconmap.put("物料查询", R.drawable.wlcx);
 
+        //根据权限订制菜单
         drawGridview(Authority1str,mGridView1);
         drawGridview(Authority2str,mGridView2);
         drawGridview(Authority3str,mGridView3);

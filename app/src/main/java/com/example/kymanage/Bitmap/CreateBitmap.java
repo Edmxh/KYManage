@@ -69,8 +69,8 @@ public class CreateBitmap{
     }
 
     //画图1,采购标签
-    public Bitmap createImage1(GetParchaseCenterLableRep rep, Typeface tf) {
-        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getNum()+",\"aid\":"+rep.getAdvanceStorageId()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+rep.getPo()+"\",\"porow\":\""+rep.getPoRow()+"\",\"gc\":\""+rep.getFactory()+"\",\"cd\":\""+rep.getAreaNo()+"\",\"cs\":"+rep.getBatchNumber()+"}";
+    public Bitmap createImage1(GetParchaseCenterLableRep rep,int index, Typeface tf) {
+        String content="{\"bm\":\""+rep.getMaterialCode()+"\",\"sl\":"+rep.getNum()+",\"aid\":"+rep.getAdvanceStorageId()+",\"num\":\""+getSeriesNumber()+"\",\"po\":\""+rep.getProductOrderNO()+"\",\"pono\":\""+rep.getPo()+"\",\"porow\":\""+rep.getPoRow()+"\",\"gc\":\""+rep.getFactory()+"\",\"xh\":"+index+",\"cd\":\""+rep.getAreaNo()+"\",\"cs\":"+rep.getBatchNumber()+"}";
         System.out.println("content:"+content);
         int picWidth = 480;//生成图片的宽度
         int picHeight = 380;//生成图片的高度
@@ -1021,7 +1021,7 @@ public class CreateBitmap{
                 String newStr2 = rep.getMarketOrderRow().replaceAll("^(0+)", "");
                 String newStr3 = rep.getProductOrderNO().replaceAll("^(0+)", "");
                 String newStr4 = rep.getPlanOrderNO().replaceAll("^(0+)", "");
-                String orderNO=newStr3.equals("")?("*"+newStr4):newStr3;
+                String orderNO=newStr3.equals("")?("*"+newStr4):newStr3;//生产订单号字段为空则加*
                 str6=newStr1+"/"+newStr2+"   "+orderNO;
             }
             paint.setTextSize(text5);
@@ -1212,16 +1212,18 @@ public class CreateBitmap{
 
         String str4="单位:"+rep.getProOMaterialUnit()+" "+"数量:"+(rep.getAllocatedQty());
         paint.setTextSize(text5);
-        top+=text1+lineSpacing;
+        top+=lineSpacing;
         canvas.drawText(str4,0,top,paint);
 
         //!!!
         String str5="";
-        if(rep.getNoteType().equals("销售发货")&&rep.getArea()!=null){
+        if(rep.getNoteType().equals("销售发货")){
+            String cliStr = rep.getClientNO().replaceAll("^(0+)", "");
+            str5=cliStr+"  "+rep.getClientShortName();
+
+        }else {
             String area=rep.getArea().equals("")?"-":rep.getArea();
             str5=rep.getFactory()+"  "+rep.getStorage()+"/"+area;
-        }else {
-            str5=rep.getClientShortName()+"  "+rep.getClientNO();
         }
 
 
@@ -1253,8 +1255,8 @@ public class CreateBitmap{
         canvas.drawText(str7,0,top,paint);
 
         String str8="";
-        if(rep.getProOMaterialDesc()==null){
-            str8="";
+        if(rep.getProOMaterialDesc()==null||rep.getProOMaterialDesc().equals("")){
+            str8=rep.getWorkNO();
         }else {
             str8=""+rep.getProOMaterialDesc();
         }
@@ -1270,7 +1272,7 @@ public class CreateBitmap{
         top+=lineSpacing;
         canvas.drawLine (0,top,picWidth,top,paint);
 
-        String str10="TKAS"+"         "+rep.getCreateDate()+" "+"CM";
+        String str10="TKAS"+"-"+rep.getFacName()+"         "+rep.getCreateDate()+" "+"CM";
         paint.setTextSize(text4);
         paint.setFakeBoldText(false);
         top+=text4;
@@ -1283,9 +1285,9 @@ public class CreateBitmap{
         } catch (WriterException e) {
             e.printStackTrace();
         }
-        canvas.drawBitmap(bm,QRx,0,paint);
+        canvas.drawBitmap(bm,QRx,-80,paint);
 
-        int y1=picWidth-QRx+10;
+        int y1=170;
 
         String str11=getSeriesNumber();
         paint.setTextSize(text5);
